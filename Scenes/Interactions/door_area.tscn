@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqmfqfpm7pqfi"]
+
+[ext_resource type="Script" uid="uid://djk3yf7epdfap" path="res://Scripts/Interactions/DoorArea.cs" id="1_t48aq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_02m73"]
+size = Vector2(55, 20)
+
+[node name="DoorArea" type="Area2D"]
+script = ExtResource("1_t48aq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -10)
+shape = SubResource("RectangleShape2D_02m73")
+
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
+[connection signal="body_exited" from="." to="." method="OnBodyExited"]
