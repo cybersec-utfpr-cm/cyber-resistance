@@ -93,11 +93,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/mvitoria/Documentos/CyberResistanceGodot/cyber-resistance-nov25/Cyber-Resistance-Nov25.csproj",
+      "projectUniqueName": "/home/mvitoria/Documentos/github/cyber-resistance/Cyber-Resistance-Nov25.csproj",
       "projectName": "Cyber-Resistance-Nov25",
-      "projectPath": "/home/mvitoria/Documentos/CyberResistanceGodot/cyber-resistance-nov25/Cyber-Resistance-Nov25.csproj",
+      "projectPath": "/home/mvitoria/Documentos/github/cyber-resistance/Cyber-Resistance-Nov25.csproj",
       "packagesPath": "/home/mvitoria/.nuget/packages/",
-      "outputPath": "/home/mvitoria/Documentos/CyberResistanceGodot/cyber-resistance-nov25/.godot/mono/temp/obj/",
+      "outputPath": "/home/mvitoria/Documentos/github/cyber-resistance/.godot/mono/temp/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/mvitoria/.nuget/NuGet/NuGet.Config"
@@ -158,11 +158,11 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
+            "version": "[8.0.23, 8.0.23]"
           },
           {
             "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
+            "version": "[8.0.23, 8.0.23]"
           }
         ],
         "frameworkReferences": {
@@ -170,7 +170,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/9.0.112/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/9.0.113/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

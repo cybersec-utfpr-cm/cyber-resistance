@@ -1,7 +1,10 @@
-/home/mvitoria/Documentos/CyberResistanceGodot/cyber-resistance-nov25/Export
-res://Scenes/Establishments
-res://Scripts/Interactions
+res://Assets/Environment/Computer
 res://Scenes/Interactions
+res://Assets/Environment/Computer/Icons
+res://Scenes/Computer
+res://Scenes/Establishments
+/home/mvitoria/Documentos/CyberResistanceGodot/cyber-resistance-nov25/Export
+res://Scripts/Interactions
 res://Scripts/Player
 res://Scripts/NPCs/Hubner
 res://Scenes/NPCs

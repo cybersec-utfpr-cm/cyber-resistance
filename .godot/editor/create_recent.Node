@@ -1,8 +1,10 @@
-Marker2D
-Node2D
-TileMapLayer
-Area2D
+Button
+Control
 CollisionShape2D
+Area2D
+TileMapLayer
+Node2D
+Marker2D
 StaticBody2D
 CharacterBody2D
 TileMap
@@ -10,5 +12,3 @@ NavigationAgent2D
 Node
 ResourcePreloader
 Timer
-AnimatedSprite2D
-Camera2D
