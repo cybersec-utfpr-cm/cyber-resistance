@@ -125,7 +125,7 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dd0ac"]
 size = Vector2(11, 9)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
 y_sort_enabled = true
 collision_mask = 14
 script = ExtResource("2_a3d8c")
@@ -140,11 +140,14 @@ animation = &"idle"
 position = Vector2(0, -3)
 shape = SubResource("RectangleShape2D_dd0ac")
 
+[node name="PlayerMovement" type="Node" parent="."]
+
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2.5, 2.5)
-process_callback = 0
+limit_left = -1000
+limit_top = -1000
+limit_right = 1000
+limit_bottom = 1000
 position_smoothing_enabled = true
 editor_draw_limits = true
 editor_draw_drag_margin = true
-
-[node name="PlayerMovement" type="Node" parent="."]

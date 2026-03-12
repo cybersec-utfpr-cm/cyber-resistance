@@ -2,44 +2,54 @@ using Godot;
 
 public partial class NPCRoutine : Node
 {
-	[Export]
-	public Godot.Collections.Array<NPCTask> Routine { get; set; } = new();
+	public Godot.Collections.Array<NPCTask> Routine = new();
 
-	public int CurrentTaskIndex { get; private set; } = 0;
+	public override void _Ready()
+	{
+		Routine.Clear();
 
-	public NPCTask GetCurrentTask()
+		Routine.Add(new NPCTask
+		{
+			Type = NPCTask.TaskType.GoTo,
+			ScenePath = "res://Scenes/Establishments/world.tscn",
+			LocationName = "FrontDoorCafeteria"
+		});
+
+		Routine.Add(new NPCTask
+		{
+			Type = NPCTask.TaskType.GoTo,
+			ScenePath = "res://Scenes/Establishments/cafeteria.tscn",
+			LocationName = "FrontDoorSpawn"
+		});
+
+		Routine.Add(new NPCTask
+		{
+			Type = NPCTask.TaskType.GoTo,
+			ScenePath = "res://Scenes/Establishments/cafeteria.tscn",
+			LocationName = "FrontServiceDesk"
+		});
+
+		Routine.Add(new NPCTask
+		{
+			Type = NPCTask.TaskType.GoTo,
+			ScenePath = "res://Scenes/Establishments/world.tscn",
+			LocationName = "FrontDoorSpawn"
+		});
+	}
+
+	public NPCTask GetTask(int index)
 	{
 		if (Routine.Count == 0)
 			return null;
 
-		return Routine[CurrentTaskIndex];
+		if (index >= Routine.Count)
+			return Routine[0];
+
+		return Routine[index];
 	}
 
-	public void GoToNextTask()
+	public int GetTaskCount()
 	{
-		CurrentTaskIndex++;
-
-		if (CurrentTaskIndex >= Routine.Count)
-			CurrentTaskIndex = 0;
-	}
-	public override void _Ready()
-	{
-		Routine.Add(new NPCTask
-		{
-			Type = NPCTask.TaskType.GoTo,
-			TargetPosition = new Vector2(300, 300)
-		});
-
-		Routine.Add(new NPCTask
-		{
-			Type = NPCTask.TaskType.Wait,
-			Duration = 2
-		});
-
-		Routine.Add(new NPCTask
-		{
-			Type = NPCTask.TaskType.GoTo,
-			TargetPosition = new Vector2(50, 50)
-		});
+		return Routine.Count;
 	}
 }

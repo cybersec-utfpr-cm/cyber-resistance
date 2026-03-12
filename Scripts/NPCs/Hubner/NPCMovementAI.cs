@@ -3,115 +3,132 @@ using System;
 
 public partial class NPCMovementAI : CharacterBody2D
 {
-	[Export] public float Speed = 60f;
+	[Export] public float speed = 60f;
 
-	// Esse é o nó que contém a lista de tarefas (NPCRoutine), não NPCTask
-	private NPCRoutine _routine;
+	public string CurrentScenePath { get; set; }
+	public bool IsChangingScene = false;
+
+	private NavigationAgent2D _agent;
 	private AnimatedSprite2D _sprite;
-	private Timer _waitTimer;
 
-	private bool _performingTask = false;
+	private bool initialized = false;
+	private bool _isExecutingTask = false;
 
-	public override void _Ready()
+	public override async void _Ready()
 	{
-		// Ajuste o caminho se o seu NPCRoutine estiver em outro local da árvore
-		_routine = GetNodeOrNull<NPCRoutine>("NPCRoutine");
-		if (_routine == null)
-			GD.PrintErr("NPCRoutine node not found. Verifique o caminho e se o script NPCRoutine.cs está anexado.");
+		AddToGroup("NPC");
 
+		_agent = GetNode<NavigationAgent2D>("NavigationAgent2D");
 		_sprite = GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D");
-		if (_sprite == null)
-			GD.PrintErr("AnimatedSprite2D not found.");
 
-		_waitTimer = new Timer();
-		AddChild(_waitTimer);
-		_waitTimer.Timeout += OnWaitFinished;
+		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+
+		initialized = true;
+
+		NPCManager.Instance.RegisterNPC(this);
+
+		ExecuteCurrentTask();
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (_routine == null) return; // evita NullReference se não houver rotina
+		if (!initialized || IsChangingScene)
+			return;
 
-		if (_performingTask) return;
-
-		var task = _routine.GetCurrentTask();
-		if (task == null) return;
-
-		switch (task.Type)
+		if (!_agent.IsNavigationFinished())
 		{
-			case NPCTask.TaskType.GoTo:
-				DoGoTo(delta, task);
-				break;
-			case NPCTask.TaskType.Wait:
-				DoWait(task);
-				break;
-			case NPCTask.TaskType.Interact:
-				DoInteract(task);
-				break;
-		}
-	}
+			Vector2 next = _agent.GetNextPathPosition();
+			Vector2 dir = (next - GlobalPosition).Normalized();
 
-	private void DoGoTo(double delta, NPCTask task)
-	{
-		// Movimento simples sem NavigationAgent (altere se usar pathfinding)
-		Vector2 direction = (task.TargetPosition - GlobalPosition);
-		if (direction.Length() > 1f)
-		{
-			direction = direction.Normalized();
-			Velocity = direction * Speed;
+			Velocity = dir * speed;
 			MoveAndSlide();
 
-			Animate(direction);
+			Animate(dir);
 		}
-		else
+		else if (_isExecutingTask)
 		{
-			Velocity = Vector2.Zero;
-			_routine.GoToNextTask();
+			// Chegou no destino
+			_isExecutingTask = false;
+			NPCManager.Instance.GoToNextTask(this);
+			ExecuteCurrentTask();
 		}
 	}
 
-	private void DoWait(NPCTask task)
+	public void ExecuteCurrentTask()
 	{
-		_performingTask = true;
+		var task = NPCManager.Instance.GetCurrentTask(this);
+
+		if (task == null)
+			return;
+
+		if (task.Type == NPCTask.TaskType.GoTo)
+		{
+			GoToLocation(task.LocationName);
+		}
+		else if (task.Type == NPCTask.TaskType.Wait)
+		{
+			StartWait(task.Duration);
+		}
+	}
+
+	private void GoToLocation(string locationName)
+	{
+		var locationManager = GameManager.Instance
+			.GetCurrentScene()
+			.GetNodeOrNull<LocationManager>("LocationManager");
+
+		if (locationManager == null)
+		{
+			GD.PrintErr("LocationManager não encontrado");
+			return;
+		}
+
+		Vector2 target = locationManager.GetLocation(locationName);
+
+		_agent.TargetPosition = target;
+		_isExecutingTask = true;
+	}
+
+	private async void StartWait(float duration)
+	{
 		Velocity = Vector2.Zero;
 		_sprite?.Play("idle");
 
-		_waitTimer.WaitTime = task.Duration > 0 ? task.Duration : 1.0f;
-		_waitTimer.Start();
-	}
+		await ToSignal(GetTree().CreateTimer(duration), SceneTreeTimer.SignalName.Timeout);
 
-	private void DoInteract(NPCTask task)
-	{
-		_performingTask = true;
-		Velocity = Vector2.Zero;
-		_sprite?.Play("idle");
-
-		GD.Print($"Interacting with {task.TargetNPC}");
-		// Aqui você pode implementar lógica de abrir diálogo etc.
-
-		_waitTimer.WaitTime = 2.0f;
-		_waitTimer.Start();
-	}
-
-	private void OnWaitFinished()
-	{
-		_performingTask = false;
-		_routine.GoToNextTask();
+		NPCManager.Instance.GoToNextTask(this);
+		ExecuteCurrentTask();
 	}
 
 	private void Animate(Vector2 dir)
 	{
-		if (_sprite == null) return;
-
-		if (dir == Vector2.Zero)
-		{
-			_sprite.Play("idle");
+		if (_sprite == null)
 			return;
-		}
 
 		if (Math.Abs(dir.X) > Math.Abs(dir.Y))
 			_sprite.Play(dir.X > 0 ? "right" : "left");
 		else
 			_sprite.Play(dir.Y > 0 ? "down" : "up");
+	}
+
+	public async void OnReachedDoor(DoorArea door) {
+		if (IsChangingScene) return;
+
+		var task = NPCManager.Instance.GetCurrentTask(this);
+		if (task == null || string.IsNullOrEmpty(task.ScenePath)) return;
+
+		IsChangingScene = true;
+
+		Velocity = Vector2.Zero;
+		_sprite?.Play("idle");
+
+		await ToSignal(GetTree().CreateTimer(3.0f), SceneTreeTimer.SignalName.Timeout);
+
+		// Move o NPC para a nova cena (armazena o spawnName = task.LocationName)
+		NPCManager.Instance.MoveNPCToScene(this, task.ScenePath, task.LocationName);
+
+		// NÃO avança a rotina aqui! O avanço ocorrerá quando a nova cena for carregada
+		// e o NPC executar _Ready novamente? Mas ele não terá _Ready chamado de novo.
+		// Precisamos de um mecanismo para, ao ser spawnado, ele avançar para a próxima tarefa.
 	}
 }

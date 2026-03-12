@@ -15,8 +15,17 @@ public partial class DoorArea : Area2D
 
 	private void OnBodyEntered(Node body)
 	{
+		// PLAYER
 		if (body.Name == "Player")
+		{
 			_playerInside = true;
+			return;
+		}
+
+		// NPC
+		if (body is NPCMovementAI npc) {
+			npc.OnReachedDoor(this);
+		}
 	}
 
 	private void OnBodyExited(Node body)
@@ -31,11 +40,12 @@ public partial class DoorArea : Area2D
 			ChangeScene();
 	}
 
-	private void ChangeScene() {
-		var tree = GetTree();
-
-		tree.SetMeta("spawn_name", DestinationSpawnName);
-		tree.ChangeSceneToFile(DestinationScenePath);
+	private void ChangeScene()
+	{
+		GameManager.Instance.ChangeScene(
+			DestinationScenePath,
+			DestinationSpawnName
+		);
+		
 	}
-
 }

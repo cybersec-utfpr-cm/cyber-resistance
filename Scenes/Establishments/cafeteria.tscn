@@ -1,11 +1,11 @@
-[gd_scene load_steps=16 format=4 uid="uid://inns1h3e2atx"]
+[gd_scene load_steps=17 format=4 uid="uid://inns1h3e2atx"]
 
 [ext_resource type="PackedScene" uid="uid://dqmfqfpm7pqfi" path="res://Scenes/Interactions/door_area.tscn" id="1_q7rsp"]
-[ext_resource type="PackedScene" uid="uid://84v74bpfstou" path="res://Scenes/Player/player.tscn" id="2_53p0y"]
 [ext_resource type="Texture2D" uid="uid://c541ubyddy536" path="res://Assets/Environment/Cafeteria/tableCafeteria.png" id="3_73dkv"]
 [ext_resource type="Script" uid="uid://bkyo7yavgygym" path="res://Scripts/Interactions/SpawnPoints.cs" id="3_fnfx1"]
 [ext_resource type="Texture2D" uid="uid://72rsjfgy6rk2" path="res://Assets/Environment/Cafeteria/doorCafeteria-sheet.png" id="3_qoqe6"]
 [ext_resource type="Texture2D" uid="uid://drqvcmewjyn8i" path="res://Assets/Environment/Cafeteria/interiorCafeteria.png" id="3_vop24"]
+[ext_resource type="Script" uid="uid://bojc33ctc6wyh" path="res://Scripts/Establishments/LocationManager.cs" id="7_qoqe6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vop24"]
 texture = ExtResource("3_vop24")
@@ -143,6 +143,11 @@ texture = ExtResource("3_73dkv")
 [sub_resource type="TileSet" id="TileSet_xcoo4"]
 sources/1 = SubResource("TileSetAtlasSource_73dkv")
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_xcoo4"]
+vertices = PackedVector2Array(438, 74, 438, 86, 182, 86, 10, 74, 10, 278, 182, 162, 150, 246, 438, 162, 438, 278, 266, 246, 266, 278, 214, 246, 214, 310, 202, 310, 202, 246, 150, 278)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 3, 2, 5, 6), PackedInt32Array(5, 7, 8, 9), PackedInt32Array(8, 10, 9), PackedInt32Array(5, 9, 11), PackedInt32Array(11, 12, 13, 14), PackedInt32Array(5, 11, 14), PackedInt32Array(5, 14, 6), PackedInt32Array(4, 6, 15)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(0, 64, 0, 288, 160, 288, 160, 256, 192, 256, 192, 320, 224, 320, 224, 256, 256, 256, 256, 288, 448, 288, 448, 152, 192, 152, 192, 96, 448, 96, 448, 64)])
+
 [node name="Cafeteria" type="Node2D"]
 light_mask = 4
 visibility_layer = 11
@@ -173,13 +178,21 @@ tile_set = SubResource("TileSet_xcoo4")
 script = ExtResource("3_fnfx1")
 
 [node name="FrontDoorSpawn" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(208, 304)
+position = Vector2(208, 288)
 
-[node name="Player" parent="." instance=ExtResource("2_53p0y")]
-visibility_layer = 14
-position = Vector2(194, 94)
+[node name="FrontServiceDesk" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(232, 160)
 
 [node name="DoorArea" parent="." instance=ExtResource("1_q7rsp")]
-position = Vector2(207, 320)
+position = Vector2(208, 328)
 DestinationScenePath = "res://Scenes/Establishments/world.tscn"
 DestinationSpawnName = "FrontDoorCafeteria"
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
+navigation_polygon = SubResource("NavigationPolygon_xcoo4")
+
+[node name="LocationManager" type="Node" parent="."]
+script = ExtResource("7_qoqe6")
+
+[node name="NPCContainer" type="Node" parent="."]

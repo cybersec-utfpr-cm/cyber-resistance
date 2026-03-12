@@ -71,4 +71,12 @@ public partial class PlayerMovement : CharacterBody2D
 	{
 		_sprite.Frame = 1;
 	}
+	
+	//public override void _Input(InputEvent @event)
+	//{
+		//if (@event.IsActionPressed("ui_accept")) // tecla Enter, por exemplo
+		//{
+			//QuestManager.Instance.SetQuestStage("phishing", 2);
+		//}
+	//}
 }

@@ -1,0 +1,160 @@
+[gd_scene load_steps=19 format=3 uid="uid://x827aq3c0t5k"]
+
+[ext_resource type="Script" uid="uid://7xedlehdrih7" path="res://Scripts/NPCs/NPCTutorHubner.cs" id="1_mxdyl"]
+[ext_resource type="Texture2D" uid="uid://bv5s4opcb8gun" path="res://Assets/Characters/NPCs/hubnerCharacter.png" id="1_s2gew"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tb07f"]
+atlas = ExtResource("1_s2gew")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h3o3a"]
+atlas = ExtResource("1_s2gew")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dnj73"]
+atlas = ExtResource("1_s2gew")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qgbmq"]
+atlas = ExtResource("1_s2gew")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rxe1y"]
+atlas = ExtResource("1_s2gew")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h1xn7"]
+atlas = ExtResource("1_s2gew")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l6sak"]
+atlas = ExtResource("1_s2gew")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x78fe"]
+atlas = ExtResource("1_s2gew")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_26pnr"]
+atlas = ExtResource("1_s2gew")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_daarx"]
+atlas = ExtResource("1_s2gew")
+region = Rect2(64, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rvry3"]
+atlas = ExtResource("1_s2gew")
+region = Rect2(0, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6hunp"]
+atlas = ExtResource("1_s2gew")
+region = Rect2(32, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_21fur"]
+atlas = ExtResource("1_s2gew")
+region = Rect2(64, 96, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mxdyl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tb07f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h3o3a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dnj73")
+}],
+"loop": true,
+"name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qgbmq")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rxe1y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h1xn7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l6sak")
+}],
+"loop": true,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x78fe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_26pnr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_daarx")
+}],
+"loop": true,
+"name": &"right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rvry3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6hunp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_21fur")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_chf46"]
+size = Vector2(11, 8)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mxdyl"]
+radius = 16.0
+
+[node name="NPCTutorHubner" type="CharacterBody2D"]
+script = ExtResource("1_mxdyl")
+NpcId = "hubner"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -11)
+sprite_frames = SubResource("SpriteFrames_mxdyl")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+light_mask = 2
+visibility_layer = 13
+position = Vector2(-0.5, -1)
+shape = SubResource("RectangleShape2D_chf46")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+shape = SubResource("CircleShape2D_mxdyl")
+
+[node name="DialogLabel" type="Label" parent="."]
+visible = false
+offset_left = -56.0
+offset_top = -48.0
+offset_right = 51.0
+offset_bottom = -24.0
+text = "frase de texte"
+
+[connection signal="body_entered" from="InteractionArea" to="." method="OnBodyEntered"]
+[connection signal="body_exited" from="InteractionArea" to="." method="OnBodyExited"]

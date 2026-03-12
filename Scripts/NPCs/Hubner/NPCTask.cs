@@ -5,12 +5,15 @@ public partial class NPCTask : Node
 	public enum TaskType
 	{
 		GoTo,
-		Interact,
-		Wait
+		Wait,
+		Interact
 	}
 
 	public TaskType Type;
-	public Vector2 TargetPosition;
+
+	public string ScenePath;     // ex: res://Scenes/Cafeteria.tscn
+
+	public string LocationName;  // ex: Entrance
+
 	public float Duration;
-	public NodePath TargetNPC;
 }

@@ -1,0 +1,38 @@
+{
+  "npc_id": "hubner",
+  "dialogues": [
+	{
+	  "condition": "quest_phishing_stage == 0",
+	  "lines": [
+		"Olá! Você ainda não começou a missão de phishing.",
+		"Fale com a bibliotecária para iniciar."
+	  ],
+	  "on_end": [
+		{ "type": "set_quest_stage", "quest": "phishing", "stage": "1" }
+	  ]
+	},
+	{
+	  "condition": "quest_phishing_stage == 1",
+	  "lines": [
+		"Lembre-se: e-mails suspeitos geralmente pedem dados pessoais.",
+		"Verifique o remetente antes de clicar em qualquer link."
+	  ],
+	  "on_end": [
+		{ "type": "give_item", "item": "dica_phishing", "amount": "1" }
+	  ]
+	},
+	{
+	  "condition": "quest_phishing_stage >= 2",
+	  "lines": [
+		"Parabéns! Você já está avançado na missão.",
+		"Continue assim e ajude outros colegas."
+	  ]
+	},
+	{
+	  "condition": "",
+	  "lines": [
+		"Olá! Em que posso ajudar hoje?"
+	  ]
+	}
+  ]
+}

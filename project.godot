@@ -11,9 +11,17 @@ config_version=5
 [application]
 
 config/name="Cyber-Resistance-Nov25"
-run/main_scene="uid://clqawdbfopxxv"
-config/features=PackedStringArray("4.4", "Forward Plus")
+run/main_scene="uid://b4hcgquptblhb"
+config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+NPCManager="*res://Scripts/NPCs/NPCManager.cs"
+GameManager="*res://Scripts/Core/GameManager.cs"
+DialogueManager="*res://Scripts/Interactions/DialogueManager.cs"
+QuestManager="*res://Scripts/Interactions/QuestManager.cs"
+InventoryManager="*res://Scripts/Core/InventoryManager.cs"
 
 [display]
 

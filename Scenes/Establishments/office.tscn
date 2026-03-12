@@ -3,7 +3,6 @@
 [ext_resource type="Texture2D" uid="uid://cfv1t74j1624r" path="res://Assets/Environment/Office/groundAndWallOffice-sheet.png" id="1_qnl8s"]
 [ext_resource type="Texture2D" uid="uid://ds71ywuxfcrqh" path="res://Assets/Environment/Office/office-sheet-sheet.png" id="2_5m485"]
 [ext_resource type="Texture2D" uid="uid://desd0oqdik14g" path="res://Assets/Environment/Office/tables_office.png" id="2_ho43g"]
-[ext_resource type="PackedScene" uid="uid://84v74bpfstou" path="res://Scenes/Player/player.tscn" id="3_5m485"]
 [ext_resource type="Script" uid="uid://bkyo7yavgygym" path="res://Scripts/Interactions/SpawnPoints.cs" id="4_bjrkt"]
 [ext_resource type="PackedScene" uid="uid://dqmfqfpm7pqfi" path="res://Scenes/Interactions/door_area.tscn" id="6_a343a"]
 [ext_resource type="PackedScene" uid="uid://5oovyyubq63e" path="res://Scenes/Interactions/computer_access.tscn" id="7_knrkr"]
@@ -101,6 +100,11 @@ texture = ExtResource("2_5m485")
 [sub_resource type="TileSet" id="TileSet_sphxl"]
 sources/0 = SubResource("TileSetAtlasSource_hv4b6")
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_knrkr"]
+vertices = PackedVector2Array(502, 306, 502, 566, 470, 566, 42, 306, 470, 618, 502, 618, 502, 630, 362, 630, 362, 598, 278, 598, 278, 662, 266, 662, 266, 598, 182, 598, 74, 374, 182, 630, 74, 630, 74, 598, 42, 598, 42, 426, 74, 426, 42, 374)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 5, 6, 7), PackedInt32Array(4, 7, 8, 2), PackedInt32Array(3, 2, 8, 9), PackedInt32Array(9, 10, 11, 12), PackedInt32Array(3, 9, 12), PackedInt32Array(3, 12, 13, 14), PackedInt32Array(13, 15, 16, 17), PackedInt32Array(17, 18, 19, 20), PackedInt32Array(13, 17, 20), PackedInt32Array(14, 21, 3), PackedInt32Array(14, 13, 20)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(32, 296, 512, 296, 512, 576, 480, 576, 480, 608, 512, 608, 512, 640, 352, 640, 352, 608, 288, 608, 288, 672, 256, 672, 256, 608, 192, 608, 192, 640, 64, 640, 64, 608, 32, 608, 32, 416, 64, 416, 64, 384, 32, 384)])
+
 [node name="Office" type="Node2D"]
 
 [node name="TileMaps" type="Node2D" parent="."]
@@ -131,17 +135,14 @@ tile_set = SubResource("TileSet_sphxl")
 [node name="SpawnPoints" type="Node2D" parent="."]
 script = ExtResource("4_bjrkt")
 
-[node name="FrontDoorSpawn" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(272, 659)
-
 [node name="FrontComputer" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(424, 367)
 
-[node name="Player" parent="." instance=ExtResource("3_5m485")]
-position = Vector2(109, 25)
+[node name="FrontDoorSpawn" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(272, 656)
 
 [node name="DoorArea" parent="." instance=ExtResource("6_a343a")]
-position = Vector2(275, 671)
+position = Vector2(272, 672)
 DestinationScenePath = "res://Scenes/Establishments/world.tscn"
 DestinationSpawnName = "FrontDoorOffice"
 
@@ -150,3 +151,7 @@ position = Vector2(424, 367)
 collision_layer = 16
 collision_mask = 15
 ReturnSpawnName = "FrontComputer"
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
+navigation_polygon = SubResource("NavigationPolygon_knrkr")
