@@ -4,28 +4,21 @@ public partial class Computer : Control
 {
 	public override void _Process(double delta)
 	{
-		if (Input.IsActionJustPressed("ui_cancel")) // ESC
+		if (Input.IsActionJustPressed("ui_cancel")) // Tecla ESC
 		{
+			GD.Print("Apertou esc");
 			ExitComputer();
 		}
 	}
 
-	private void ExitComputer()
+	public void ExitComputer()
 	{
-		var tree = GetTree();
+		// Despausa o jogo
+		GetTree().Paused = false;
 
-		if (!tree.HasMeta("return_scene_path"))
-		{
-			GD.PrintErr("Nenhuma cena de retorno definida");
-			return;
-		}
+		// Remove a si mesmo da árvore
+		QueueFree();
 
-		string scenePath = tree.GetMeta("return_scene_path").AsString();
-		string spawnName = tree.GetMeta("return_spawn_name").AsString();
-
-		// define spawn para SpawnPoints.cs usar
-		tree.SetMeta("spawn_name", spawnName);
-
-		tree.ChangeSceneToFile(scenePath);
+		GD.Print("Computer: Computador fechado.");
 	}
 }

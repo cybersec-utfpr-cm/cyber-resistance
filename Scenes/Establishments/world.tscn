@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://clqawdbfopxxv"]
+[gd_scene load_steps=18 format=4 uid="uid://clqawdbfopxxv"]
 
 [ext_resource type="Script" uid="uid://cnyb5l1guh1j3" path="res://Scripts/Establishments/World.cs" id="1_jalqa"]
 [ext_resource type="Texture2D" uid="uid://bwy5rdo6xn2h8" path="res://Assets/Environment/Cafeteria/cafeteria.png" id="2_cvjxg"]
@@ -7,9 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://djblpmxbsaths" path="res://Assets/Environment/Office/office-sheet.png" id="5_d78uv"]
 [ext_resource type="PackedScene" uid="uid://x827aq3c0t5k" path="res://Scenes/NPCs/npc_tutor_hubner.tscn" id="6_3fk4k"]
 [ext_resource type="Script" uid="uid://bkyo7yavgygym" path="res://Scripts/Interactions/SpawnPoints.cs" id="6_x6ost"]
-[ext_resource type="PackedScene" uid="uid://cjxyy5ouo7upq" path="res://Scenes/NPCs/hubner_npc.tscn" id="8_ubmvo"]
 [ext_resource type="Script" uid="uid://bojc33ctc6wyh" path="res://Scripts/Establishments/LocationManager.cs" id="9_l1mse"]
-[ext_resource type="Script" uid="uid://ckjsa0haqyf1y" path="res://Scripts/Establishments/NPCSpawner.cs" id="10_3fk4k"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x6ost"]
 texture = ExtResource("3_cvjxg")
@@ -325,10 +323,5 @@ navigation_polygon = SubResource("NavigationPolygon_ubmvo")
 
 [node name="LocationManager" type="Node" parent="."]
 script = ExtResource("9_l1mse")
-
-[node name="NPCSpawner" type="Node2D" parent="."]
-position = Vector2(128, 64)
-script = ExtResource("10_3fk4k")
-NPCScene = ExtResource("8_ubmvo")
 
 [node name="NPCContainer" type="Node" parent="."]

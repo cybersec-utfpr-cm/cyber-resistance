@@ -12,7 +12,8 @@ public partial class SpawnPoints : Node2D
 		string spawnName = GetTree().GetMeta("spawn_name").AsString();
 		GetTree().RemoveMeta("spawn_name");
 
-		var spawn = GetNodeOrNull<Marker2D>(spawnName);
+		// Busca recursiva em todos os descendentessd
+		var spawn = FindChild(spawnName, true, false) as Marker2D;
 		if (spawn == null)
 		{
 			GD.PrintErr($"Spawn '{spawnName}' não encontrado em {Name}");

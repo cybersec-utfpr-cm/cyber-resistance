@@ -6,10 +6,12 @@ public partial class GameManager : Node {
 	
 	public static GameManager Instance;
 	public Node WorldContainer;
+	public Node UIContainer;
 	
 	public override void _Ready() { 
 		Instance = this;
 		WorldContainer = GetNode("/root/Game/WorldContainer");
+		UIContainer = GetNode("/root/Game/UIContainer");
 		if (WorldContainer == null) {
 			GD.PrintErr("GameManager.cs: WorldContainer não encontrado!");
 		}

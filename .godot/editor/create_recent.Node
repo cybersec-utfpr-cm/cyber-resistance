@@ -1,13 +1,13 @@
+CanvasLayer
+Node
+Marker2D
 Timer
 Label
 Panel
 ColorRect
-CanvasLayer
 CollisionShape2D
 Area2D
 AnimatedSprite2D
 CharacterBody2D
-Node
-Marker2D
 NavigationRegion2D
 Node2D

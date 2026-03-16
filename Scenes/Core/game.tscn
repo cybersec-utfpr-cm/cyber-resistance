@@ -14,6 +14,8 @@ script = ExtResource("1_mwkus")
 
 [node name="World" parent="WorldContainer" instance=ExtResource("2_mwkus")]
 
+[node name="UIContainer" type="CanvasLayer" parent="."]
+
 [node name="NPCContainer" type="Node" parent="."]
 
 [node name="NPCManager" type="Node" parent="."]

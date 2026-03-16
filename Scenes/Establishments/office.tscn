@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=4 uid="uid://tcn4xs2fpie5"]
+[gd_scene load_steps=19 format=4 uid="uid://tcn4xs2fpie5"]
 
 [ext_resource type="Texture2D" uid="uid://cfv1t74j1624r" path="res://Assets/Environment/Office/groundAndWallOffice-sheet.png" id="1_qnl8s"]
 [ext_resource type="Texture2D" uid="uid://ds71ywuxfcrqh" path="res://Assets/Environment/Office/office-sheet-sheet.png" id="2_5m485"]
 [ext_resource type="Texture2D" uid="uid://desd0oqdik14g" path="res://Assets/Environment/Office/tables_office.png" id="2_ho43g"]
 [ext_resource type="Script" uid="uid://bkyo7yavgygym" path="res://Scripts/Interactions/SpawnPoints.cs" id="4_bjrkt"]
 [ext_resource type="PackedScene" uid="uid://dqmfqfpm7pqfi" path="res://Scenes/Interactions/door_area.tscn" id="6_a343a"]
+[ext_resource type="Script" uid="uid://bojc33ctc6wyh" path="res://Scripts/Establishments/LocationManager.cs" id="7_jmtfx"]
 [ext_resource type="PackedScene" uid="uid://5oovyyubq63e" path="res://Scenes/Interactions/computer_access.tscn" id="7_knrkr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ho43g"]
@@ -135,11 +136,11 @@ tile_set = SubResource("TileSet_sphxl")
 [node name="SpawnPoints" type="Node2D" parent="."]
 script = ExtResource("4_bjrkt")
 
-[node name="FrontComputer" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(424, 367)
-
 [node name="FrontDoorSpawn" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(272, 656)
+
+[node name="FrontComputer" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(424, 368)
 
 [node name="DoorArea" parent="." instance=ExtResource("6_a343a")]
 position = Vector2(272, 672)
@@ -153,5 +154,7 @@ collision_mask = 15
 ReturnSpawnName = "FrontComputer"
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
-visible = false
 navigation_polygon = SubResource("NavigationPolygon_knrkr")
+
+[node name="LocationManager" type="Node" parent="."]
+script = ExtResource("7_jmtfx")

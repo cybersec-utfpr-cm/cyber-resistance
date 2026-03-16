@@ -35,13 +35,31 @@ public partial class ComputerAccess : Area2D
 
 	private void EnterComputer()
 	{
-		var tree = GetTree();
+		var computerScene = GD.Load<PackedScene>(ComputerScenePath);
+		if (computerScene == null)
+		{
+			GD.PrintErr($"ComputerAccess: Cena não encontrada: {ComputerScenePath}");
+			return;
+		}
 
-		// salva de onde veio
-		tree.SetMeta("return_scene_path", GetTree().CurrentScene.SceneFilePath);
-		tree.SetMeta("return_spawn_name", ReturnSpawnName);
+		var computerInstance = computerScene.Instantiate();
+		if (computerInstance is not Control computerControl)
+		{
+			GD.PrintErr("ComputerAccess: A cena do computador precisa ter um nó raiz do tipo Control (ex: Panel).");
+			computerInstance.QueueFree();
+			return;
+		}
 
-		// vai para o computador
-		tree.ChangeSceneToFile(ComputerScenePath);
+		// Adiciona ao UIContainer (que é um CanvasLayer)
+		var uiContainer = GameManager.Instance.UIContainer;
+		uiContainer.AddChild(computerControl);
+
+		// Define o ProcessMode da UI para Always para continuar funcionando mesmo com a árvore pausada
+		computerControl.ProcessMode = ProcessModeEnum.Always;
+
+		// (Opcional) Pausa o jogo
+		GetTree().Paused = true;
+
+		GD.Print("ComputerAccess: Computador aberto como UI.");
 	}
 }
