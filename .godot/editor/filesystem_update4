@@ -1,12 +1,13 @@
 res://Scenes/Establishments/world.tscn
 res://Scenes/NPCs/hubner_npc.tscn
 res://Scenes/Establishments/cafeteria.tscn
+res://Scenes/Establishments/office.tscn
 res://Scenes/Interactions/door_area.tscn
 res://Scenes/Core/game.tscn
 res://Scenes/Player/player.tscn
-res://Scenes/Establishments/office.tscn
 res://Scenes/NPCs/npc_tutor_hubner.tscn
 res://Scenes/Interactions/dialog_box.tscn
+res://Scenes/Computer/computer.tscn
 res://Scripts/Computer/Screens.cs
 res://Scripts/Interactions/DoorArea.cs
 res://Scripts/NPCs/Hubner/NPCMovementAI.cs
@@ -28,4 +29,3 @@ res://Scripts/Core/GameManager.cs
 res://Scripts/Interactions/DialogueManager.cs
 res://Scripts/Computer/Desktop.cs
 res://Scripts/Computer/Terminal.cs
-res://Scenes/Computer/computer.tscn

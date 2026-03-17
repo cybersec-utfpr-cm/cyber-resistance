@@ -54,7 +54,7 @@ public partial class ComputerAccess : Area2D
 		var uiContainer = GameManager.Instance.UIContainer;
 		uiContainer.AddChild(computerControl);
 
-		// Define o ProcessMode da UI para Always para continuar funcionando mesmo com a árvore pausada
+		// sdsDefine o ProcessMode da UI para Always para continuar funcionando mesmo com a árvore pausada
 		computerControl.ProcessMode = ProcessModeEnum.Always;
 
 		// (Opcional) Pausa o jogo
