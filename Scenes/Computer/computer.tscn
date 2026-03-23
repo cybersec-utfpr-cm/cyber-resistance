@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://dxo7lap14maub" path="res://Assets/Environment/Computer/Icons/configuration_icon.png" id="7_kcn4h"]
 [ext_resource type="Texture2D" uid="uid://ch5witvjftbo6" path="res://Assets/Environment/Computer/Icons/text_icon.png" id="8_m6mup"]
 [ext_resource type="Texture2D" uid="uid://dshy05jcdngj5" path="res://Assets/Environment/Computer/Icons/message_icon.png" id="9_ico5l"]
-[ext_resource type="Script" uid="uid://dddufr1kn4t7w" path="res://Scripts/Computer/Terminal.cs" id="13_m6mup"]
+[ext_resource type="PackedScene" uid="uid://5pp3p77prsf6" path="res://Scenes/Computer/Terminal/terminal.tscn" id="13_ico5l"]
 [ext_resource type="Texture2D" uid="uid://dxpvywouifrtk" path="res://Assets/Environment/Computer/left_arrow.png" id="14_ico5l"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sex4e"]
@@ -176,11 +176,8 @@ icon_alignment = 1
 vertical_icon_alignment = 0
 expand_icon = true
 
-[node name="Terminal" type="Control" parent="Screens"]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("13_m6mup")
+[node name="Terminal" parent="Screens" instance=ExtResource("13_ico5l")]
+layout_mode = 1
 
 [node name="BackIconBt" type="Button" parent="Screens/Terminal"]
 layout_mode = 0
