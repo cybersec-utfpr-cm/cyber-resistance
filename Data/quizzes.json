@@ -1,0 +1,32 @@
+{
+  "quizzes": [
+	{
+	  "id": "quiz_phishing_basico",
+	  "title": "Quiz: Phishing Básico",
+	  "questions": [
+		{
+		  "question": "O que é phishing?",
+		  "options": [
+			"Um tipo de peixe",
+			"Técnica de engenharia social para obter dados",
+			"Um antivírus",
+			"Um jogo online"
+		  ],
+		  "correct": 1,
+		  "reward_quest_stage": "phishing:2"
+		},
+		{
+		  "question": "Qual destes é um sinal de phishing?",
+		  "options": [
+			"E-mail com meu nome correto",
+			"Link encurtado suspeito",
+			"Remetente conhecido",
+			"Anexo esperado"
+		  ],
+		  "correct": 1,
+		  "reward_quest_stage": ""
+		}
+	  ]
+	}
+  ]
+}

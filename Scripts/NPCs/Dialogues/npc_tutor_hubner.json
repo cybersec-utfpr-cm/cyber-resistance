@@ -2,37 +2,39 @@
   "npc_id": "hubner",
   "dialogues": [
 	{
-	  "condition": "quest_phishing_stage == 0",
+	  "condition": "quest_access_computer_stage == 0",
 	  "lines": [
-		"Olá! Você ainda não começou a missão de phishing.",
-		"Fale com a bibliotecária para iniciar."
+		"Olá! Preciso que você acesse o computador na sala ao lado.",
+		"É um teste de suas habilidades básicas. Vá até lá e interaja com o computador."
 	  ],
 	  "on_end": [
-		{ "type": "set_quest_stage", "quest": "phishing", "stage": "1" }
+		{
+		  "type": "set_quest_stage",
+		  "quest": "access_computer",
+		  "stage": "1"
+		}
 	  ]
 	},
 	{
-	  "condition": "quest_phishing_stage == 1",
+	  "condition": "quest_access_computer_stage == 1",
 	  "lines": [
-		"Lembre-se: e-mails suspeitos geralmente pedem dados pessoais.",
-		"Verifique o remetente antes de clicar em qualquer link."
+		"Você já acessou o computador? Vá lá e tente."
 	  ],
-	  "on_end": [
-		{ "type": "give_item", "item": "dica_phishing", "amount": "1" }
-	  ]
+	  "on_end": []
 	},
 	{
-	  "condition": "quest_phishing_stage >= 2",
+	  "condition": "quest_access_computer_stage >= 2",
 	  "lines": [
-		"Parabéns! Você já está avançado na missão.",
-		"Continue assim e ajude outros colegas."
-	  ]
+		"Parabéns! Você completou a missão do computador."
+	  ],
+	  "on_end": []
 	},
 	{
 	  "condition": "",
 	  "lines": [
-		"Olá! Em que posso ajudar hoje?"
-	  ]
+		"Olá! Em que posso ajudar?"
+	  ],
+	  "on_end": []
 	}
   ]
 }

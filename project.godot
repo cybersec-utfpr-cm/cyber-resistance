@@ -17,10 +17,12 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-NPCManager="*res://Scripts/NPCs/NPCManager.cs"
 GameManager="*res://Scripts/Core/GameManager.cs"
 DialogueManager="*res://Scripts/Interactions/DialogueManager.cs"
-QuestManager="*res://Scripts/Interactions/QuestManager.cs"
+BookManager="*res://Scripts/Core/BookManager.cs"
+QuizManager="*res://Scripts/Core/QuizManager.cs"
+QuestManager="*res://Scripts/Core/QuestManager.cs"
+NPCManager="*res://Scripts/NPCs/NPCManager.cs"
 InventoryManager="*res://Scripts/Core/InventoryManager.cs"
 
 [display]

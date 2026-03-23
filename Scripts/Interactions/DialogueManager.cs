@@ -204,7 +204,7 @@ public partial class DialogueManager : Node
 		_isDialogueActive = false;
 		_dialogBox.DialogFinished -= OnDialogFinished;
 
-		// Executa ações pendentes
+		GD.Print($"DialogueManager: Diálogo finalizado. Ações pendentes: {(_pendingActions != null ? _pendingActions.Count : 0)}");
 		if (_pendingActions != null)
 		{
 			ActionProcessor.ExecuteActions(_pendingActions);
@@ -294,6 +294,7 @@ public static class ActionProcessor
 	public static void ExecuteActions(List<Dictionary<string, string>> actions)
 	{
 		if (actions == null) return;
+		GD.Print($"ActionProcessor: Executando {actions.Count} ações");
 
 		foreach (var action in actions)
 		{

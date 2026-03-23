@@ -1,0 +1,45 @@
+[gd_scene load_steps=2 format=3 uid="uid://bn524u4afttki"]
+
+[ext_resource type="Script" uid="uid://ds2g6dcuylgw8" path="res://Scripts/Interfaces/BookshelfUi.cs" id="1_ybk56"]
+
+[node name="BookshelfUI" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ybk56")
+BookId = "intro_cybersecurity"
+ChapterListPath = NodePath("ChapterList")
+ContentLabelPath = NodePath("ContentLabel")
+CloseButtonPath = NodePath("CloseButton")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 144.0
+offset_top = 8.0
+offset_right = 360.0
+offset_bottom = 120.0
+
+[node name="ChapterList" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 144.0
+offset_right = 456.0
+offset_bottom = 296.0
+
+[node name="ContentLabel" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 344.0
+offset_right = 720.0
+offset_bottom = 696.0
+
+[node name="CloseButton" type="Button" parent="."]
+self_modulate = Color(1, 0, 0, 1)
+layout_mode = 0
+offset_left = 976.0
+offset_top = 40.0
+offset_right = 1168.0
+offset_bottom = 184.0
+text = "x"
