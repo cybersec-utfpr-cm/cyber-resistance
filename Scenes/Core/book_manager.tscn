@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://v7k3dlminlra"]
+
+[ext_resource type="Script" uid="uid://cylfu2t0k14iy" path="res://Scripts/Core/BookManager.cs" id="1_df6tw"]
+
+[node name="BookManager" type="Node"]
+script = ExtResource("1_df6tw")

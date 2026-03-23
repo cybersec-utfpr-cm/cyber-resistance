@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://tcn4xs2fpie5"]
+[gd_scene load_steps=20 format=4 uid="uid://tcn4xs2fpie5"]
 
 [ext_resource type="Texture2D" uid="uid://cfv1t74j1624r" path="res://Assets/Environment/Office/groundAndWallOffice-sheet.png" id="1_qnl8s"]
 [ext_resource type="Texture2D" uid="uid://ds71ywuxfcrqh" path="res://Assets/Environment/Office/office-sheet-sheet.png" id="2_5m485"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dqmfqfpm7pqfi" path="res://Scenes/Interactions/door_area.tscn" id="6_a343a"]
 [ext_resource type="Script" uid="uid://bojc33ctc6wyh" path="res://Scripts/Establishments/LocationManager.cs" id="7_jmtfx"]
 [ext_resource type="PackedScene" uid="uid://5oovyyubq63e" path="res://Scenes/Interactions/computer_access.tscn" id="7_knrkr"]
+[ext_resource type="PackedScene" uid="uid://db7i2erx5fix" path="res://Scenes/Interactions/bookshelf.tscn" id="8_jmtfx"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ho43g"]
 texture = ExtResource("1_qnl8s")
@@ -158,3 +159,5 @@ navigation_polygon = SubResource("NavigationPolygon_knrkr")
 
 [node name="LocationManager" type="Node" parent="."]
 script = ExtResource("7_jmtfx")
+
+[node name="Bookshelf" parent="." instance=ExtResource("8_jmtfx")]

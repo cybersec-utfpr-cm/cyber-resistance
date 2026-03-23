@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://db7i2erx5fix"]
+
+[ext_resource type="Script" uid="uid://do314hoaq5nr0" path="res://Scripts/Interactions/Bookshelf.cs" id="1_dnqco"]
+[ext_resource type="PackedScene" uid="uid://bn524u4afttki" path="res://Scenes/Interfaces/bookshelf_ui.tscn" id="2_f3bu2"]
+
+[sub_resource type="ExternalTexture" id="ExternalTexture_dnqco"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6armw"]
+size = Vector2(74, 50)
+
+[node name="Bookshelf" type="Area2D"]
+script = ExtResource("1_dnqco")
+BookshelfUIScene = ExtResource("2_f3bu2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(3.8147e-06, 0)
+scale = Vector2(0.3125, 0.1875)
+texture = SubResource("ExternalTexture_dnqco")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_6armw")
+
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
+[connection signal="body_exited" from="." to="." method="OnBodyExited"]

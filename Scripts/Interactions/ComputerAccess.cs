@@ -50,16 +50,25 @@ public partial class ComputerAccess : Area2D
 			return;
 		}
 
-		// Adiciona ao UIContainer (que é um CanvasLayer)
 		var uiContainer = GameManager.Instance.UIContainer;
 		uiContainer.AddChild(computerControl);
-
-		// Define o ProcessMode da UI para Always para continuar funcionando mesmo com a árvore pausada
 		computerControl.ProcessMode = ProcessModeEnum.Always;
 
-		// (Opcional) Pausa o jogo
-		GetTree().Paused = true;
+		// Verifica a missão
+		int questStage = QuestManager.Instance.GetQuestStage("access_computer");
+		GD.Print($"ComputerAccess: Estágio atual da missão 'access_computer': {questStage}");
 
+		if (questStage == 1)
+		{
+			QuestManager.Instance.SetQuestStage("access_computer", 2);
+			GD.Print("ComputerAccess: Missão 'access_computer' concluída! Estágio agora é 2.");
+		}
+		else
+		{
+			GD.Print($"ComputerAccess: Missão não está no estágio 1 (está {questStage}), não será avançada.");
+		}
+
+		GetTree().Paused = true;
 		GD.Print("ComputerAccess: Computador aberto como UI.");
 	}
 }
