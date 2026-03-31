@@ -35,9 +35,6 @@ public partial class TerminalController : Node
 	private async Task ConnectWithRetry()
 	{
 		Log.Info("Tentando conectar...");
-		CallDeferred(MethodName.EmitSignal,
-			SignalName.OutputReceivedWithArgument,
-			"Ligando...");
 
 		int attempt = 0;
 
@@ -52,9 +49,6 @@ public partial class TerminalController : Node
 				telnet.Login(username, password, loginTimeoutMs);
 
 				Log.Info("Login deu certo");
-				CallDeferred(MethodName.EmitSignal,
-					SignalName.OutputReceivedWithArgument,
-					" Tudo pronto!\n");
 				isConnected = true;
 
 				cts = new CancellationTokenSource();

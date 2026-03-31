@@ -11,7 +11,6 @@ public partial class InputText : TextEdit
 	[Export] public int terminalRetryDelayMs = 1000;
 
 	private RichTextLabel outputText;
-	private string prompt = "$ ";
 	private Control terminal;
 	private TerminalController tc;
 	private int exitLevels = 0;
@@ -19,7 +18,6 @@ public partial class InputText : TextEdit
 	private void Reset()
 	{
 		Text = string.Empty;
-		InsertTextAtCaret(prompt);
 	}
 
 	private void AppendOutput(string output)
