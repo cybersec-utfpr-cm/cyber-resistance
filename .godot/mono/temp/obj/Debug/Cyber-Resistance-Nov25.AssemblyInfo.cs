@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cyber-Resistance-Nov25")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+807ffd808d56a150edc77ea27fc007ee238d53df")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f2c5945e0080af2381a90d8a92568f8cccdbc925")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cyber-Resistance-Nov25")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cyber-Resistance-Nov25")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
