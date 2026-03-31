@@ -10,27 +10,35 @@ public partial class TerminalController : Node
 	[Signal]
 	public delegate void OutputReceivedWithArgumentEventHandler(string output);
 
+	public string host { get; set; } = "127.0.0.1";
+	public int port { get; set; } = 5000;
+	public string username { get; set; } = "player";
+	public string password { get; set; } = "player";
+	public int loginTimeoutMs { get; set; } = 1000;
+	public int maxAttempts { get; set; } = 15;
+	public int retryDelayMs { get; set; } = 1000;
+
 	private TelnetConnection telnet;
 	private CancellationTokenSource cts;
 	private Task telnetTask;
 	private ConcurrentQueue<string> commandQueue = new();
 	private bool isConnected = false;
 
-	public override void _Ready()
+	public void StartConnection()
 	{
+		if (isConnected || telnetTask != null)
+			return;
+
 		_ = ConnectWithRetry();
 	}
 
 	private async Task ConnectWithRetry()
 	{
 		Log.Info("Tentando conectar...");
-		// Envia o texto "Ligando..." à saída do terminal, bloqueando,
-		// também, a entrada de texto até que haja conexão com a máquina Docker
 		CallDeferred(MethodName.EmitSignal,
-						SignalName.OutputReceivedWithArgument,
-						"Ligando...");
+			SignalName.OutputReceivedWithArgument,
+			"Ligando...");
 
-		int maxAttempts = 10;
 		int attempt = 0;
 
 		while (attempt < maxAttempts)
@@ -40,29 +48,30 @@ public partial class TerminalController : Node
 				attempt++;
 				Log.Info($"Tentativa {attempt}");
 
-				telnet = new TelnetConnection("127.0.0.1", 5000);
+				telnet = new TelnetConnection(host, port);
+				telnet.Login(username, password, loginTimeoutMs);
 
-				telnet.Login("player", "player", 1000);
-
-				Log.Info("Login deu certo :)");
+				Log.Info("Login deu certo");
 				CallDeferred(MethodName.EmitSignal,
-						SignalName.OutputReceivedWithArgument,
-						" Tudo pronto!\n");
+					SignalName.OutputReceivedWithArgument,
+					" Tudo pronto!\n");
 				isConnected = true;
 
 				cts = new CancellationTokenSource();
 				telnetTask = RunTelnetAsync(cts.Token);
-
 				return;
 			}
 			catch (Exception e)
 			{
 				Log.Error($"Falhou tentativa {attempt}: {e.Message}");
-				await Task.Delay(1000);
+				await Task.Delay(retryDelayMs);
 			}
 		}
 
-		Log.Error("Não conseguiu conectar após várias tentativas.");
+		CallDeferred(MethodName.EmitSignal,
+			SignalName.OutputReceivedWithArgument,
+			" Falha ao conectar no ambiente Docker.\n");
+		Log.Error("Nao conseguiu conectar apos varias tentativas.");
 	}
 
 	private async Task RunTelnetAsync(CancellationToken token)
@@ -78,7 +87,6 @@ public partial class TerminalController : Node
 				}
 
 				string output = telnet.Read();
-
 				if (!string.IsNullOrEmpty(output))
 				{
 					CallDeferred(MethodName.EmitSignal,
@@ -95,6 +103,9 @@ public partial class TerminalController : Node
 			catch (Exception e)
 			{
 				Log.Error($"Erro telnet: {e.Message}");
+				CallDeferred(MethodName.EmitSignal,
+					SignalName.OutputReceivedWithArgument,
+					" Conexao encerrada.\n");
 				break;
 			}
 		}
@@ -102,11 +113,11 @@ public partial class TerminalController : Node
 
 	public void SendCommand(string command)
 	{
-		if (isConnected)
-		{
-			Log.Info("Comando enfileirado");
-			commandQueue.Enqueue(command);
-		}
+		if (!isConnected)
+			return;
+
+		Log.Info("Comando enfileirado");
+		commandQueue.Enqueue(command);
 	}
 
 	public override async void _ExitTree()
@@ -114,13 +125,11 @@ public partial class TerminalController : Node
 		if (cts != null)
 		{
 			cts.Cancel();
-
 			try
 			{
 				await telnetTask;
 			}
 			catch { }
-
 			cts.Dispose();
 		}
 	}

@@ -91,6 +91,17 @@ unzip Cyber_Resistance.zip
 
 4.3 Execute o jogo: Clique no projeto para selecioná-lo e clique em "Run".
 
+## 5. Inicialização da Máquina Docker do Jogador
+
+A máquina Docker do jogador é inicializada quando a cena principal do jogo é carregada (via `GameManager`).
+
+- Script responsável: `Scripts/Core/GameManager.cs`;
+- Nome padrão do container: `player_machine`;
+- O nome pode ser alterado no Inspector do nó `GameManager` pelo campo `PlayerMachineContainerName`.
+
+Com isso, abrir/fechar a tela de terminal não liga/desliga a máquina; o terminal apenas se conecta ao ambiente já ativo.
+
+
 # Código-fonte: Projeto Cyber Resistance
 
 ## Normas de Padronização (NPs)
