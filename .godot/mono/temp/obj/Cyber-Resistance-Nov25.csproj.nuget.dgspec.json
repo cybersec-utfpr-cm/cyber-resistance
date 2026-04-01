@@ -1,26 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "/home/mvitoria/Documentos/github/cyber-resistance/Cyber-Resistance-Nov25.csproj": {}
+    "/home/unknowndev/GitHub/cyber-resistance/Cyber-Resistance-Nov25.csproj": {}
   },
   "projects": {
-    "/home/mvitoria/Documentos/github/cyber-resistance/Cyber-Resistance-Nov25.csproj": {
+    "/home/unknowndev/GitHub/cyber-resistance/Cyber-Resistance-Nov25.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/mvitoria/Documentos/github/cyber-resistance/Cyber-Resistance-Nov25.csproj",
+        "projectUniqueName": "/home/unknowndev/GitHub/cyber-resistance/Cyber-Resistance-Nov25.csproj",
         "projectName": "Cyber-Resistance-Nov25",
-        "projectPath": "/home/mvitoria/Documentos/github/cyber-resistance/Cyber-Resistance-Nov25.csproj",
-        "packagesPath": "/home/mvitoria/.nuget/packages/",
-        "outputPath": "/home/mvitoria/Documentos/github/cyber-resistance/.godot/mono/temp/obj/",
+        "projectPath": "/home/unknowndev/GitHub/cyber-resistance/Cyber-Resistance-Nov25.csproj",
+        "packagesPath": "/home/unknowndev/.nuget/packages/",
+        "outputPath": "/home/unknowndev/GitHub/cyber-resistance/.godot/mono/temp/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/mvitoria/.nuget/NuGet/NuGet.Config"
+          "/home/unknowndev/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "/usr/lib/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -39,7 +38,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -84,7 +83,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/9.0.115/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.312/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

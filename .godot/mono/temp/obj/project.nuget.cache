@@ -1,14 +1,24 @@
 {
   "version": 2,
-  "dgSpecHash": "upKBFteV6/c=",
+  "dgSpecHash": "zts4DrubvNQ=",
   "success": true,
-  "projectFilePath": "/home/mvitoria/Documentos/github/cyber-resistance/Cyber-Resistance-Nov25.csproj",
+  "projectFilePath": "/home/unknowndev/GitHub/cyber-resistance/Cyber-Resistance-Nov25.csproj",
   "expectedPackageFiles": [
-    "/home/mvitoria/.nuget/packages/godot.sourcegenerators/4.4.1/godot.sourcegenerators.4.4.1.nupkg.sha512",
-    "/home/mvitoria/.nuget/packages/godotsharp/4.4.1/godotsharp.4.4.1.nupkg.sha512",
-    "/home/mvitoria/.nuget/packages/godotsharpeditor/4.4.1/godotsharpeditor.4.4.1.nupkg.sha512",
-    "/home/mvitoria/.nuget/packages/microsoft.netcore.app.ref/8.0.25/microsoft.netcore.app.ref.8.0.25.nupkg.sha512",
-    "/home/mvitoria/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.25/microsoft.aspnetcore.app.ref.8.0.25.nupkg.sha512"
+    "/home/unknowndev/.nuget/packages/godot.sourcegenerators/4.4.1/godot.sourcegenerators.4.4.1.nupkg.sha512",
+    "/home/unknowndev/.nuget/packages/godotsharp/4.4.1/godotsharp.4.4.1.nupkg.sha512",
+    "/home/unknowndev/.nuget/packages/godotsharpeditor/4.4.1/godotsharpeditor.4.4.1.nupkg.sha512",
+    "/home/unknowndev/.nuget/packages/microsoft.netcore.app.ref/8.0.25/microsoft.netcore.app.ref.8.0.25.nupkg.sha512",
+    "/home/unknowndev/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.25/microsoft.aspnetcore.app.ref.8.0.25.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "message": "Problem reading the cache file /home/unknowndev/GitHub/cyber-resistance/.godot/mono/temp/obj/project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0.",
+      "projectPath": "/home/unknowndev/GitHub/cyber-resistance/Cyber-Resistance-Nov25.csproj",
+      "warningLevel": 1,
+      "filePath": "/home/unknowndev/GitHub/cyber-resistance/Cyber-Resistance-Nov25.csproj",
+      "targetGraphs": []
+    }
+  ]
 }
