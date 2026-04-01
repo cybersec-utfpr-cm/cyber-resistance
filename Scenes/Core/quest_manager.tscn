@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://biyijhxet7f7j"]
+
+[ext_resource type="Script" uid="uid://c5r7mehjxd6mf" path="res://Scripts/Core/QuestManager.cs" id="1_8ph6s"]
+
+[node name="QuestManager" type="Node"]
+script = ExtResource("1_8ph6s")

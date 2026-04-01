@@ -1,0 +1,22 @@
+{
+  "quests": [
+	{
+	  "id": "phishing",
+	  "title": "Phishing: Isca Digital",
+	  "stages": [
+		{ "id": 0, "description": "Fale com o tutor" },
+		{ "id": 1, "description": "Leia o capítulo 1" },
+		{ "id": 2, "description": "Responda ao quiz" }
+	  ]
+	},
+	{
+	  "id": "access_computer",
+	  "title": "Acessar o Computador",
+	  "stages": [
+		{ "id": 0, "description": "Missão não iniciada" },
+		{ "id": 1, "description": "Acesse o computador na sala" },
+		{ "id": 2, "description": "Missão concluída" }
+	  ]
+	}
+  ]
+}

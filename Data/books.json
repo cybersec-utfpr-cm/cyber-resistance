@@ -1,0 +1,24 @@
+{
+  "books": [
+	{
+	  "id": "intro_cybersecurity",
+	  "title": "Introdução à Cibersegurança",
+	  "chapters": [
+		{
+		  "id": "chap1",
+		  "title": "Comandos Básicos",
+		  "content": "Aqui você aprenderá os comandos fundamentais do sistema. [Explicação]",
+		  "unlock_condition": "",
+		  "on_read": ""
+		},
+		{
+		  "id": "chap2",
+		  "title": "Acessando o Computador",
+		  "content": "Para acessar o computador, basta se aproximar e pressionar a tecla E.",
+		  "unlock_condition": "",
+		  "on_read": ""
+		}
+	  ]
+	}
+  ]
+}
