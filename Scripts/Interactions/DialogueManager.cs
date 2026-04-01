@@ -294,18 +294,10 @@ public static class ActionProcessor
 	public static void ExecuteActions(List<Dictionary<string, string>> actions)
 	{
 		if (actions == null) return;
-		GD.Print($"ActionProcessor: Executando {actions.Count} ações");
-
 		foreach (var action in actions)
 		{
-			if (!action.ContainsKey("type"))
-			{
-				GD.PrintErr("ActionProcessor: ação sem tipo");
-				continue;
-			}
-
+			if (!action.ContainsKey("type")) continue;
 			string type = action["type"];
-
 			switch (type)
 			{
 				case "set_quest_stage":
@@ -313,42 +305,20 @@ public static class ActionProcessor
 					{
 						string quest = action["quest"];
 						if (int.TryParse(action["stage"], out int stage))
-						{
 							QuestManager.Instance.SetQuestStage(quest, stage);
-						}
-						else
-						{
-							GD.PrintErr($"ActionProcessor: estágio inválido para quest {quest}: {action["stage"]}");
-						}
-					}
-					else
-					{
-						GD.PrintErr("ActionProcessor: ação 'set_quest_stage' requer 'quest' e 'stage'");
 					}
 					break;
-
+				case "start_quest":
+					if (action.ContainsKey("quest"))
+					{
+						QuestManager.Instance.StartQuest(action["quest"]);
+					}
+					break;
 				case "give_item":
-					if (action.ContainsKey("item") && action.ContainsKey("amount"))
-					{
-						string item = action["item"];
-						if (int.TryParse(action["amount"], out int amount))
-						{
-							// Chama o InventoryManager (criaremos a seguir)
-							InventoryManager.Instance.AddItem(item, amount);
-						}
-						else
-						{
-							GD.PrintErr($"ActionProcessor: quantidade inválida para item {item}: {action["amount"]}");
-						}
-					}
-					else
-					{
-						GD.PrintErr("ActionProcessor: ação 'give_item' requer 'item' e 'amount'");
-					}
+					// Implementar depois
 					break;
-
 				default:
-					GD.PrintErr($"ActionProcessor: tipo de ação desconhecido '{type}'");
+					GD.PrintErr($"Ação desconhecida: {type}");
 					break;
 			}
 		}

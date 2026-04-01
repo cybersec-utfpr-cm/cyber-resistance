@@ -15,6 +15,13 @@ public partial class GameManager : Node {
 		if (WorldContainer == null) {
 			GD.PrintErr("GameManager.cs: WorldContainer não encontrado!");
 		}
+		
+		// Inicia a missão tutorial automaticamente
+		QuestManager.Instance.StartQuest("tutorial");
+		GD.Print("GameManager: Missão tutorial iniciada automaticamente.");
+		
+		var questLog = GD.Load<PackedScene>("res://Scenes/Interfaces/quest_log_ui.tscn").Instantiate();
+		AddChild(questLog);  // ou UIContainer.AddChild(questLog);
 	}
 	
 	public Node GetWorldContainer() {

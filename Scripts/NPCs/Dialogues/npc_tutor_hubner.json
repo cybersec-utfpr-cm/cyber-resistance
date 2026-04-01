@@ -2,30 +2,37 @@
   "npc_id": "hubner",
   "dialogues": [
 	{
-	  "condition": "quest_access_computer_stage == 0",
+	  "condition": "quest_tutorial_stage == 1",
 	  "lines": [
-		"Olá! Preciso que você acesse o computador na sala ao lado.",
-		"É um teste de suas habilidades básicas. Vá até lá e interaja com o computador."
+		"Bem-vindo! Sua primeira missão é falar comigo.",
+		"Agora que você falou comigo, vá até a estante de livros e leia o capítulo introdutório."
 	  ],
 	  "on_end": [
 		{
 		  "type": "set_quest_stage",
-		  "quest": "access_computer",
-		  "stage": "1"
+		  "quest": "tutorial",
+		  "stage": "2"
 		}
 	  ]
 	},
 	{
-	  "condition": "quest_access_computer_stage == 1",
+	  "condition": "quest_tutorial_stage == 2",
 	  "lines": [
-		"Você já acessou o computador? Vá lá e tente."
+		"Ótimo! Agora vá até a estante de livros e leia o capítulo sobre comandos básicos."
 	  ],
 	  "on_end": []
 	},
 	{
-	  "condition": "quest_access_computer_stage >= 2",
+	  "condition": "quest_tutorial_stage == 3",
 	  "lines": [
-		"Parabéns! Você completou a missão do computador."
+		"Você já leu o livro? Se sim, acesse o computador ao lado para a próxima etapa."
+	  ],
+	  "on_end": []
+	},
+	{
+	  "condition": "quest_tutorial_stage == 4",
+	  "lines": [
+		"Parabéns! Você completou o tutorial básico. Agora está pronto para as próximas missões."
 	  ],
 	  "on_end": []
 	},

@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxj07myf77lf6"]
+
+[ext_resource type="Script" uid="uid://cinvkfus80ope" path="res://Scripts/Interfaces/QuestLogUi.cs" id="1_8v534"]
+
+[node name="QuestLogUI" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_8v534")
+QuestListContainerPath = NodePath("Panel/QuestList")
+
+[node name="Panel" type="Panel" parent="."]
+layout_direction = 3
+offset_right = 384.0
+offset_bottom = 192.0
+
+[node name="QuestList" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_right = 384.0
+offset_bottom = 192.0

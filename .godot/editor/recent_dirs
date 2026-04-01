@@ -1,5 +1,10 @@
-res://Scenes/Interactions
+res://Scripts/Computer
+res://Scenes/Computer
+res://Assets/Environment/Computer/Icons
+res://Assets/Environment/Computer
+res://Scripts/Computer/Screens
 res://Scenes/Interfaces
+res://Scenes/Interactions
 res://Scripts/Core
 res://Scenes/Core
 /home/mvitoria/Documentos/github/cyber-resistance/Data/

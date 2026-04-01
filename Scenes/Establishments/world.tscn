@@ -330,7 +330,6 @@ script = ExtResource("9_l1mse")
 
 [node name="Bookshelf" parent="." instance=ExtResource("9_3fk4k")]
 position = Vector2(72, 104)
-BookId = "intro_cybersecurity"
 
 [node name="ComputerAccess" parent="." instance=ExtResource("10_3fk4k")]
 position = Vector2(-24, 168)
