@@ -4,11 +4,12 @@ Este cenário busca criar um ambiente Linux vulnerável a escalação de privil�
 
 **Sumário**
 
-- [Estrutura do Cenário](#estrutura-do-cenário)
+- [Cenário 1 - Sudo with Less](#cenário-1---sudo-with-less)
+  - [Estrutura do Cenário](#estrutura-do-cenário)
     - [Arquivo ``Dockerfile``](#arquivo-dockerfile)
     - [Arquivo ``sudoers.bob``](#arquivo-sudoersbob)
     - [Arquivo ``entrypoint.sh``](#arquivo-entrypointsh)
-- [Como Iniciar e Interagir com o Cenário](#como-iniciar-e-interagir-com-o-cenário)
+  - [Como Iniciar e Interagir com o Cenário](#como-iniciar-e-interagir-com-o-cenário)
     - [Para Devs: Como criar a imagem e o contêiner](#para-devs-como-criar-a-imagem-e-o-contêiner)
     - [Para Jogadores: Como conectar-se ao cenário](#para-jogadores-como-conectar-se-ao-cenário)
     - [Para Jogadores: Como explorar a vulnerabilidade](#para-jogadores-como-explorar-a-vulnerabilidade)
