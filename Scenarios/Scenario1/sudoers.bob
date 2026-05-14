@@ -1,0 +1,1 @@
+bob ALL=(ALL) NOPASSWD: /usr/bin/less
