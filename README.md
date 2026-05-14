@@ -77,7 +77,20 @@ unzip Godot_v4.4.1-stable_mono_linux_x86_64.zip
 unzip Cyber_Resistance.zip
 ```
 
-## 4. Execução do Jogo
+## 4. Instalação das Máquinas Docker
+
+Antes de executar o jogo, é necessário preparar as máquinas Docker usadas pelos terminais e cenários do _Cyber Resistance_.
+
+Esse processo deve ser feito apenas uma vez, ou sempre que for necessário recriar os containers do jogo.
+
+Na raiz do repositório, execute:
+
+```bash
+chmod +x install-docker-machines.sh
+./install-docker-machines.sh
+```
+
+## 5. Execução do Jogo
 
 4.1 Execute a engine Godot:
 
@@ -91,7 +104,7 @@ unzip Cyber_Resistance.zip
 
 4.3 Execute o jogo: Clique no projeto para selecioná-lo e clique em "Run".
 
-## 5. Inicialização da Máquina Docker do Jogador
+## 6. Inicialização da Máquina Docker do Jogador
 
 A máquina Docker do jogador é inicializada quando a cena principal do jogo é carregada (via `GameManager`).
 
