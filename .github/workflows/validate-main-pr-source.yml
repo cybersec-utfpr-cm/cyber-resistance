@@ -1,0 +1,30 @@
+name: Validate PR source branch
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - edited
+
+jobs:
+  validate-source-branch:
+    name: Validate source branch for main
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check PR source branch
+        run: |
+          echo "Target branch: ${{ github.base_ref }}"
+          echo "Source branch: ${{ github.head_ref }}"
+
+          if [ "${{ github.base_ref }}" = "main" ] && [ "${{ github.head_ref }}" != "project-restart" ]; then
+            echo "Erro: pull requests para main devem vir somente da branch project-restart."
+            echo "Abra a PR apontando para project-restart, ou faca merge de project-restart para main."
+            exit 1
+          fi
+
+          echo "Branch de origem valida."
