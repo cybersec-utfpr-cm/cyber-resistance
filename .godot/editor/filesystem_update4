@@ -44,3 +44,4 @@ res://Scripts/Core/QuizManager.cs
 res://Scripts/Core/InventoryManager.cs
 res://Scripts/Computer/Anagram.cs
 res://Scripts/Establishments/LocationManager.cs
+res://gitignore.txt

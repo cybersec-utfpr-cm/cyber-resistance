@@ -1,5 +1,5 @@
 .gitignore
-.godot
+.godot/
 .git
 /addons/godot-git-plugin
 README.md.backup
