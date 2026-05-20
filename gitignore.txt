@@ -1,5 +1,0 @@
-.gitignore
-.godot/
-.git
-/addons/godot-git-plugin
-README.md.backup
