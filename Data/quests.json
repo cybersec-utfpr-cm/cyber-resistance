@@ -1,22 +1,67 @@
 {
   "quests": [
 	{
-	  "id": "phishing",
-	  "title": "Phishing: Isca Digital",
+	  "id": "tutorial",
+	  "title": "Tutorial de Cibersegurança",
+	  "is_main": true,
 	  "stages": [
-		{ "id": 0, "description": "Fale com o tutor" },
-		{ "id": 1, "description": "Leia o capítulo 1" },
-		{ "id": 2, "description": "Responda ao quiz" }
-	  ]
+		{
+		  "id": 1,
+		  "description": "Fale com o tutor."
+		},
+		{
+		  "id": 2,
+		  "description": "Acesse a estante de livros."
+		},
+		{
+		  "id": 3,
+		  "description": "Acesse o computador."
+		}
+	  ],
+	  "reward": "100 XP e 25 créditos",
+	  "reward_id": "reward_tutorial"
 	},
 	{
-	  "id": "access_computer",
-	  "title": "Acessar o Computador",
+	  "id": "wifi_hacking",
+	  "title": "Missão Wi-Fi",
+	  "is_main": true,
 	  "stages": [
-		{ "id": 0, "description": "Missão não iniciada" },
-		{ "id": 1, "description": "Acesse o computador na sala" },
-		{ "id": 2, "description": "Missão concluída" }
-	  ]
+		{
+		  "id": 1,
+		  "description": "Encontre a rede Wi-Fi correta."
+		},
+		{
+		  "id": 2,
+		  "description": "Descubra a senha da rede."
+		},
+		{
+		  "id": 3,
+		  "description": "Conecte-se à rede correta."
+		}
+	  ],
+	  "reward": "200 XP e 50 créditos",
+	  "reward_id": "reward_wifi_hacking"
+	},
+	{
+	  "id": "university_exam",
+	  "title": "Prova de Cibersegurança",
+	  "is_main": true,
+	  "stages": [
+		{
+		  "id": 1,
+		  "description": "Inicie a prova no terminal."
+		},
+		{
+		  "id": 2,
+		  "description": "Responda às questões da prova."
+		},
+		{
+		  "id": 3,
+		  "description": "Seja aprovada na prova."
+		}
+	  ],
+	  "reward": "300 XP e 75 créditos",
+	  "reward_id": "reward_university_exam"
 	}
   ]
 }

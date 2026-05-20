@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://co5t3srgn0jo0"]
+
+[ext_resource type="Script" uid="uid://dbagll6g8mgjl" path="res://Scripts/Interactions/ExamTerminal.cs" id="1_x88w8"]
+[ext_resource type="PackedScene" uid="uid://0w2k1m7g46ru" path="res://Scenes/Interfaces/exam_ui.tscn" id="2_o2fb6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ue6hj"]
+radius = 40.7922
+
+[node name="ExamTerminal" type="Area2D"]
+script = ExtResource("1_x88w8")
+ExamUIScene = ExtResource("2_o2fb6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ue6hj")
+debug_color = Color(0.94902, 0, 0.572549, 1)
+
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
+[connection signal="body_exited" from="." to="." method="OnBodyExited"]

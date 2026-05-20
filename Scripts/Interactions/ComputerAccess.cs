@@ -54,21 +54,21 @@ public partial class ComputerAccess : Area2D
 		uiContainer.AddChild(computerControl);
 		computerControl.ProcessMode = ProcessModeEnum.Always;
 
-		// Verifica a missão
-		int questStage = QuestManager.Instance.GetQuestStage("access_computer");
-		GD.Print($"ComputerAccess: Estágio atual da missão 'access_computer': {questStage}");
-
-		if (questStage == 1)
+		// Verifica a missão tutorial
+		int stage = QuestManager.Instance.GetQuestStage("tutorial");
+		if (stage == 3)
 		{
-			QuestManager.Instance.SetQuestStage("access_computer", 2);
-			GD.Print("ComputerAccess: Missão 'access_computer' concluída! Estágio agora é 2.");
+			QuestManager.Instance.SetQuestStage("tutorial", 4);
+			GD.Print("ComputerAccess: Missão tutorial concluída! Estágio 4.");
 		}
-		else
+		// Verifica a missão wifi_hacking
+		int wifiStage = QuestManager.Instance.GetQuestStage("wifi_hacking");
+		if (wifiStage == 1)
 		{
-			GD.Print($"ComputerAccess: Missão não está no estágio 1 (está {questStage}), não será avançada.");
+			QuestManager.Instance.SetQuestStage("wifi_hacking", 2);
+			GD.Print("ComputerAccess: Missão wifi_hacking avançou para estágio 2.");
 		}
 
 		GetTree().Paused = true;
-		GD.Print("ComputerAccess: Computador aberto como UI.");
 	}
 }

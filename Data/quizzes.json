@@ -1,30 +1,59 @@
 {
   "quizzes": [
 	{
-	  "id": "quiz_phishing_basico",
-	  "title": "Quiz: Phishing Básico",
+	  "id": "intro_exam",
+	  "title": "Prova de Cibersegurança",
+	  "topic": "intro_cybersecurity",
 	  "questions": [
 		{
 		  "question": "O que é phishing?",
-		  "options": [
-			"Um tipo de peixe",
-			"Técnica de engenharia social para obter dados",
-			"Um antivírus",
-			"Um jogo online"
-		  ],
-		  "correct": 1,
-		  "reward_quest_stage": "phishing:2"
+		  "options": ["Um tipo de peixe", "Técnica de engenharia social", "Um antivírus", "Um jogo online"],
+		  "correct": 1
 		},
 		{
-		  "question": "Qual destes é um sinal de phishing?",
-		  "options": [
-			"E-mail com meu nome correto",
-			"Link encurtado suspeito",
-			"Remetente conhecido",
-			"Anexo esperado"
-		  ],
-		  "correct": 1,
-		  "reward_quest_stage": ""
+		  "question": "O que é um firewall?",
+		  "options": ["Um programa que bloqueia acessos não autorizados", "Um tipo de vírus", "Um navegador", "Um hardware de rede"],
+		  "correct": 0
+		},
+		{
+		  "question": "Qual destas é uma senha forte?",
+		  "options": ["123456", "senha", "P@ssw0rd!2024", "qwerty"],
+		  "correct": 2
+		},
+		{
+		  "question": "O que é engenharia social?",
+		  "options": ["Técnica de manipulação para obter informações", "Construção de redes sociais", "Criação de perfis falsos", "Ataque a servidores"],
+		  "correct": 0
+		},
+		{
+		  "question": "O que significa autenticação de dois fatores (2FA)?",
+		  "options": ["Usar duas senhas", "Usar dois dispositivos", "Duas camadas de verificação", "Dois logins"],
+		  "correct": 2
+		},
+		{
+		  "question": "Qual é a principal finalidade de um antivírus?",
+		  "options": ["Acelerar o sistema", "Proteger contra malwares", "Fazer backup", "Criptografar arquivos"],
+		  "correct": 1
+		},
+		{
+		  "question": "O que é um ataque DDoS?",
+		  "options": ["Ataque de negação de serviço distribuído", "Ataque de engenharia social", "Ataque de phishing", "Ataque de força bruta"],
+		  "correct": 0
+		},
+		{
+		  "question": "O que significa VPN?",
+		  "options": ["Virtual Private Network", "Very Powerful Network", "Virtual Protocol Network", "Verified Private Network"],
+		  "correct": 0
+		},
+		{
+		  "question": "Qual a recomendação para criar senhas seguras?",
+		  "options": ["Usar palavras comuns", "Usar combinações de letras, números e símbolos", "Usar a data de nascimento", "Usar o nome do pet"],
+		  "correct": 1
+		},
+		{
+		  "question": "O que deve ser feito ao receber um e-mail suspeito?",
+		  "options": ["Abrir o anexo", "Clicar no link", "Reportar e deletar", "Encaminhar para amigos"],
+		  "correct": 2
 		}
 	  ]
 	}

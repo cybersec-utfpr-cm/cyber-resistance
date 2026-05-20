@@ -1,0 +1,63 @@
+[gd_scene load_steps=2 format=3 uid="uid://0w2k1m7g46ru"]
+
+[ext_resource type="Script" uid="uid://cndg2djl38blk" path="res://Scripts/Interfaces/ExamUi.cs" id="1_bpwp7"]
+
+[node name="ExamUI" type="CanvasLayer"]
+script = ExtResource("1_bpwp7")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 384.0
+offset_right = 880.0
+offset_bottom = 704.0
+
+[node name="TitleLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 40.0
+offset_right = 288.0
+offset_bottom = 63.0
+
+[node name="QuestionLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 72.0
+offset_right = 408.0
+offset_bottom = 95.0
+
+[node name="OptionsContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 112.0
+offset_right = 256.0
+offset_bottom = 240.0
+
+[node name="ResultLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 544.0
+offset_right = 150.0
+offset_bottom = 600.0
+text = "Resultado"
+
+[node name="CounterLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 304.0
+offset_right = 280.0
+offset_bottom = 368.0
+
+[node name="NextButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 376.0
+offset_top = 272.0
+offset_right = 440.0
+offset_bottom = 328.0
+text = ">>"
+
+[node name="CloseButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 368.0
+offset_top = 368.0
+offset_right = 426.0
+offset_bottom = 440.0
+text = "fechar"

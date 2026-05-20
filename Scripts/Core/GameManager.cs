@@ -20,6 +20,26 @@ public partial class GameManager : Node {
 			GD.PrintErr("GameManager.cs: WorldContainer não encontrado!");
 		}
 
+		// Inicia a missão tutorial automaticamente.
+		if (QuestManager.Instance != null) {
+			QuestManager.Instance.StartQuest("tutorial");
+			GD.Print("GameManager: Missão tutorial iniciada automaticamente.");
+		}
+		else {
+			GD.PrintErr("GameManager: QuestManager não encontrado.");
+		}
+
+		var questLogScene = GD.Load<PackedScene>("res://Scenes/Interfaces/quest_log_ui.tscn");
+		if (questLogScene != null) {
+			var questLog = questLogScene.Instantiate();
+			if (UIContainer != null) {
+				UIContainer.AddChild(questLog);
+			}
+			else {
+				AddChild(questLog);
+			}
+		}
+
 		_docker = new DockerManager(PlayerMachineContainerName);
 		try
 		{

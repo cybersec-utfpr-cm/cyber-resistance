@@ -17,6 +17,13 @@
 		  "content": "Para acessar o computador, basta se aproximar e pressionar a tecla E.",
 		  "unlock_condition": "",
 		  "on_read": ""
+		},
+		{
+		  "id": "chap3",
+		  "title": "Conceitos Básicos de Segurança",
+		  "content": "Phishing: técnica de engenharia social... \nAutenticação de dois fatores: adiciona uma camada extra... \nSenhas seguras: use combinações longas e aleatórias...",
+		  "unlock_condition": "",
+		  "on_read": ""
 		}
 	  ]
 	}

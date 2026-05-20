@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://dyi84wtk1txe2"]
+
+[node name="AnagramPopup" type="Panel"]
+offset_left = 440.0
+offset_top = 120.0
+offset_right = 888.0
+offset_bottom = 336.0
+
+[node name="ScrambledLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 40.0
+offset_right = 288.0
+offset_bottom = 63.0
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 184.0
+offset_top = 80.0
+offset_right = 252.562
+offset_bottom = 111.0
+
+[node name="TryButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 72.0
+offset_right = 312.0
+offset_bottom = 120.0
+
+[node name="MessageLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 144.0
+offset_right = 280.0
+offset_bottom = 167.0
