@@ -239,6 +239,7 @@ offset_bottom = 48.0
 script = ExtResource("18_r3qsd")
 
 [node name="BackIconBt" type="Button" parent="Screens/WiFi"]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 48.0
 icon = ExtResource("14_ico5l")
@@ -246,6 +247,7 @@ flat = true
 expand_icon = true
 
 [node name="Label" type="Label" parent="Screens/WiFi"]
+layout_mode = 0
 offset_left = 56.0
 offset_top = 64.0
 offset_right = 140.0
@@ -253,12 +255,14 @@ offset_bottom = 87.0
 text = "Redes wi-fi"
 
 [node name="NetworkList" type="ItemList" parent="Screens/WiFi"]
+layout_mode = 0
 offset_left = -8.0
 offset_top = 88.0
 offset_right = 1272.0
 offset_bottom = 712.0
 
 [node name="ConnectButton" type="Button" parent="Screens/WiFi"]
+layout_mode = 0
 offset_left = 992.0
 offset_top = 336.0
 offset_right = 1088.0
@@ -266,6 +270,7 @@ offset_bottom = 416.0
 text = "Conectar"
 
 [node name="StatusLabel" type="Label" parent="Screens/WiFi"]
+layout_mode = 0
 offset_left = 48.0
 offset_top = 496.0
 offset_right = 1208.0
@@ -281,18 +286,21 @@ script = ExtResource("18_b0cav")
 PossibleWords = Array[String](["CAFE_COM_LEITE", "COXINHA", "PAO_DE_QUEIJO", "PAO_DE_MEL", "BOLO_DE_MORANGO", "LEITE_COM_CHOCOLATE"])
 
 [node name="ScrambledLabel" type="Label" parent="Screens/WiFi/Anagram"]
+layout_mode = 0
 offset_left = 40.0
 offset_top = 40.0
 offset_right = 408.0
 offset_bottom = 72.0
 
 [node name="LineEdit" type="LineEdit" parent="Screens/WiFi/Anagram"]
+layout_mode = 0
 offset_left = 48.0
 offset_top = 80.0
 offset_right = 312.0
 offset_bottom = 128.0
 
 [node name="TryButton" type="Button" parent="Screens/WiFi/Anagram"]
+layout_mode = 0
 offset_left = 312.0
 offset_top = 80.0
 offset_right = 352.0
@@ -300,6 +308,7 @@ offset_bottom = 128.0
 text = "ok"
 
 [node name="MessageLabel" type="Label" parent="Screens/WiFi/Anagram"]
+layout_mode = 0
 offset_left = 48.0
 offset_top = 144.0
 offset_right = 344.0

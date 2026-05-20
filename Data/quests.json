@@ -5,23 +5,63 @@
 	  "title": "Tutorial de Cibersegurança",
 	  "is_main": true,
 	  "stages": [
-		{ "id": 1, "description": "Fale com o tutor" },
-		{ "id": 2, "description": "Acesse a estante de livros" },
-		{ "id": 3, "description": "Acesse o computador" }
+		{
+		  "id": 1,
+		  "description": "Fale com o tutor."
+		},
+		{
+		  "id": 2,
+		  "description": "Acesse a estante de livros."
+		},
+		{
+		  "id": 3,
+		  "description": "Acesse o computador."
+		}
 	  ],
-	  "reward": "xp:100"
+	  "reward": "100 XP e 25 créditos",
+	  "reward_id": "reward_tutorial"
 	},
 	{
 	  "id": "wifi_hacking",
-	  "title": "Conectar ao Wi-Fi",
+	  "title": "Missão Wi-Fi",
 	  "is_main": true,
 	  "stages": [
-		{ "id": 1, "description": "Acesse o computador" },
-		{ "id": 2, "description": "Abra as configurações de Wi-Fi" },
-		{ "id": 3, "description": "Descubra a senha do Wi-Fi" },
-		{ "id": 4, "description": "Conecte-se à rede Wi-Fi" }
+		{
+		  "id": 1,
+		  "description": "Encontre a rede Wi-Fi correta."
+		},
+		{
+		  "id": 2,
+		  "description": "Descubra a senha da rede."
+		},
+		{
+		  "id": 3,
+		  "description": "Conecte-se à rede correta."
+		}
 	  ],
-	  "reward": "xp:200"
+	  "reward": "200 XP e 50 créditos",
+	  "reward_id": "reward_wifi_hacking"
+	},
+	{
+	  "id": "university_exam",
+	  "title": "Prova de Cibersegurança",
+	  "is_main": true,
+	  "stages": [
+		{
+		  "id": 1,
+		  "description": "Inicie a prova no terminal."
+		},
+		{
+		  "id": 2,
+		  "description": "Responda às questões da prova."
+		},
+		{
+		  "id": 3,
+		  "description": "Seja aprovada na prova."
+		}
+	  ],
+	  "reward": "300 XP e 75 créditos",
+	  "reward_id": "reward_university_exam"
 	}
   ]
 }

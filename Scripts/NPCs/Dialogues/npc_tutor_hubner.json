@@ -30,6 +30,34 @@
 	  "on_end": []
 	},
 	{
+	  "condition": "quest_university_exam_stage == 1",
+	  "lines": [
+		"Agora você precisa passar na prova da universidade. Vá até a universidade e procure o professor.",
+		"Estude os capítulos do livro que estão na estante, eles serão úteis."
+	  ],
+	  "on_end": [
+		{
+		  "type": "set_quest_stage",
+		  "quest": "university_exam",
+		  "stage": "2"
+		}
+	  ]
+	},
+	{
+	  "condition": "quest_university_exam_stage == 2",
+	  "lines": [
+		"Você já fez a prova? Se não, vá até a mesa de provas na universidade."
+	  ],
+	  "on_end": []
+	},
+	{
+	  "condition": "quest_university_exam_stage >= 3",
+	  "lines": [
+		"Parabéns! Você passou na prova de cibersegurança!"
+	  ],
+	  "on_end": []
+	},
+	{
 	  "condition": "quest_tutorial_stage == 4",
 	  "lines": [
 		"Parabéns! Você completou o tutorial básico. Agora está pronto para as próximas missões."

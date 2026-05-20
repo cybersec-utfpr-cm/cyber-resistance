@@ -55,7 +55,7 @@ public partial class QuestManager : Node
 			var stagesArray = questDict["stages"].AsGodotArray();
 			bool isMain = questDict.ContainsKey("is_main") ? questDict["is_main"].AsBool() : false;
 			string reward = questDict.ContainsKey("reward") ? questDict["reward"].AsString() : "";
-
+			string rewardId = questDict.ContainsKey("reward_id") ? questDict["reward_id"].AsString() : "";
 			var stages = new List<QuestStage>();
 			foreach (var stageVar in stagesArray)
 			{
@@ -73,7 +73,8 @@ public partial class QuestManager : Node
 				Title = title,
 				Stages = stages,
 				IsMain = isMain,
-				Reward = reward
+				Reward = reward,
+				RewardId = rewardId
 			};
 		}
 
@@ -203,6 +204,11 @@ public partial class QuestManager : Node
 	{
 		return _activeQuests.Keys.ToList();
 	}
+	
+	public List<string> GetCompletedQuests()
+	{
+		return _completedQuests.ToList();
+	}
 }
 
 // Classes auxiliares
@@ -219,4 +225,5 @@ public class QuestDefinition
 	public List<QuestStage> Stages { get; set; }
 	public bool IsMain { get; set; }
 	public string Reward { get; set; }
+	public string RewardId { get; set; }
 }

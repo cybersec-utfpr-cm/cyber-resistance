@@ -1,0 +1,64 @@
+{
+  "questions": [
+	{
+	  "id": "q1",
+	  "theme": "introducao",
+	  "question": "O que é phishing?",
+	  "options": [
+		"Um tipo de peixe",
+		"Técnica de engenharia social para obter dados",
+		"Um antivírus",
+		"Um jogo online"
+	  ],
+	  "correct": 1
+	},
+	{
+	  "id": "q2",
+	  "theme": "introducao",
+	  "question": "Qual destes é um sinal de phishing?",
+	  "options": [
+		"E-mail com meu nome correto",
+		"Link encurtado suspeito",
+		"Remetente conhecido",
+		"Anexo esperado"
+	  ],
+	  "correct": 1
+	},
+	{
+	  "id": "q3",
+	  "theme": "introducao",
+	  "question": "O que significa VPN?",
+	  "options": [
+		"Virtual Private Network",
+		"Very Powerful Network",
+		"Virus Protection Network",
+		"Verified Public Network"
+	  ],
+	  "correct": 0
+	},
+	{
+	  "id": "q4",
+	  "theme": "introducao",
+	  "question": "Qual a melhor prática para criar senhas seguras?",
+	  "options": [
+		"Usar o nome do seu pet",
+		"Usar uma sequência longa e aleatória",
+		"Usar a palavra 'senha'",
+		"Usar a data de nascimento"
+	  ],
+	  "correct": 1
+	},
+	{
+	  "id": "q5",
+	  "theme": "introducao",
+	  "question": "O que é autenticação de dois fatores (2FA)?",
+	  "options": [
+		"Usar duas senhas diferentes",
+		"Um segundo método de verificação além da senha",
+		"Trocar a senha a cada dois meses",
+		"Acessar o sistema duas vezes"
+	  ],
+	  "correct": 1
+	}
+  ]
+}

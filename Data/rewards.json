@@ -1,0 +1,46 @@
+{
+  "rewards": [
+	{
+	  "id": "reward_tutorial",
+	  "title": "Recompensa do Tutorial",
+	  "description": "Recompensa por concluir os primeiros passos do jogo.",
+	  "xp": 100,
+	  "credits": 25,
+	  "items": [
+		{
+		  "id": "manual_cyber_basico",
+		  "name": "Manual básico de cibersegurança",
+		  "amount": 1
+		}
+	  ]
+	},
+	{
+	  "id": "reward_wifi_hacking",
+	  "title": "Recompensa da Missão Wi-Fi",
+	  "description": "Recompensa por descobrir a senha e conectar à rede correta.",
+	  "xp": 200,
+	  "credits": 50,
+	  "items": [
+		{
+		  "id": "badge_wifi_security",
+		  "name": "Insígnia de Segurança Wi-Fi",
+		  "amount": 1
+		}
+	  ]
+	},
+	{
+	  "id": "reward_university_exam",
+	  "title": "Recompensa da Prova",
+	  "description": "Recompensa por ser aprovado na prova de cibersegurança.",
+	  "xp": 300,
+	  "credits": 75,
+	  "items": [
+		{
+		  "id": "certificate_intro_cybersecurity",
+		  "name": "Certificado introdutório de cibersegurança",
+		  "amount": 1
+		}
+	  ]
+	}
+  ]
+}

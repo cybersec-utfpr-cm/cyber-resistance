@@ -4,126 +4,216 @@ using System.Collections.Generic;
 public partial class QuestLogUi : CanvasLayer
 {
 	[Export] public NodePath QuestListContainerPath { get; set; }
-	private VBoxContainer _questListContainer;
 
-	private Dictionary<string, (Button button, Label descriptionLabel)> _questEntries = new();
+	private VBoxContainer _questListContainer;
 
 	public override void _Ready()
 	{
-		_questListContainer = GetNode<VBoxContainer>(QuestListContainerPath);
+		_questListContainer = GetNodeOrNull<VBoxContainer>(QuestListContainerPath);
+
 		if (_questListContainer == null)
 		{
-			GD.PrintErr("QuestLogUI: QuestListContainer não encontrado.");
+			GD.PrintErr("QuestLogUI: QuestListContainer não encontrado. Verifique o campo QuestListContainerPath no Inspector.");
 			return;
 		}
 
-		// Conecta aos sinais do QuestManager
-		QuestManager.Instance.QuestStarted += OnQuestStarted;
-		QuestManager.Instance.QuestAdvanced += OnQuestAdvanced;
-		QuestManager.Instance.QuestCompleted += OnQuestCompleted;
+		if (QuestManager.Instance != null)
+		{
+			QuestManager.Instance.QuestStarted += OnQuestStarted;
+			QuestManager.Instance.QuestAdvanced += OnQuestAdvanced;
+			QuestManager.Instance.QuestCompleted += OnQuestCompleted;
+		}
+		else
+		{
+			GD.PrintErr("QuestLogUI: QuestManager não encontrado.");
+		}
 
-		UpdateQuestList(); // Preenche a lista inicial
+		if (RewardManager.Instance != null)
+		{
+			RewardManager.Instance.RewardCollected += OnRewardCollected;
+			RewardManager.Instance.RewardClaimFailed += OnRewardClaimFailed;
+		}
+		else
+		{
+			GD.PrintErr("QuestLogUI: RewardManager não encontrado.");
+		}
+
+		UpdateQuestList();
 	}
 
 	private void OnQuestStarted(string questId)
 	{
-		AddQuestButton(questId);
+		UpdateQuestList();
 	}
 
 	private void OnQuestAdvanced(string questId, int newStage)
 	{
-		if (_questEntries.TryGetValue(questId, out var entry))
-		{
-			// Atualiza o texto da descrição
-			var def = QuestManager.Instance.GetQuestDefinition(questId);
-			if (def != null)
-			{
-				int stage = QuestManager.Instance.GetQuestStage(questId);
-				string description = "";
-				if (stage > 0 && stage <= def.Stages.Count)
-					description = def.Stages[stage - 1].Description;
-				else if (stage > def.Stages.Count)
-					description = "Concluída";
-				entry.descriptionLabel.Text = description;
-			}
-		}
-		else
-		{
-			// Se por algum motivo a missão não estiver na lista, adiciona
-			AddQuestButton(questId);
-		}
+		UpdateQuestList();
 	}
 
 	private void OnQuestCompleted(string questId)
 	{
-		if (_questEntries.TryGetValue(questId, out var entry))
-		{
-			_questListContainer.RemoveChild(entry.button);
-			_questListContainer.RemoveChild(entry.descriptionLabel);
-			entry.button.QueueFree();
-			entry.descriptionLabel.QueueFree();
-			_questEntries.Remove(questId);
-		}
 		if (questId == "tutorial")
 		{
-		QuestManager.Instance.StartQuest("wifi_hacking");
-		GD.Print("Missão wifi_hacking iniciada após conclusão do tutorial.");
+			QuestManager.Instance.StartQuest("wifi_hacking");
+			GD.Print("Missão wifi_hacking iniciada após conclusão do tutorial.");
 		}
+
+		if (questId == "wifi_hacking")
+		{
+			QuestManager.Instance.StartQuest("university_exam");
+			GD.Print("Missão university_exam iniciada.");
+		}
+
+		UpdateQuestList();
+	}
+
+	private void OnRewardCollected(string questId, string rewardId)
+	{
+		GD.Print($"QuestLogUI: recompensa coletada da missão '{questId}'.");
+		UpdateQuestList();
+	}
+
+	private void OnRewardClaimFailed(string questId, string reason)
+	{
+		GD.PrintErr($"QuestLogUI: não foi possível coletar recompensa da missão '{questId}': {reason}");
 	}
 
 	private void UpdateQuestList()
 	{
-		// Remove todos os itens atuais
-		foreach (var entry in _questEntries.Values)
-		{
-			entry.button.QueueFree();
-			entry.descriptionLabel.QueueFree();
-		}
-		_questEntries.Clear();
+		if (_questListContainer == null)
+			return;
 
-		var activeQuests = QuestManager.Instance.GetActiveQuests();
-		foreach (var questId in activeQuests)
+		ClearQuestList();
+
+		GD.Print("QuestLogUI: atualizando lista de missões e recompensas.");
+
+		AddSectionTitle("Missões ativas");
+
+		var activeQuests = QuestManager.Instance?.GetActiveQuests() ?? new List<string>();
+
+		if (activeQuests.Count == 0)
 		{
-			AddQuestButton(questId);
+			AddMutedLabel("Nenhuma missão ativa.");
+		}
+		else
+		{
+			foreach (var questId in activeQuests)
+			{
+				AddActiveQuestEntry(questId);
+			}
+		}
+
+		AddSeparator();
+
+		AddSectionTitle("Recompensas disponíveis");
+
+		var claimableRewards = RewardManager.Instance?.GetClaimableQuestRewardIds() ?? new List<string>();
+
+		GD.Print($"QuestLogUI: recompensas disponíveis: {claimableRewards.Count}");
+
+		if (claimableRewards.Count == 0)
+		{
+			AddMutedLabel("Nenhuma recompensa para coletar.");
+		}
+		else
+		{
+			foreach (var questId in claimableRewards)
+			{
+				AddRewardEntry(questId);
+			}
 		}
 	}
 
-	private void AddQuestButton(string questId)
+	private void ClearQuestList()
+	{
+		foreach (Node child in _questListContainer.GetChildren())
+		{
+			child.QueueFree();
+		}
+	}
+
+	private void AddActiveQuestEntry(string questId)
 	{
 		var def = QuestManager.Instance.GetQuestDefinition(questId);
-		if (def == null) return;
+		if (def == null)
+			return;
 
 		int stage = QuestManager.Instance.GetQuestStage(questId);
+
 		string description = "";
+
 		if (stage > 0 && stage <= def.Stages.Count)
 			description = def.Stages[stage - 1].Description;
 		else if (stage > def.Stages.Count)
 			description = "Concluída";
 
-		// Cria o botão
-		var button = new Button();
-		button.Text = def.Title;
-		button.SizeFlagsHorizontal = Control.SizeFlags.Expand;
+		var titleLabel = new Label();
+		titleLabel.Text = $"• {def.Title}";
+		titleLabel.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+		_questListContainer.AddChild(titleLabel);
 
-		// Cria o label de descrição (inicialmente oculto)
-		var descLabel = new Label();
-		descLabel.Text = description;
-		descLabel.SizeFlagsHorizontal = Control.SizeFlags.Expand;
-		descLabel.Visible = false;
-		
-		// Armazena
-		_questEntries[questId] = (button, descLabel);
-
-		// Adiciona ao container
-		_questListContainer.AddChild(button);
-		_questListContainer.AddChild(descLabel);
-
-		// Conecta o evento de clique do botão
-		button.Pressed += () => ToggleDescription(descLabel);
+		var descriptionLabel = new Label();
+		descriptionLabel.Text = description;
+		descriptionLabel.AutowrapMode = TextServer.AutowrapMode.WordSmart;
+		descriptionLabel.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+		_questListContainer.AddChild(descriptionLabel);
 	}
 
-	private void ToggleDescription(Label label)
+	private void AddRewardEntry(string questId)
 	{
-		label.Visible = !label.Visible;
+		var quest = QuestManager.Instance.GetQuestDefinition(questId);
+		var reward = RewardManager.Instance.GetQuestReward(questId);
+
+		if (quest == null || reward == null)
+			return;
+
+		var titleLabel = new Label();
+		titleLabel.Text = $"{quest.Title}: {reward.Title}";
+		titleLabel.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+		_questListContainer.AddChild(titleLabel);
+
+		var descriptionLabel = new Label();
+		descriptionLabel.Text = RewardManager.Instance.GetRewardSummary(questId);
+		descriptionLabel.AutowrapMode = TextServer.AutowrapMode.WordSmart;
+		descriptionLabel.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+		_questListContainer.AddChild(descriptionLabel);
+
+		var collectButton = new Button();
+		collectButton.Text = "Coletar recompensa";
+		collectButton.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+
+		collectButton.Pressed += () =>
+		{
+			GD.Print($"QuestLogUI: tentando coletar recompensa da missão '{questId}'.");
+			RewardManager.Instance.CollectQuestReward(questId);
+		};
+
+		_questListContainer.AddChild(collectButton);
+
+		AddSeparator();
 	}
-}
+
+	private void AddSectionTitle(string text)
+	{
+		var label = new Label();
+		label.Text = text;
+		label.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+		_questListContainer.AddChild(label);
+	}
+
+	private void AddMutedLabel(string text)
+	{
+		var label = new Label();
+		label.Text = text;
+		label.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+		_questListContainer.AddChild(label);
+	}
+
+	private void AddSeparator()
+	{
+		var separator = new HSeparator();
+		separator.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+		_questListContainer.AddChild(separator);
+	}
+}	

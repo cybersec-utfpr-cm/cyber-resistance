@@ -12,6 +12,14 @@ size = Vector2(74, 50)
 script = ExtResource("1_dnqco")
 BookshelfUIScene = ExtResource("2_f3bu2")
 
+[node name="Label" type="Label" parent="."]
+z_index = 7
+offset_left = -32.0
+offset_top = -8.0
+offset_right = 36.0
+offset_bottom = 15.0
+text = "ESTANTE"
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(3.8147e-06, 0)
 scale = Vector2(0.3125, 0.1875)

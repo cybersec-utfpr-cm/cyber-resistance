@@ -174,9 +174,12 @@ public partial class DialogueManager : Node
 
 		foreach (var entry in dialogues)
 		{
-			if (ConditionEvaluator.Evaluate(entry.Condition))
+			bool eval = ConditionEvaluator.Evaluate(entry.Condition);
+			GD.Print($"Avaliando condição: {entry.Condition} -> {eval}");
+			if (eval)
 			{
 				selectedDialogue = entry;
+				GD.Print($"Diálogo selecionado com condição: {entry.Condition}");
 				break;
 			}
 		}

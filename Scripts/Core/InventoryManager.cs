@@ -37,4 +37,35 @@ public partial class InventoryManager : Node
 			_items.Remove(itemName);
 		return true;
 	}
+private int _experience = 0;
+private int _credits = 0;
+
+[Signal] public delegate void InventoryChangedEventHandler();
+
+public void AddExperience(int amount)
+{
+	if (amount <= 0) return;
+
+	_experience += amount;
+	GD.Print($"InventoryManager: recebeu {amount} XP. Total: {_experience} XP.");
+	EmitSignal(SignalName.InventoryChanged);
 }
+
+public int GetExperience()
+{
+	return _experience;
+}
+
+public void AddCredits(int amount)
+{
+	if (amount <= 0) return;
+
+	_credits += amount;
+	GD.Print($"InventoryManager: recebeu {amount} créditos. Total: {_credits} créditos.");
+	EmitSignal(SignalName.InventoryChanged);
+}
+
+public int GetCredits()
+{
+	return _credits;
+}}

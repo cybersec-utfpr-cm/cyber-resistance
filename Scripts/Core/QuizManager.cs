@@ -86,6 +86,41 @@ public partial class QuizManager : Node
 		GameManager.Instance.UIContainer.AddChild(quizUI);
 		quizUI.SetQuiz(quiz); // chamado após adicionar à árvore
 	}
+	
+	public Quiz GetRandomQuestions(string quizId, int count)
+	{
+		var originalQuiz = GetQuiz(quizId);
+		if (originalQuiz == null) return null;
+
+		// Verifica se há perguntas suficientes
+		if (originalQuiz.Questions.Count < count)
+		{
+			GD.PrintErr($"QuizManager: Banco de questões '{quizId}' tem apenas {originalQuiz.Questions.Count} questões, mas foram solicitadas {count}.");
+			return null;
+		}
+
+		// Cria uma cópia do quiz para não modificar o original
+		var newQuiz = new Quiz
+		{
+			Id = originalQuiz.Id,
+			Title = originalQuiz.Title,
+			Questions = new List<Question>()
+		};
+
+		// Seleciona perguntas aleatoriamente (sem repetição)
+		var rng = new System.Random();
+		var indices = new List<int>();
+		for (int i = 0; i < originalQuiz.Questions.Count; i++) indices.Add(i);
+		for (int i = 0; i < count; i++)
+		{
+			int randomIndex = rng.Next(indices.Count);
+			int selectedIndex = indices[randomIndex];
+			indices.RemoveAt(randomIndex);
+			newQuiz.Questions.Add(originalQuiz.Questions[selectedIndex]);
+		}
+
+		return newQuiz;
+	}
 }
 
 public class Quiz
