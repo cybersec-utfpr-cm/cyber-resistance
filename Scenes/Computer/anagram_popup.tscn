@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://dyi84wtk1txe2"]
+[gd_scene load_steps=0 format=3 uid="uid://dyi84wtk1txe2"]
 
 [node name="AnagramPopup" type="Panel"]
 offset_left = 440.0

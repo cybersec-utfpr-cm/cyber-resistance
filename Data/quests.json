@@ -1,67 +1,106 @@
 {
-  "quests": [
-	{
-	  "id": "tutorial",
-	  "title": "Tutorial de Cibersegurança",
-	  "is_main": true,
-	  "stages": [
+	"quests": [
 		{
-		  "id": 1,
-		  "description": "Fale com o tutor."
+			"id": "tutorial",
+			"title": "Tutorial de Cibersegurança",
+			"is_main": true,
+			"stages": [
+				{
+					"id": 1,
+					"description": "Fale com o tutor."
+				},
+				{
+					"id": 2,
+					"description": "Acesse a estante de livros."
+				},
+				{
+					"id": 3,
+					"description": "Acesse o computador."
+				}
+			],
+			"reward": "100 XP e 25 créditos",
+			"reward_id": "reward_tutorial"
 		},
 		{
-		  "id": 2,
-		  "description": "Acesse a estante de livros."
+			"id": "wifi_hacking",
+			"title": "Missão Wi-Fi",
+			"is_main": true,
+			"stages": [
+				{
+					"id": 1,
+					"description": "Encontre a rede Wi-Fi correta."
+				},
+				{
+					"id": 2,
+					"description": "Descubra a senha da rede."
+				},
+				{
+					"id": 3,
+					"description": "Conecte-se à rede correta."
+				}
+			],
+			"reward": "200 XP e 50 créditos",
+			"reward_id": "reward_wifi_hacking"
 		},
 		{
-		  "id": 3,
-		  "description": "Acesse o computador."
+			"id": "university_exam",
+			"title": "Prova de Cibersegurança",
+			"is_main": true,
+			"stages": [
+				{
+					"id": 1,
+					"description": "Inicie a prova no terminal."
+				},
+				{
+					"id": 2,
+					"description": "Responda às questões da prova."
+				},
+				{
+					"id": 3,
+					"description": "Seja aprovada na prova."
+				}
+			],
+			"reward": "300 XP e 75 créditos",
+			"reward_id": "reward_university_exam"
+		},
+		{
+			"id": "sudo_with_less",
+			"title": "Escalonamento com Sudo e Less",
+			"is_main": true,
+			"stages": [
+				{
+					"id": 1,
+					"description": "Leia o material didático na estante"
+				},
+				{
+					"id": 2,
+					"description": "Explore o less e obtenha acesso root."
+				},
+				{
+					"id": 3,
+					"description": "Informe a senha ao professor"
+				}
+			],
+			"machines": [
+				{
+					"id": "scenario1",
+					"image": "scenario1-sudo-less-image",
+					"container_name": "cr_scenario1",
+					"hostname": "scenario1",
+					"network_alias": "scenario1",
+					"internal_ports": [
+						22
+					],
+					"start_on_quest_start": true,
+					"stop_on_quest_complete": true
+				}
+			],
+			"network": {
+				"name": "cr_mission_sudo_with_less",
+				"driver": "bridge"
+			},
+			"reward": "500 XP e 100 créditos",
+			"reward_id": "reward_sudo_with_less"
 		}
-	  ],
-	  "reward": "100 XP e 25 créditos",
-	  "reward_id": "reward_tutorial"
-	},
-	{
-	  "id": "wifi_hacking",
-	  "title": "Missão Wi-Fi",
-	  "is_main": true,
-	  "stages": [
-		{
-		  "id": 1,
-		  "description": "Encontre a rede Wi-Fi correta."
-		},
-		{
-		  "id": 2,
-		  "description": "Descubra a senha da rede."
-		},
-		{
-		  "id": 3,
-		  "description": "Conecte-se à rede correta."
-		}
-	  ],
-	  "reward": "200 XP e 50 créditos",
-	  "reward_id": "reward_wifi_hacking"
-	},
-	{
-	  "id": "university_exam",
-	  "title": "Prova de Cibersegurança",
-	  "is_main": true,
-	  "stages": [
-		{
-		  "id": 1,
-		  "description": "Inicie a prova no terminal."
-		},
-		{
-		  "id": 2,
-		  "description": "Responda às questões da prova."
-		},
-		{
-		  "id": 3,
-		  "description": "Seja aprovada na prova."
-		}
-	  ],
-	  "reward": "300 XP e 75 créditos",
-	  "reward_id": "reward_university_exam"
-	}
-  ]
+	]
 }
