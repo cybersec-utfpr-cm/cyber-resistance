@@ -43,27 +43,6 @@
 			"reward_id": "reward_wifi_hacking"
 		},
 		{
-			"id": "university_exam",
-			"title": "Prova de Cibersegurança",
-			"is_main": true,
-			"stages": [
-				{
-					"id": 1,
-					"description": "Inicie a prova no terminal."
-				},
-				{
-					"id": 2,
-					"description": "Responda às questões da prova."
-				},
-				{
-					"id": 3,
-					"description": "Seja aprovada na prova."
-				}
-			],
-			"reward": "300 XP e 75 créditos",
-			"reward_id": "reward_university_exam"
-		},
-		{
 			"id": "sudo_with_less",
 			"title": "Escalonamento com Sudo e Less",
 			"is_main": true,
@@ -101,6 +80,27 @@
 			},
 			"reward": "500 XP e 100 créditos",
 			"reward_id": "reward_sudo_with_less"
+		},
+		{
+			"id": "university_exam",
+			"title": "Prova de Cibersegurança",
+			"is_main": true,
+			"stages": [
+				{
+					"id": 1,
+					"description": "Inicie a prova no terminal."
+				},
+				{
+					"id": 2,
+					"description": "Responda às questões da prova."
+				},
+				{
+					"id": 3,
+					"description": "Seja aprovada na prova."
+				}
+			],
+			"reward": "300 XP e 75 créditos",
+			"reward_id": "reward_university_exam"
 		}
 	]
 }
