@@ -22,10 +22,10 @@ DialogueManager="*res://Scripts/Interactions/DialogueManager.cs"
 BookManager="*res://Scripts/Core/BookManager.cs"
 QuizManager="*res://Scripts/Core/QuizManager.cs"
 QuestManager="*res://Scripts/Core/QuestManager.cs"
+MissionInfrastructureManager="*res://Scripts/Core/MissionInfrastructureManager.cs"
 NPCManager="*res://Scripts/NPCs/NPCManager.cs"
 InventoryManager="*res://Scripts/Core/InventoryManager.cs"
 RewardManager="*res://Scripts/Core/RewardManager.cs"
-MissionInfrastructureManager="*res://Scripts/Core/MissionInfrastructureManager.cs"
 
 [display]
 

@@ -1,8 +1,26 @@
-FROM kalilinux/kali-last-release
+FROM ubuntu:22.04
 
-RUN apt update && \
-    apt install -y inetutils-inetd inetutils-telnetd telnetd login sudo && \
-    apt clean
+RUN apt-get update && \
+    apt-get install -y \
+    inetutils-inetd \
+    inetutils-telnetd \
+    login \
+    sudo \
+    bash \
+    openssh-client \
+    net-tools \
+    iproute2 \
+    iputils-ping \
+    dnsutils \
+    nmap \
+    curl \
+    wget \
+    less \
+    nano \
+    vim \
+    procps \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 # Adiciona um usuário para login via telnet (senha: player)
 RUN useradd -m -s /bin/bash player && \
@@ -10,11 +28,12 @@ RUN useradd -m -s /bin/bash player && \
 
 # Dá permissão de administrador ao player (senha: player)
 RUN usermod -aG sudo player
+
 RUN echo "cd /home/player" >> /home/player/.bashrc
 
 # Habilita o serviço telnet no inetd
-RUN echo "telnet  stream  tcp  nowait  root  /usr/sbin/tcpd  /usr/sbin/telnetd" >> /etc/inetd.conf
+RUN echo "telnet stream tcp nowait root /usr/sbin/telnetd telnetd" >> /etc/inetd.conf
 
 EXPOSE 23
 
-CMD ["/usr/sbin/inetutils-inetd","-d"]
+CMD ["/usr/sbin/inetutils-inetd", "-d"]
