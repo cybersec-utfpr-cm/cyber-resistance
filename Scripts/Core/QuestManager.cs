@@ -8,7 +8,7 @@ public partial class QuestManager : Node
 
 	// Definições carregadas do JSON
 	private Dictionary<string, QuestDefinition> _questDefinitions = new();
-	
+
 	// Estado atual das missões (apenas as ativas)
 	private Dictionary<string, int> _activeQuests = new();
 	private List<string> _completedQuests = new();
@@ -67,6 +67,52 @@ public partial class QuestManager : Node
 				});
 			}
 
+			QuestNetworkDefinition network = null;
+
+			if (questDict.ContainsKey("network"))
+			{
+				var networkDict = questDict["network"].AsGodotDictionary();
+
+				network = new QuestNetworkDefinition
+				{
+					Name = networkDict.ContainsKey("name") ? networkDict["name"].AsString() : "",
+					Driver = networkDict.ContainsKey("driver") ? networkDict["driver"].AsString() : "bridge"
+				};
+			}
+
+			var machines = new List<QuestMachineDefinition>();
+
+			if (questDict.ContainsKey("machines"))
+			{
+				var machinesArray = questDict["machines"].AsGodotArray();
+
+				foreach (var machineVar in machinesArray)
+				{
+					var machineDict = machineVar.AsGodotDictionary();
+
+					var machine = new QuestMachineDefinition
+					{
+						Id = machineDict.ContainsKey("id") ? machineDict["id"].AsString() : "",
+						Image = machineDict.ContainsKey("image") ? machineDict["image"].AsString() : "",
+						ContainerName = machineDict.ContainsKey("container_name") ? machineDict["container_name"].AsString() : "",
+						Hostname = machineDict.ContainsKey("hostname") ? machineDict["hostname"].AsString() : "",
+						NetworkAlias = machineDict.ContainsKey("network_alias") ? machineDict["network_alias"].AsString() : "",
+						StartOnQuestStart = machineDict.ContainsKey("start_on_quest_start") && machineDict["start_on_quest_start"].AsBool(),
+						StopOnQuestComplete = machineDict.ContainsKey("stop_on_quest_complete") && machineDict["stop_on_quest_complete"].AsBool()
+					};
+
+					if (machineDict.ContainsKey("internal_ports"))
+					{
+						foreach (var portVar in machineDict["internal_ports"].AsGodotArray())
+						{
+							machine.InternalPorts.Add(portVar.AsInt32());
+						}
+					}
+
+					machines.Add(machine);
+				}
+			}
+
 			_questDefinitions[id] = new QuestDefinition
 			{
 				Id = id,
@@ -74,7 +120,9 @@ public partial class QuestManager : Node
 				Stages = stages,
 				IsMain = isMain,
 				Reward = reward,
-				RewardId = rewardId
+				RewardId = rewardId,
+				Network = network,
+				Machines = machines
 			};
 		}
 
@@ -111,21 +159,18 @@ public partial class QuestManager : Node
 
 		int currentStage = _activeQuests[questId];
 		var def = _questDefinitions[questId];
+
 		if (currentStage < def.Stages.Count)
 		{
-			_activeQuests[questId] = currentStage + 1;
-			GD.Print($"QuestManager: Missão '{questId}' avançou para estágio {_activeQuests[questId]}");
-			EmitSignal(SignalName.QuestAdvanced, questId, _activeQuests[questId]);
+			int newStage = currentStage + 1;
+			_activeQuests[questId] = newStage;
 
-			// Se completou todos os estágios, conclui
-			if (_activeQuests[questId] > def.Stages.Count)
-			{
-				CompleteQuest(questId);
-			}
+			GD.Print($"QuestManager: Missão '{questId}' avançou para estágio {newStage}");
+			EmitSignal(SignalName.QuestAdvanced, questId, newStage);
 		}
 		else
 		{
-			GD.Print($"QuestManager: Missão '{questId}' já completou todos os estágios.");
+			CompleteQuest(questId);
 		}
 	}
 
@@ -204,7 +249,7 @@ public partial class QuestManager : Node
 	{
 		return _activeQuests.Keys.ToList();
 	}
-	
+
 	public List<string> GetCompletedQuests()
 	{
 		return _completedQuests.ToList();
@@ -226,4 +271,25 @@ public class QuestDefinition
 	public bool IsMain { get; set; }
 	public string Reward { get; set; }
 	public string RewardId { get; set; }
+
+	public QuestNetworkDefinition Network { get; set; }
+	public List<QuestMachineDefinition> Machines { get; set; } = new();
+}
+
+public class QuestNetworkDefinition
+{
+	public string Name { get; set; }
+	public string Driver { get; set; } = "bridge";
+}
+
+public class QuestMachineDefinition
+{
+	public string Id { get; set; }
+	public string Image { get; set; }
+	public string ContainerName { get; set; }
+	public string Hostname { get; set; }
+	public string NetworkAlias { get; set; }
+	public List<int> InternalPorts { get; set; } = new();
+	public bool StartOnQuestStart { get; set; }
+	public bool StopOnQuestComplete { get; set; }
 }

@@ -63,7 +63,7 @@
 			"machines": [
 				{
 					"id": "scenario1",
-					"image": "scenario1-sudo-less-image",
+					"image": "scenario1",
 					"container_name": "cr_scenario1",
 					"hostname": "scenario1",
 					"network_alias": "scenario1",

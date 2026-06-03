@@ -61,6 +61,12 @@ public partial class QuestLogUi : CanvasLayer
 
 		if (questId == "wifi_hacking")
 		{
+			QuestManager.Instance.StartQuest("sudo_with_less");
+			GD.Print("Missão sudo_with_less iniciada.");
+		}
+
+		if (questId == "sudo_with_less")
+		{
 			QuestManager.Instance.StartQuest("university_exam");
 			GD.Print("Missão university_exam iniciada.");
 		}
@@ -216,4 +222,4 @@ public partial class QuestLogUi : CanvasLayer
 		separator.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
 		_questListContainer.AddChild(separator);
 	}
-}	
+}

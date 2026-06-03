@@ -25,6 +25,7 @@ QuestManager="*res://Scripts/Core/QuestManager.cs"
 NPCManager="*res://Scripts/NPCs/NPCManager.cs"
 InventoryManager="*res://Scripts/Core/InventoryManager.cs"
 RewardManager="*res://Scripts/Core/RewardManager.cs"
+MissionInfrastructureManager="*res://Scripts/Core/MissionInfrastructureManager.cs"
 
 [display]
 
