@@ -45,12 +45,16 @@ public sealed class DockerManager : IDisposable
 		if (await ContainerExistsAsync(containerName))
 		{
 			if (!await IsRunningAsync(containerName))
-				await RunDockerCommandAsync($"docker start {containerName}");
+			{
+				await RunDockerCommandAsync($"docker rm -f {containerName}");
+			}
+			else
+			{
+				if (!await IsContainerConnectedToNetworkAsync(networkName, containerName))
+					await ConnectToNetworkAsync(networkName, containerName, networkAlias);
 
-			if (!await IsContainerConnectedToNetworkAsync(networkName, containerName))
-				await ConnectToNetworkAsync(networkName, containerName, networkAlias);
-
-			return;
+				return;
+			}
 		}
 
 		string hostnameArg = string.IsNullOrWhiteSpace(hostname) ? "" : $"--hostname {hostname}";
