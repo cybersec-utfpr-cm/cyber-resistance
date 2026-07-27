@@ -61,13 +61,7 @@ public partial class ComputerAccess : Area2D
 			QuestManager.Instance.SetQuestStage("tutorial", 4);
 			GD.Print("ComputerAccess: Missão tutorial concluída! Estágio 4.");
 		}
-		// Verifica a missão wifi_hacking
-		int wifiStage = QuestManager.Instance.GetQuestStage("wifi_hacking");
-		if (wifiStage == 1)
-		{
-			QuestManager.Instance.SetQuestStage("wifi_hacking", 2);
-			GD.Print("ComputerAccess: Missão wifi_hacking avançou para estágio 2.");
-		}
+
 
 		GetTree().Paused = true;
 	}

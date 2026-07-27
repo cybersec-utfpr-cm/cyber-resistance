@@ -71,15 +71,30 @@ public partial class BookshelfUi : Control
 		}
 	}
 
+
 	private void OnChapterSelected(Chapter chapter)
 	{
 		_contentLabel.Text = chapter.Content;
+
+		if (
+			BookId == "intro_cybersecurity" &&
+			chapter.Id == "chap1" &&
+			QuestManager.Instance != null &&
+			QuestManager.Instance.GetQuestStage("tutorial") == 2
+		)
+		{
+			QuestManager.Instance.SetQuestStage("tutorial", 3);
+			GD.Print(
+				"BookshelfUI: capítulo de comandos básicos lido. Tutorial avançado para o estágio 3."
+			);
+		}
 
 		if (!string.IsNullOrEmpty(chapter.OnRead))
 		{
 			ProcessOnRead(chapter.OnRead);
 		}
 	}
+
 
 	private void ProcessOnRead(string command)
 	{
