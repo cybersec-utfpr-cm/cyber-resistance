@@ -1,137 +1,211 @@
 using Godot;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
-public partial class GameManager : Node {
+public partial class GameManager : Node
+{
+		[Export] public string PlayerMachineContainerName = "player_machine";
 
-	[Export] public string PlayerMachineContainerName = "player_machine";
+		private string _nextSpawnName = "";
+		private DockerManager _docker;
+		private readonly SemaphoreSlim _dockerLock = new(1, 1);
+		private bool _isExiting;
 
-	private string _nextSpawnName = "";
-	private DockerManager _docker;
+		public static GameManager Instance;
+		public Node WorldContainer;
+		public Node UIContainer;
 
-	public static GameManager Instance;
-	public Node WorldContainer;
-	public Node UIContainer;
-
-	public override async void _Ready() {
-		Instance = this;
-		WorldContainer = GetNode("/root/Game/WorldContainer");
-		UIContainer = GetNode("/root/Game/UIContainer");
-		if (WorldContainer == null) {
-			GD.PrintErr("GameManager.cs: WorldContainer não encontrado!");
-		}
-
-		// Inicia a missão tutorial automaticamente.
-		if (QuestManager.Instance != null) {
-			QuestManager.Instance.StartQuest("tutorial");
-			GD.Print("GameManager: Missão tutorial iniciada automaticamente.");
-		}
-		else {
-			GD.PrintErr("GameManager: QuestManager não encontrado.");
-		}
-
-		var questLogScene = GD.Load<PackedScene>("res://Scenes/Interfaces/quest_log_ui.tscn");
-		if (questLogScene != null) {
-			var questLog = questLogScene.Instantiate();
-			if (UIContainer != null) {
-				UIContainer.AddChild(questLog);
-			}
-			else {
-				AddChild(questLog);
-			}
-		}
-
-		_docker = new DockerManager(PlayerMachineContainerName);
-		try
+		public override async void _Ready()
 		{
-			await _docker.StartAsync();
-			GD.Print($"GameManager: Container '{PlayerMachineContainerName}' iniciado.");
+				Instance = this;
+				WorldContainer = GetNode("/root/Game/WorldContainer");
+				UIContainer = GetNode("/root/Game/UIContainer");
+
+				if (WorldContainer == null)
+				{
+						GD.PrintErr("GameManager.cs: WorldContainer não encontrado!");
+				}
+
+				if (QuestManager.Instance != null)
+				{
+						QuestManager.Instance.StartQuest("tutorial");
+						GD.Print("GameManager: Missão tutorial iniciada automaticamente.");
+				}
+				else
+				{
+						GD.PrintErr("GameManager: QuestManager não encontrado.");
+				}
+
+				var questLogScene = GD.Load<PackedScene>(
+						"res://Scenes/Interfaces/quest_log_ui.tscn"
+				);
+
+				if (questLogScene != null)
+				{
+						var questLog = questLogScene.Instantiate();
+
+						if (UIContainer != null)
+								UIContainer.AddChild(questLog);
+						else
+								AddChild(questLog);
+				}
+
+				_docker = new DockerManager(PlayerMachineContainerName);
+				await EnsurePlayerMachineStartedAsync();
 		}
-		catch (Exception e)
+
+		public async Task<bool> EnsurePlayerMachineStartedAsync()
 		{
-			GD.PrintErr($"GameManager: Falha ao iniciar container '{PlayerMachineContainerName}': {e.Message}");
-		}
-	}
+				if (_docker == null || _isExiting)
+						return false;
 
-	public override async void _ExitTree()
-	{
-		if (_docker != null)
+				await _dockerLock.WaitAsync();
+
+				try
+				{
+						if (_isExiting)
+								return false;
+
+						GD.Print(
+								$"GameManager: verificando container '{PlayerMachineContainerName}'."
+						);
+
+						await _docker.StartAsync();
+
+						GD.Print(
+								$"GameManager: container '{PlayerMachineContainerName}' está pronto."
+						);
+
+						return true;
+				}
+				catch (Exception exception)
+				{
+						GD.PrintErr(
+								$"GameManager: falha ao preparar container " +
+								$"'{PlayerMachineContainerName}': {exception.Message}"
+						);
+
+						return false;
+				}
+				finally
+				{
+						_dockerLock.Release();
+				}
+		}
+
+		public override async void _ExitTree()
 		{
-			try
-			{
-				await _docker.StopAsync();
-				GD.Print($"GameManager: Container '{PlayerMachineContainerName}' parado.");
-			}
-			catch (Exception e)
-			{
-				GD.PrintErr($"GameManager: Falha ao parar container '{PlayerMachineContainerName}': {e.Message}");
-			}
-			finally
-			{
-				_docker.Dispose();
-			}
-		}
-	}
+				_isExiting = true;
 
-	public Node GetWorldContainer() {
-		return WorldContainer;
-	}
+				if (_docker != null)
+				{
+						await _dockerLock.WaitAsync();
 
-	public Node GetCurrentScene() {
-		if (WorldContainer.GetChildCount() == 0){
-			return null;
-		}
-		return WorldContainer.GetChild(0);
-	}
+						try
+						{
+								await _docker.StopAsync();
 
-	public void ChangeScene(string scenePath, string spawnName = "") {
-		_nextSpawnName = spawnName; // para o próximo spawn
-		foreach (Node child in WorldContainer.GetChildren()) {
-			child.QueueFree();
-		}
+								GD.Print(
+										$"GameManager: container " +
+										$"'{PlayerMachineContainerName}' parado."
+								);
+						}
+						catch (Exception exception)
+						{
+								GD.PrintErr(
+										$"GameManager: falha ao parar container " +
+										$"'{PlayerMachineContainerName}': {exception.Message}"
+								);
+						}
+						finally
+						{
+								_docker.Dispose();
+								_docker = null;
+								_dockerLock.Release();
+						}
+				}
 
-		var packed = GD.Load<PackedScene>(scenePath);
-		var newScene = packed.Instantiate();
-
-		WorldContainer.AddChild(newScene);
-		MovePlayerToSpawnDeferred();
-		SpawnNPCsDeferred(scenePath);
-	}
-
-	private void MovePlayerToSpawn() {
-		if(string.IsNullOrEmpty(_nextSpawnName)){
-			return;
+				if (Instance == this)
+						Instance = null;
 		}
 
-		var currentScene = GetCurrentScene();
-		var spawn = currentScene.FindChild(_nextSpawnName, true, false) as Marker2D;
-
-		if (spawn == null){
-			GD.PrintErr("GameManager: Spawn não encontrado: " + _nextSpawnName);
-			return;
+		public Node GetWorldContainer()
+		{
+				return WorldContainer;
 		}
 
-		var player = GetTree().GetFirstNodeInGroup("Player") as Node2D;
+		public Node GetCurrentScene()
+		{
+				if (WorldContainer.GetChildCount() == 0)
+						return null;
 
-		if(player == null){
-			GD.PrintErr("GameManager: Player não encontrado");
-			return;
+				return WorldContainer.GetChild(0);
 		}
 
-		player.GlobalPosition = spawn.GlobalPosition;
-	}
+		public void ChangeScene(string scenePath, string spawnName = "")
+		{
+				_nextSpawnName = spawnName;
 
-	private async void MovePlayerToSpawnDeferred() { // esperar a cena ficar prontasd
-		await ToSignal(GetTree(),
-		SceneTree.SignalName.ProcessFrame);
+				foreach (Node child in WorldContainer.GetChildren())
+						child.QueueFree();
 
-		MovePlayerToSpawn();
-	}
+				var packed = GD.Load<PackedScene>(scenePath);
+				var newScene = packed.Instantiate();
 
-	private async void SpawnNPCsDeferred(string scenePath) {
-		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+				WorldContainer.AddChild(newScene);
+				MovePlayerToSpawnDeferred();
+				SpawnNPCsDeferred(scenePath);
+		}
 
-		NPCManager.Instance.SpawnNPCsForScene(scenePath);
-	}
+		private void MovePlayerToSpawn()
+		{
+				if (string.IsNullOrEmpty(_nextSpawnName))
+						return;
 
+				var currentScene = GetCurrentScene();
+				var spawn = currentScene.FindChild(
+						_nextSpawnName,
+						true,
+						false
+				) as Marker2D;
 
+				if (spawn == null)
+				{
+						GD.PrintErr(
+								"GameManager: Spawn não encontrado: " + _nextSpawnName
+						);
+						return;
+				}
+
+				var player = GetTree().GetFirstNodeInGroup("Player") as Node2D;
+
+				if (player == null)
+				{
+						GD.PrintErr("GameManager: Player não encontrado");
+						return;
+				}
+
+				player.GlobalPosition = spawn.GlobalPosition;
+		}
+
+		private async void MovePlayerToSpawnDeferred()
+		{
+				await ToSignal(
+						GetTree(),
+						SceneTree.SignalName.ProcessFrame
+				);
+
+				MovePlayerToSpawn();
+		}
+
+		private async void SpawnNPCsDeferred(string scenePath)
+		{
+				await ToSignal(
+						GetTree(),
+						SceneTree.SignalName.ProcessFrame
+				);
+
+				NPCManager.Instance.SpawnNPCsForScene(scenePath);
+		}
 }
