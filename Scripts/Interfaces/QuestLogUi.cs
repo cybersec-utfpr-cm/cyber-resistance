@@ -53,18 +53,7 @@ public partial class QuestLogUi : CanvasLayer
 
 	private void OnQuestCompleted(string questId)
 	{
-		if (questId == "tutorial")
-		{
-			QuestManager.Instance.StartQuest("wifi_hacking");
-			GD.Print("Missão wifi_hacking iniciada após conclusão do tutorial.");
-		}
-
-		if (questId == "wifi_hacking")
-		{
-			QuestManager.Instance.StartQuest("university_exam");
-			GD.Print("Missão university_exam iniciada.");
-		}
-
+		GD.Print($"QuestLogUI: missão '{questId}' concluída.");
 		UpdateQuestList();
 	}
 
