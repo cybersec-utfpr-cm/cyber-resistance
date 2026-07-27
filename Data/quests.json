@@ -19,7 +19,8 @@
 		}
 	  ],
 	  "reward": "100 XP e 25 créditos",
-	  "reward_id": "reward_tutorial"
+	  "reward_id": "reward_tutorial",
+	  "next_quest_id": "wifi_hacking"
 	},
 	{
 	  "id": "wifi_hacking",
@@ -40,7 +41,8 @@
 		}
 	  ],
 	  "reward": "200 XP e 50 créditos",
-	  "reward_id": "reward_wifi_hacking"
+	  "reward_id": "reward_wifi_hacking",
+	  "next_quest_id": "university_exam"
 	},
 	{
 	  "id": "university_exam",

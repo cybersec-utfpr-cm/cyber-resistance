@@ -56,6 +56,7 @@ public partial class QuestManager : Node
 			bool isMain = questDict.ContainsKey("is_main") ? questDict["is_main"].AsBool() : false;
 			string reward = questDict.ContainsKey("reward") ? questDict["reward"].AsString() : "";
 			string rewardId = questDict.ContainsKey("reward_id") ? questDict["reward_id"].AsString() : "";
+			string nextQuestId = questDict.ContainsKey("next_quest_id") ? questDict["next_quest_id"].AsString() : "";
 			var stages = new List<QuestStage>();
 			foreach (var stageVar in stagesArray)
 			{
@@ -74,7 +75,8 @@ public partial class QuestManager : Node
 				Stages = stages,
 				IsMain = isMain,
 				Reward = reward,
-				RewardId = rewardId
+				RewardId = rewardId,
+				NextQuestId = nextQuestId
 			};
 		}
 
@@ -95,6 +97,19 @@ public partial class QuestManager : Node
 			return;
 		}
 
+		string prerequisiteQuestId = GetPrerequisiteQuestId(questId);
+		if (
+			!string.IsNullOrWhiteSpace(prerequisiteQuestId) &&
+			!_completedQuests.Contains(prerequisiteQuestId)
+		)
+		{
+			GD.PrintErr(
+				$"QuestManager: Missão '{questId}' exige a conclusão de " +
+				$"'{prerequisiteQuestId}'."
+			);
+			return;
+		}
+
 		_activeQuests[questId] = 1; // começa no estágio 1
 		GD.Print($"QuestManager: Missão '{questId}' iniciada no estágio 1.");
 		EmitSignal(SignalName.QuestStarted, questId);
@@ -112,37 +127,46 @@ public partial class QuestManager : Node
 
 		int currentStage = _activeQuests[questId];
 		var def = _questDefinitions[questId];
-		if (currentStage < def.Stages.Count)
+		if (currentStage >= def.Stages.Count)
 		{
-			_activeQuests[questId] = currentStage + 1;
-			GD.Print($"QuestManager: Missão '{questId}' avançou para estágio {_activeQuests[questId]}");
-			EmitSignal(SignalName.QuestAdvanced, questId, _activeQuests[questId]);
-			SaveManager.Instance?.SaveGame();
-
-			// Se completou todos os estágios, conclui
-			if (_activeQuests[questId] > def.Stages.Count)
-			{
-				CompleteQuest(questId);
-			}
+			CompleteQuest(questId);
 		}
 		else
 		{
-			GD.Print($"QuestManager: Missão '{questId}' já completou todos os estágios.");
+			SetQuestStage(questId, currentStage + 1);
 		}
 	}
 
 	// Conclui a missão (remove dos ativos e adiciona aos completados)
 	public void CompleteQuest(string questId)
 	{
-		if (_activeQuests.ContainsKey(questId))
+		if (!_activeQuests.TryGetValue(questId, out int currentStage))
 		{
-			_activeQuests.Remove(questId);
-			if (!_completedQuests.Contains(questId))
-				_completedQuests.Add(questId);
-			GD.Print($"QuestManager: Missão '{questId}' concluída!");
-			EmitSignal(SignalName.QuestCompleted, questId);
-			SaveManager.Instance?.SaveGame();
+			GD.PrintErr($"QuestManager: Missão '{questId}' não está ativa.");
+			return;
 		}
+
+		var definition = _questDefinitions[questId];
+		if (currentStage < definition.Stages.Count)
+		{
+			GD.PrintErr(
+				$"QuestManager: Missão '{questId}' ainda está no estágio " +
+				$"{currentStage}/{definition.Stages.Count}."
+			);
+			return;
+		}
+
+		_activeQuests.Remove(questId);
+		if (!_completedQuests.Contains(questId))
+			_completedQuests.Add(questId);
+
+		GD.Print($"QuestManager: Missão '{questId}' concluída!");
+		EmitSignal(SignalName.QuestCompleted, questId);
+
+		if (!string.IsNullOrWhiteSpace(definition.NextQuestId))
+			StartQuest(definition.NextQuestId);
+
+		SaveManager.Instance?.SaveGame();
 	}
 
 	// Define o estágio de uma missão (para uso em ações, sem avanço automático)
@@ -159,20 +183,35 @@ public partial class QuestManager : Node
 			return;
 		}
 
-		// Se não estiver ativa, adiciona aos ativos
-		if (!_activeQuests.ContainsKey(questId))
-			_activeQuests[questId] = stage;
-		else
-			_activeQuests[questId] = stage;
+		if (!_activeQuests.TryGetValue(questId, out int currentStage))
+		{
+			GD.PrintErr($"QuestManager: Missão '{questId}' não está ativa.");
+			return;
+		}
 
+		if (stage == currentStage)
+			return;
+
+		var def = _questDefinitions[questId];
+		if (stage != currentStage + 1)
+		{
+			GD.PrintErr(
+				$"QuestManager: avanço inválido de '{questId}': " +
+				$"estágio {currentStage} para {stage}."
+			);
+			return;
+		}
+
+		if (stage > def.Stages.Count)
+		{
+			CompleteQuest(questId);
+			return;
+		}
+
+		_activeQuests[questId] = stage;
 		GD.Print($"QuestManager: Missão '{questId}' estágio definido para {stage}.");
 		EmitSignal(SignalName.QuestAdvanced, questId, stage);
 		SaveManager.Instance?.SaveGame();
-
-		// Verifica se completou todos os estágios
-		var def = _questDefinitions[questId];
-		if (stage > def.Stages.Count)
-			CompleteQuest(questId);
 	}
 
 	// Consulta o estágio atual de uma missão (retorna -1 se não ativa)
@@ -236,22 +275,93 @@ public partial class QuestManager : Node
 			}
 		}
 
+		RestoreCompletedPrerequisites();
+
 		if (activeQuests != null)
 		{
 			foreach (var quest in activeQuests)
 			{
+				string prerequisiteQuestId = GetPrerequisiteQuestId(quest.Key);
+
 				if (
 					_questDefinitions.ContainsKey(quest.Key) &&
-					!_completedQuests.Contains(quest.Key)
+					!_completedQuests.Contains(quest.Key) &&
+					(
+						string.IsNullOrWhiteSpace(prerequisiteQuestId) ||
+						_completedQuests.Contains(prerequisiteQuestId)
+					)
 				)
 				{
 					int maximumStage = _questDefinitions[quest.Key].Stages.Count;
-					_activeQuests[quest.Key] = System.Math.Clamp(
-						quest.Value,
-						1,
-						maximumStage
-					);
+
+					if (quest.Value > maximumStage)
+						_completedQuests.Add(quest.Key);
+					else
+						_activeQuests[quest.Key] = System.Math.Clamp(
+							quest.Value,
+							1,
+							maximumStage
+						);
 				}
+			}
+		}
+
+		RestoreCompletedPrerequisites();
+		RestoreMissingFollowUpQuests();
+	}
+
+	private string GetPrerequisiteQuestId(string questId)
+	{
+		return _questDefinitions.Values
+			.FirstOrDefault(definition => definition.NextQuestId == questId)
+			?.Id ?? "";
+	}
+
+	private void RestoreCompletedPrerequisites()
+	{
+		bool progressChanged;
+
+		do
+		{
+			progressChanged = false;
+
+			foreach (string completedQuestId in _completedQuests.ToList())
+			{
+				string prerequisiteQuestId =
+					GetPrerequisiteQuestId(completedQuestId);
+
+				if (
+					!string.IsNullOrWhiteSpace(prerequisiteQuestId) &&
+					!_completedQuests.Contains(prerequisiteQuestId)
+				)
+				{
+					_completedQuests.Add(prerequisiteQuestId);
+					progressChanged = true;
+				}
+			}
+		}
+		while (progressChanged);
+	}
+
+	private void RestoreMissingFollowUpQuests()
+	{
+		foreach (string completedQuestId in _completedQuests.ToList())
+		{
+			var definition = _questDefinitions[completedQuestId];
+			string nextQuestId = definition.NextQuestId;
+
+			if (
+				!string.IsNullOrWhiteSpace(nextQuestId) &&
+				_questDefinitions.ContainsKey(nextQuestId) &&
+				!_completedQuests.Contains(nextQuestId) &&
+				!_activeQuests.ContainsKey(nextQuestId)
+			)
+			{
+				_activeQuests[nextQuestId] = 1;
+				GD.Print(
+					$"QuestManager: progresso restaurado com " +
+					$"'{nextQuestId}' no estágio 1."
+				);
 			}
 		}
 	}
@@ -270,4 +380,5 @@ public class QuestDefinition
 	public bool IsMain { get; set; }
 	public string Reward { get; set; }
 	public string RewardId { get; set; }
+	public string NextQuestId { get; set; }
 }

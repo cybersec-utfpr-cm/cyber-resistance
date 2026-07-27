@@ -6,6 +6,7 @@ using System.Text.Json;
 public partial class SaveManager : Node
 {
 	public static SaveManager Instance { get; private set; }
+	public bool IsOfficeWifiConnected { get; private set; }
 
 	private const string SaveFilePath = "user://savegame.json";
 
@@ -39,6 +40,7 @@ public partial class SaveManager : Node
 				Items = InventoryManager.Instance.GetItemsSnapshot(),
 				Experience = InventoryManager.Instance.GetExperience(),
 				Credits = InventoryManager.Instance.GetCredits(),
+				OfficeWifiConnected = IsOfficeWifiConnected,
 				ClaimedQuestRewards =
 					RewardManager.Instance.GetClaimedQuestRewards()
 			};
@@ -97,6 +99,8 @@ public partial class SaveManager : Node
 				return;
 			}
 
+			IsOfficeWifiConnected = data.OfficeWifiConnected;
+
 			QuestManager.Instance?.RestoreProgress(
 				data.ActiveQuests ?? new Dictionary<string, int>(),
 				data.CompletedQuests ?? new List<string>()
@@ -112,12 +116,22 @@ public partial class SaveManager : Node
 				data.ClaimedQuestRewards ?? new List<string>()
 			);
 
+			SaveGame();
 			GD.Print("SaveManager: progresso carregado com sucesso.");
 		}
 		catch (Exception exception)
 		{
 			GD.PrintErr($"SaveManager: erro ao carregar o jogo: {exception.Message}");
 		}
+	}
+
+	public void SetOfficeWifiConnected(bool isConnected)
+	{
+		if (IsOfficeWifiConnected == isConnected)
+			return;
+
+		IsOfficeWifiConnected = isConnected;
+		SaveGame();
 	}
 }
 
@@ -128,5 +142,6 @@ public class SaveGameData
 	public Dictionary<string, int> Items { get; set; } = new();
 	public int Experience { get; set; }
 	public int Credits { get; set; }
+	public bool OfficeWifiConnected { get; set; }
 	public List<string> ClaimedQuestRewards { get; set; } = new();
 }
