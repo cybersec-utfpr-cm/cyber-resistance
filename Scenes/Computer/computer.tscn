@@ -311,6 +311,53 @@ offset_top = 144.0
 offset_right = 344.0
 offset_bottom = 184.0
 
+
+[node name="ConnectionOverlay" type="ColorRect" parent="."]
+z_index = 100
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 0
+color = Color(0.027, 0.035, 0.047, 0.97)
+
+[node name="Content" type="VBoxContainer" parent="ConnectionOverlay"]
+layout_mode = 0
+offset_left = 340.0
+offset_top = 240.0
+offset_right = 940.0
+offset_bottom = 480.0
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="StatusLabel" type="Label" parent="ConnectionOverlay/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Iniciando o computador..."
+horizontal_alignment = 1
+
+[node name="DetailLabel" type="Label" parent="ConnectionOverlay/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Preparando o ambiente Docker e o terminal."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="ConnectionOverlay/Content"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="RetryButton" type="Button" parent="ConnectionOverlay/Content/Buttons"]
+visible = false
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+text = "Tentar novamente"
+
+[node name="ExitButton" type="Button" parent="ConnectionOverlay/Content/Buttons"]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+text = "Voltar ao jogo"
+
 [connection signal="pressed" from="Screens/Desktop/TerminalIconBt" to="Screens/Desktop" method="_on_terminal_icon_bt_pressed"]
 [connection signal="pressed" from="Screens/Desktop/SettingsIconBt" to="Screens/Desktop" method="_on_settings_icon_bt_pressed"]
 [connection signal="pressed" from="Screens/Terminal/BackIconBt" to="Screens/Terminal" method="_on_back_icon_bt_pressed"]
