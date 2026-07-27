@@ -23,6 +23,7 @@ QuizManager="*res://Scripts/Core/QuizManager.cs"
 QuestManager="*res://Scripts/Core/QuestManager.cs"
 InventoryManager="*res://Scripts/Core/InventoryManager.cs"
 RewardManager="*res://Scripts/Core/RewardManager.cs"
+SaveManager="*res://Scripts/Core/SaveManager.cs"
 
 [display]
 
