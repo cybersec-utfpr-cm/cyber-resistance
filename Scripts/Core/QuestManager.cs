@@ -98,6 +98,7 @@ public partial class QuestManager : Node
 		_activeQuests[questId] = 1; // começa no estágio 1
 		GD.Print($"QuestManager: Missão '{questId}' iniciada no estágio 1.");
 		EmitSignal(SignalName.QuestStarted, questId);
+		SaveManager.Instance?.SaveGame();
 	}
 
 	// Avança para o próximo estágio da missão
@@ -116,6 +117,7 @@ public partial class QuestManager : Node
 			_activeQuests[questId] = currentStage + 1;
 			GD.Print($"QuestManager: Missão '{questId}' avançou para estágio {_activeQuests[questId]}");
 			EmitSignal(SignalName.QuestAdvanced, questId, _activeQuests[questId]);
+			SaveManager.Instance?.SaveGame();
 
 			// Se completou todos os estágios, conclui
 			if (_activeQuests[questId] > def.Stages.Count)
@@ -139,6 +141,7 @@ public partial class QuestManager : Node
 				_completedQuests.Add(questId);
 			GD.Print($"QuestManager: Missão '{questId}' concluída!");
 			EmitSignal(SignalName.QuestCompleted, questId);
+			SaveManager.Instance?.SaveGame();
 		}
 	}
 
@@ -164,6 +167,7 @@ public partial class QuestManager : Node
 
 		GD.Print($"QuestManager: Missão '{questId}' estágio definido para {stage}.");
 		EmitSignal(SignalName.QuestAdvanced, questId, stage);
+		SaveManager.Instance?.SaveGame();
 
 		// Verifica se completou todos os estágios
 		var def = _questDefinitions[questId];
@@ -209,9 +213,49 @@ public partial class QuestManager : Node
 	{
 		return _completedQuests.ToList();
 	}
-}
 
-// Classes auxiliares
+	public Dictionary<string, int> GetActiveQuestStages()
+	{
+		return new Dictionary<string, int>(_activeQuests);
+	}
+
+	public void RestoreProgress(
+		Dictionary<string, int> activeQuests,
+		IEnumerable<string> completedQuests
+	)
+	{
+		_activeQuests.Clear();
+		_completedQuests.Clear();
+
+		if (completedQuests != null)
+		{
+			foreach (var questId in completedQuests)
+			{
+				if (_questDefinitions.ContainsKey(questId))
+					_completedQuests.Add(questId);
+			}
+		}
+
+		if (activeQuests != null)
+		{
+			foreach (var quest in activeQuests)
+			{
+				if (
+					_questDefinitions.ContainsKey(quest.Key) &&
+					!_completedQuests.Contains(quest.Key)
+				)
+				{
+					int maximumStage = _questDefinitions[quest.Key].Stages.Count;
+					_activeQuests[quest.Key] = System.Math.Clamp(
+						quest.Value,
+						1,
+						maximumStage
+					);
+				}
+			}
+		}
+	}
+}// Classes auxiliares
 public class QuestStage
 {
 	public int StageId { get; set; }

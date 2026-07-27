@@ -131,6 +131,7 @@ public partial class RewardManager : Node
 		GD.Print($"RewardManager: recompensa '{reward.Id}' coletada para a missão '{questId}'.");
 
 		EmitSignal(SignalName.RewardCollected, questId, reward.Id);
+		SaveManager.Instance?.SaveGame();
 		return true;
 	}
 
@@ -174,5 +175,24 @@ public partial class RewardManager : Node
 			.Select(i => $"{i.Amount}x {i.Name}"));
 
 		return parts.Count == 0 ? "Recompensa vazia." : string.Join(" | ", parts);
+	}
+
+	public List<string> GetClaimedQuestRewards()
+	{
+		return _claimedQuestRewards.ToList();
+	}
+
+	public void RestoreClaimedQuestRewards(IEnumerable<string> questIds)
+	{
+		_claimedQuestRewards.Clear();
+
+		if (questIds == null)
+			return;
+
+		foreach (var questId in questIds)
+		{
+			if (!string.IsNullOrWhiteSpace(questId))
+				_claimedQuestRewards.Add(questId);
+		}
 	}
 }

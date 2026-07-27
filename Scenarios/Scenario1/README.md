@@ -6,25 +6,25 @@ Este cenário busca criar um ambiente Linux vulnerável a escalação de privil�
 
 - [Cenário 1 - Sudo with Less](#cenário-1---sudo-with-less)
   - [Estrutura do Cenário](#estrutura-do-cenário)
-    - [Arquivo ``Dockerfile``](#arquivo-dockerfile)
-    - [Arquivo ``sudoers.bob``](#arquivo-sudoersbob)
-    - [Arquivo ``entrypoint.sh``](#arquivo-entrypointsh)
+	- [Arquivo ``Dockerfile``](#arquivo-dockerfile)
+	- [Arquivo ``sudoers.bob``](#arquivo-sudoersbob)
+	- [Arquivo ``entrypoint.sh``](#arquivo-entrypointsh)
   - [Como Iniciar e Interagir com o Cenário](#como-iniciar-e-interagir-com-o-cenário)
-    - [Para Devs: Como criar a imagem e o contêiner](#para-devs-como-criar-a-imagem-e-o-contêiner)
-    - [Para Jogadores: Como conectar-se ao cenário](#para-jogadores-como-conectar-se-ao-cenário)
-    - [Para Jogadores: Como explorar a vulnerabilidade](#para-jogadores-como-explorar-a-vulnerabilidade)
+	- [Para Devs: Como criar a imagem e o contêiner](#para-devs-como-criar-a-imagem-e-o-contêiner)
+	- [Para Jogadores: Como conectar-se ao cenário](#para-jogadores-como-conectar-se-ao-cenário)
+	- [Para Jogadores: Como explorar a vulnerabilidade](#para-jogadores-como-explorar-a-vulnerabilidade)
 
 ## Estrutura do Cenário
 Organização dos arquivos do cenário baseada na classificação da vulnerabilidade em foco no cenário:
 ```
 Cenarios do jogo/
 └── Linux Privilege Escalation/
-    └── Sudo Exploitation/
-        └── Shell Escaping/
-            └── Cenario 1 - Sudo with Less/
-                ├── Dockerfile
-                ├── entrypoint.sh
-                └── sudoers.bob
+	└── Sudo Exploitation/
+		└── Shell Escaping/
+			└── Cenario 1 - Sudo with Less/
+				├── Dockerfile
+				├── entrypoint.sh
+				└── sudoers.bob
 ```
 
 ### Arquivo ``Dockerfile``
@@ -35,12 +35,12 @@ FROM ubuntu:22.04
 
 # Instalar dependências
 RUN apt-get update && \
-    apt-get install -y sudo less openssh-server && \
-    mkdir /var/run/sshd
+	apt-get install -y sudo less openssh-server && \
+	mkdir /var/run/sshd
 
 # Criar usuário 'bob' e definir senha
 RUN useradd -m -s /bin/bash bob && \
-    echo 'bob:password' | chpasswd
+	echo 'bob:password' | chpasswd
 
 # Configurar sudoers para permitir less como root sem senha
 COPY sudoers.bob /etc/sudoers.d/bob
@@ -48,7 +48,7 @@ RUN chmod 0440 /etc/sudoers.d/bob
 
 # Configurar SSH
 RUN echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config && \
-    echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+	echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 
 # Copiar e configurar script de inicialização
 COPY entrypoint.sh /entrypoint.sh
@@ -94,28 +94,28 @@ cd Cenario 1 - Sudo with Less/
 docker build -t scenario-sudo-1-image -f Dockerfile .
 ```
 - Você pode confirmar a criação da imagem por meio do comando:
-    ```bash
-    docker images
-    ```
+	```bash
+	docker images
+	```
 - Caso a criação seja bem-sucedida, você deverá ver a seguinte linha na saída:
-    ```bash
-    REPOSITORY              TAG       IMAGE ID       CREATED       SIZE
-    scenario-sudo-1-image   latest    5b4e0b6f3160   9 days ago    253MB
-    ```
+	```bash
+	REPOSITORY              TAG       IMAGE ID       CREATED       SIZE
+	scenario-sudo-1-image   latest    5b4e0b6f3160   9 days ago    253MB
+	```
 
 3 - Crie o contêiner a partir da imagem e mapeie a porta 2222 do host para a porta 22 do contêiner:
 ```bash
 docker run -id --rm --name scenario-sudo-1-container -p 2222:22 scenario-sudo-1-image
 ```
 - Você pode confirmar a criação do contêiner por meio do comando:
-    ```bash
-    docker ps
-    ```
+	```bash
+	docker ps
+	```
 - Caso a criação seja bem-sucedida, você deverá ver a seguinte linha na saída:
-    ```bash
-    CONTAINER ID   IMAGE                   COMMAND            CREATED         STATUS         PORTS                                   NAMES
-    f278c16ce233   scenario-sudo-1-image   "/entrypoint.sh"   5 seconds ago   Up 2 seconds   0.0.0.0:2222->22/tcp, :::2222->22/tcp   scenario-sudo-1-container
-    ```
+	```bash
+	CONTAINER ID   IMAGE                   COMMAND            CREATED         STATUS         PORTS                                   NAMES
+	f278c16ce233   scenario-sudo-1-image   "/entrypoint.sh"   5 seconds ago   Up 2 seconds   0.0.0.0:2222->22/tcp, :::2222->22/tcp   scenario-sudo-1-container
+	```
 
 ### Para Jogadores: Como conectar-se ao cenário
 Acesse o cenário via SSH com as credenciais ``bob:password``
@@ -139,4 +139,4 @@ sudo less <any_filename>  # por exemplo: /etc/hosts
 !/bin/sh
 ```
 Parabéns, agora você tem acesso total ao sistema!
-    
+	

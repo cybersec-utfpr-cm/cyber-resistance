@@ -35,34 +35,17 @@ public partial class Bookshelf : Area2D
 
 	private void OpenBookshelf()
 	{
-		// Verifica a missão tutorial
 		int questStage = QuestManager.Instance.GetQuestStage("tutorial");
 		GD.Print($"Bookshelf: Estágio atual da missão 'tutorial': {questStage}");
 
-		// Se o estágio for 1 (após falar com tutor), avança para 2
-		if (questStage == 1)
-		{
-			QuestManager.Instance.SetQuestStage("tutorial", 2);
-			GD.Print("Bookshelf: Missão tutorial avançada! Estágio agora é 2.");
-		}
-
-		// Abre a UI do livro
-		if (BookshelfUIScene != null)
-		{
-			var ui = BookshelfUIScene.Instantiate<BookshelfUi>();
-			ui.BookId = BookId;
-			GameManager.Instance.UIContainer.AddChild(ui);
-		}
-		else
+		if (BookshelfUIScene == null)
 		{
 			GD.PrintErr("Bookshelf: BookshelfUIScene não atribuída.");
+			return;
 		}
-		// Avança a missão se necessário
-		int stage = QuestManager.Instance.GetQuestStage("tutorial");
-		if (stage == 2)
-		{
-			QuestManager.Instance.SetQuestStage("tutorial", 3);
-			GD.Print("Bookshelf: Missão tutorial avançada para estágio 3.");
-		}
+
+		var ui = BookshelfUIScene.Instantiate<BookshelfUi>();
+		ui.BookId = BookId;
+		GameManager.Instance.UIContainer.AddChild(ui);
 	}
 }

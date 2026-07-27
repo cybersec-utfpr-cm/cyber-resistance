@@ -20,6 +20,7 @@ public partial class InventoryManager : Node
 			_items[itemName] = amount;
 
 		GD.Print($"InventoryManager: Recebeu {amount}x {itemName}. Agora tem {_items[itemName]}");
+		SaveManager.Instance?.SaveGame();
 	}
 
 	public int GetItemCount(string itemName)
@@ -35,6 +36,7 @@ public partial class InventoryManager : Node
 		_items[itemName] -= amount;
 		if (_items[itemName] == 0)
 			_items.Remove(itemName);
+		SaveManager.Instance?.SaveGame();
 		return true;
 	}
 private int _experience = 0;
@@ -49,6 +51,7 @@ public void AddExperience(int amount)
 	_experience += amount;
 	GD.Print($"InventoryManager: recebeu {amount} XP. Total: {_experience} XP.");
 	EmitSignal(SignalName.InventoryChanged);
+	SaveManager.Instance?.SaveGame();
 }
 
 public int GetExperience()
@@ -63,9 +66,36 @@ public void AddCredits(int amount)
 	_credits += amount;
 	GD.Print($"InventoryManager: recebeu {amount} créditos. Total: {_credits} créditos.");
 	EmitSignal(SignalName.InventoryChanged);
+	SaveManager.Instance?.SaveGame();
 }
 
 public int GetCredits()
 {
 	return _credits;
-}}
+}
+	public Dictionary<string, int> GetItemsSnapshot()
+	{
+		return new Dictionary<string, int>(_items);
+	}
+
+	public void RestoreState(
+		Dictionary<string, int> items,
+		int experience,
+		int credits
+	)
+	{
+		_items.Clear();
+
+		if (items != null)
+		{
+			foreach (var item in items)
+			{
+				if (!string.IsNullOrWhiteSpace(item.Key) && item.Value > 0)
+					_items[item.Key] = item.Value;
+			}
+		}
+
+		_experience = System.Math.Max(0, experience);
+		_credits = System.Math.Max(0, credits);
+	}
+}
