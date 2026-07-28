@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+using System.Linq;
 
 // Carrega books.json e disponibiliza os dados.
 public partial class BookManager : Node
@@ -43,7 +44,13 @@ public partial class BookManager : Node
 			var book = new Book
 			{
 				Id = bookDict["id"].AsString(),
-				Title = bookDict["title"].AsString()
+				Title = bookDict["title"].AsString(),
+				AvailableFromStart =
+					bookDict.ContainsKey("available_from_start") &&
+					bookDict["available_from_start"].AsBool(),
+				UnlockItemId = bookDict.ContainsKey("unlock_item")
+					? bookDict["unlock_item"].AsString()
+					: ""
 			};
 
 			var chaptersArray = bookDict["chapters"].AsGodotArray();
@@ -68,12 +75,40 @@ public partial class BookManager : Node
 	{
 		return _books.ContainsKey(bookId) ? _books[bookId] : null;
 	}
+
+	public List<Book> GetAvailableBooks()
+	{
+		return _books.Values
+			.Where(IsBookAvailable)
+			.ToList();
+	}
+
+	public bool IsBookAvailable(Book book)
+	{
+		if (book == null)
+			return false;
+
+		if (book.AvailableFromStart || book.Id == "intro_cybersecurity")
+			return true;
+
+		if (
+			string.IsNullOrWhiteSpace(book.UnlockItemId) ||
+			InventoryManager.Instance == null
+		)
+		{
+			return false;
+		}
+
+		return InventoryManager.Instance.GetItemCount(book.UnlockItemId) > 0;
+	}
 }
 
 public class Book
 {
 	public string Id { get; set; }
 	public string Title { get; set; }
+	public bool AvailableFromStart { get; set; }
+	public string UnlockItemId { get; set; }
 	public List<Chapter> Chapters { get; set; } = new();
 }
 

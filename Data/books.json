@@ -3,6 +3,7 @@
 	{
 	  "id": "intro_cybersecurity",
 	  "title": "Introdução à Cibersegurança",
+	  "available_from_start": true,
 	  "chapters": [
 		{
 		  "id": "chap1",
@@ -22,6 +23,34 @@
 		  "id": "chap3",
 		  "title": "Conceitos Básicos de Segurança",
 		  "content": "Phishing: técnica de engenharia social... \nAutenticação de dois fatores: adiciona uma camada extra... \nSenhas seguras: use combinações longas e aleatórias...",
+		  "unlock_condition": "",
+		  "on_read": ""
+		}
+	  ]
+	},
+	{
+	  "id": "manual_cyber_basico",
+	  "title": "Manual básico de cibersegurança",
+	  "unlock_item": "manual_cyber_basico",
+	  "chapters": [
+		{
+		  "id": "defense_layers",
+		  "title": "Defesa em camadas",
+		  "content": "A proteção de um sistema não deve depender de uma única barreira. Atualizações, antivírus, firewall, autenticação e cópias de segurança trabalham em conjunto para reduzir riscos.",
+		  "unlock_condition": "",
+		  "on_read": ""
+		},
+		{
+		  "id": "passwords_authentication",
+		  "title": "Senhas e autenticação",
+		  "content": "Use senhas longas e diferentes para cada serviço. Sempre que possível, ative a autenticação em dois fatores e nunca compartilhe códigos temporários.",
+		  "unlock_condition": "",
+		  "on_read": ""
+		},
+		{
+		  "id": "safe_wifi",
+		  "title": "Wi-Fi seguro",
+		  "content": "Confirme o nome da rede antes de conectar, evite transmitir dados sensíveis em redes desconhecidas e mantenha o roteador protegido com criptografia e uma senha forte.",
 		  "unlock_condition": "",
 		  "on_read": ""
 		}

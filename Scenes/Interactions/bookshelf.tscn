@@ -2,31 +2,34 @@
 
 [ext_resource type="Script" uid="uid://do314hoaq5nr0" path="res://Scripts/Interactions/Bookshelf.cs" id="1_dnqco"]
 [ext_resource type="PackedScene" uid="uid://bn524u4afttki" path="res://Scenes/Interfaces/bookshelf_ui.tscn" id="2_f3bu2"]
-
-[sub_resource type="ExternalTexture" id="ExternalTexture_dnqco"]
+[ext_resource type="Texture2D" uid="uid://ba2gmn1n1hxry" path="res://Assets/Environment/Furniture/bookshelf_top_down.png" id="3_shelf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6armw"]
-size = Vector2(74, 50)
+size = Vector2(76, 54)
 
 [node name="Bookshelf" type="Area2D"]
+z_index = 6
 script = ExtResource("1_dnqco")
 BookshelfUIScene = ExtResource("2_f3bu2")
 
-[node name="Label" type="Label" parent="."]
-z_index = 7
-offset_left = -32.0
-offset_top = -8.0
-offset_right = 36.0
-offset_bottom = 15.0
-text = "ESTANTE"
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(3.8147e-06, 0)
-scale = Vector2(0.3125, 0.1875)
-texture = SubResource("ExternalTexture_dnqco")
+z_index = -1
+texture_filter = 1
+texture = ExtResource("3_shelf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_6armw")
 
-[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
-[connection signal="body_exited" from="." to="." method="OnBodyExited"]
+[node name="InteractHint" type="Label" parent="."]
+visible = false
+z_index = 1
+offset_left = -24.0
+offset_top = -42.0
+offset_right = 24.0
+offset_bottom = -30.0
+theme_override_colors/font_color = Color(0.65, 0.94, 0.9, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.03, 0.05, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 6
+text = "E  ABRIR"
+horizontal_alignment = 1

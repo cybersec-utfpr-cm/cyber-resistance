@@ -6,6 +6,9 @@ public partial class Computer : Control
 	private Control _terminal;
 	private Control _settings;
 	private Control _wifi;
+	private QuestLogUi _questLog;
+	private bool _questLogWasCollapsed;
+	private bool _questLogStateCaptured;
 
 	public override void _Ready()
 	{
@@ -13,6 +16,17 @@ public partial class Computer : Control
 		_terminal = GetNode<Control>("Screens/Terminal");
 		_settings = GetNode<Control>("Screens/Settings");
 		_wifi = GetNode<Control>("Screens/WiFi");
+
+		_questLog =
+			GetTree().GetFirstNodeInGroup("quest_log_ui") as QuestLogUi;
+
+		if (_questLog != null)
+		{
+			_questLogWasCollapsed = _questLog.IsCollapsed;
+			_questLogStateCaptured = true;
+			_questLog.SetCollapsed(true);
+		}
+
 		// Inicia com o desktop visível
 		ShowScreen(_desktop);
 	}
@@ -35,7 +49,27 @@ public partial class Computer : Control
 
 	public void ExitComputer()
 	{
+		RestoreQuestLogState();
 		GetTree().Paused = false;
 		QueueFree();
+	}
+
+	public override void _ExitTree()
+	{
+		RestoreQuestLogState();
+	}
+
+	private void RestoreQuestLogState()
+	{
+		if (
+			!_questLogStateCaptured ||
+			!GodotObject.IsInstanceValid(_questLog)
+		)
+		{
+			return;
+		}
+
+		_questLog.SetCollapsed(_questLogWasCollapsed);
+		_questLogStateCaptured = false;
 	}
 }

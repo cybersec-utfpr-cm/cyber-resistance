@@ -1,4 +1,10 @@
-[gd_scene format=3 uid="uid://dfi3vm7off6lc"]
+[gd_scene load_steps=6 format=3 uid="uid://dfi3vm7off6lc"]
+
+[ext_resource type="Script" uid="uid://cga4oaw6yc800" path="res://Scripts/Computer/WiFiScreen.cs" id="1_wifi"]
+[ext_resource type="Script" uid="uid://ds0t3054jmeo" path="res://Scripts/Computer/Anagram.cs" id="2_anagram"]
+[ext_resource type="Texture2D" uid="uid://dxpvywouifrtk" path="res://Assets/Environment/Computer/left_arrow.png" id="3_back"]
+[ext_resource type="Texture2D" uid="uid://b20edervi6ixt" path="res://Assets/Environment/Computer/Icons/wifi_icon.png" id="4_wifi_icon"]
+[ext_resource type="Theme" path="res://Resources/Themes/computer_theme.tres" id="5_theme"]
 
 [node name="WiFiScreen" type="Control"]
 layout_mode = 3
@@ -7,32 +13,217 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("5_theme")
+script = ExtResource("1_wifi")
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 88.0
-offset_top = 48.0
-offset_right = 128.0
-offset_bottom = 71.0
-text = "Redes wi-fi"
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.02, 0.035, 0.055, 0.94)
 
-[node name="NetworkList" type="ItemList" parent="."]
-layout_mode = 0
-offset_left = 48.0
-offset_top = 88.0
-offset_right = 712.0
-offset_bottom = 352.0
+[node name="Header" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 64.0
+grow_horizontal = 2
+theme_type_variation = &"HeaderPanel"
 
-[node name="ConnectButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 528.0
-offset_top = 120.0
-offset_right = 584.0
-offset_bottom = 152.0
+[node name="HeaderMargin" type="MarginContainer" parent="Header"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 8
 
-[node name="StatusLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 272.0
-offset_top = 320.0
-offset_right = 312.0
-offset_bottom = 343.0
+[node name="HeaderRow" type="HBoxContainer" parent="Header/HeaderMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="BackIconBt" type="Button" parent="Header/HeaderMargin/HeaderRow"]
+custom_minimum_size = Vector2(48, 44)
+layout_mode = 2
+tooltip_text = "Voltar às configurações"
+icon = ExtResource("3_back")
+flat = true
+expand_icon = true
+
+[node name="Title" type="Label" parent="Header/HeaderMargin/HeaderRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.89, 0.97, 1, 1)
+theme_override_font_sizes/font_size = 23
+text = "REDES E CONEXÕES"
+vertical_alignment = 1
+
+[node name="HeaderSpacer" type="Control" parent="Header/HeaderMargin/HeaderRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HeaderStatus" type="Label" parent="Header/HeaderMargin/HeaderRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.33, 0.85, 0.89, 1)
+theme_override_font_sizes/font_size = 15
+text = "WI-FI"
+vertical_alignment = 1
+
+[node name="ContentMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 84.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainContent" type="VBoxContainer" parent="ContentMargin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="PageTitle" type="Label" parent="ContentMargin/MainContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.93, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "Redes Wi-Fi disponíveis"
+
+[node name="InstructionLabel" type="Label" parent="ContentMargin/MainContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.56, 0.68, 0.74, 1)
+theme_override_font_sizes/font_size = 16
+text = "Selecione uma rede para visualizar os detalhes e iniciar a conexão."
+
+[node name="Columns" type="HBoxContainer" parent="ContentMargin/MainContent"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+
+[node name="NetworkPanel" type="PanelContainer" parent="ContentMargin/MainContent/Columns"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.2
+
+[node name="NetworkMargin" type="MarginContainer" parent="ContentMargin/MainContent/Columns/NetworkPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="NetworkContent" type="VBoxContainer" parent="ContentMargin/MainContent/Columns/NetworkPanel/NetworkMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SectionTitle" type="Label" parent="ContentMargin/MainContent/Columns/NetworkPanel/NetworkMargin/NetworkContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.86, 0.95, 0.98, 1)
+theme_override_font_sizes/font_size = 20
+text = "Redes encontradas"
+
+[node name="ScanStatus" type="Label" parent="ContentMargin/MainContent/Columns/NetworkPanel/NetworkMargin/NetworkContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.77, 0.83, 1)
+theme_override_font_sizes/font_size = 14
+text = "● 3 redes disponíveis"
+
+[node name="NetworkList" type="ItemList" parent="ContentMargin/MainContent/Columns/NetworkPanel/NetworkMargin/NetworkContent"]
+layout_mode = 2
+size_flags_vertical = 3
+allow_reselect = true
+
+[node name="DetailsPanel" type="PanelContainer" parent="ContentMargin/MainContent/Columns"]
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DetailsMargin" type="MarginContainer" parent="ContentMargin/MainContent/Columns/DetailsPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 22
+
+[node name="DetailsContent" type="VBoxContainer" parent="ContentMargin/MainContent/Columns/DetailsPanel/DetailsMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="SectionTitle" type="Label" parent="ContentMargin/MainContent/Columns/DetailsPanel/DetailsMargin/DetailsContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.86, 0.95, 0.98, 1)
+theme_override_font_sizes/font_size = 20
+text = "Detalhes da conexão"
+
+[node name="SelectedCaption" type="Label" parent="ContentMargin/MainContent/Columns/DetailsPanel/DetailsMargin/DetailsContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.59, 0.64, 1)
+theme_override_font_sizes/font_size = 14
+text = "REDE SELECIONADA"
+
+[node name="SelectedNetworkLabel" type="Label" parent="ContentMargin/MainContent/Columns/DetailsPanel/DetailsMargin/DetailsContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.99, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "Nenhuma rede"
+
+[node name="StatusCaption" type="Label" parent="ContentMargin/MainContent/Columns/DetailsPanel/DetailsMargin/DetailsContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.59, 0.64, 1)
+theme_override_font_sizes/font_size = 14
+text = "STATUS"
+
+[node name="StatusLabel" type="Label" parent="ContentMargin/MainContent/Columns/DetailsPanel/DetailsMargin/DetailsContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.58, 0.7, 0.75, 1)
+text = "Nenhuma rede conectada."
+autowrap_mode = 2
+
+[node name="DetailsSpacer" type="Control" parent="ContentMargin/MainContent/Columns/DetailsPanel/DetailsMargin/DetailsContent"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Anagram" type="VBoxContainer" parent="ContentMargin/MainContent/Columns/DetailsPanel/DetailsMargin/DetailsContent"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 10
+script = ExtResource("2_anagram")
+PossibleWords = Array[String](["CAFE_COM_LEITE", "COXINHA", "PAO_DE_QUEIJO", "PAO_DE_MEL", "BOLO_DE_MORANGO", "LEITE_COM_CHOCOLATE"])
+
+[node name="ChallengeTitle" type="Label" parent="ContentMargin/MainContent/Columns/DetailsPanel/DetailsMargin/DetailsContent/Anagram"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.33, 0.85, 0.89, 1)
+theme_override_font_sizes/font_size = 17
+text = "DESAFIO DE ACESSO"
+
+[node name="ScrambledLabel" type="Label" parent="ContentMargin/MainContent/Columns/DetailsPanel/DetailsMargin/DetailsContent/Anagram"]
+layout_mode = 2
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ContentMargin/MainContent/Columns/DetailsPanel/DetailsMargin/DetailsContent/Anagram"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+placeholder_text = "Digite a senha descoberta"
+
+[node name="TryButton" type="Button" parent="ContentMargin/MainContent/Columns/DetailsPanel/DetailsMargin/DetailsContent/Anagram"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Validar senha"
+
+[node name="MessageLabel" type="Label" parent="ContentMargin/MainContent/Columns/DetailsPanel/DetailsMargin/DetailsContent/Anagram"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+autowrap_mode = 2
+
+[node name="ConnectButton" type="Button" parent="ContentMargin/MainContent/Columns/DetailsPanel/DetailsMargin/DetailsContent"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+text = "Conectar"
+
+[connection signal="pressed" from="Header/HeaderMargin/HeaderRow/BackIconBt" to="." method="_on_back_icon_bt_pressed"]

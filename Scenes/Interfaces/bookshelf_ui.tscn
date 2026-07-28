@@ -1,45 +1,180 @@
-[gd_scene load_steps=2 format=3 uid="uid://bn524u4afttki"]
+[gd_scene load_steps=3 format=3 uid="uid://bn524u4afttki"]
 
 [ext_resource type="Script" uid="uid://ds2g6dcuylgw8" path="res://Scripts/Interfaces/BookshelfUi.cs" id="1_ybk56"]
+[ext_resource type="Theme" uid="uid://h80hjdphajyf" path="res://Resources/Themes/bookshelf_theme.tres" id="2_theme"]
 
-[node name="BookshelfUI" type="Panel"]
+[node name="BookshelfUI" type="Control"]
+process_mode = 3
+z_index = 100
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
+theme = ExtResource("2_theme")
 script = ExtResource("1_ybk56")
-BookId = "intro_cybersecurity"
-ChapterListPath = NodePath("ChapterList")
-ContentLabelPath = NodePath("ContentLabel")
-CloseButtonPath = NodePath("CloseButton")
+BookListPath = NodePath("ShelfPanel/PanelMargin/Content/Body/LibraryPanel/LibraryMargin/LibraryContent/BookScroll/BookList")
+ChapterListPath = NodePath("ShelfPanel/PanelMargin/Content/Body/Reader/ReaderContent/ReadingArea/ChapterPanel/ChapterMargin/ChapterContent/ChapterScroll/ChapterList")
+BookTitleLabelPath = NodePath("ShelfPanel/PanelMargin/Content/Body/Reader/ReaderContent/BookTitle")
+BookCountLabelPath = NodePath("ShelfPanel/PanelMargin/Content/Header/BookCount")
+ContentLabelPath = NodePath("ShelfPanel/PanelMargin/Content/Body/Reader/ReaderContent/ReadingArea/ContentLabel")
+CloseButtonPath = NodePath("ShelfPanel/PanelMargin/Content/Header/CloseButton")
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 144.0
-offset_top = 8.0
-offset_right = 360.0
-offset_bottom = 120.0
+[node name="DimBackground" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0.055, 0.025, 0.035, 0.9)
 
-[node name="ChapterList" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 144.0
-offset_right = 456.0
-offset_bottom = 296.0
+[node name="ShelfPanel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(1040, 600)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -520.0
+offset_top = -300.0
+offset_right = 520.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="ContentLabel" type="RichTextLabel" parent="."]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 344.0
-offset_right = 720.0
-offset_bottom = 696.0
+[node name="PanelMargin" type="MarginContainer" parent="ShelfPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
 
-[node name="CloseButton" type="Button" parent="."]
-self_modulate = Color(1, 0, 0, 1)
-layout_mode = 0
-offset_left = 720.0
-offset_top = 200.0
-offset_right = 912.0
-offset_bottom = 344.0
-text = "x"
+[node name="Content" type="VBoxContainer" parent="ShelfPanel/PanelMargin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Header" type="HBoxContainer" parent="ShelfPanel/PanelMargin/Content"]
+layout_mode = 2
+
+[node name="HeaderTitle" type="Label" parent="ShelfPanel/PanelMargin/Content/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.22, 0.095, 0.055, 1)
+theme_override_font_sizes/font_size = 24
+text = "ESTANTE DE CONHECIMENTO"
+
+[node name="BookCount" type="Label" parent="ShelfPanel/PanelMargin/Content/Header"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.43, 0.28, 0.19, 1)
+theme_override_font_sizes/font_size = 14
+text = "1 livro"
+
+[node name="HeaderSpacer" type="Control" parent="ShelfPanel/PanelMargin/Content/Header"]
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="ShelfPanel/PanelMargin/Content/Header"]
+custom_minimum_size = Vector2(92, 40)
+layout_mode = 2
+text = "Fechar"
+
+[node name="Divider" type="HSeparator" parent="ShelfPanel/PanelMargin/Content"]
+layout_mode = 2
+
+[node name="Body" type="HBoxContainer" parent="ShelfPanel/PanelMargin/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="LibraryPanel" type="PanelContainer" parent="ShelfPanel/PanelMargin/Content/Body"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="LibraryMargin" type="MarginContainer" parent="ShelfPanel/PanelMargin/Content/Body/LibraryPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="LibraryContent" type="VBoxContainer" parent="ShelfPanel/PanelMargin/Content/Body/LibraryPanel/LibraryMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LibraryTitle" type="Label" parent="ShelfPanel/PanelMargin/Content/Body/LibraryPanel/LibraryMargin/LibraryContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.46, 0.16, 0.12, 1)
+theme_override_font_sizes/font_size = 14
+text = "LIVROS DESBLOQUEADOS"
+
+[node name="BookScroll" type="ScrollContainer" parent="ShelfPanel/PanelMargin/Content/Body/LibraryPanel/LibraryMargin/LibraryContent"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="BookList" type="VBoxContainer" parent="ShelfPanel/PanelMargin/Content/Body/LibraryPanel/LibraryMargin/LibraryContent/BookScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Reader" type="MarginContainer" parent="ShelfPanel/PanelMargin/Content/Body"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ReaderContent" type="VBoxContainer" parent="ShelfPanel/PanelMargin/Content/Body/Reader"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="BookTitle" type="Label" parent="ShelfPanel/PanelMargin/Content/Body/Reader/ReaderContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.22, 0.095, 0.055, 1)
+theme_override_font_sizes/font_size = 21
+text = "Livro"
+autowrap_mode = 2
+
+[node name="ReadingArea" type="HBoxContainer" parent="ShelfPanel/PanelMargin/Content/Body/Reader/ReaderContent"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 14
+
+[node name="ChapterPanel" type="PanelContainer" parent="ShelfPanel/PanelMargin/Content/Body/Reader/ReaderContent/ReadingArea"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+
+[node name="ChapterMargin" type="MarginContainer" parent="ShelfPanel/PanelMargin/Content/Body/Reader/ReaderContent/ReadingArea/ChapterPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="ChapterContent" type="VBoxContainer" parent="ShelfPanel/PanelMargin/Content/Body/Reader/ReaderContent/ReadingArea/ChapterPanel/ChapterMargin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ChapterTitle" type="Label" parent="ShelfPanel/PanelMargin/Content/Body/Reader/ReaderContent/ReadingArea/ChapterPanel/ChapterMargin/ChapterContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.46, 0.16, 0.12, 1)
+theme_override_font_sizes/font_size = 13
+text = "CAPÍTULOS"
+
+[node name="ChapterScroll" type="ScrollContainer" parent="ShelfPanel/PanelMargin/Content/Body/Reader/ReaderContent/ReadingArea/ChapterPanel/ChapterMargin/ChapterContent"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ChapterList" type="VBoxContainer" parent="ShelfPanel/PanelMargin/Content/Body/Reader/ReaderContent/ReadingArea/ChapterPanel/ChapterMargin/ChapterContent/ChapterScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 7
+
+[node name="ContentLabel" type="RichTextLabel" parent="ShelfPanel/PanelMargin/Content/Body/Reader/ReaderContent/ReadingArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "Selecione um capítulo ao lado para começar a leitura."

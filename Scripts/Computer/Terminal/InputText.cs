@@ -1,9 +1,30 @@
 using Godot;
 using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 public partial class InputText : TextEdit
 {
+        private static readonly Regex OscSequence = new(
+                @"\x1B\][^\x07\x1B]*(?:\x07|\x1B\\)",
+                RegexOptions.Compiled
+        );
+
+        private static readonly Regex VisibleShellSequence = new(
+                @"\]3008;[^\x07\r\n]*?(?:\x07|\\)",
+                RegexOptions.Compiled
+        );
+
+        private static readonly Regex CsiSequence = new(
+                @"\x1B\[[0-?]*[ -/]*[@-~]",
+                RegexOptions.Compiled
+        );
+
+        private static readonly Regex UnsupportedControlCharacters = new(
+                @"[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]",
+                RegexOptions.Compiled
+        );
+
         [Export] public string terminalHost = "127.0.0.1";
         [Export] public int terminalPort = 5000;
         [Export] public string terminalUsername = "player";
@@ -30,24 +51,25 @@ public partial class InputText : TextEdit
         {
                 outputText = GetNode<RichTextLabel>("../OutputText");
 
-                connectionOverlay = GetNodeOrNull<Control>(
-                        "../../../ConnectionOverlay"
+                Computer computer = FindComputer();
+
+                connectionOverlay =
+                        computer?.GetNodeOrNull<Control>("ConnectionOverlay");
+
+                statusLabel = connectionOverlay?.GetNodeOrNull<Label>(
+                        "Center/Panel/Content/StatusLabel"
                 );
 
-                statusLabel = GetNodeOrNull<Label>(
-                        "../../../ConnectionOverlay/Content/StatusLabel"
+                detailLabel = connectionOverlay?.GetNodeOrNull<Label>(
+                        "Center/Panel/Content/DetailLabel"
                 );
 
-                detailLabel = GetNodeOrNull<Label>(
-                        "../../../ConnectionOverlay/Content/DetailLabel"
+                retryButton = connectionOverlay?.GetNodeOrNull<Button>(
+                        "Center/Panel/Content/Buttons/RetryButton"
                 );
 
-                retryButton = GetNodeOrNull<Button>(
-                        "../../../ConnectionOverlay/Content/Buttons/RetryButton"
-                );
-
-                exitButton = GetNodeOrNull<Button>(
-                        "../../../ConnectionOverlay/Content/Buttons/ExitButton"
+                exitButton = connectionOverlay?.GetNodeOrNull<Button>(
+                        "Center/Panel/Content/Buttons/ExitButton"
                 );
 
                 if (retryButton != null)
@@ -260,7 +282,7 @@ public partial class InputText : TextEdit
 
         private void ExitComputer()
         {
-                var computer = GetNodeOrNull<Computer>("../../..");
+                Computer computer = FindComputer();
 
                 if (computer != null)
                 {
@@ -282,7 +304,41 @@ public partial class InputText : TextEdit
         private void AppendOutput(string output)
         {
                 Log.Info("InputText: saída do comando adicionada.");
-                outputText.AppendText(output);
+                outputText.AppendText(SanitizeTerminalOutput(output));
+        }
+
+        private static string SanitizeTerminalOutput(string output)
+        {
+                if (string.IsNullOrEmpty(output))
+                        return string.Empty;
+
+                string sanitized = OscSequence.Replace(output, string.Empty);
+                sanitized = VisibleShellSequence.Replace(
+                        sanitized,
+                        string.Empty
+                );
+                sanitized = CsiSequence.Replace(sanitized, string.Empty);
+                sanitized = UnsupportedControlCharacters.Replace(
+                        sanitized,
+                        string.Empty
+                );
+
+                return sanitized;
+        }
+
+        private Computer FindComputer()
+        {
+                Node current = this;
+
+                while (current != null)
+                {
+                        if (current is Computer computer)
+                                return computer;
+
+                        current = current.GetParent();
+                }
+
+                return null;
         }
 
         private void ProcessCommand(string command)

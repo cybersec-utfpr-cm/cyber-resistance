@@ -1,18 +1,139 @@
-[gd_scene load_steps=2 format=3 uid="uid://cxj07myf77lf6"]
+[gd_scene load_steps=4 format=3 uid="uid://cxj07myf77lf6"]
 
 [ext_resource type="Script" uid="uid://cinvkfus80ope" path="res://Scripts/Interfaces/QuestLogUi.cs" id="1_8v534"]
+[ext_resource type="Theme" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
 
-[node name="QuestLogUI" type="CanvasLayer"]
+[sub_resource type="StyleBoxFlat" id="StyleHudCompact"]
+bg_color = Color(0.047, 0.075, 0.11, 0.96)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.16, 0.28, 0.38, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="QuestLogUI" type="CanvasLayer" groups=["quest_log_ui"]]
+process_mode = 3
 layer = 10
 script = ExtResource("1_8v534")
-QuestListContainerPath = NodePath("Panel/QuestList")
+QuestListContainerPath = NodePath("Root/Dock/Panel/PanelMargin/Scroll/QuestList")
+PanelPath = NodePath("Root/Dock/Panel")
+ToggleButtonPath = NodePath("Root/Dock/ToggleButton")
+LevelLabelPath = NodePath("Root/PlayerHud/HudMargin/HudRow/LevelBlock/LevelLabel")
+ExperienceLabelPath = NodePath("Root/PlayerHud/HudMargin/HudRow/ExperienceBlock/ExperienceLabel")
+ExperienceBarPath = NodePath("Root/PlayerHud/HudMargin/HudRow/ExperienceBlock/ExperienceBar")
+CreditsLabelPath = NodePath("Root/PlayerHud/HudMargin/HudRow/CreditsLabel")
+StartCollapsed = true
 
-[node name="Panel" type="Panel" parent="."]
-layout_direction = 3
-offset_right = 384.0
-offset_bottom = 192.0
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_theme")
 
-[node name="QuestList" type="VBoxContainer" parent="Panel"]
-layout_mode = 0
-offset_right = 384.0
-offset_bottom = 192.0
+[node name="PlayerHud" type="PanelContainer" parent="Root"]
+custom_minimum_size = Vector2(286, 44)
+layout_mode = 1
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 296.0
+offset_bottom = 54.0
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleHudCompact")
+
+[node name="HudMargin" type="MarginContainer" parent="Root/PlayerHud"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="HudRow" type="HBoxContainer" parent="Root/PlayerHud/HudMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LevelBlock" type="VBoxContainer" parent="Root/PlayerHud/HudMargin/HudRow"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="LevelLabel" type="Label" parent="Root/PlayerHud/HudMargin/HudRow/LevelBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.84, 0.55, 1)
+theme_override_font_sizes/font_size = 12
+text = "NÍVEL 1"
+
+[node name="PlayerLabel" type="Label" parent="Root/PlayerHud/HudMargin/HudRow/LevelBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.59, 0.64, 1)
+theme_override_font_sizes/font_size = 8
+text = "AGENTE"
+
+[node name="ExperienceBlock" type="VBoxContainer" parent="Root/PlayerHud/HudMargin/HudRow"]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="ExperienceLabel" type="Label" parent="Root/PlayerHud/HudMargin/HudRow/ExperienceBlock"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "XP 0"
+
+[node name="ExperienceBar" type="ProgressBar" parent="Root/PlayerHud/HudMargin/HudRow/ExperienceBlock"]
+custom_minimum_size = Vector2(90, 6)
+layout_mode = 2
+max_value = 250.0
+show_percentage = false
+
+[node name="CreditsLabel" type="Label" parent="Root/PlayerHud/HudMargin/HudRow"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.96, 0.78, 0.3, 1)
+theme_override_font_sizes/font_size = 11
+text = "MOEDAS 0"
+
+[node name="Dock" type="VBoxContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -228.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 290.0
+grow_horizontal = 0
+mouse_filter = 1
+theme_override_constants/separation = 6
+
+[node name="ToggleButton" type="Button" parent="Root/Dock"]
+custom_minimum_size = Vector2(218, 32)
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Missões"
+alignment = 0
+
+[node name="Panel" type="PanelContainer" parent="Root/Dock"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PanelMargin" type="MarginContainer" parent="Root/Dock/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Scroll" type="ScrollContainer" parent="Root/Dock/Panel/PanelMargin"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="QuestList" type="VBoxContainer" parent="Root/Dock/Panel/PanelMargin/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6

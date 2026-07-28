@@ -1,33 +1,167 @@
-[gd_scene load_steps=2 format=3 uid="uid://dvdugi2b2grwx"]
+[gd_scene load_steps=5 format=3 uid="uid://dvdugi2b2grwx"]
 
 [ext_resource type="Script" uid="uid://d1tvppm5tc3ld" path="res://Scripts/Interfaces/QuizUi.cs" id="1_blv04"]
+[ext_resource type="Theme" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
 
-[node name="QuizUI" type="Panel"]
-offset_right = 40.0
-offset_bottom = 40.0
+[sub_resource type="StyleBoxFlat" id="StyleQuizPanel"]
+bg_color = Color(0.035, 0.055, 0.085, 0.985)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.22, 0.72, 0.78, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.65)
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleQuestionCard"]
+bg_color = Color(0.025, 0.04, 0.065, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.13, 0.32, 0.42, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="QuizUI" type="CanvasLayer"]
+process_mode = 3
+layer = 100
 script = ExtResource("1_blv04")
-TitleLabelPath = NodePath("VBoxContainer/TitleLabels")
-QuestionLabelPath = NodePath("VBoxContainer/QuestionLabel")
-OptionsContainerPath = NodePath("VBoxContainer/OptionsContainer")
-AnswerButtonPath = NodePath("VBoxContainer/AnswerButton")
-CloseButtonPath = NodePath("VBoxContainer/CloseButton")
+TitleLabelPath = NodePath("Root/QuizPanel/PanelMargin/Content/Header/TitleBlock/Title")
+ProgressLabelPath = NodePath("Root/QuizPanel/PanelMargin/Content/Header/TitleBlock/Progress")
+QuestionLabelPath = NodePath("Root/QuizPanel/PanelMargin/Content/QuestionCard/QuestionMargin/Question")
+OptionsContainerPath = NodePath("Root/QuizPanel/PanelMargin/Content/Options")
+FeedbackLabelPath = NodePath("Root/QuizPanel/PanelMargin/Content/Feedback")
+AnswerButtonPath = NodePath("Root/QuizPanel/PanelMargin/Content/Footer/AnswerButton")
+CloseButtonPath = NodePath("Root/QuizPanel/PanelMargin/Content/Header/CloseButton")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme = ExtResource("2_theme")
 
-[node name="TitleLabels" type="Label" parent="VBoxContainer"]
+[node name="DimBackground" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0.01, 0.015, 0.028, 0.88)
+
+[node name="QuizPanel" type="PanelContainer" parent="Root"]
+custom_minimum_size = Vector2(700, 520)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = -260.0
+offset_right = 350.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleQuizPanel")
+
+[node name="PanelMargin" type="MarginContainer" parent="Root/QuizPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 22
+
+[node name="Content" type="VBoxContainer" parent="Root/QuizPanel/PanelMargin"]
+layout_mode = 2
+theme_override_constants/separation = 13
+
+[node name="Header" type="HBoxContainer" parent="Root/QuizPanel/PanelMargin/Content"]
 layout_mode = 2
 
-[node name="QuestionLabel" type="Label" parent="VBoxContainer"]
+[node name="TitleBlock" type="VBoxContainer" parent="Root/QuizPanel/PanelMargin/Content/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="Progress" type="Label" parent="Root/QuizPanel/PanelMargin/Content/Header/TitleBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.33, 0.82, 0.87, 1)
+theme_override_font_sizes/font_size = 13
+text = "QUESTÃO 1 DE 10"
+
+[node name="Title" type="Label" parent="Root/QuizPanel/PanelMargin/Content/Header/TitleBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.92, 0.97, 0.99, 1)
+theme_override_font_sizes/font_size = 23
+text = "Avaliação de cibersegurança"
+
+[node name="CloseButton" type="Button" parent="Root/QuizPanel/PanelMargin/Content/Header"]
+custom_minimum_size = Vector2(86, 36)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Fechar"
+
+[node name="Divider" type="HSeparator" parent="Root/QuizPanel/PanelMargin/Content"]
 layout_mode = 2
 
-[node name="OptionsContainer" type="VBoxContainer" parent="VBoxContainer"]
+[node name="QuestionCard" type="PanelContainer" parent="Root/QuizPanel/PanelMargin/Content"]
+custom_minimum_size = Vector2(0, 76)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleQuestionCard")
 
-[node name="AnswerButton" type="Button" parent="VBoxContainer"]
+[node name="QuestionMargin" type="MarginContainer" parent="Root/QuizPanel/PanelMargin/Content/QuestionCard"]
 layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
 
-[node name="CloseButton" type="Button" parent="VBoxContainer"]
+[node name="Question" type="Label" parent="Root/QuizPanel/PanelMargin/Content/QuestionCard/QuestionMargin"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.96, 0.98, 1)
+theme_override_font_sizes/font_size = 19
+text = "Pergunta"
+autowrap_mode = 2
+vertical_alignment = 1
+
+[node name="Instruction" type="Label" parent="Root/QuizPanel/PanelMargin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.59, 0.64, 1)
+theme_override_font_sizes/font_size = 12
+text = "Selecione uma alternativa e confirme sua resposta."
+
+[node name="Options" type="VBoxContainer" parent="Root/QuizPanel/PanelMargin/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="Feedback" type="Label" parent="Root/QuizPanel/PanelMargin/Content"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = ""
+autowrap_mode = 2
+
+[node name="Footer" type="HBoxContainer" parent="Root/QuizPanel/PanelMargin/Content"]
+layout_mode = 2
+alignment = 2
+
+[node name="AnswerButton" type="Button" parent="Root/QuizPanel/PanelMargin/Content/Footer"]
+custom_minimum_size = Vector2(190, 42)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+disabled = true
+text = "Responder"

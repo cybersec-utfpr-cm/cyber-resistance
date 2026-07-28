@@ -7,6 +7,7 @@ public partial class QuizManager : Node
 	public static QuizManager Instance { get; private set; }
 
 	private Dictionary<string, Quiz> _quizzes = new();
+	private QuizUi _activeQuizUi;
 
 	public override void _EnterTree() => Instance = this;
 
@@ -74,6 +75,16 @@ public partial class QuizManager : Node
 
 	public void StartQuiz(string quizId)
 	{
+		if (
+			_activeQuizUi != null &&
+			GodotObject.IsInstanceValid(_activeQuizUi) &&
+			!_activeQuizUi.IsQueuedForDeletion()
+		)
+		{
+			GD.Print("QuizManager: já existe um quiz aberto.");
+			return;
+		}
+
 		var quiz = GetQuiz(quizId);
 		if (quiz == null)
 		{
@@ -82,9 +93,23 @@ public partial class QuizManager : Node
 		}
 
 		var quizUIScene = GD.Load<PackedScene>("res://Scenes/Interfaces/quiz_ui.tscn");
+
+		if (quizUIScene == null)
+		{
+			GD.PrintErr("QuizManager: cena da interface não encontrada.");
+			return;
+		}
+
 		var quizUI = quizUIScene.Instantiate<QuizUi>();
-		GameManager.Instance.UIContainer.AddChild(quizUI);
-		quizUI.SetQuiz(quiz); // chamado após adicionar à árvore
+		_activeQuizUi = quizUI;
+		quizUI.TreeExited += OnQuizUiClosed;
+		AddChild(quizUI);
+		quizUI.SetQuiz(quiz);
+	}
+
+	private void OnQuizUiClosed()
+	{
+		_activeQuizUi = null;
 	}
 	
 	public Quiz GetRandomQuestions(string quizId, int count)
