@@ -2,27 +2,55 @@
   "books": [
 	{
 	  "id": "intro_cybersecurity",
-	  "title": "Introdução à Cibersegurança",
+	  "title": "Fundamentos de Cibersegurança",
 	  "available_from_start": true,
 	  "chapters": [
 		{
 		  "id": "chap1",
 		  "title": "Comandos Básicos",
-		  "content": "Aqui você aprenderá os comandos fundamentais do sistema. [Explicação]",
+		  "content": "[b]Objetivo:[/b] entender o que é um comando e usá-lo sem colocar o sistema em risco.\n\nUm terminal permite controlar o computador por meio de instruções escritas, chamadas [b]comandos[/b]. Cada comando solicita uma ação específica: consultar informações, abrir recursos, alterar configurações ou executar programas.\n\nComandos exigem atenção porque o computador executa exatamente o que foi solicitado. Uma instrução copiada de uma fonte desconhecida pode modificar arquivos, instalar um programa malicioso ou expor informações.\n\n[b]Antes de executar um comando, verifique:[/b]\n• De onde ele veio;\n• Qual ação ele realiza;\n• Quais arquivos ou configurações serão afetados;\n• Se ele solicita permissões elevadas;\n• Se existe uma forma segura de desfazer a alteração.\n\nDurante o jogo, leia as instruções apresentadas pelo terminal, digite os comandos exatamente como foram orientados e observe a resposta exibida. Se surgir um erro, leia a mensagem antes de tentar novamente.\n\n[b]Regra principal:[/b] nunca execute um comando que você não compreende apenas porque alguém pediu.",
 		  "unlock_condition": "",
 		  "on_read": ""
 		},
 		{
 		  "id": "chap2",
 		  "title": "Acessando o Computador",
-		  "content": "Para acessar o computador, basta se aproximar e pressionar a tecla E.",
+		  "content": "[b]No jogo:[/b] aproxime-se do computador e pressione a tecla E para acessá-lo.\n\nEm um sistema real, acessar um computador envolve dois conceitos diferentes:\n\n[b]Autenticação[/b] é a verificação da identidade do usuário. Uma senha, um código temporário ou uma característica biométrica podem ser usados para provar quem está tentando entrar.\n\n[b]Autorização[/b] define o que o usuário autenticado pode fazer. Uma pessoa pode ter permissão para consultar um arquivo, mas não para alterá-lo ou apagá-lo.\n\nContas individuais ajudam a limitar permissões e a identificar as ações realizadas. Compartilhar uma conta ou uma senha elimina parte desse controle.\n\n[b]Boas práticas:[/b]\n• Use apenas sua própria conta;\n• Bloqueie a tela ao se afastar;\n• Não compartilhe senhas nem códigos de acesso;\n• Evite utilizar uma conta administrativa em tarefas comuns;\n• Encerre a sessão em computadores compartilhados.\n\n[b]Lembre-se:[/b] estar autenticado não significa ter permissão para realizar qualquer ação.",
 		  "unlock_condition": "",
 		  "on_read": ""
 		},
 		{
 		  "id": "chap3",
-		  "title": "Conceitos Básicos de Segurança",
-		  "content": "Phishing: técnica de engenharia social... \nAutenticação de dois fatores: adiciona uma camada extra... \nSenhas seguras: use combinações longas e aleatórias...",
+		  "title": "O que a Cibersegurança Protege",
+		  "content": "[b]Cibersegurança[/b] é o conjunto de práticas usadas para proteger informações, dispositivos, redes e serviços contra acesso, alteração, interrupção ou destruição indevidos.\n\nA proteção da informação costuma ser explicada por três objetivos:\n\n[b]Confidencialidade[/b]\nSomente pessoas autorizadas devem acessar a informação. Uma senha exposta ou um arquivo sigiloso enviado à pessoa errada prejudicam a confidencialidade.\n\n[b]Integridade[/b]\nA informação deve permanecer correta e não pode ser alterada sem autorização. A modificação indevida de uma nota, de um cadastro ou de um resultado compromete a integridade.\n\n[b]Disponibilidade[/b]\nA informação e o serviço devem estar acessíveis quando forem necessários. Uma falha que deixa um sistema indisponível prejudica a disponibilidade.\n\n[b]Exemplo:[/b] em um sistema acadêmico, as notas devem ser vistas apenas por pessoas autorizadas, permanecer corretas e estar disponíveis no período de consulta. Proteger apenas um desses aspectos não é suficiente.\n\n[b]Resumo:[/b] confidencialidade controla quem pode ver; integridade protege contra alterações indevidas; disponibilidade garante acesso no momento necessário.",
+		  "unlock_condition": "",
+		  "on_read": ""
+		},
+		{
+		  "id": "chap4",
+		  "title": "Ameaça, Vulnerabilidade e Risco",
+		  "content": "Esses três termos estão relacionados, mas não significam a mesma coisa.\n\n[b]Ameaça[/b] é algo que pode causar dano. Pode ser uma pessoa mal-intencionada, um programa malicioso, uma falha de energia ou um erro humano.\n\n[b]Vulnerabilidade[/b] é uma fraqueza que pode ser explorada. Um sistema desatualizado, uma senha previsível ou uma configuração incorreta são exemplos.\n\n[b]Risco[/b] considera a possibilidade de uma ameaça explorar uma vulnerabilidade e o impacto que isso causaria.\n\n[b]Exemplo:[/b]\n• Ameaça: alguém tenta invadir uma conta;\n• Vulnerabilidade: a conta usa uma senha curta e reutilizada;\n• Risco: o invasor obtém acesso e consulta ou altera informações.\n\nUma medida de segurança é chamada de [b]controle[/b]. Atualizações, autenticação multifator, backups e limitação de permissões são controles que reduzem a probabilidade ou o impacto de um incidente.\n\nNenhum controle elimina todos os riscos. Por isso, a segurança combina prevenção, detecção, resposta e recuperação.",
+		  "unlock_condition": "",
+		  "on_read": ""
+		},
+		{
+		  "id": "chap5",
+		  "title": "Phishing e Engenharia Social",
+		  "content": "[b]Engenharia social[/b] é a manipulação de pessoas para obter informações, acesso ou alguma ação. O atacante explora confiança, medo, curiosidade, autoridade ou pressa.\n\n[b]Phishing[/b] é uma forma de engenharia social. A mensagem tenta parecer legítima para induzir a vítima a abrir um arquivo, acessar um link, informar credenciais ou enviar dinheiro.\n\n[b]Sinais de alerta:[/b]\n• Urgência ou ameaça para impedir que você pense;\n• Pedido de senha ou código de autenticação;\n• Remetente, domínio ou endereço diferente do esperado;\n• Link cujo destino não corresponde ao texto exibido;\n• Anexo inesperado;\n• Oferta boa demais para ser verdadeira;\n• Solicitação incomum feita em nome de alguém conhecido.\n\nUm texto bem escrito ou um site com cadeado não provam que a mensagem seja legítima.\n\n[b]Como agir:[/b]\n1. Não clique, não responda e não abra o anexo;\n2. Confirme o pedido por outro canal conhecido;\n3. Comunique a tentativa ao responsável;\n4. Se informou uma senha, altere-a imediatamente e avise a equipe responsável.\n\n[b]Regra principal:[/b] pare, verifique e só depois aja.",
+		  "unlock_condition": "",
+		  "on_read": ""
+		},
+		{
+		  "id": "chap6",
+		  "title": "Senhas e Autenticação Multifator",
+		  "content": "Uma senha protege apenas enquanto permanecer secreta e difícil de adivinhar.\n\n[b]Uma boa senha deve ser:[/b]\n• Longa;\n• Única para cada serviço;\n• Difícil de relacionar com informações pessoais;\n• Armazenada de forma segura.\n\nReutilizar a mesma senha cria um efeito dominó: se um serviço for comprometido, outras contas poderão ser invadidas com a mesma combinação. Um gerenciador de senhas ajuda a criar e guardar senhas diferentes.\n\n[b]Autenticação multifator (MFA)[/b] exige dois ou mais fatores de categorias diferentes:\n• Algo que você sabe, como uma senha;\n• Algo que você possui, como um celular ou uma chave de segurança;\n• Algo que você é, como uma característica biométrica.\n\nA MFA reduz o risco quando uma senha é descoberta, mas não torna a conta invulnerável. Um código temporário também é secreto e não deve ser informado a outra pessoa.\n\n[b]Exemplo:[/b] senha mais código de um aplicativo são dois fatores. Senha mais pergunta secreta continuam sendo apenas informações que a pessoa sabe.\n\n[b]Resumo:[/b] use senhas longas e únicas, prefira um gerenciador e ative MFA sempre que estiver disponível.",
+		  "unlock_condition": "",
+		  "on_read": ""
+		},
+		{
+		  "id": "chap7",
+		  "title": "Prevenção e Resposta",
+		  "content": "Segurança não depende de uma única barreira. Medidas diferentes trabalham em conjunto para evitar incidentes e reduzir seus efeitos.\n\n[b]Hábitos importantes:[/b]\n• Instale atualizações de fontes oficiais;\n• Mantenha cópias de segurança dos dados importantes;\n• Use apenas as permissões necessárias;\n• Desconfie de mensagens e arquivos inesperados;\n• Proteja contas com senhas únicas e autenticação multifator;\n• Observe avisos e comportamentos incomuns do sistema.\n\nAtualizações corrigem falhas conhecidas. Backups permitem recuperar informações após exclusão, falha ou ataque, mas precisam estar protegidos e ser testados.\n\n[b]Se perceber um possível incidente:[/b]\n1. Pare a ação que estava realizando;\n2. Registre o que aconteceu, incluindo horário e mensagens exibidas;\n3. Avise rapidamente a pessoa ou equipe responsável;\n4. Siga o procedimento de resposta da organização;\n5. Não esconda o erro nem tente resolver algo que você não compreende.\n\n[b]Revisão para a prova:[/b]\n• Confidencialidade: acesso somente por pessoas autorizadas;\n• Integridade: informação correta e protegida contra alteração indevida;\n• Disponibilidade: acesso ao serviço quando necessário;\n• Ameaça pode explorar uma vulnerabilidade e gerar risco;\n• Phishing tenta induzir uma ação por meio de engano;\n• Senhas únicas e MFA protegem melhor as contas;\n• Atualizações, backups e resposta rápida reduzem danos.",
 		  "unlock_condition": "",
 		  "on_read": ""
 		}
