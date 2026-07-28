@@ -20,7 +20,7 @@ public partial class SaveManager : Node
 		LoadGame();
 	}
 
-	public void SaveGame()
+	public bool SaveGame()
 	{
 		if (
 			QuestManager.Instance == null ||
@@ -28,23 +28,28 @@ public partial class SaveManager : Node
 			RewardManager.Instance == null
 		)
 		{
-			return;
+			return false;
 		}
 
+		var data = new SaveGameData
+		{
+			ActiveQuests = QuestManager.Instance.GetActiveQuestStages(),
+			CompletedQuests = QuestManager.Instance.GetCompletedQuests(),
+			Items = InventoryManager.Instance.GetItemsSnapshot(),
+			Experience = InventoryManager.Instance.GetExperience(),
+			Credits = InventoryManager.Instance.GetCredits(),
+			OfficeWifiConnected = IsOfficeWifiConnected,
+			ClaimedQuestRewards =
+				RewardManager.Instance.GetClaimedQuestRewards()
+		};
+
+		return WriteSaveData(data);
+	}
+
+	private bool WriteSaveData(SaveGameData data)
+	{
 		try
 		{
-			var data = new SaveGameData
-			{
-				ActiveQuests = QuestManager.Instance.GetActiveQuestStages(),
-				CompletedQuests = QuestManager.Instance.GetCompletedQuests(),
-				Items = InventoryManager.Instance.GetItemsSnapshot(),
-				Experience = InventoryManager.Instance.GetExperience(),
-				Credits = InventoryManager.Instance.GetCredits(),
-				OfficeWifiConnected = IsOfficeWifiConnected,
-				ClaimedQuestRewards =
-					RewardManager.Instance.GetClaimedQuestRewards()
-			};
-
 			string json = JsonSerializer.Serialize(
 				data,
 				new JsonSerializerOptions { WriteIndented = true }
@@ -58,14 +63,16 @@ public partial class SaveManager : Node
 			if (file == null)
 			{
 				GD.PrintErr("SaveManager: não foi possível abrir o arquivo de salvamento.");
-				return;
+				return false;
 			}
 
 			file.StoreString(json);
+			return true;
 		}
 		catch (Exception exception)
 		{
 			GD.PrintErr($"SaveManager: erro ao salvar o jogo: {exception.Message}");
+			return false;
 		}
 	}
 
@@ -132,6 +139,56 @@ public partial class SaveManager : Node
 
 		IsOfficeWifiConnected = isConnected;
 		SaveGame();
+	}
+
+	public bool HasSaveGame()
+	{
+		return FileAccess.FileExists(SaveFilePath);
+	}
+
+	public bool ResetProgress()
+	{
+		var initialData = new SaveGameData
+		{
+			ActiveQuests = new Dictionary<string, int>
+			{
+				["tutorial"] = 1
+			},
+			CompletedQuests = new List<string>(),
+			Items = new Dictionary<string, int>(),
+			Experience = 0,
+			Credits = 0,
+			OfficeWifiConnected = false,
+			ClaimedQuestRewards = new List<string>()
+		};
+
+		if (!WriteSaveData(initialData))
+		{
+			GD.PrintErr(
+				"SaveManager: não foi possível gravar o estado inicial."
+			);
+			return false;
+		}
+
+		IsOfficeWifiConnected = false;
+
+		QuestManager.Instance?.RestoreProgress(
+			initialData.ActiveQuests,
+			initialData.CompletedQuests
+		);
+
+		InventoryManager.Instance?.RestoreState(
+			initialData.Items,
+			initialData.Experience,
+			initialData.Credits
+		);
+
+		RewardManager.Instance?.RestoreClaimedQuestRewards(
+			initialData.ClaimedQuestRewards
+		);
+
+		GD.Print("SaveManager: progresso reiniciado com sucesso.");
+		return true;
 	}
 }
 

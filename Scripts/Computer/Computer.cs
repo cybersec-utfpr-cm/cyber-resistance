@@ -7,7 +7,7 @@ public partial class Computer : Control
 	private Control _settings;
 	private Control _wifi;
 	private QuestLogUi _questLog;
-	private bool _questLogWasCollapsed;
+	private bool _questLogWasObscured;
 	private bool _questLogStateCaptured;
 
 	public override void _Ready()
@@ -22,9 +22,9 @@ public partial class Computer : Control
 
 		if (_questLog != null)
 		{
-			_questLogWasCollapsed = _questLog.IsCollapsed;
+			_questLogWasObscured = _questLog.IsModalObscured;
 			_questLogStateCaptured = true;
-			_questLog.SetCollapsed(true);
+			_questLog.SetModalObscured(true);
 		}
 
 		// Inicia com o desktop visível
@@ -69,7 +69,7 @@ public partial class Computer : Control
 			return;
 		}
 
-		_questLog.SetCollapsed(_questLogWasCollapsed);
+		_questLog.SetModalObscured(_questLogWasObscured);
 		_questLogStateCaptured = false;
 	}
 }
