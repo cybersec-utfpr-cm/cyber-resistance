@@ -4,6 +4,7 @@ public partial class ExamTerminal : Area2D
 {
 	[Export] public PackedScene ExamUIScene; // Arraste a cena ExamUi.tscn no Inspector
 	private bool _playerInRange = false;
+	private ExamUi _activeExamUi;
 
 	public override void _Ready()
 	{
@@ -23,12 +24,26 @@ public partial class ExamTerminal : Area2D
 
 	public override void _Input(InputEvent @event)
 	{
-		if (_playerInRange && @event.IsActionPressed("interact"))
+		if (
+			_playerInRange &&
+			@event.IsActionPressed("interact") &&
+			!@event.IsEcho()
+		)
 		{
+			if (
+				_activeExamUi != null &&
+				GodotObject.IsInstanceValid(_activeExamUi) &&
+				!_activeExamUi.IsQueuedForDeletion()
+			)
+			{
+				return;
+			}
+
 			int stage = QuestManager.Instance.GetQuestStage("university_exam");
 			if (stage == 2)
 			{
 				StartExam();
+				GetViewport().SetInputAsHandled();
 			}
 			else
 			{
@@ -45,16 +60,22 @@ public partial class ExamTerminal : Area2D
 			return;
 		}
 
-		var examUI = ExamUIScene.Instantiate<ExamUi>();
-		if (examUI == null)
+		_activeExamUi = ExamUIScene.Instantiate<ExamUi>();
+		if (_activeExamUi == null)
 		{
 			GD.PrintErr("ExamTerminal: Falha ao instanciar ExamUi.");
 			return;
 		}
 
-		GetTree().Root.AddChild(examUI);
-		examUI.StartExam("intro_exam", 10);
-		examUI.ExamFinished += OnExamFinished; // Conecta ao sinal
+		_activeExamUi.TreeExited += OnExamUiClosed;
+		_activeExamUi.ExamFinished += OnExamFinished;
+		GetTree().Root.AddChild(_activeExamUi);
+		_activeExamUi.StartExam("intro_exam", 10);
+	}
+
+	private void OnExamUiClosed()
+	{
+		_activeExamUi = null;
 	}
 
 	private void OnExamFinished(bool approved)

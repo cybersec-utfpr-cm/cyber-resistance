@@ -1,19 +1,79 @@
-[gd_scene load_steps=2 format=3 uid="uid://bhj73qqfn8cgh"]
+[gd_scene load_steps=3 format=3 uid="uid://bhj73qqfn8cgh"]
 
 [ext_resource type="Script" uid="uid://b02mmi83nh57l" path="res://Scripts/Interactions/DialogBox.cs" id="1_p15cm"]
+[ext_resource type="Theme" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
 
 [node name="DialogBox" type="CanvasLayer"]
+layer = 20
 script = ExtResource("1_p15cm")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_top = 632.0
-offset_right = 1280.0
-offset_bottom = 720.0
-color = Color(0.106884, 0.00654526, 0.126975, 0.670588)
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_theme")
 
-[node name="Label" type="Label" parent="ColorRect"]
-layout_mode = 0
-offset_right = 1280.0
-offset_bottom = 88.0
+[node name="DialogPanel" type="PanelContainer" parent="Root"]
+custom_minimum_size = Vector2(0, 142)
+layout_mode = 1
+anchors_preset = 12
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = -170.0
+offset_right = -28.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 1
+
+[node name="DialogMargin" type="MarginContainer" parent="Root/DialogPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 14
+
+[node name="DialogContent" type="VBoxContainer" parent="Root/DialogPanel/DialogMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Header" type="Label" parent="Root/DialogPanel/DialogMargin/DialogContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.33, 0.82, 0.87, 1)
+theme_override_font_sizes/font_size = 13
+text = "TRANSMISSÃO"
+
+[node name="Message" type="Label" parent="Root/DialogPanel/DialogMargin/DialogContent"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.91, 0.96, 0.98, 1)
+theme_override_font_sizes/font_size = 19
+text = "Mensagem"
+autowrap_mode = 2
+vertical_alignment = 1
+
+[node name="Footer" type="HBoxContainer" parent="Root/DialogPanel/DialogMargin/DialogContent"]
+layout_mode = 2
+
+[node name="Counter" type="Label" parent="Root/DialogPanel/DialogMargin/DialogContent/Footer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.59, 0.64, 1)
+theme_override_font_sizes/font_size = 12
+text = "1 / 1"
+
+[node name="Spacer" type="Control" parent="Root/DialogPanel/DialogMargin/DialogContent/Footer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ContinueHint" type="Label" parent="Root/DialogPanel/DialogMargin/DialogContent/Footer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.84, 0.55, 1)
+theme_override_font_sizes/font_size = 13
+text = "E  CONTINUAR"
 
 [node name="Timer" type="Timer" parent="."]

@@ -8,6 +8,8 @@ public partial class WiFiScreen : Control
 	private ItemList _networkList;
 	private Button _connectButton;
 	private Label _statusLabel;
+	private Label _selectedNetworkLabel;
+	private Label _scanStatus;
 	private Anagram _anagram;
 
 	private string _selectedNetwork;
@@ -16,10 +18,30 @@ public partial class WiFiScreen : Control
 
 	public override void _Ready()
 	{
-		_networkList = GetNode<ItemList>("NetworkList");
-		_connectButton = GetNode<Button>("ConnectButton");
-		_statusLabel = GetNode<Label>("StatusLabel");
-		_anagram = GetNode<Anagram>("Anagram");
+		const string detailsPath =
+			"ContentMargin/MainContent/Columns/DetailsPanel/" +
+			"DetailsMargin/DetailsContent";
+
+		_networkList = GetNode<ItemList>(
+			"ContentMargin/MainContent/Columns/NetworkPanel/" +
+			"NetworkMargin/NetworkContent/NetworkList"
+		);
+		_scanStatus = GetNode<Label>(
+			"ContentMargin/MainContent/Columns/NetworkPanel/" +
+			"NetworkMargin/NetworkContent/ScanStatus"
+		);
+		_connectButton = GetNode<Button>(
+			$"{detailsPath}/ConnectButton"
+		);
+		_statusLabel = GetNode<Label>(
+			$"{detailsPath}/StatusLabel"
+		);
+		_selectedNetworkLabel = GetNode<Label>(
+			$"{detailsPath}/SelectedNetworkLabel"
+		);
+		_anagram = GetNode<Anagram>(
+			$"{detailsPath}/Anagram"
+		);
 
 		_networkList.AddItem(OfficeNetworkName);
 		_networkList.AddItem("Convidados");
@@ -34,6 +56,9 @@ public partial class WiFiScreen : Control
 
 		_isConnected =
 			SaveManager.Instance?.IsOfficeWifiConnected ?? false;
+
+		if (_isConnected)
+			_selectedNetwork = OfficeNetworkName;
 
 		RefreshQuestState();
 	}
@@ -50,7 +75,13 @@ public partial class WiFiScreen : Control
 			return;
 
 		_selectedNetwork = _networkList.GetItemText((int)index);
+		_selectedNetworkLabel.Text = _selectedNetwork;
 		_connectButton.Disabled = string.IsNullOrEmpty(_selectedNetwork);
+
+		SetStatus(
+			"Rede selecionada. Pronta para iniciar a conexão.",
+			VisualState.Info
+		);
 	}
 
 	private void OnConnectPressed()
@@ -72,7 +103,10 @@ public partial class WiFiScreen : Control
 
 			if (_selectedNetwork != OfficeNetworkName)
 			{
-				_statusLabel.Text = "Rede não disponível para conexão.";
+				SetStatus(
+					"Esta rede não está disponível para conexão.",
+					VisualState.Error
+				);
 				return;
 			}
 
@@ -88,15 +122,20 @@ public partial class WiFiScreen : Control
 			QuestManager.Instance.GetQuestStage("wifi_hacking") != 1
 		)
 		{
-			_statusLabel.Text =
-				"Conclua as etapas anteriores para acessar este desafio.";
+			SetStatus(
+				"Conclua as etapas anteriores para acessar este desafio.",
+				VisualState.Warning
+			);
 			_connectButton.Disabled = true;
 			return;
 		}
 
 		if (_selectedNetwork != OfficeNetworkName)
 		{
-			_statusLabel.Text = "Rede não disponível para conexão.";
+			SetStatus(
+				"Esta rede não está disponível para conexão.",
+				VisualState.Error
+			);
 			return;
 		}
 
@@ -129,7 +168,11 @@ public partial class WiFiScreen : Control
 		_networkList.Visible = false;
 		_connectButton.Visible = false;
 		_anagram.Visible = false;
-		_statusLabel.Text = "Senha correta. Estabelecendo conexão...";
+		_scanStatus.Text = "● Estabelecendo conexão";
+		SetStatus(
+			"Senha correta. Estabelecendo conexão segura...",
+			VisualState.Info
+		);
 
 		await ToSignal(GetTree().CreateTimer(3.0f), SceneTreeTimer.SignalName.Timeout);
 
@@ -158,11 +201,19 @@ public partial class WiFiScreen : Control
 		_connectButton.Visible = true;
 		_connectButton.Text = "Conectar";
 		_anagram.Visible = false;
+		_scanStatus.Text = "● 3 redes disponíveis";
+		_selectedNetworkLabel.Text =
+			string.IsNullOrEmpty(_selectedNetwork)
+				? "Nenhuma rede"
+				: _selectedNetwork;
 
 		if (QuestManager.Instance == null)
 		{
 			_connectButton.Disabled = true;
-			_statusLabel.Text = "O sistema de missões não está disponível.";
+			SetStatus(
+				"O sistema de missões não está disponível.",
+				VisualState.Error
+			);
 			return;
 		}
 
@@ -170,26 +221,35 @@ public partial class WiFiScreen : Control
 		{
 			if (_isConnected)
 			{
+				_selectedNetwork = OfficeNetworkName;
+				_selectedNetworkLabel.Text = OfficeNetworkName;
 				_networkList.Visible = false;
+				_scanStatus.Text = "● Conexão ativa";
 				_connectButton.Disabled = false;
 				_connectButton.Text = "Desconectar";
-				_statusLabel.Text =
-					$"Conectado à rede {OfficeNetworkName}.";
+				SetStatus(
+					$"Conectado à rede {OfficeNetworkName}.",
+					VisualState.Success
+				);
 				return;
 			}
 
 			_connectButton.Disabled =
 				string.IsNullOrEmpty(_selectedNetwork);
-			_statusLabel.Text =
-				"Nenhuma rede conectada. Selecione uma rede.";
+			SetStatus(
+				"Nenhuma rede conectada. Selecione uma rede.",
+				VisualState.Neutral
+			);
 			return;
 		}
 
 		if (!QuestManager.Instance.IsQuestActive("wifi_hacking"))
 		{
 			_connectButton.Disabled = true;
-			_statusLabel.Text =
-				"Conclua o tutorial para desbloquear este desafio.";
+			SetStatus(
+				"Conclua o tutorial para desbloquear este desafio.",
+				VisualState.Warning
+			);
 			return;
 		}
 
@@ -200,8 +260,10 @@ public partial class WiFiScreen : Control
 			case 1:
 				_connectButton.Disabled =
 					string.IsNullOrEmpty(_selectedNetwork);
-				_statusLabel.Text =
-					"Encontre e selecione a rede correta.";
+				SetStatus(
+					"Encontre e selecione a rede correta.",
+					VisualState.Info
+				);
 				break;
 
 			case 2:
@@ -209,8 +271,11 @@ public partial class WiFiScreen : Control
 				_connectButton.Visible = false;
 				_anagram.Visible = true;
 				_anagram.Restart();
-				_statusLabel.Text =
-					"Descubra a senha para acessar a rede.";
+				_scanStatus.Text = "● Desafio em andamento";
+				SetStatus(
+					"Descubra a senha para acessar a rede.",
+					VisualState.Warning
+				);
 				break;
 
 			case 3:
@@ -219,12 +284,46 @@ public partial class WiFiScreen : Control
 
 			default:
 				_connectButton.Disabled = true;
-				_statusLabel.Text = "Estado da missão inválido.";
+				SetStatus(
+					"Estado da missão inválido.",
+					VisualState.Error
+				);
 				break;
 		}
 	}
 
-	private void _on_back_icon_bt_pressed() {
+	private void SetStatus(string message, VisualState state)
+	{
+		_statusLabel.Text = message;
+		_statusLabel.AddThemeColorOverride(
+			"font_color",
+			state switch
+			{
+				VisualState.Info =>
+					new Color(0.337f, 0.82f, 0.867f, 1.0f),
+				VisualState.Success =>
+					new Color(0.384f, 0.839f, 0.545f, 1.0f),
+				VisualState.Warning =>
+					new Color(0.898f, 0.722f, 0.361f, 1.0f),
+				VisualState.Error =>
+					new Color(0.937f, 0.451f, 0.451f, 1.0f),
+				_ =>
+					new Color(0.58f, 0.698f, 0.749f, 1.0f)
+			}
+		);
+	}
+
+	private void _on_back_icon_bt_pressed()
+	{
 		GetParent<Screens>().ShowScreen("Settings");
+	}
+
+	private enum VisualState
+	{
+		Neutral,
+		Info,
+		Success,
+		Warning,
+		Error
 	}
 }
