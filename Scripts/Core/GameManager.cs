@@ -27,6 +27,8 @@ public partial class GameManager : Node
 						GD.PrintErr("GameManager.cs: WorldContainer não encontrado!");
 				}
 
+				ConfigureCameraForScene(GetCurrentScene());
+
 				if (QuestManager.Instance != null)
 				{
 						QuestManager.Instance.StartQuest("tutorial");
@@ -147,6 +149,9 @@ public partial class GameManager : Node
 		{
 				_nextSpawnName = spawnName;
 
+				var currentScene = GetCurrentScene();
+				NPCManager.Instance?.ParkNPCsFromScene(currentScene);
+
 				foreach (Node child in WorldContainer.GetChildren())
 						child.QueueFree();
 
@@ -154,8 +159,64 @@ public partial class GameManager : Node
 				var newScene = packed.Instantiate();
 
 				WorldContainer.AddChild(newScene);
+				ConfigureCameraForScene(newScene);
 				MovePlayerToSpawnDeferred();
 				SpawnNPCsDeferred(scenePath);
+		}
+
+		private void ConfigureCameraForScene(Node scene)
+		{
+				if (scene == null)
+						return;
+
+				var player =
+						GetTree().GetFirstNodeInGroup("Player") as Node2D;
+				var camera = player?.GetNodeOrNull<Camera2D>("Camera2D");
+				var ground =
+						scene.GetNodeOrNull<TileMapLayer>("TileMaps/Ground");
+
+				if (
+						camera == null
+						|| ground == null
+						|| ground.TileSet == null
+				)
+				{
+						GD.PrintErr(
+								"GameManager: não foi possível configurar os limites da câmera."
+						);
+						return;
+				}
+
+				Rect2I usedCells = ground.GetUsedRect();
+
+				if (usedCells.Size == Vector2I.Zero)
+						return;
+
+				Vector2 halfTile =
+						(Vector2)ground.TileSet.TileSize / 2.0f;
+				Vector2 localTopLeft =
+						ground.MapToLocal(usedCells.Position) - halfTile;
+				Vector2 localBottomRight =
+						ground.MapToLocal(usedCells.End - Vector2I.One)
+						+ halfTile;
+				Vector2 globalTopLeft =
+						ground.ToGlobal(localTopLeft);
+				Vector2 globalBottomRight =
+						ground.ToGlobal(localBottomRight);
+
+				camera.LimitLeft = (int)Math.Floor(
+						Math.Min(globalTopLeft.X, globalBottomRight.X)
+				);
+				camera.LimitTop = (int)Math.Floor(
+						Math.Min(globalTopLeft.Y, globalBottomRight.Y)
+				);
+				camera.LimitRight = (int)Math.Ceiling(
+						Math.Max(globalTopLeft.X, globalBottomRight.X)
+				);
+				camera.LimitBottom = (int)Math.Ceiling(
+						Math.Max(globalTopLeft.Y, globalBottomRight.Y)
+				);
+				camera.ResetSmoothing();
 		}
 
 		private void MovePlayerToSpawn()
@@ -206,6 +267,6 @@ public partial class GameManager : Node
 						SceneTree.SignalName.ProcessFrame
 				);
 
-				NPCManager.Instance.SpawnNPCsForScene(scenePath);
+				NPCManager.Instance?.SpawnNPCsForScene(scenePath);
 		}
 }

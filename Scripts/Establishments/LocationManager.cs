@@ -46,11 +46,21 @@ public partial class LocationManager : Node {
 	//}
 
 	public Vector2 GetLocation(string name) {
-		if (_locations.ContainsKey(name))
-			return _locations[name].GlobalPosition;
+		if (TryGetLocation(name, out Vector2 location))
+			return location;
 
 		GD.PrintErr("Location não encontrada: ", name);
 
 		return Vector2.Zero;
+	}
+
+	public bool TryGetLocation(string name, out Vector2 location) {
+		if (!string.IsNullOrEmpty(name) && _locations.TryGetValue(name, out Marker2D marker)) {
+			location = marker.GlobalPosition;
+			return true;
+		}
+
+		location = Vector2.Zero;
+		return false;
 	}
 }

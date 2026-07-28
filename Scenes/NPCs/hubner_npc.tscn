@@ -2,7 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://bv5s4opcb8gun" path="res://Assets/Characters/NPCs/hubnerCharacter.png" id="1_0apx8"]
 [ext_resource type="Script" uid="uid://bd76wml01dw4b" path="res://Scripts/NPCs/Hubner/NPCMovementAI.cs" id="1_dnj73"]
-[ext_resource type="Script" uid="uid://cetdhtj3pljco" path="res://Scripts/NPCs/Hubner/NPCTask.cs" id="2_h3o3a"]
 [ext_resource type="Script" uid="uid://df5twnpnstt84" path="res://Scripts/NPCs/Hubner/NPCRoutine.cs" id="3_dnj73"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tb07f"]
@@ -83,6 +82,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_6hunp")
+}],
+"loop": true,
+"name": &"idle_up",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_rxe1y")
 }, {
 "duration": 1.0,
@@ -127,10 +134,14 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vvg1s"]
 size = Vector2(11, 8)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_interaction"]
+radius = 18.0
+
 [node name="HubnerNPC" type="CharacterBody2D" groups=["NPC"]]
 collision_layer = 2
 collision_mask = 29
 script = ExtResource("1_dnj73")
+NpcId = "hubner"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -11)
@@ -143,6 +154,13 @@ visibility_layer = 13
 position = Vector2(-0.5, -1)
 shape = SubResource("RectangleShape2D_vvg1s")
 
+[node name="InteractionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+shape = SubResource("CircleShape2D_interaction")
+
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 4.0
 target_desired_distance = 4.0
@@ -150,12 +168,3 @@ radius = 8.0
 
 [node name="NPCRoutine" type="Node" parent="."]
 script = ExtResource("3_dnj73")
-
-[node name="Task01" type="Node" parent="NPCRoutine"]
-script = ExtResource("2_h3o3a")
-
-[node name="Task02" type="Node" parent="NPCRoutine"]
-script = ExtResource("2_h3o3a")
-
-[node name="Task03" type="Node" parent="NPCRoutine"]
-script = ExtResource("2_h3o3a")
