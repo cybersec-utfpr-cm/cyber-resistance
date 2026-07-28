@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://b4hcgquptblhb"]
+[gd_scene load_steps=6 format=3 uid="uid://b4hcgquptblhb"]
 
 [ext_resource type="Script" uid="uid://d335vwyr1cn6x" path="res://Scripts/Core/GameManager.cs" id="1_mwkus"]
 [ext_resource type="Script" uid="uid://byjrwn4bwho4v" path="res://Scripts/NPCs/NPCManager.cs" id="1_r4x11"]
 [ext_resource type="PackedScene" uid="uid://clqawdbfopxxv" path="res://Scenes/Establishments/world.tscn" id="2_mwkus"]
 [ext_resource type="PackedScene" uid="uid://84v74bpfstou" path="res://Scenes/Player/player.tscn" id="5_ibrfe"]
+[ext_resource type="PackedScene" uid="uid://cjxyy5ouo7upq" path="res://Scenes/NPCs/hubner_npc.tscn" id="6_hubner"]
 
 [node name="Game" type="Node"]
 
@@ -17,6 +18,8 @@ script = ExtResource("1_mwkus")
 [node name="UIContainer" type="CanvasLayer" parent="."]
 
 [node name="NPCContainer" type="Node" parent="."]
+
+[node name="HubnerNPC" parent="NPCContainer" instance=ExtResource("6_hubner")]
 
 [node name="NPCManager" type="Node" parent="."]
 script = ExtResource("1_r4x11")

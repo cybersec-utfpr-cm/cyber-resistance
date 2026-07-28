@@ -11,9 +11,22 @@ public partial class NPCTask : Node
 
 	public TaskType Type;
 
-	public string ScenePath;     // ex: res://Scenes/Cafeteria.tscn
+	public string ScenePath = "";
 
-	public string LocationName;  // ex: Entrance
+	public string LocationName = "";
 
 	public float Duration;
+
+	public string DestinationScenePath = "";
+
+	public string DestinationSpawnName = "";
+
+	public string ActivityLabel = "";
+
+	public string ActivityAnimation = "";
+
+	public bool ChangesScene()
+	{
+		return !string.IsNullOrEmpty(DestinationScenePath);
+	}
 }

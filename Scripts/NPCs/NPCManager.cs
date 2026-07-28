@@ -1,100 +1,241 @@
 using Godot;
 using System.Collections.Generic;
 
-public partial class NPCManager : Node {
+public partial class NPCManager : Node
+{
 	public static NPCManager Instance;
 
-	private List<NPCData> _npcDataList = new();
+	private readonly List<NPCData> _npcDataList = new();
 
-	public override void _Ready() {
+	public override void _Ready()
+	{
 		Instance = this;
 	}
 
-	public void RegisterNPC(NPCMovementAI npc) {
-		var data = new NPCData {
-			NPC = npc,
-			ScenePath = GameManager.Instance.GetCurrentScene().SceneFilePath,
-			SpawnName = ""
-		};
-
-		_npcDataList.Add(data);
-	}
-
-	public void MoveNPCToScene(NPCMovementAI npc, string scenePath, string spawnName) {
-		var data = _npcDataList.Find(d => d.NPC == npc);
-		if (data == null) return;
-
-		data.ScenePath = scenePath;
-		data.SpawnName = spawnName;
-
-		// Reparentear para o NPCContainer
-		var npcContainer = GameManager.Instance.GetNode("/root/Game/NPCContainer");
-		npc.GetParent()?.RemoveChild(npc);
-		npcContainer.AddChild(npc);
-
-		npc.IsChangingScene = false;
-	}
-
-	public async void SpawnNPCsForScene(string scenePath)
+	public override void _ExitTree()
 	{
-		var world = GameManager.Instance.GetCurrentScene();
-		if (world == null) return;
+		if (Instance == this)
+			Instance = null;
+	}
 
-		// Aguarda LocationManager ficar pronto
-		LocationManager locationManager = null;
-		while (locationManager == null)
+	public void RegisterNPC(NPCMovementAI npc)
+	{
+		if (npc == null || FindData(npc) != null)
+			return;
+
+		_npcDataList.Add(new NPCData
 		{
-			locationManager = world.GetNodeOrNull<LocationManager>("LocationManager");
-			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+			NPC = npc,
+			ScenePath = npc.InitialScenePath,
+			SpawnName = npc.InitialSpawnName
+		});
+	}
+
+	public bool PlaceNPCInActiveScene(NPCMovementAI npc)
+	{
+		NPCData data = FindData(npc);
+		Node currentScene = GameManager.Instance?.GetCurrentScene();
+
+		if (
+			data == null
+			|| currentScene == null
+			|| data.ScenePath != currentScene.SceneFilePath
+			|| npc.IsTransitionPending
+		)
+		{
+			return false;
 		}
 
-		var npcContainer = GameManager.Instance.GetNode("/root/Game/NPCContainer");
+		LocationManager locationManager =
+			currentScene.GetNodeOrNull<LocationManager>(
+				"LocationManager"
+			);
 
-		foreach (var data in _npcDataList)
+		if (locationManager == null)
 		{
-			if (data.ScenePath != scenePath) continue;
+			GD.PrintErr(
+				"NPCManager: LocationManager não encontrado em "
+				+ currentScene.SceneFilePath
+			);
+			return false;
+		}
 
-			// Se o NPC já está no mundo, ignore (ou mova?)
-			if (data.NPC.GetParent() == world) continue;
+		if (npc.GetParent() != currentScene)
+			npc.Reparent(currentScene, true);
 
-			// Remove de qualquer pai atual (provavelmente NPCContainer)
-			data.NPC.GetParent()?.RemoveChild(data.NPC);
-			world.AddChild(data.NPC);
+		if (data.HasScenePosition)
+		{
+			npc.GlobalPosition = data.ScenePosition;
+		}
+		else if (
+			locationManager.TryGetLocation(
+				data.SpawnName,
+				out Vector2 spawnPosition
+			)
+		)
+		{
+			npc.GlobalPosition = spawnPosition;
+		}
+		else
+		{
+			GD.PrintErr(
+				$"NPCManager: spawn '{data.SpawnName}' não encontrado."
+			);
+		}
 
-			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		data.HasScenePosition = false;
+		npc.ResumeInActiveScene();
+		npc.OnPlayerEnteredScene();
+		return true;
+	}
 
-			Vector2 pos = locationManager.GetLocation(data.SpawnName);
-			data.NPC.GlobalPosition = pos;
-			data.NPC.IsChangingScene = false;
-			
-			data.NPC.ExecuteCurrentTask(); 
+	public void ParkNPCsFromScene(Node scene)
+	{
+		if (scene == null)
+			return;
+
+		Node persistentContainer =
+			GameManager.Instance.GetNodeOrNull<Node>(
+				"/root/Game/NPCContainer"
+			);
+
+		if (persistentContainer == null)
+		{
+			GD.PrintErr(
+				"NPCManager: NPCContainer persistente não encontrado."
+			);
+			return;
+		}
+
+		foreach (NPCData data in _npcDataList)
+		{
+			NPCMovementAI npc = data.NPC;
+
+			if (
+				npc == null
+				|| !GodotObject.IsInstanceValid(npc)
+				|| npc.GetParent() != scene
+			)
+			{
+				continue;
+			}
+
+			data.ScenePosition = npc.GlobalPosition;
+			data.HasScenePosition = true;
+			npc.SuspendInInactiveScene();
+			npc.Reparent(persistentContainer, true);
 		}
 	}
-	
+
+	public void CompleteSceneTransition(
+		NPCMovementAI npc,
+		string destinationScenePath,
+		string destinationSpawnName
+	)
+	{
+		NPCData data = FindData(npc);
+
+		if (
+			data == null
+			|| string.IsNullOrEmpty(destinationScenePath)
+		)
+		{
+			return;
+		}
+
+		GoToNextTask(npc);
+
+		data.ScenePath = destinationScenePath;
+		data.SpawnName = destinationSpawnName;
+		data.HasScenePosition = false;
+
+		Node persistentContainer =
+			GameManager.Instance.GetNodeOrNull<Node>(
+				"/root/Game/NPCContainer"
+			);
+
+		if (persistentContainer == null)
+		{
+			GD.PrintErr(
+				"NPCManager: NPCContainer persistente não encontrado."
+			);
+			return;
+		}
+
+		npc.SuspendInInactiveScene();
+
+		if (npc.GetParent() != persistentContainer)
+			npc.Reparent(persistentContainer, true);
+
+		npc.MarkSceneTransitionCompleted();
+
+		if (!PlaceNPCInActiveScene(npc))
+			npc.ResumeInInactiveScene();
+	}
+
+	public void SpawnNPCsForScene(string scenePath)
+	{
+		foreach (NPCData data in _npcDataList)
+		{
+			if (data.ScenePath == scenePath)
+				PlaceNPCInActiveScene(data.NPC);
+		}
+	}
+
+	public void RecordOffscreenArrival(
+		NPCMovementAI npc,
+		NPCTask task
+	)
+	{
+		NPCData data = FindData(npc);
+
+		if (
+			data == null
+			|| task == null
+			|| string.IsNullOrEmpty(task.ScenePath)
+			|| string.IsNullOrEmpty(task.LocationName)
+		)
+		{
+			return;
+		}
+
+		data.ScenePath = task.ScenePath;
+		data.SpawnName = task.LocationName;
+		data.HasScenePosition = false;
+	}
+
 	public NPCTask GetCurrentTask(NPCMovementAI npc)
 	{
-		var data = _npcDataList.Find(d => d.NPC == npc);
+		NPCData data = FindData(npc);
 
 		if (data == null)
 			return null;
 
-		var routine = npc.GetNode<NPCRoutine>("NPCRoutine");
+		NPCRoutine routine =
+			npc.GetNodeOrNull<NPCRoutine>("NPCRoutine");
 
-		return routine.GetTask(data.RoutineIndex);
+		return routine?.GetTask(data.RoutineIndex);
 	}
 
 	public void GoToNextTask(NPCMovementAI npc)
 	{
-		var data = _npcDataList.Find(d => d.NPC == npc);
+		NPCData data = FindData(npc);
 
 		if (data == null)
 			return;
 
-		var routine = npc.GetNode<NPCRoutine>("NPCRoutine");
+		NPCRoutine routine =
+			npc.GetNodeOrNull<NPCRoutine>("NPCRoutine");
 
-		data.RoutineIndex++;
+		if (routine == null || routine.GetTaskCount() == 0)
+			return;
 
-		if (data.RoutineIndex >= routine.GetTaskCount())
-			data.RoutineIndex = 0;
+		data.RoutineIndex =
+			(data.RoutineIndex + 1) % routine.GetTaskCount();
+	}
+
+	private NPCData FindData(NPCMovementAI npc)
+	{
+		return _npcDataList.Find(data => data.NPC == npc);
 	}
 }
