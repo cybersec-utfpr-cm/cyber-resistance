@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Cyber-Resistance-Nov25"
-run/main_scene="uid://b4hcgquptblhb"
+run/main_scene="res://Scenes/Interfaces/main_menu.tscn"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
