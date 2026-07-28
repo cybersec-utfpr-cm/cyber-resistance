@@ -1,6 +1,5 @@
 using Godot;
 using System.Collections.Generic;
-using System.Linq;
 
 public partial class ExamUi : CanvasLayer
 {
@@ -32,6 +31,7 @@ public partial class ExamUi : CanvasLayer
 	private int _currentIndex;
 	private int _correctCount;
 	private int _selectedIndex = -1;
+	private bool _answerSubmitted;
 	private readonly List<Button> _optionButtons = new();
 	private QuestLogUi _questLog;
 	private bool _questLogWasObscured;
@@ -170,15 +170,14 @@ public partial class ExamUi : CanvasLayer
 		}
 
 		_selectedIndex = -1;
+		_answerSubmitted = false;
 		_selectionLabel.Text = "Escolha uma alternativa para continuar.";
 		_selectionLabel.AddThemeColorOverride(
 			"font_color",
 			new Color(0.55f, 0.65f, 0.73f, 1.0f)
 		);
 		_nextButton.Disabled = true;
-		_nextButton.Text = _currentIndex == _quiz.Questions.Count - 1
-			? "Finalizar prova"
-			: "Próxima questão";
+		_nextButton.Text = "Confirmar resposta";
 	}
 
 	private void ClearOptions()
@@ -191,21 +190,15 @@ public partial class ExamUi : CanvasLayer
 
 	private void OnOptionSelected(Button selected, int index)
 	{
-		if (!selected.ButtonPressed)
+		if (_answerSubmitted || !selected.ButtonPressed)
 			return;
 
 		_selectedIndex = index;
 
 		foreach (var button in _optionButtons)
-			button.AddThemeColorOverride(
-				"font_color",
-				DefaultOptionColor
-			);
+			SetOptionColor(button, DefaultOptionColor);
 
-		selected.AddThemeColorOverride(
-			"font_color",
-			SelectedOptionColor
-		);
+		SetOptionColor(selected, SelectedOptionColor);
 
 		_selectionLabel.Text =
 			$"Alternativa {GetOptionLetter(index)} selecionada.";
@@ -218,23 +211,69 @@ public partial class ExamUi : CanvasLayer
 
 	private void OnNextPressed()
 	{
+		if (_answerSubmitted)
+		{
+			_currentIndex++;
+			ShowQuestion();
+			return;
+		}
+
 		if (_selectedIndex < 0)
 			return;
 
-		var selected = _optionButtons.FirstOrDefault(
-			button => button.ButtonPressed
-		);
-
-		if (selected == null)
-			return;
-
 		var currentQuestion = _quiz.Questions[_currentIndex];
+		bool isCorrect =
+			_selectedIndex == currentQuestion.CorrectIndex;
 
-		if (_selectedIndex == currentQuestion.CorrectIndex)
+		if (isCorrect)
 			_correctCount++;
 
-		_currentIndex++;
-		ShowQuestion();
+		_answerSubmitted = true;
+
+		foreach (var button in _optionButtons)
+			button.Disabled = true;
+
+		if (isCorrect)
+		{
+			SetOptionColor(
+				_optionButtons[_selectedIndex],
+				SuccessColor
+			);
+			ShowAnswerFeedback(
+				$"Resposta correta. {currentQuestion.Explanation}",
+				SuccessColor
+			);
+		}
+		else
+		{
+			SetOptionColor(
+				_optionButtons[_selectedIndex],
+				ErrorColor
+			);
+			SetOptionColor(
+				_optionButtons[currentQuestion.CorrectIndex],
+				SuccessColor
+			);
+
+			string correctAnswer =
+				currentQuestion.Options[currentQuestion.CorrectIndex];
+			string reviewInstruction =
+				string.IsNullOrWhiteSpace(currentQuestion.ReviewChapter)
+					? ""
+					: $"\nRevise: {currentQuestion.ReviewChapter}.";
+
+			ShowAnswerFeedback(
+				"Resposta incorreta. A resposta correta é: " +
+				$"{correctAnswer}.\n{currentQuestion.Explanation}" +
+				reviewInstruction,
+				ErrorColor
+			);
+		}
+
+		_nextButton.Text =
+			_currentIndex == _quiz.Questions.Count - 1
+				? "Ver resultado"
+				: "Próxima questão";
 	}
 
 	private void ShowResult()
@@ -261,9 +300,22 @@ public partial class ExamUi : CanvasLayer
 			$"questões ({percentageValue}%).\n\n" +
 			(approved
 				? "Parabéns! A missão foi concluída."
-				: "Revise o material disponível na estante e tente novamente.");
+				: "Volte à estante, revise os capítulos indicados " +
+					"nas respostas e tente novamente.");
 
 		EmitSignal(SignalName.ExamFinished, approved);
+	}
+
+	private void ShowAnswerFeedback(string text, Color color)
+	{
+		_selectionLabel.Text = text;
+		_selectionLabel.AddThemeColorOverride("font_color", color);
+	}
+
+	private static void SetOptionColor(Button button, Color color)
+	{
+		button.AddThemeColorOverride("font_color", color);
+		button.AddThemeColorOverride("font_disabled_color", color);
 	}
 
 	private void OnClosePressed()

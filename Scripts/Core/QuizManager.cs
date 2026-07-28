@@ -56,7 +56,9 @@ public partial class QuizManager : Node
 					Text = qDict["question"].AsString(),
 					Options = new List<string>(),
 					CorrectIndex = qDict["correct"].AsInt32(),
-					RewardQuestStage = qDict.ContainsKey("reward_quest_stage") ? qDict["reward_quest_stage"].AsString() : ""
+					RewardQuestStage = qDict.ContainsKey("reward_quest_stage") ? qDict["reward_quest_stage"].AsString() : "",
+					Explanation = qDict.ContainsKey("explanation") ? qDict["explanation"].AsString() : "",
+					ReviewChapter = qDict.ContainsKey("review_chapter") ? qDict["review_chapter"].AsString() : ""
 				};
 				var optionsArray = qDict["options"].AsGodotArray();
 				foreach (var opt in optionsArray)
@@ -161,4 +163,6 @@ public class Question
 	public List<string> Options { get; set; }
 	public int CorrectIndex { get; set; }
 	public string RewardQuestStage { get; set; } // ex: "phishing:2"
+	public string Explanation { get; set; }
+	public string ReviewChapter { get; set; }
 }
