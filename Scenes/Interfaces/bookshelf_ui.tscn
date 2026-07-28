@@ -15,6 +15,8 @@ grow_vertical = 2
 mouse_filter = 1
 theme = ExtResource("2_theme")
 script = ExtResource("1_ybk56")
+LibraryPanelPath = NodePath("ShelfPanel/PanelMargin/Content/Body/LibraryPanel")
+LibraryToggleButtonPath = NodePath("ShelfPanel/PanelMargin/Content/Header/LibraryToggleButton")
 BookListPath = NodePath("ShelfPanel/PanelMargin/Content/Body/LibraryPanel/LibraryMargin/LibraryContent/BookScroll/BookList")
 ChapterListPath = NodePath("ShelfPanel/PanelMargin/Content/Body/Reader/ReaderContent/ReadingArea/ChapterPanel/ChapterMargin/ChapterContent/ChapterScroll/ChapterList")
 BookTitleLabelPath = NodePath("ShelfPanel/PanelMargin/Content/Body/Reader/ReaderContent/BookTitle")
@@ -76,6 +78,16 @@ text = "1 livro"
 
 [node name="HeaderSpacer" type="Control" parent="ShelfPanel/PanelMargin/Content/Header"]
 custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="LibraryToggleButton" type="Button" parent="ShelfPanel/PanelMargin/Content/Header"]
+custom_minimum_size = Vector2(132, 40)
+layout_mode = 2
+tooltip_text = "Guardar ou mostrar a lista de livros desbloqueados"
+text = "Guardar livros"
+
+[node name="CloseSpacer" type="Control" parent="ShelfPanel/PanelMargin/Content/Header"]
+custom_minimum_size = Vector2(8, 0)
 layout_mode = 2
 
 [node name="CloseButton" type="Button" parent="ShelfPanel/PanelMargin/Content/Header"]

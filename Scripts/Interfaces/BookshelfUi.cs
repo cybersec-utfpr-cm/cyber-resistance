@@ -5,6 +5,8 @@ using System.Linq;
 public partial class BookshelfUi : Control
 {
 	[Export] public string BookId { get; set; } = "intro_cybersecurity";
+	[Export] public NodePath LibraryPanelPath { get; set; }
+	[Export] public NodePath LibraryToggleButtonPath { get; set; }
 	[Export] public NodePath BookListPath { get; set; }
 	[Export] public NodePath ChapterListPath { get; set; }
 	[Export] public NodePath BookTitleLabelPath { get; set; }
@@ -12,6 +14,8 @@ public partial class BookshelfUi : Control
 	[Export] public NodePath ContentLabelPath { get; set; }
 	[Export] public NodePath CloseButtonPath { get; set; }
 
+	private PanelContainer _libraryPanel;
+	private Button _libraryToggleButton;
 	private VBoxContainer _bookList;
 	private VBoxContainer _chapterList;
 	private Label _bookTitleLabel;
@@ -32,6 +36,8 @@ public partial class BookshelfUi : Control
 	public override void _Ready()
 	{
 		ProcessMode = ProcessModeEnum.Always;
+		_libraryPanel = GetNodeOrNull<PanelContainer>(LibraryPanelPath);
+		_libraryToggleButton = GetNodeOrNull<Button>(LibraryToggleButtonPath);
 		_bookList = GetNodeOrNull<VBoxContainer>(BookListPath);
 		_chapterList = GetNodeOrNull<VBoxContainer>(ChapterListPath);
 		_bookTitleLabel = GetNodeOrNull<Label>(BookTitleLabelPath);
@@ -40,6 +46,8 @@ public partial class BookshelfUi : Control
 		_closeButton = GetNodeOrNull<Button>(CloseButtonPath);
 
 		if (
+			_libraryPanel == null ||
+			_libraryToggleButton == null ||
 			_bookList == null ||
 			_chapterList == null ||
 			_bookTitleLabel == null ||
@@ -55,6 +63,7 @@ public partial class BookshelfUi : Control
 		if (_closeButton != null)
 			_closeButton.Pressed += OnClose;
 
+		_libraryToggleButton.Pressed += OnLibraryToggle;
 		HideQuestLog();
 		PauseGame();
 		PopulateBooks();
@@ -228,6 +237,14 @@ public partial class BookshelfUi : Control
 	private void ProcessOnRead(string command)
 	{
 		GD.Print($"BookshelfUI: comando on_read ignorado: {command}");
+	}
+
+	private void OnLibraryToggle()
+	{
+		_libraryPanel.Visible = !_libraryPanel.Visible;
+		_libraryToggleButton.Text = _libraryPanel.Visible
+			? "Guardar livros"
+			: "Mostrar livros";
 	}
 
 	private void HideQuestLog()
