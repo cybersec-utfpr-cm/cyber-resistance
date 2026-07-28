@@ -6,54 +6,74 @@
 	  "topic": "intro_cybersecurity",
 	  "questions": [
 		{
-		  "question": "O que é phishing?",
-		  "options": ["Um tipo de peixe", "Técnica de engenharia social", "Um antivírus", "Um jogo online"],
-		  "correct": 1
+		  "question": "Antes de executar um comando recebido de uma fonte desconhecida, qual é a atitude mais segura?",
+		  "options": ["Executá-lo rapidamente para descobrir o que acontece", "Executá-lo com uma conta administrativa", "Verificar a origem, entender a ação e conferir o que será afetado", "Compartilhá-lo com outras pessoas antes de testar"],
+		  "correct": 2,
+		  "explanation": "Um comando pode alterar arquivos, instalar programas ou expor informações. Por isso, ele só deve ser executado depois que sua origem e seus efeitos forem compreendidos.",
+		  "review_chapter": "Capítulo 1 — Comandos Básicos"
 		},
 		{
-		  "question": "O que é um firewall?",
-		  "options": ["Um programa que bloqueia acessos não autorizados", "Um tipo de vírus", "Um navegador", "Um hardware de rede"],
-		  "correct": 0
+		  "question": "Qual alternativa descreve corretamente autenticação e autorização?",
+		  "options": ["Autenticação define permissões; autorização verifica a identidade", "Autenticação verifica a identidade; autorização define o que a pessoa pode fazer", "As duas significam compartilhar uma conta de acesso", "As duas permitem que qualquer usuário altere o sistema"],
+		  "correct": 1,
+		  "explanation": "Autenticação confirma quem está tentando entrar. Autorização determina quais ações essa pessoa autenticada tem permissão para realizar.",
+		  "review_chapter": "Capítulo 2 — Acessando o Computador"
 		},
 		{
-		  "question": "Qual destas é uma senha forte?",
-		  "options": ["123456", "senha", "P@ssw0rd!2024", "qwerty"],
-		  "correct": 2
+		  "question": "Um arquivo sigiloso foi enviado a uma pessoa sem permissão para consultá-lo. Qual objetivo da segurança foi comprometido?",
+		  "options": ["Disponibilidade", "Integridade", "Confidencialidade", "Recuperação"],
+		  "correct": 2,
+		  "explanation": "A confidencialidade garante que somente pessoas autorizadas tenham acesso à informação. O envio a uma pessoa sem permissão viola esse objetivo.",
+		  "review_chapter": "Capítulo 3 — O que a Cibersegurança Protege"
 		},
 		{
-		  "question": "O que é engenharia social?",
-		  "options": ["Técnica de manipulação para obter informações", "Construção de redes sociais", "Criação de perfis falsos", "Ataque a servidores"],
-		  "correct": 0
+		  "question": "A alteração não autorizada de uma nota em um sistema acadêmico compromete principalmente qual objetivo?",
+		  "options": ["Integridade", "Disponibilidade", "Confidencialidade", "Autenticação"],
+		  "correct": 0,
+		  "explanation": "A integridade protege a informação contra alterações indevidas e busca mantê-la correta. Uma nota modificada sem autorização deixa de ser confiável.",
+		  "review_chapter": "Capítulo 3 — O que a Cibersegurança Protege"
 		},
 		{
-		  "question": "O que significa autenticação de dois fatores (2FA)?",
-		  "options": ["Usar duas senhas", "Usar dois dispositivos", "Duas camadas de verificação", "Dois logins"],
-		  "correct": 2
+		  "question": "Em uma conta com senha curta e reutilizada, o que representa a senha fraca?",
+		  "options": ["Uma ameaça", "Uma vulnerabilidade", "Um impacto", "Um controle de segurança"],
+		  "correct": 1,
+		  "explanation": "A senha fraca é uma vulnerabilidade: uma fraqueza que pode ser explorada. A pessoa que tenta invadir é uma ameaça, e o possível dano compõe o risco.",
+		  "review_chapter": "Capítulo 4 — Ameaça, Vulnerabilidade e Risco"
 		},
 		{
-		  "question": "Qual é a principal finalidade de um antivírus?",
-		  "options": ["Acelerar o sistema", "Proteger contra malwares", "Fazer backup", "Criptografar arquivos"],
-		  "correct": 1
+		  "question": "Você recebe uma mensagem urgente pedindo sua senha por meio de um link. O que deve fazer primeiro?",
+		  "options": ["Abrir o link para verificar se o pedido é verdadeiro", "Responder à mensagem pedindo mais detalhes", "Não clicar e confirmar o pedido por outro canal conhecido", "Encaminhar a mensagem para colegas testarem"],
+		  "correct": 2,
+		  "explanation": "Urgência e pedido de credenciais são sinais de phishing. A ação segura é interromper o contato, não abrir links ou anexos e confirmar a solicitação por um canal confiável.",
+		  "review_chapter": "Capítulo 5 — Phishing e Engenharia Social"
 		},
 		{
-		  "question": "O que é um ataque DDoS?",
-		  "options": ["Ataque de negação de serviço distribuído", "Ataque de engenharia social", "Ataque de phishing", "Ataque de força bruta"],
-		  "correct": 0
+		  "question": "Por que uma mensagem bem escrita e um site com cadeado não bastam para provar que um pedido é legítimo?",
+		  "options": ["Porque mensagens legítimas sempre possuem erros de escrita", "Porque esses elementos também podem aparecer em tentativas de fraude", "Porque o cadeado indica que o site contém vírus", "Porque somente mensagens sem links são legítimas"],
+		  "correct": 1,
+		  "explanation": "Atacantes podem escrever mensagens convincentes e usar sites com conexão protegida. É necessário verificar remetente, domínio, destino do link e o pedido por outro canal.",
+		  "review_chapter": "Capítulo 5 — Phishing e Engenharia Social"
 		},
 		{
-		  "question": "O que significa VPN?",
-		  "options": ["Virtual Private Network", "Very Powerful Network", "Virtual Protocol Network", "Verified Private Network"],
-		  "correct": 0
+		  "question": "Qual prática reduz o efeito dominó caso a senha de um serviço seja descoberta?",
+		  "options": ["Reutilizar uma senha longa em todas as contas", "Adicionar o nome do serviço à mesma senha", "Usar uma senha única para cada serviço", "Trocar todas as senhas apenas uma vez por ano"],
+		  "correct": 2,
+		  "explanation": "Senhas únicas impedem que a credencial descoberta em um serviço seja reutilizada para invadir outras contas. Um gerenciador pode ajudar a criá-las e armazená-las.",
+		  "review_chapter": "Capítulo 6 — Senhas e Autenticação Multifator"
 		},
 		{
-		  "question": "Qual a recomendação para criar senhas seguras?",
-		  "options": ["Usar palavras comuns", "Usar combinações de letras, números e símbolos", "Usar a data de nascimento", "Usar o nome do pet"],
-		  "correct": 1
+		  "question": "Qual opção combina dois fatores de autenticação de categorias diferentes?",
+		  "options": ["Senha e pergunta secreta", "Senha e código de um aplicativo autenticador", "Duas senhas diferentes", "Código temporário e outro código temporário"],
+		  "correct": 1,
+		  "explanation": "A senha é algo que a pessoa sabe; o aplicativo autenticador está associado a algo que ela possui. Duas informações que a pessoa sabe continuam pertencendo à mesma categoria.",
+		  "review_chapter": "Capítulo 6 — Senhas e Autenticação Multifator"
 		},
 		{
-		  "question": "O que deve ser feito ao receber um e-mail suspeito?",
-		  "options": ["Abrir o anexo", "Clicar no link", "Reportar e deletar", "Encaminhar para amigos"],
-		  "correct": 2
+		  "question": "Ao perceber um possível incidente de segurança, qual é a conduta adequada?",
+		  "options": ["Esconder o ocorrido para evitar problemas", "Continuar a atividade até descobrir a causa sozinho", "Apagar todos os registros antes de avisar alguém", "Parar a ação, registrar o ocorrido e avisar rapidamente a equipe responsável"],
+		  "correct": 3,
+		  "explanation": "Uma resposta rápida reduz danos. É importante interromper a ação, preservar informações sobre o ocorrido e seguir o procedimento da organização com apoio da equipe responsável.",
+		  "review_chapter": "Capítulo 7 — Prevenção e Resposta"
 		}
 	  ]
 	}

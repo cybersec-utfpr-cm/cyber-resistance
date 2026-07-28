@@ -55,17 +55,17 @@ mouse_filter = 1
 color = Color(0.012, 0.012, 0.026, 0.88)
 
 [node name="ExamPanel" type="PanelContainer" parent="Root"]
-custom_minimum_size = Vector2(720, 540)
+custom_minimum_size = Vector2(780, 620)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -360.0
-offset_top = -270.0
-offset_right = 360.0
-offset_bottom = 270.0
+offset_left = -390.0
+offset_top = -310.0
+offset_right = 390.0
+offset_bottom = 310.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleExamPanel")
@@ -157,11 +157,13 @@ size_flags_vertical = 3
 theme_override_constants/separation = 7
 
 [node name="SelectionLabel" type="Label" parent="Root/ExamPanel/PanelMargin/Content/QuestionContent"]
-custom_minimum_size = Vector2(0, 22)
+custom_minimum_size = Vector2(0, 84)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.55, 0.65, 0.73, 1)
 theme_override_font_sizes/font_size = 13
 text = "Escolha uma alternativa para continuar."
+autowrap_mode = 2
+vertical_alignment = 1
 
 [node name="QuestionFooter" type="HBoxContainer" parent="Root/ExamPanel/PanelMargin/Content/QuestionContent"]
 layout_mode = 2
