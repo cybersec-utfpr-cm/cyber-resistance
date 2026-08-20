@@ -81,10 +81,33 @@ public partial class MissionInfrastructureManager : Node
 
 		try
 		{
+			var activeInfrastructure = GetActiveMissionInfrastructure();
+			var runtimeReady = new Dictionary<string, bool>(StringComparer.Ordinal);
+
+			foreach (var activeMission in activeInfrastructure)
+			{
+				MissionInfrastructureDefinition mission =
+					_catalog.GetDefinition(activeMission.Key);
+				bool isRuntimeReady = EnsureMissionRuntimeState(
+					activeMission.Value,
+					mission
+				);
+				runtimeReady[mission.Id] = isRuntimeReady;
+
+				if (!isRuntimeReady)
+				{
+					SetMissionFailed(
+						activeMission.Value,
+						mission,
+						"Não foi possível persistir os dados da missão. " +
+							"Carregue o jogo e tente novamente."
+					);
+				}
+			}
+
 			bool playerReady = await EnsurePlayerMachineReadyInternalAsync(
 				operationCancellation.Token
 			);
-			var activeInfrastructure = GetActiveMissionInfrastructure();
 
 			foreach (
 				MissionInfrastructureDefinition mission in
@@ -101,6 +124,9 @@ public partial class MissionInfrastructureManager : Node
 					)
 				)
 				{
+					if (!runtimeReady.GetValueOrDefault(mission.Id))
+						continue;
+
 					if (playerReady)
 					{
 						await PrepareMissionInternalAsync(
@@ -197,6 +223,17 @@ public partial class MissionInfrastructureManager : Node
 
 		try
 		{
+			if (!EnsureMissionRuntimeState(questId, mission))
+			{
+				SetMissionFailed(
+					questId,
+					mission,
+					"Não foi possível persistir os dados da missão. " +
+						"Carregue o jogo e tente novamente."
+				);
+				return false;
+			}
+
 			if (
 				!await EnsurePlayerMachineReadyInternalAsync(
 					operationCancellation.Token
@@ -266,6 +303,19 @@ public partial class MissionInfrastructureManager : Node
 				mission.Id,
 				operationCancellation.Token
 			);
+
+			if (
+				SaveManager.Instance != null &&
+				!SaveManager.Instance.RemoveMissionRuntimeState(questId)
+			)
+			{
+				GD.PrintErr(
+					"MissionInfrastructureManager: não foi possível remover " +
+					"os dados persistentes da missão concluída."
+				);
+				return false;
+			}
+
 			RemoveMissionState(questId);
 			return true;
 		}
@@ -453,6 +503,27 @@ public partial class MissionInfrastructureManager : Node
 
 		try
 		{
+			MissionRuntimeSaveData runtimeState = null;
+			if (
+				mission.FlagTarget != null &&
+				(
+					SaveManager.Instance == null ||
+					!SaveManager.Instance.TryGetMissionRuntimeState(
+						questId,
+						out runtimeState
+					)
+				)
+			)
+			{
+				SetMissionFailed(
+					questId,
+					mission,
+					"Os dados persistentes da missão não estão disponíveis. " +
+						"Carregue o jogo e tente novamente."
+				);
+				return false;
+			}
+
 			await _docker.EnsureNetworkCreatedAsync(
 				mission.Network.Name,
 				cancellationToken
@@ -495,6 +566,15 @@ public partial class MissionInfrastructureManager : Node
 				return false;
 			}
 
+			if (mission.FlagTarget != null)
+			{
+				await InjectMissionFlagAsync(
+					mission,
+					runtimeState.FlagToken,
+					cancellationToken
+				);
+			}
+
 			string internalIp = await _docker.ResolveContainerIpAsync(
 				mission.Id,
 				mission.Network.Name,
@@ -518,6 +598,39 @@ public partial class MissionInfrastructureManager : Node
 			SetMissionFailed(questId, mission, exception.Message);
 			return false;
 		}
+	}
+
+	private bool EnsureMissionRuntimeState(
+		string questId,
+		MissionInfrastructureDefinition mission
+	)
+	{
+		if (mission.FlagTarget == null)
+			return true;
+
+		return
+			SaveManager.Instance != null &&
+			SaveManager.Instance.TryGetOrCreateMissionRuntimeState(
+				questId,
+				out _
+			);
+	}
+
+	private async Task InjectMissionFlagAsync(
+		MissionInfrastructureDefinition mission,
+		string flagToken,
+		CancellationToken cancellationToken
+	)
+	{
+		MissionFlagTarget target = mission.FlagTarget;
+		string fileContent = MissionFlagService.BuildFileContent(flagToken);
+
+		await _docker.ExecuteAsync(
+			mission.Id,
+			MissionFlagService.BuildInstallCommand(target),
+			fileContent,
+			cancellationToken
+		);
 	}
 
 	private bool TryGetActiveMissionDefinition(

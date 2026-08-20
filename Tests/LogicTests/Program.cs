@@ -17,6 +17,11 @@ public static class Program
 		Run("rejeita infraestrutura fora dos limites", RejectsUnsafeInfrastructure);
 		Run("migra progresso legado já avançado", MigratesAdvancedLegacyProgress);
 		Run("preserva progresso legado anterior à missão", PreservesEarlierLegacyProgress);
+		Run("gera e reutiliza flag segura", GeneratesAndReusesSecureFlag);
+		Run("monta conteúdo exato da flag", BuildsExactFlagContent);
+		Run("mantém a flag fora do comando Docker", KeepsFlagOutOfDockerCommand);
+		Run("compara flag sem alterar persistência", ComparesFlagInput);
+		Run("preserva flag ao serializar o save", PersistsFlagAcrossSerialization);
 
 		Console.WriteLine($"\nResultado: {_passed} passou; {_failed} falhou.");
 		return _failed == 0 ? 0 : 1;
@@ -337,6 +342,111 @@ public static class Program
 		True(
 			!data.ClaimedQuestRewards.Contains("sudo_with_less"),
 			"A recompensa foi marcada sem a missão ter sido pulada."
+		);
+	}
+
+	private static void GeneratesAndReusesSecureFlag()
+	{
+		var runtimeStates = new Dictionary<string, MissionRuntimeSaveData>();
+		string token = MissionFlagService.GetOrCreateToken(
+			runtimeStates,
+			"sudo_with_less",
+			out bool created
+		);
+
+		True(created, "A primeira consulta não criou a flag.");
+		Equal(32, token.Length);
+		True(
+			MissionFlagService.IsValidToken(token),
+			"A flag não contém 16 bytes em hexadecimal."
+		);
+		Equal(token.ToLowerInvariant(), token);
+
+		string restoredToken = MissionFlagService.GetOrCreateToken(
+			runtimeStates,
+			"sudo_with_less",
+			out bool createdAgain
+		);
+		True(!createdAgain, "A flag persistida foi indevidamente recriada.");
+		Equal(token, restoredToken);
+	}
+
+	private static void BuildsExactFlagContent()
+	{
+		const string token = "0123456789abcdef0123456789abcdef";
+		const string expected =
+			"As respostas para a prova de SO só dependem de você...\n" +
+			"Continue estudando!!\n\n" +
+			"Flag da missão:\n" +
+			token + "\n";
+
+		Equal(expected, MissionFlagService.BuildFileContent(token));
+	}
+
+	private static void ComparesFlagInput()
+	{
+		const string token = "0123456789abcdef0123456789abcdef";
+
+		True(
+			MissionFlagService.Matches(
+				token,
+				"  0123456789ABCDEF0123456789ABCDEF\n"
+			),
+			"A comparação não ignorou caixa/espaços externos."
+		);
+		True(
+			!MissionFlagService.Matches(
+				token,
+				"0123456789abcdef0123456789abcdee"
+			),
+			"Uma flag incorreta foi aceita."
+		);
+	}
+
+	private static void KeepsFlagOutOfDockerCommand()
+	{
+		const string token = "0123456789abcdef0123456789abcdef";
+		var target = new MissionFlagTarget
+		{
+			Path = "/root/flag.txt",
+			Owner = "root",
+			Group = "root",
+			Mode = "0600"
+		};
+		IReadOnlyList<string> command =
+			MissionFlagService.BuildInstallCommand(target);
+
+		Equal("sh", command[0]);
+		Equal("-c", command[1]);
+		Equal("/root/flag.txt", command[4]);
+		Equal("0600", command[7]);
+		True(
+			command.All(argument => !argument.Contains(token, StringComparison.Ordinal)),
+			"A flag foi incluída nos argumentos do Docker."
+		);
+	}
+
+	private static void PersistsFlagAcrossSerialization()
+	{
+		var data = new SaveGameData
+		{
+			SchemaVersion = SaveGameData.CurrentSchemaVersion,
+			MissionRuntimeStates = new Dictionary<string, MissionRuntimeSaveData>
+			{
+				["sudo_with_less"] = new MissionRuntimeSaveData
+				{
+					FlagToken = "0123456789abcdef0123456789abcdef"
+				}
+			}
+		};
+
+		string json = JsonSerializer.Serialize(data);
+		SaveGameData restored = JsonSerializer.Deserialize<SaveGameData>(json);
+
+		SaveGameMigration.Migrate(restored);
+		Equal(
+			data.MissionRuntimeStates["sudo_with_less"].FlagToken,
+			restored.MissionRuntimeStates["sudo_with_less"].FlagToken
 		);
 	}
 

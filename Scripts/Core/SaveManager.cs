@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 
 public partial class SaveManager : Node
@@ -9,6 +10,8 @@ public partial class SaveManager : Node
 	public bool IsOfficeWifiConnected { get; private set; }
 
 	private const string SaveFilePath = "user://savegame.json";
+	private Dictionary<string, MissionRuntimeSaveData> _missionRuntimeStates =
+		new(StringComparer.Ordinal);
 
 	public override void _EnterTree()
 	{
@@ -41,7 +44,8 @@ public partial class SaveManager : Node
 			Credits = InventoryManager.Instance.GetCredits(),
 			OfficeWifiConnected = IsOfficeWifiConnected,
 			ClaimedQuestRewards =
-				RewardManager.Instance.GetClaimedQuestRewards()
+				RewardManager.Instance.GetClaimedQuestRewards(),
+			MissionRuntimeStates = GetMissionRuntimeStatesSnapshot()
 		};
 
 		return WriteSaveData(data);
@@ -110,6 +114,7 @@ public partial class SaveManager : Node
 			SaveGameMigration.Migrate(data);
 
 			IsOfficeWifiConnected = data.OfficeWifiConnected;
+			RestoreMissionRuntimeStates(data.MissionRuntimeStates);
 
 			QuestManager.Instance?.RestoreProgress(
 				data.ActiveQuests ?? new Dictionary<string, int>(),
@@ -149,6 +154,97 @@ public partial class SaveManager : Node
 		return FileAccess.FileExists(SaveFilePath);
 	}
 
+	public bool TryGetOrCreateMissionRuntimeState(
+		string questId,
+		out MissionRuntimeSaveData runtimeState
+	)
+	{
+		runtimeState = null;
+		if (string.IsNullOrWhiteSpace(questId))
+			return false;
+
+		bool hadPreviousState = _missionRuntimeStates.TryGetValue(
+			questId,
+			out var previousState
+		);
+
+		try
+		{
+			MissionFlagService.GetOrCreateToken(
+				_missionRuntimeStates,
+				questId,
+				out bool created
+			);
+
+			if (created && !SaveGame())
+			{
+				RestorePreviousRuntimeState(
+					questId,
+					hadPreviousState,
+					previousState
+				);
+				return false;
+			}
+
+			runtimeState = _missionRuntimeStates[questId].Copy();
+			return true;
+		}
+		catch (Exception)
+		{
+			GD.PrintErr(
+				"SaveManager: dados persistentes de missão inválidos."
+			);
+			return false;
+		}
+	}
+
+	public bool TryGetMissionRuntimeState(
+		string questId,
+		out MissionRuntimeSaveData runtimeState
+	)
+	{
+		runtimeState = null;
+		if (
+			string.IsNullOrWhiteSpace(questId) ||
+			!_missionRuntimeStates.TryGetValue(questId, out var storedState) ||
+			!MissionFlagService.IsValidToken(storedState?.FlagToken)
+		)
+		{
+			return false;
+		}
+
+		runtimeState = storedState.Copy();
+		return true;
+	}
+
+	public bool RemoveMissionRuntimeState(string questId)
+	{
+		if (
+			string.IsNullOrWhiteSpace(questId) ||
+			!_missionRuntimeStates.TryGetValue(questId, out var previousState)
+		)
+		{
+			return true;
+		}
+
+		_missionRuntimeStates.Remove(questId);
+		if (SaveGame())
+			return true;
+
+		_missionRuntimeStates[questId] = previousState;
+		return false;
+	}
+
+	private Dictionary<string, MissionRuntimeSaveData>
+		GetMissionRuntimeStatesSnapshot()
+	{
+		return _missionRuntimeStates.ToDictionary(
+			pair => pair.Key,
+			pair => pair.Value?.Copy() ?? new MissionRuntimeSaveData(),
+			StringComparer.Ordinal
+		);
+	}
+
 	public bool ResetProgress()
 	{
 		var initialData = new SaveGameData
@@ -163,7 +259,9 @@ public partial class SaveManager : Node
 			Experience = 0,
 			Credits = 0,
 			OfficeWifiConnected = false,
-			ClaimedQuestRewards = new List<string>()
+			ClaimedQuestRewards = new List<string>(),
+			MissionRuntimeStates =
+				new Dictionary<string, MissionRuntimeSaveData>()
 		};
 
 		if (!WriteSaveData(initialData))
@@ -175,6 +273,7 @@ public partial class SaveManager : Node
 		}
 
 		IsOfficeWifiConnected = false;
+		_missionRuntimeStates.Clear();
 
 		QuestManager.Instance?.RestoreProgress(
 			initialData.ActiveQuests,
@@ -193,5 +292,30 @@ public partial class SaveManager : Node
 
 		GD.Print("SaveManager: progresso reiniciado com sucesso.");
 		return true;
+	}
+
+	private void RestoreMissionRuntimeStates(
+		Dictionary<string, MissionRuntimeSaveData> runtimeStates
+	)
+	{
+		_missionRuntimeStates = (runtimeStates ?? new())
+			.Where(pair => !string.IsNullOrWhiteSpace(pair.Key))
+			.ToDictionary(
+				pair => pair.Key,
+				pair => pair.Value?.Copy() ?? new MissionRuntimeSaveData(),
+				StringComparer.Ordinal
+			);
+	}
+
+	private void RestorePreviousRuntimeState(
+		string questId,
+		bool hadPreviousState,
+		MissionRuntimeSaveData previousState
+	)
+	{
+		if (hadPreviousState)
+			_missionRuntimeStates[questId] = previousState;
+		else
+			_missionRuntimeStates.Remove(questId);
 	}
 }

@@ -12,6 +12,8 @@ public class SaveGameData
 	public int Credits { get; set; }
 	public bool OfficeWifiConnected { get; set; }
 	public List<string> ClaimedQuestRewards { get; set; } = new();
+	public Dictionary<string, MissionRuntimeSaveData> MissionRuntimeStates
+		{ get; set; } = new();
 }
 
 public static class SaveGameMigration
@@ -54,5 +56,20 @@ public static class SaveGameMigration
 		data.CompletedQuests ??= new List<string>();
 		data.Items ??= new Dictionary<string, int>();
 		data.ClaimedQuestRewards ??= new List<string>();
+		data.MissionRuntimeStates ??=
+			new Dictionary<string, MissionRuntimeSaveData>();
+	}
+}
+
+public sealed class MissionRuntimeSaveData
+{
+	public string FlagToken { get; set; } = "";
+
+	public MissionRuntimeSaveData Copy()
+	{
+		return new MissionRuntimeSaveData
+		{
+			FlagToken = FlagToken
+		};
 	}
 }
