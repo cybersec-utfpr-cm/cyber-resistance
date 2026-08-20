@@ -33,6 +33,7 @@ public partial class SaveManager : Node
 
 		var data = new SaveGameData
 		{
+			SchemaVersion = SaveGameData.CurrentSchemaVersion,
 			ActiveQuests = QuestManager.Instance.GetActiveQuestStages(),
 			CompletedQuests = QuestManager.Instance.GetCompletedQuests(),
 			Items = InventoryManager.Instance.GetItemsSnapshot(),
@@ -106,6 +107,8 @@ public partial class SaveManager : Node
 				return;
 			}
 
+			SaveGameMigration.Migrate(data);
+
 			IsOfficeWifiConnected = data.OfficeWifiConnected;
 
 			QuestManager.Instance?.RestoreProgress(
@@ -150,6 +153,7 @@ public partial class SaveManager : Node
 	{
 		var initialData = new SaveGameData
 		{
+			SchemaVersion = SaveGameData.CurrentSchemaVersion,
 			ActiveQuests = new Dictionary<string, int>
 			{
 				["tutorial"] = 1
@@ -190,15 +194,4 @@ public partial class SaveManager : Node
 		GD.Print("SaveManager: progresso reiniciado com sucesso.");
 		return true;
 	}
-}
-
-public class SaveGameData
-{
-	public Dictionary<string, int> ActiveQuests { get; set; } = new();
-	public List<string> CompletedQuests { get; set; } = new();
-	public Dictionary<string, int> Items { get; set; } = new();
-	public int Experience { get; set; }
-	public int Credits { get; set; }
-	public bool OfficeWifiConnected { get; set; }
-	public List<string> ClaimedQuestRewards { get; set; } = new();
 }

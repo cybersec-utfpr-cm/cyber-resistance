@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 public static class Program
 {
 	private static int _passed;
@@ -10,6 +12,9 @@ public static class Program
 		Run("escapa BBCode não confiável", EscapesUntrustedBbCode);
 		Run("rejeita documentos inválidos", RejectsInvalidDocuments);
 		Run("processa o material real do Scenario1", ParsesScenarioMaterial);
+		Run("valida dados e cadeia da Sudo with Less", ValidatesSudoWithLessData);
+		Run("migra progresso legado já avançado", MigratesAdvancedLegacyProgress);
+		Run("preserva progresso legado anterior à missão", PreservesEarlierLegacyProgress);
 
 		Console.WriteLine($"\nResultado: {_passed} passou; {_failed} falhou.");
 		return _failed == 0 ? 0 : 1;
@@ -170,6 +175,138 @@ public static class Program
 			document.Chapters.All(chapter => !string.IsNullOrWhiteSpace(chapter.Content)),
 			"O material real produziu um capítulo vazio."
 		);
+	}
+
+	private static void ValidatesSudoWithLessData()
+	{
+		using JsonDocument questsDocument = ReadJsonFile("Data/quests.json");
+		JsonElement quests = questsDocument.RootElement.GetProperty("quests");
+		JsonElement wifiQuest = FindById(quests, "wifi_hacking");
+		JsonElement sudoQuest = FindById(quests, "sudo_with_less");
+		JsonElement universityQuest = FindById(quests, "university_exam");
+
+		Equal("sudo_with_less", wifiQuest.GetProperty("next_quest_id").GetString());
+		Equal("university_exam", sudoQuest.GetProperty("next_quest_id").GetString());
+		True(
+			!universityQuest.TryGetProperty("next_quest_id", out _),
+			"A última missão da cadeia não deve declarar sucessora."
+		);
+		Equal("npc_acceptance", sudoQuest.GetProperty("start_mode").GetString());
+		Equal("hubner", sudoQuest.GetProperty("interaction_npc_id").GetString());
+		Equal(
+			"sudo_with_less_material",
+			sudoQuest.GetProperty("material_book_id").GetString()
+		);
+		Equal(
+			"sudo_with_less_lab",
+			sudoQuest.GetProperty("infrastructure_id").GetString()
+		);
+		Equal(1, sudoQuest.GetProperty("stages").GetArrayLength());
+		Equal(1, sudoQuest.GetProperty("optional_objectives").GetArrayLength());
+
+		using JsonDocument rewardsDocument = ReadJsonFile("Data/rewards.json");
+		FindById(
+			rewardsDocument.RootElement.GetProperty("rewards"),
+			sudoQuest.GetProperty("reward_id").GetString()
+		);
+
+		using JsonDocument booksDocument = ReadJsonFile("Data/books.json");
+		JsonElement materialBook = FindById(
+			booksDocument.RootElement.GetProperty("books"),
+			"sudo_with_less_material"
+		);
+		Equal("sudo_with_less", materialBook.GetProperty("unlock_quest_id").GetString());
+
+		string infrastructurePath = FindRepositoryFile(
+			"Data/missionInfrastructure.json"
+		);
+		string infrastructureJson = File.ReadAllText(infrastructurePath);
+		using JsonDocument infrastructureDocument =
+			JsonDocument.Parse(infrastructureJson);
+		JsonElement infrastructures =
+			infrastructureDocument.RootElement.GetProperty("infrastructures");
+		JsonElement player = FindById(infrastructures, "player_machine");
+		JsonElement lab = FindById(infrastructures, "sudo_with_less_lab");
+
+		Equal("127.0.0.1", PlayerHostIp(player));
+		Equal("127.0.0.1", PlayerHostIp(lab));
+		Equal("cyber_resistance", lab.GetProperty("network").GetProperty("name").GetString());
+		Equal("bob", lab.GetProperty("credentials").GetProperty("username").GetString());
+		Equal("password", lab.GetProperty("credentials").GetProperty("password").GetString());
+		Equal(22, lab.GetProperty("readiness").GetProperty("port").GetInt32());
+		Equal("/root/flag.txt", lab.GetProperty("flag_target").GetProperty("path").GetString());
+		DoesNotContain("Flag da missão:", infrastructureJson);
+	}
+
+	private static void MigratesAdvancedLegacyProgress()
+	{
+		const string legacyJson = """
+			{
+			  "ActiveQuests": { "university_exam": 2 },
+			  "CompletedQuests": ["tutorial", "wifi_hacking"],
+			  "ClaimedQuestRewards": ["tutorial", "wifi_hacking"]
+			}
+			""";
+		SaveGameData data = JsonSerializer.Deserialize<SaveGameData>(legacyJson);
+
+		Equal(0, data.SchemaVersion);
+		True(SaveGameMigration.Migrate(data), "O save legado não foi migrado.");
+		Equal(SaveGameData.CurrentSchemaVersion, data.SchemaVersion);
+		Equal(2, data.ActiveQuests["university_exam"]);
+		True(
+			data.CompletedQuests.Contains("sudo_with_less"),
+			"A missão inserida não foi retroativamente concluída."
+		);
+		True(
+			data.ClaimedQuestRewards.Contains("sudo_with_less"),
+			"A recompensa da missão pulada ficou indevidamente disponível."
+		);
+		True(
+			!SaveGameMigration.Migrate(data),
+			"A migração não é idempotente."
+		);
+	}
+
+	private static void PreservesEarlierLegacyProgress()
+	{
+		var data = new SaveGameData
+		{
+			CompletedQuests = new List<string> { "tutorial", "wifi_hacking" }
+		};
+
+		True(SaveGameMigration.Migrate(data), "O schema legado não foi atualizado.");
+		True(
+			!data.CompletedQuests.Contains("sudo_with_less"),
+			"Um save que ainda não chegou à prova pulou a nova missão."
+		);
+		True(
+			!data.ClaimedQuestRewards.Contains("sudo_with_less"),
+			"A recompensa foi marcada sem a missão ter sido pulada."
+		);
+	}
+
+	private static JsonDocument ReadJsonFile(string relativePath)
+	{
+		return JsonDocument.Parse(File.ReadAllText(FindRepositoryFile(relativePath)));
+	}
+
+	private static JsonElement FindById(JsonElement array, string id)
+	{
+		foreach (JsonElement element in array.EnumerateArray())
+		{
+			if (element.GetProperty("id").GetString() == id)
+				return element;
+		}
+
+		throw new InvalidOperationException($"ID não encontrado nos dados: {id}");
+	}
+
+	private static string PlayerHostIp(JsonElement infrastructure)
+	{
+		return infrastructure
+			.GetProperty("host_bindings")[0]
+			.GetProperty("host_ip")
+			.GetString();
 	}
 
 	private static string FindRepositoryFile(string relativePath)

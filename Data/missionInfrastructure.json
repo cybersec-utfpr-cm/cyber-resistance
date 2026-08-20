@@ -1,0 +1,55 @@
+{
+  "infrastructures": [
+	{
+	  "id": "player_machine",
+	  "kind": "player",
+	  "container_name": "player_machine",
+	  "image": "player_machine",
+	  "network_alias": "player_machine",
+	  "host_bindings": [
+		{
+		  "host_ip": "127.0.0.1",
+		  "host_port": 5000,
+		  "container_port": 23
+		}
+	  ],
+	  "readiness": {
+		"type": "tcp",
+		"port": 23
+	  }
+	},
+	{
+	  "id": "sudo_with_less_lab",
+	  "kind": "mission",
+	  "player_infrastructure_id": "player_machine",
+	  "container_name": "scenario1",
+	  "image": "scenario1",
+	  "network": {
+		"name": "cyber_resistance",
+		"alias": "scenario1"
+	  },
+	  "host_bindings": [
+		{
+		  "host_ip": "127.0.0.1",
+		  "host_port": 5001,
+		  "container_port": 22
+		}
+	  ],
+	  "readiness": {
+		"type": "tcp",
+		"from_container": "player_machine",
+		"port": 22
+	  },
+	  "credentials": {
+		"username": "bob",
+		"password": "password"
+	  },
+	  "flag_target": {
+		"path": "/root/flag.txt",
+		"owner": "root",
+		"group": "root",
+		"mode": "0600"
+	  }
+	}
+  ]
+}

@@ -29,6 +29,20 @@
 	  ]
 	},
 	{
+	  "id": "reward_sudo_with_less",
+	  "title": "Recompensa de Sudo with Less",
+	  "description": "Recompensa por explorar uma configuração insegura de sudo e obter acesso root.",
+	  "xp": 250,
+	  "credits": 60,
+	  "items": [
+		{
+		  "id": "badge_privilege_escalation",
+		  "name": "Insígnia de Escalada de Privilégios",
+		  "amount": 1
+		}
+	  ]
+	},
+	{
 	  "id": "reward_university_exam",
 	  "title": "Recompensa da Prova",
 	  "description": "Recompensa por ser aprovado na prova de cibersegurança.",

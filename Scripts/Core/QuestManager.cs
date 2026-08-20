@@ -1,4 +1,5 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -57,6 +58,28 @@ public partial class QuestManager : Node
 			string reward = questDict.ContainsKey("reward") ? questDict["reward"].AsString() : "";
 			string rewardId = questDict.ContainsKey("reward_id") ? questDict["reward_id"].AsString() : "";
 			string nextQuestId = questDict.ContainsKey("next_quest_id") ? questDict["next_quest_id"].AsString() : "";
+			string startMode = questDict.ContainsKey("start_mode")
+				? questDict["start_mode"].AsString()
+				: QuestStartMode.Automatic;
+			string interactionNpcId = questDict.ContainsKey("interaction_npc_id")
+				? questDict["interaction_npc_id"].AsString()
+				: "";
+			string materialBookId = questDict.ContainsKey("material_book_id")
+				? questDict["material_book_id"].AsString()
+				: "";
+			string infrastructureId = questDict.ContainsKey("infrastructure_id")
+				? questDict["infrastructure_id"].AsString()
+				: "";
+
+			if (!QuestStartMode.IsValid(startMode))
+			{
+				GD.PrintErr(
+					$"QuestManager: start_mode inválido em '{id}'; " +
+					$"usando '{QuestStartMode.Automatic}'."
+				);
+				startMode = QuestStartMode.Automatic;
+			}
+
 			var stages = new List<QuestStage>();
 			foreach (var stageVar in stagesArray)
 			{
@@ -68,6 +91,27 @@ public partial class QuestManager : Node
 				});
 			}
 
+			var optionalObjectives = new List<QuestOptionalObjective>();
+			if (questDict.ContainsKey("optional_objectives"))
+			{
+				foreach (
+					var objectiveVar in
+					questDict["optional_objectives"].AsGodotArray()
+				)
+				{
+					var objectiveDict = objectiveVar.AsGodotDictionary();
+					optionalObjectives.Add(new QuestOptionalObjective
+					{
+						Id = objectiveDict.ContainsKey("id")
+							? objectiveDict["id"].AsString()
+							: "",
+						Description = objectiveDict.ContainsKey("description")
+							? objectiveDict["description"].AsString()
+							: ""
+					});
+				}
+			}
+
 			_questDefinitions[id] = new QuestDefinition
 			{
 				Id = id,
@@ -76,7 +120,12 @@ public partial class QuestManager : Node
 				IsMain = isMain,
 				Reward = reward,
 				RewardId = rewardId,
-				NextQuestId = nextQuestId
+				NextQuestId = nextQuestId,
+				StartMode = startMode,
+				InteractionNpcId = interactionNpcId,
+				MaterialBookId = materialBookId,
+				OptionalObjectives = optionalObjectives,
+				InfrastructureId = infrastructureId
 			};
 		}
 
@@ -86,15 +135,33 @@ public partial class QuestManager : Node
 	// Inicia uma missão (se não estiver ativa ou concluída)
 	public void StartQuest(string questId)
 	{
+		TryStartQuest(questId, false);
+	}
+
+	private bool TryStartQuest(string questId, bool acceptedByNpc)
+	{
 		if (!_questDefinitions.ContainsKey(questId))
 		{
 			GD.PrintErr($"QuestManager: Missão '{questId}' não definida.");
-			return;
+			return false;
 		}
 		if (_activeQuests.ContainsKey(questId) || _completedQuests.Contains(questId))
 		{
 			GD.Print($"QuestManager: Missão '{questId}' já está ativa ou concluída.");
-			return;
+			return false;
+		}
+
+		var definition = _questDefinitions[questId];
+		if (
+			definition.StartMode == QuestStartMode.NpcAcceptance &&
+			!acceptedByNpc
+		)
+		{
+			GD.Print(
+				$"QuestManager: Missão '{questId}' aguarda aceite do NPC " +
+				$"'{definition.InteractionNpcId}'."
+			);
+			return false;
 		}
 
 		string prerequisiteQuestId = GetPrerequisiteQuestId(questId);
@@ -107,13 +174,14 @@ public partial class QuestManager : Node
 				$"QuestManager: Missão '{questId}' exige a conclusão de " +
 				$"'{prerequisiteQuestId}'."
 			);
-			return;
+			return false;
 		}
 
 		_activeQuests[questId] = 1; // começa no estágio 1
 		GD.Print($"QuestManager: Missão '{questId}' iniciada no estágio 1.");
 		EmitSignal(SignalName.QuestStarted, questId);
 		SaveManager.Instance?.SaveGame();
+		return true;
 	}
 
 	// Avança para o próximo estágio da missão
@@ -164,7 +232,11 @@ public partial class QuestManager : Node
 		EmitSignal(SignalName.QuestCompleted, questId);
 
 		if (!string.IsNullOrWhiteSpace(definition.NextQuestId))
-			StartQuest(definition.NextQuestId);
+		{
+			var nextDefinition = GetQuestDefinition(definition.NextQuestId);
+			if (nextDefinition?.StartMode == QuestStartMode.Automatic)
+				StartQuest(definition.NextQuestId);
+		}
 
 		SaveManager.Instance?.SaveGame();
 	}
@@ -242,6 +314,30 @@ public partial class QuestManager : Node
 		return _questDefinitions.ContainsKey(questId) ? _questDefinitions[questId] : null;
 	}
 
+	public QuestDefinition GetAvailableQuestForNpc(string npcId)
+	{
+		if (string.IsNullOrWhiteSpace(npcId))
+			return null;
+
+		return _questDefinitions.Values.FirstOrDefault(definition =>
+			definition.StartMode == QuestStartMode.NpcAcceptance &&
+			string.Equals(
+				definition.InteractionNpcId,
+				npcId,
+				StringComparison.OrdinalIgnoreCase
+			) &&
+			!_activeQuests.ContainsKey(definition.Id) &&
+			!_completedQuests.Contains(definition.Id) &&
+			IsPrerequisiteCompleted(definition.Id)
+		);
+	}
+
+	public bool StartAvailableQuestForNpc(string npcId)
+	{
+		QuestDefinition definition = GetAvailableQuestForNpc(npcId);
+		return definition != null && TryStartQuest(definition.Id, true);
+	}
+
 	// Retorna a lista de IDs das missões ativas
 	public List<string> GetActiveQuests()
 	{
@@ -317,6 +413,14 @@ public partial class QuestManager : Node
 			?.Id ?? "";
 	}
 
+	private bool IsPrerequisiteCompleted(string questId)
+	{
+		string prerequisiteQuestId = GetPrerequisiteQuestId(questId);
+		return
+			string.IsNullOrWhiteSpace(prerequisiteQuestId) ||
+			_completedQuests.Contains(prerequisiteQuestId);
+	}
+
 	private void RestoreCompletedPrerequisites()
 	{
 		bool progressChanged;
@@ -353,6 +457,8 @@ public partial class QuestManager : Node
 			if (
 				!string.IsNullOrWhiteSpace(nextQuestId) &&
 				_questDefinitions.ContainsKey(nextQuestId) &&
+				_questDefinitions[nextQuestId].StartMode ==
+					QuestStartMode.Automatic &&
 				!_completedQuests.Contains(nextQuestId) &&
 				!_activeQuests.ContainsKey(nextQuestId)
 			)
@@ -365,20 +471,44 @@ public partial class QuestManager : Node
 			}
 		}
 	}
-}// Classes auxiliares
+}
+
+public static class QuestStartMode
+{
+	public const string Automatic = "automatic";
+	public const string NpcAcceptance = "npc_acceptance";
+
+	public static bool IsValid(string value)
+	{
+		return value == Automatic || value == NpcAcceptance;
+	}
+}
+
+// Classes auxiliares
 public class QuestStage
 {
 	public int StageId { get; set; }
 	public string Description { get; set; }
 }
 
+public class QuestOptionalObjective
+{
+	public string Id { get; set; } = "";
+	public string Description { get; set; } = "";
+}
+
 public class QuestDefinition
 {
-	public string Id { get; set; }
-	public string Title { get; set; }
-	public List<QuestStage> Stages { get; set; }
+	public string Id { get; set; } = "";
+	public string Title { get; set; } = "";
+	public List<QuestStage> Stages { get; set; } = new();
 	public bool IsMain { get; set; }
-	public string Reward { get; set; }
-	public string RewardId { get; set; }
-	public string NextQuestId { get; set; }
+	public string Reward { get; set; } = "";
+	public string RewardId { get; set; } = "";
+	public string NextQuestId { get; set; } = "";
+	public string StartMode { get; set; } = QuestStartMode.Automatic;
+	public string InteractionNpcId { get; set; } = "";
+	public string MaterialBookId { get; set; } = "";
+	public List<QuestOptionalObjective> OptionalObjectives { get; set; } = new();
+	public string InfrastructureId { get; set; } = "";
 }

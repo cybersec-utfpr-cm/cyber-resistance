@@ -292,6 +292,20 @@ public partial class QuestLogUi : CanvasLayer
 		descriptionLabel.AddThemeFontSizeOverride("font_size", 11);
 		entryContent.AddChild(descriptionLabel);
 
+		foreach (QuestOptionalObjective objective in def.OptionalObjectives)
+		{
+			if (string.IsNullOrWhiteSpace(objective.Description))
+				continue;
+
+			var optionalLabel = new Label();
+			optionalLabel.Text = $"Opcional (sugerido): {objective.Description}";
+			optionalLabel.AutowrapMode = TextServer.AutowrapMode.WordSmart;
+			optionalLabel.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+			optionalLabel.AddThemeColorOverride("font_color", AccentColor);
+			optionalLabel.AddThemeFontSizeOverride("font_size", 11);
+			entryContent.AddChild(optionalLabel);
+		}
+
 		entryMargin.AddChild(entryContent);
 		entryPanel.AddChild(entryMargin);
 		_questListContainer.AddChild(entryPanel);
