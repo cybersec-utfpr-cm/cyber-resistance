@@ -18,6 +18,8 @@ public partial class BookManager : Node
 
 	private void LoadBooks()
 	{
+		_books.Clear();
+
 		string path = "res://Data/books.json";
 		using var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
 		if (file == null)
@@ -44,30 +46,98 @@ public partial class BookManager : Node
 			var book = new Book
 			{
 				Id = bookDict["id"].AsString(),
-				Title = bookDict["title"].AsString(),
+				Title = bookDict.ContainsKey("title")
+					? bookDict["title"].AsString()
+					: "",
 				AvailableFromStart =
 					bookDict.ContainsKey("available_from_start") &&
 					bookDict["available_from_start"].AsBool(),
 				UnlockItemId = bookDict.ContainsKey("unlock_item")
 					? bookDict["unlock_item"].AsString()
+					: "",
+				UnlockQuestId = bookDict.ContainsKey("unlock_quest_id")
+					? bookDict["unlock_quest_id"].AsString()
+					: "",
+				MarkdownPath = bookDict.ContainsKey("markdown_path")
+					? bookDict["markdown_path"].AsString()
 					: ""
 			};
 
-			var chaptersArray = bookDict["chapters"].AsGodotArray();
-			foreach (var chapVar in chaptersArray)
+			if (!string.IsNullOrWhiteSpace(book.MarkdownPath))
 			{
-				var chapDict = chapVar.AsGodotDictionary();
-				var chapter = new Chapter
-				{
-					Id = chapDict["id"].AsString(),
-					Title = chapDict["title"].AsString(),
-					Content = chapDict["content"].AsString(),
-					UnlockCondition = chapDict.ContainsKey("unlock_condition") ? chapDict["unlock_condition"].AsString() : "",
-					OnRead = chapDict.ContainsKey("on_read") ? chapDict["on_read"].AsString() : ""
-				};
-				book.Chapters.Add(chapter);
+				if (!TryLoadMarkdownBook(book))
+					continue;
 			}
+			else if (bookDict.ContainsKey("chapters"))
+			{
+				var chaptersArray = bookDict["chapters"].AsGodotArray();
+				foreach (var chapVar in chaptersArray)
+				{
+					var chapDict = chapVar.AsGodotDictionary();
+					var chapter = new Chapter
+					{
+						Id = chapDict["id"].AsString(),
+						Title = chapDict["title"].AsString(),
+						Content = chapDict["content"].AsString(),
+						UnlockCondition = chapDict.ContainsKey("unlock_condition")
+							? chapDict["unlock_condition"].AsString()
+							: "",
+						OnRead = chapDict.ContainsKey("on_read")
+							? chapDict["on_read"].AsString()
+							: ""
+					};
+					book.Chapters.Add(chapter);
+				}
+			}
+			else
+			{
+				GD.PrintErr(
+					$"BookManager: Livro '{book.Id}' não possui capítulos " +
+					"inline nem markdown_path."
+				);
+				continue;
+			}
+
 			_books[book.Id] = book;
+		}
+	}
+
+	private bool TryLoadMarkdownBook(Book book)
+	{
+		using var file = FileAccess.Open(book.MarkdownPath, FileAccess.ModeFlags.Read);
+		if (file == null)
+		{
+			GD.PrintErr(
+				$"BookManager: Material Markdown não encontrado: " +
+				$"'{book.MarkdownPath}'."
+			);
+			return false;
+		}
+
+		try
+		{
+			MarkdownBookDocument document = MarkdownBookParser.Parse(file.GetAsText());
+			book.Title = document.Title;
+
+			foreach (MarkdownBookChapter markdownChapter in document.Chapters)
+			{
+				book.Chapters.Add(new Chapter
+				{
+					Id = markdownChapter.Id,
+					Title = markdownChapter.Title,
+					Content = markdownChapter.Content
+				});
+			}
+
+			return true;
+		}
+		catch (System.IO.InvalidDataException exception)
+		{
+			GD.PrintErr(
+				$"BookManager: Conteúdo Markdown inválido em " +
+				$"'{book.MarkdownPath}': {exception.Message}"
+			);
+			return false;
 		}
 	}
 
@@ -92,14 +162,21 @@ public partial class BookManager : Node
 			return true;
 
 		if (
-			string.IsNullOrWhiteSpace(book.UnlockItemId) ||
-			InventoryManager.Instance == null
+			!string.IsNullOrWhiteSpace(book.UnlockQuestId) &&
+			QuestManager.Instance != null &&
+			(
+				QuestManager.Instance.IsQuestActive(book.UnlockQuestId) ||
+				QuestManager.Instance.IsQuestCompleted(book.UnlockQuestId)
+			)
 		)
 		{
-			return false;
+			return true;
 		}
 
-		return InventoryManager.Instance.GetItemCount(book.UnlockItemId) > 0;
+		return
+			!string.IsNullOrWhiteSpace(book.UnlockItemId) &&
+			InventoryManager.Instance != null &&
+			InventoryManager.Instance.GetItemCount(book.UnlockItemId) > 0;
 	}
 }
 
@@ -109,6 +186,8 @@ public class Book
 	public string Title { get; set; }
 	public bool AvailableFromStart { get; set; }
 	public string UnlockItemId { get; set; }
+	public string UnlockQuestId { get; set; }
+	public string MarkdownPath { get; set; }
 	public List<Chapter> Chapters { get; set; } = new();
 }
 

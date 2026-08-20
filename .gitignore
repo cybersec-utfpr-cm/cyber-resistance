@@ -3,3 +3,5 @@
 /addons/godot-git-plugin
 README.md.backup
 Export/
+Tests/**/bin/
+Tests/**/obj/
