@@ -139,17 +139,17 @@ public partial class InputText : TextEdit
 
                 try
                 {
-                        if (GameManager.Instance == null)
-                        {
-                                ShowFailureState(
-                                        "O gerenciador do jogo não está disponível."
-                                );
-                                return;
-                        }
+			if (MissionInfrastructureManager.Instance == null)
+			{
+				ShowFailureState(
+					"O gerenciador de infraestrutura não está disponível."
+				);
+				return;
+			}
 
-                        bool containerReady =
-                                await GameManager.Instance
-                                        .EnsurePlayerMachineStartedAsync();
+			bool containerReady =
+				await MissionInfrastructureManager.Instance
+					.EnsurePlayerMachineReadyAsync();
 
                         if (
                                 !GodotObject.IsInstanceValid(this) ||

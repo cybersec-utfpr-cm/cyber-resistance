@@ -1,22 +1,15 @@
 using Godot;
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 public partial class GameManager : Node
 {
-		[Export] public string PlayerMachineContainerName = "player_machine";
-
 		private string _nextSpawnName = "";
-		private DockerManager _docker;
-		private readonly SemaphoreSlim _dockerLock = new(1, 1);
-		private bool _isExiting;
 
 		public static GameManager Instance;
 		public Node WorldContainer;
 		public Node UIContainer;
 
-		public override async void _Ready()
+		public override void _Ready()
 		{
 				Instance = this;
 				WorldContainer = GetNode("/root/Game/WorldContainer");
@@ -53,81 +46,10 @@ public partial class GameManager : Node
 								AddChild(questLog);
 				}
 
-				_docker = new DockerManager(PlayerMachineContainerName);
-				await EnsurePlayerMachineStartedAsync();
 		}
 
-		public async Task<bool> EnsurePlayerMachineStartedAsync()
+		public override void _ExitTree()
 		{
-				if (_docker == null || _isExiting)
-						return false;
-
-				await _dockerLock.WaitAsync();
-
-				try
-				{
-						if (_isExiting)
-								return false;
-
-						GD.Print(
-								$"GameManager: verificando container '{PlayerMachineContainerName}'."
-						);
-
-						await _docker.StartAsync();
-
-						GD.Print(
-								$"GameManager: container '{PlayerMachineContainerName}' está pronto."
-						);
-
-						return true;
-				}
-				catch (Exception exception)
-				{
-						GD.PrintErr(
-								$"GameManager: falha ao preparar container " +
-								$"'{PlayerMachineContainerName}': {exception.Message}"
-						);
-
-						return false;
-				}
-				finally
-				{
-						_dockerLock.Release();
-				}
-		}
-
-		public override async void _ExitTree()
-		{
-				_isExiting = true;
-
-				if (_docker != null)
-				{
-						await _dockerLock.WaitAsync();
-
-						try
-						{
-								await _docker.StopAsync();
-
-								GD.Print(
-										$"GameManager: container " +
-										$"'{PlayerMachineContainerName}' parado."
-								);
-						}
-						catch (Exception exception)
-						{
-								GD.PrintErr(
-										$"GameManager: falha ao parar container " +
-										$"'{PlayerMachineContainerName}': {exception.Message}"
-								);
-						}
-						finally
-						{
-								_docker.Dispose();
-								_docker = null;
-								_dockerLock.Release();
-						}
-				}
-
 				if (Instance == this)
 						Instance = null;
 		}

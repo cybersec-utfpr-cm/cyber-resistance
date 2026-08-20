@@ -13,6 +13,8 @@ public static class Program
 		Run("rejeita documentos inválidos", RejectsInvalidDocuments);
 		Run("processa o material real do Scenario1", ParsesScenarioMaterial);
 		Run("valida dados e cadeia da Sudo with Less", ValidatesSudoWithLessData);
+		Run("carrega catálogo de infraestrutura", LoadsInfrastructureCatalog);
+		Run("rejeita infraestrutura fora dos limites", RejectsUnsafeInfrastructure);
 		Run("migra progresso legado já avançado", MigratesAdvancedLegacyProgress);
 		Run("preserva progresso legado anterior à missão", PreservesEarlierLegacyProgress);
 
@@ -264,6 +266,59 @@ public static class Program
 		True(
 			!SaveGameMigration.Migrate(data),
 			"A migração não é idempotente."
+		);
+	}
+
+	private static void LoadsInfrastructureCatalog()
+	{
+		string json = File.ReadAllText(
+			FindRepositoryFile("Data/missionInfrastructure.json")
+		);
+		MissionInfrastructureCatalog catalog =
+			MissionInfrastructureCatalog.Parse(json);
+
+		Equal(2, catalog.Definitions.Count);
+		Equal(1, catalog.OwnedNetworks.Count);
+		Equal(
+			"player_machine",
+			catalog.GetDefinition("player_machine").ContainerName
+		);
+		Equal(
+			"sudo_with_less_lab",
+			catalog.GetByContainerName("scenario1").Id
+		);
+		Equal("cyber_resistance", catalog.RequireOwnedNetwork("cyber_resistance"));
+		Throws<ArgumentException>(
+			() => catalog.GetDefinition("not_declared"),
+			"não declarada"
+		);
+	}
+
+	private static void RejectsUnsafeInfrastructure()
+	{
+		string json = File.ReadAllText(
+			FindRepositoryFile("Data/missionInfrastructure.json")
+		);
+
+		Throws<InvalidDataException>(
+			() => MissionInfrastructureCatalog.Parse(
+				json.Replace(
+					"\"host_ip\": \"127.0.0.1\"",
+					"\"host_ip\": \"0.0.0.0\"",
+					StringComparison.Ordinal
+				)
+			),
+			"127.0.0.1"
+		);
+		Throws<InvalidDataException>(
+			() => MissionInfrastructureCatalog.Parse(
+				json.Replace(
+					"\"name\": \"cyber_resistance\"",
+					"\"name\": \"rede inválida\"",
+					StringComparison.Ordinal
+				)
+			),
+			"rede"
 		);
 	}
 

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public class SaveGameData
 {
 	public const int CurrentSchemaVersion = 1;
