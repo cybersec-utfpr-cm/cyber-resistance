@@ -28,6 +28,9 @@ public partial class GameManager : Node
 				}
 
 				ConfigureCameraForScene(GetCurrentScene());
+				AudioManager.Instance?.SetGameplayContext(
+						GetCurrentScene()?.SceneFilePath ?? "world"
+				);
 
 				if (QuestManager.Instance != null)
 				{
@@ -159,6 +162,7 @@ public partial class GameManager : Node
 				var newScene = packed.Instantiate();
 
 				WorldContainer.AddChild(newScene);
+				AudioManager.Instance?.SetGameplayContext(scenePath);
 				ConfigureCameraForScene(newScene);
 				MovePlayerToSpawnDeferred();
 				SpawnNPCsDeferred(scenePath);

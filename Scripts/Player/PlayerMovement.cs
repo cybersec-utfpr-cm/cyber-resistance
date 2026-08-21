@@ -12,6 +12,8 @@ public partial class PlayerMovement : CharacterBody2D
 	
 	// === Estados === 
 	private bool _isMoving = false; 
+	private double _footstepCooldown;
+	private const double FootstepInterval = 0.32;
 	
 	// === Referências ===
 	private AnimatedSprite2D _sprite;
@@ -35,11 +37,24 @@ public partial class PlayerMovement : CharacterBody2D
 			Velocity = _inputDirection.Normalized() * Speed;
 			MoveAndSlide();
 			AnimatePlayer(_inputDirection);
+			UpdateFootsteps(delta);
 		}
 		else {
 			Velocity = Vector2.Zero;
+			_footstepCooldown = 0.0;
 			StopAnimation();
 		}
+	}
+
+	private void UpdateFootsteps(double delta)
+	{
+		_footstepCooldown -= delta;
+
+		if (_footstepCooldown > 0.0)
+			return;
+
+		AudioManager.Instance?.PlayFootstep();
+		_footstepCooldown = FootstepInterval;
 	}
 	// === DIREÇÃO DO INPUT ===
 	private Vector2 InputDirection()

@@ -105,6 +105,7 @@ public partial class ComputerAccess : Area2D
 
 				gameManager.UIContainer.AddChild(computerControl);
 				GetTree().Paused = true;
+				AudioManager.Instance?.PlayInteraction();
 
 				GD.Print(
 						"ComputerAccess: interface do computador aberta."

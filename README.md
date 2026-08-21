@@ -114,6 +114,23 @@ A máquina Docker do jogador é inicializada quando a cena principal do jogo é 
 
 Com isso, abrir/fechar a tela de terminal não liga/desliga a máquina; o terminal apenas se conecta ao ambiente já ativo.
 
+## 7. Áudio e menu de pausa
+
+Durante o jogo, pressione `ESC` para pausar. O menu permite continuar, voltar ao
+menu principal e controlar separadamente:
+
+- volume geral;
+- música;
+- ambientação;
+- efeitos sonoros.
+
+Os volumes são preservados entre execuções. Se uma interface modal estiver
+aberta, como computador, estante, quiz ou prova, o primeiro `ESC` fecha essa
+interface; o `ESC` seguinte abre o menu de pausa.
+
+Os arquivos de áudio ficam em `Assets/Audio`. Consulte o README dessa pasta para
+substituir músicas ou efeitos mantendo a integração existente.
+
 
 # Código-fonte: Projeto Cyber Resistance
 

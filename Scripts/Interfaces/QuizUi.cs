@@ -44,6 +44,7 @@ public partial class QuizUi : CanvasLayer
 	public override void _Ready()
 	{
 		ProcessMode = ProcessModeEnum.Always;
+		AddToGroup("escape_closes_overlay");
 		InitializeNodes();
 		HideQuestLog();
 		PauseGame();
@@ -231,6 +232,7 @@ public partial class QuizUi : CanvasLayer
 
 		if (_selectedOptionIndex != currentQuestion.CorrectIndex)
 		{
+			AudioManager.Instance?.PlayError();
 			ShowFeedback(
 				"Resposta incorreta. Revise as alternativas e tente novamente.",
 				ErrorColor
@@ -244,6 +246,7 @@ public partial class QuizUi : CanvasLayer
 		}
 
 		ApplyQuestionReward(currentQuestion);
+		AudioManager.Instance?.PlaySuccess();
 		ShowFeedback("Resposta correta.", SuccessColor);
 
 		foreach (var button in _optionButtons)
