@@ -20,6 +20,7 @@ public partial class MainMenu : Control
 	private Button _confirmButton;
 	private Label _statusLabel;
 	private bool _confirmationOpen;
+	private bool _isBusy;
 
 	public override void _Ready()
 	{
@@ -88,6 +89,7 @@ public partial class MainMenu : Control
 	{
 		if (
 			_confirmationOpen &&
+			!_isBusy &&
 			@event.IsActionPressed("ui_cancel") &&
 			!@event.IsEcho()
 		)
@@ -99,6 +101,9 @@ public partial class MainMenu : Control
 
 	private void OnNewGamePressed()
 	{
+		if (_isBusy)
+			return;
+
 		if (SaveManager.Instance?.HasSaveGame() ?? false)
 		{
 			OpenConfirmation();
@@ -110,6 +115,9 @@ public partial class MainMenu : Control
 
 	private void OnContinuePressed()
 	{
+		if (_isBusy)
+			return;
+
 		if (!(SaveManager.Instance?.HasSaveGame() ?? false))
 		{
 			_continueButton.Disabled = true;
@@ -120,9 +128,24 @@ public partial class MainMenu : Control
 		OpenGameScene();
 	}
 
-	private void OnExitPressed()
+	private async void OnExitPressed()
 	{
-		GetTree().Quit();
+		if (_isBusy)
+			return;
+
+		SetMenuBusy(true);
+		ShowStatus("Encerrando laboratórios...");
+
+		if (MissionInfrastructureManager.Instance == null)
+		{
+			GD.PrintErr(
+				"MainMenu: gerenciador de infraestrutura não encontrado."
+			);
+			GetTree().Quit();
+			return;
+		}
+
+		await MissionInfrastructureManager.Instance.QuitApplicationAsync();
 	}
 
 	private void OpenConfirmation()
@@ -160,10 +183,17 @@ public partial class MainMenu : Control
 		CreateNewGame();
 	}
 
-	private void CreateNewGame()
+	private async void CreateNewGame()
 	{
+		if (_isBusy)
+			return;
+
+		SetMenuBusy(true);
+		ShowStatus("Recriando laboratórios do jogo...");
+
 		bool created =
-			SaveManager.Instance?.ResetProgress() ?? false;
+			MissionInfrastructureManager.Instance != null &&
+			await MissionInfrastructureManager.Instance.ResetForNewGameAsync();
 
 		if (created)
 		{
@@ -171,31 +201,36 @@ public partial class MainMenu : Control
 			return;
 		}
 
+		SetMenuBusy(false);
 		_confirmButton.Disabled = false;
 		_confirmButton.Text = "Tentar novamente";
 		_cancelButton.Disabled = false;
 		ShowStatus(
-			"Não foi possível criar o novo jogo. " +
-			"O progresso anterior foi mantido."
+			"Não foi possível concluir a criação do novo jogo. " +
+			"Verifique o ambiente e tente novamente."
 		);
 	}
 
 	private void OpenGameScene()
 	{
-		_newGameButton.Disabled = true;
-		_continueButton.Disabled = true;
-		_exitButton.Disabled = true;
+		SetMenuBusy(true);
 
 		Error error = GetTree().ChangeSceneToFile(GameScenePath);
 
 		if (error == Error.Ok)
 			return;
 
-		_newGameButton.Disabled = false;
-		_continueButton.Disabled =
-			!(SaveManager.Instance?.HasSaveGame() ?? false);
-		_exitButton.Disabled = false;
+		SetMenuBusy(false);
 		ShowStatus($"Não foi possível abrir o jogo: {error}.");
+	}
+
+	private void SetMenuBusy(bool isBusy)
+	{
+		_isBusy = isBusy;
+		_newGameButton.Disabled = isBusy;
+		_continueButton.Disabled =
+			isBusy || !(SaveManager.Instance?.HasSaveGame() ?? false);
+		_exitButton.Disabled = isBusy;
 	}
 
 	private void ShowStatus(string message)

@@ -20,6 +20,7 @@ public partial class MissionInfrastructureManager : Node
 	private MissionInfrastructureCatalog _catalog;
 	private DockerManager _docker;
 	private MissionInfrastructureDefinition _playerDefinition;
+	private Task _applicationQuitTask;
 
 	public static MissionInfrastructureManager Instance { get; private set; }
 
@@ -33,6 +34,8 @@ public partial class MissionInfrastructureManager : Node
 
 	public override async void _Ready()
 	{
+		GetTree().AutoAcceptQuit = false;
+
 		try
 		{
 			LoadCatalog();
@@ -50,6 +53,12 @@ public partial class MissionInfrastructureManager : Node
 				exception.Message
 			);
 		}
+	}
+
+	public override void _Notification(int what)
+	{
+		if (what == NotificationWMCloseRequest)
+			_ = QuitApplicationAsync();
 	}
 
 	public override void _ExitTree()
@@ -393,6 +402,12 @@ public partial class MissionInfrastructureManager : Node
 		}
 	}
 
+	public Task QuitApplicationAsync()
+	{
+		_applicationQuitTask ??= ShutdownAndQuitAsync();
+		return _applicationQuitTask;
+	}
+
 	public async Task<bool> ResetForNewGameAsync(
 		CancellationToken cancellationToken = default
 	)
@@ -426,6 +441,18 @@ public partial class MissionInfrastructureManager : Node
 			foreach (string questId in _missionStates.Keys.ToList())
 				RemoveMissionState(questId);
 
+			if (
+				SaveManager.Instance == null ||
+				!SaveManager.Instance.ResetProgress()
+			)
+			{
+				GD.PrintErr(
+					"MissionInfrastructureManager: não foi possível reiniciar " +
+						"o progresso do jogo."
+				);
+				return false;
+			}
+
 			return await EnsurePlayerMachineReadyInternalAsync(cancellationToken);
 		}
 		catch (OperationCanceledException)
@@ -435,14 +462,39 @@ public partial class MissionInfrastructureManager : Node
 		catch (Exception exception)
 		{
 			GD.PrintErr(
-				"MissionInfrastructureManager: falha no reset Docker: " +
-				exception.Message
+				"MissionInfrastructureManager: falha ao criar novo jogo: " +
+					exception.Message
 			);
 			return false;
 		}
 		finally
 		{
 			_operationLock.Release();
+		}
+	}
+
+	private async Task ShutdownAndQuitAsync()
+	{
+		try
+		{
+			if (!await ShutdownAsync())
+			{
+				GD.PrintErr(
+					"MissionInfrastructureManager: encerramento concluído " +
+						"com recursos que não puderam ser parados."
+				);
+			}
+		}
+		catch (Exception exception)
+		{
+			GD.PrintErr(
+				"MissionInfrastructureManager: falha ao encerrar recursos: " +
+					exception.Message
+			);
+		}
+		finally
+		{
+			GetTree().Quit();
 		}
 	}
 
