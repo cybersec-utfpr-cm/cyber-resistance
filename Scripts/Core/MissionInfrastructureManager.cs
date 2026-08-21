@@ -268,6 +268,24 @@ public partial class MissionInfrastructureManager : Node
 		return PrepareMissionAsync(questId, cancellationToken);
 	}
 
+	public async void HandleMissionRetryRequested(string questId)
+	{
+		try
+		{
+			await RetryMissionAsync(questId, _lifetimeCancellation.Token);
+		}
+		catch (OperationCanceledException)
+		{
+			// The application is closing or a newer lifecycle operation won.
+		}
+		catch (Exception)
+		{
+			GD.PrintErr(
+				"MissionInfrastructureManager: falha inesperada ao repetir missão."
+			);
+		}
+	}
+
 	public async Task<bool> CompleteMissionAsync(
 		string questId,
 		CancellationToken cancellationToken = default

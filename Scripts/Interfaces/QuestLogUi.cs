@@ -12,6 +12,9 @@ public partial class QuestLogUi : CanvasLayer
 	[Export] public NodePath CreditsLabelPath { get; set; }
 	[Export] public bool StartCollapsed { get; set; } = true;
 
+	[Signal]
+	public delegate void MissionRetryRequestedEventHandler(string questId);
+
 	private const int ExperiencePerLevel = 250;
 
 	private VBoxContainer _questListContainer;
@@ -22,6 +25,8 @@ public partial class QuestLogUi : CanvasLayer
 	private Label _experienceLabel;
 	private ProgressBar _experienceBar;
 	private Label _creditsLabel;
+	private MissionInfrastructureManager _missionInfrastructureManager;
+	private readonly Dictionary<string, bool> _missionNotesExpanded = new();
 	private bool _isCollapsed;
 	private bool _isModalObscured;
 
@@ -87,6 +92,21 @@ public partial class QuestLogUi : CanvasLayer
 		else
 			GD.PrintErr("QuestLogUI: InventoryManager não encontrado.");
 
+		_missionInfrastructureManager = MissionInfrastructureManager.Instance;
+		if (_missionInfrastructureManager != null)
+		{
+			_missionInfrastructureManager.MissionStateChanged +=
+				OnMissionStateChanged;
+			MissionRetryRequested +=
+				_missionInfrastructureManager.HandleMissionRetryRequested;
+		}
+		else
+		{
+			GD.PrintErr(
+				"QuestLogUI: MissionInfrastructureManager não encontrado."
+			);
+		}
+
 		UpdateQuestList();
 		UpdatePlayerHud();
 		SetCollapsed(StartCollapsed);
@@ -112,6 +132,14 @@ public partial class QuestLogUi : CanvasLayer
 
 		if (InventoryManager.Instance != null)
 			InventoryManager.Instance.InventoryChanged -= OnInventoryChanged;
+
+		if (_missionInfrastructureManager != null)
+		{
+			_missionInfrastructureManager.MissionStateChanged -=
+				OnMissionStateChanged;
+			MissionRetryRequested -=
+				_missionInfrastructureManager.HandleMissionRetryRequested;
+		}
 	}
 
 	public void SetCollapsed(bool collapsed)
@@ -168,6 +196,12 @@ public partial class QuestLogUi : CanvasLayer
 	private void OnInventoryChanged()
 	{
 		UpdatePlayerHud();
+	}
+
+	private void OnMissionStateChanged(string questId)
+	{
+		if (QuestManager.Instance?.IsQuestActive(questId) == true)
+			UpdateQuestList();
 	}
 
 	private void UpdatePlayerHud()
@@ -306,9 +340,166 @@ public partial class QuestLogUi : CanvasLayer
 			entryContent.AddChild(optionalLabel);
 		}
 
+		if (!string.IsNullOrWhiteSpace(def.InfrastructureId))
+			AddMissionNotes(entryContent, questId);
+
 		entryMargin.AddChild(entryContent);
 		entryPanel.AddChild(entryMargin);
 		_questListContainer.AddChild(entryPanel);
+	}
+
+	private void AddMissionNotes(VBoxContainer parent, string questId)
+	{
+		if (!_missionNotesExpanded.TryGetValue(questId, out bool expanded))
+		{
+			expanded = true;
+			_missionNotesExpanded[questId] = true;
+		}
+		MissionLabState state =
+			_missionInfrastructureManager?.GetMissionState(questId);
+
+		var toggleButton = new Button
+		{
+			Text = GetMissionNotesToggleText(expanded),
+			Alignment = HorizontalAlignment.Left,
+			CustomMinimumSize = new Vector2(0, 30),
+			SizeFlagsHorizontal = Control.SizeFlags.ExpandFill
+		};
+		toggleButton.AddThemeFontSizeOverride("font_size", 11);
+
+		var notesMargin = CreateMarginContainer(5);
+		notesMargin.Visible = expanded;
+
+		var notesContent = new VBoxContainer();
+		notesContent.AddThemeConstantOverride("separation", 4);
+		AddMissionStatus(notesContent, state);
+		AddMissionCredentials(notesContent, state);
+		notesMargin.AddChild(notesContent);
+
+		toggleButton.Pressed += () =>
+		{
+			expanded = !expanded;
+			_missionNotesExpanded[questId] = expanded;
+			notesMargin.Visible = expanded;
+			toggleButton.Text = GetMissionNotesToggleText(expanded);
+		};
+
+		parent.AddChild(toggleButton);
+		parent.AddChild(notesMargin);
+	}
+
+	private void AddMissionStatus(
+		VBoxContainer parent,
+		MissionLabState state
+	)
+	{
+		MissionLabStatus status = state?.Status ?? MissionLabStatus.Preparing;
+
+		switch (status)
+		{
+			case MissionLabStatus.Ready:
+				AddLabLabel(parent, "Laboratório pronto.", AccentColor);
+				AddReadyMissionIp(parent, state.InternalIp);
+				break;
+
+			case MissionLabStatus.Failed:
+				AddLabLabel(
+					parent,
+					"Falha ao preparar laboratório.",
+					new Color(0.95f, 0.48f, 0.42f, 1.0f)
+				);
+				AddLabLabel(
+					parent,
+					string.IsNullOrWhiteSpace(state.ErrorMessage)
+						? "Não foi possível preparar o laboratório."
+						: state.ErrorMessage,
+					MutedColor
+				);
+				AddMissionRetryButton(parent, state.QuestId);
+				break;
+
+			default:
+				AddLabLabel(
+					parent,
+					"Preparando laboratório...",
+					MutedColor
+				);
+				break;
+		}
+	}
+
+	private void AddReadyMissionIp(VBoxContainer parent, string internalIp)
+	{
+		if (string.IsNullOrWhiteSpace(internalIp))
+			return;
+
+		var ipRow = new HBoxContainer();
+		ipRow.AddThemeConstantOverride("separation", 4);
+		AddLabLabel(ipRow, "IP:", MutedColor);
+
+		string copiedIp = internalIp;
+		var ipButton = new LinkButton
+		{
+			Text = copiedIp,
+			TooltipText = "Clique para copiar o IP"
+		};
+		ipButton.AddThemeFontSizeOverride("font_size", 11);
+		ipButton.Pressed += () => DisplayServer.ClipboardSet(copiedIp);
+		ipRow.AddChild(ipButton);
+		parent.AddChild(ipRow);
+	}
+
+	private void AddMissionCredentials(
+		VBoxContainer parent,
+		MissionLabState state
+	)
+	{
+		if (state == null)
+			return;
+
+		if (!string.IsNullOrWhiteSpace(state.Username))
+			AddLabLabel(parent, $"Usuário: {state.Username}", MutedColor);
+
+		if (!string.IsNullOrWhiteSpace(state.Password))
+			AddLabLabel(parent, $"Senha: {state.Password}", MutedColor);
+	}
+
+	private void AddMissionRetryButton(VBoxContainer parent, string questId)
+	{
+		if (string.IsNullOrWhiteSpace(questId))
+			return;
+
+		var retryButton = new Button
+		{
+			Text = "Tentar novamente",
+			CustomMinimumSize = new Vector2(0, 30),
+			SizeFlagsHorizontal = Control.SizeFlags.ExpandFill
+		};
+		retryButton.AddThemeFontSizeOverride("font_size", 11);
+		retryButton.Pressed += () =>
+		{
+			retryButton.Disabled = true;
+			EmitSignal(SignalName.MissionRetryRequested, questId);
+		};
+		parent.AddChild(retryButton);
+	}
+
+	private void AddLabLabel(Container parent, string text, Color color)
+	{
+		var label = new Label
+		{
+			Text = text,
+			AutowrapMode = TextServer.AutowrapMode.WordSmart,
+			SizeFlagsHorizontal = Control.SizeFlags.ExpandFill
+		};
+		label.AddThemeColorOverride("font_color", color);
+		label.AddThemeFontSizeOverride("font_size", 11);
+		parent.AddChild(label);
+	}
+
+	private static string GetMissionNotesToggleText(bool expanded)
+	{
+		return expanded ? "▾ Notas do laboratório" : "▸ Notas do laboratório";
 	}
 
 	private void AddRewardEntry(string questId)
