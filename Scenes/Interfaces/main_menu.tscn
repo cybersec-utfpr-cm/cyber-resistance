@@ -178,7 +178,7 @@ layout_mode = 2
 size_flags_vertical = 10
 theme_override_colors/font_color = Color(0.28, 0.39, 0.44, 1)
 theme_override_font_sizes/font_size = 11
-text = "ESC fecha janelas e retorna ao jogo"
+text = "ESC fecha janelas e pausa o jogo"
 horizontal_alignment = 1
 
 [node name="ConfirmationOverlay" type="Control" parent="."]

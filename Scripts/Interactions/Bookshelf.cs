@@ -136,6 +136,7 @@ public partial class Bookshelf : Area2D
 		}
 
 		var ui = BookshelfUIScene.Instantiate<BookshelfUi>();
+		AudioManager.Instance?.PlayInteraction();
 		ui.BookId = BookId;
 		_activeUi = ui;
 		ui.TreeExited += OnBookshelfUiClosed;

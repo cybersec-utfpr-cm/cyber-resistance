@@ -42,6 +42,7 @@ public partial class DoorArea : Area2D
 
 	private void ChangeScene()
 	{
+		AudioManager.Instance?.PlayDoor();
 		GameManager.Instance.ChangeScene(
 			DestinationScenePath,
 			DestinationSpawnName

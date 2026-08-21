@@ -23,6 +23,7 @@ public partial class MainMenu : Control
 
 	public override void _Ready()
 	{
+		AudioManager.Instance?.SetMenuContext();
 		_newGameButton = GetNodeOrNull<Button>(NewGameButtonPath);
 		_continueButton = GetNodeOrNull<Button>(ContinueButtonPath);
 		_exitButton = GetNodeOrNull<Button>(ExitButtonPath);
