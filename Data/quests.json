@@ -50,6 +50,8 @@
 	  "is_main": true,
 	  "start_mode": "npc_acceptance",
 	  "interaction_npc_id": "hubner",
+	  "offer_dialogue_id": "sudo_with_less_offer",
+	  "success_dialogue_id": "sudo_with_less_success",
 	  "material_book_id": "sudo_with_less_material",
 	  "infrastructure_id": "sudo_with_less_lab",
 	  "optional_objectives": [

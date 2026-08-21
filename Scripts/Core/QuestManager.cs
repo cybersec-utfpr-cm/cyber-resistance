@@ -70,6 +70,12 @@ public partial class QuestManager : Node
 			string infrastructureId = questDict.ContainsKey("infrastructure_id")
 				? questDict["infrastructure_id"].AsString()
 				: "";
+			string offerDialogueId = questDict.ContainsKey("offer_dialogue_id")
+				? questDict["offer_dialogue_id"].AsString()
+				: "";
+			string successDialogueId = questDict.ContainsKey("success_dialogue_id")
+				? questDict["success_dialogue_id"].AsString()
+				: "";
 
 			if (!QuestStartMode.IsValid(startMode))
 			{
@@ -125,7 +131,9 @@ public partial class QuestManager : Node
 				InteractionNpcId = interactionNpcId,
 				MaterialBookId = materialBookId,
 				OptionalObjectives = optionalObjectives,
-				InfrastructureId = infrastructureId
+				InfrastructureId = infrastructureId,
+				OfferDialogueId = offerDialogueId,
+				SuccessDialogueId = successDialogueId
 			};
 		}
 
@@ -338,6 +346,23 @@ public partial class QuestManager : Node
 		return definition != null && TryStartQuest(definition.Id, true);
 	}
 
+	public QuestDefinition GetActiveQuestForNpc(string npcId)
+	{
+		if (string.IsNullOrWhiteSpace(npcId))
+			return null;
+
+		return _activeQuests.Keys
+			.Select(GetQuestDefinition)
+			.FirstOrDefault(definition =>
+				definition != null &&
+				string.Equals(
+					definition.InteractionNpcId,
+					npcId,
+					StringComparison.OrdinalIgnoreCase
+				)
+			);
+	}
+
 	// Retorna a lista de IDs das missões ativas
 	public List<string> GetActiveQuests()
 	{
@@ -511,4 +536,6 @@ public class QuestDefinition
 	public string MaterialBookId { get; set; } = "";
 	public List<QuestOptionalObjective> OptionalObjectives { get; set; } = new();
 	public string InfrastructureId { get; set; } = "";
+	public string OfferDialogueId { get; set; } = "";
+	public string SuccessDialogueId { get; set; } = "";
 }

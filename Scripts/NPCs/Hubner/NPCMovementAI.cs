@@ -265,9 +265,17 @@ public partial class NPCMovementAI : CharacterBody2D
 			return;
 		}
 
-		DialogueManager.Instance.StartDialogue(NpcId);
+		bool missionInteractionHandled =
+			MissionInteractionManager.Instance?.TryHandleInteraction(NpcId)
+			?? false;
 
-		if (DialogueManager.Instance.IsDialogueActive())
+		if (!missionInteractionHandled)
+			DialogueManager.Instance.StartDialogue(NpcId);
+
+		if (
+			missionInteractionHandled ||
+			DialogueManager.Instance.IsDialogueActive()
+		)
 		{
 			_isTalkingToPlayer = true;
 			PauseForDialogue();

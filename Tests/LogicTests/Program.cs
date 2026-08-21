@@ -201,6 +201,14 @@ public static class Program
 		Equal("npc_acceptance", sudoQuest.GetProperty("start_mode").GetString());
 		Equal("hubner", sudoQuest.GetProperty("interaction_npc_id").GetString());
 		Equal(
+			"sudo_with_less_offer",
+			sudoQuest.GetProperty("offer_dialogue_id").GetString()
+		);
+		Equal(
+			"sudo_with_less_success",
+			sudoQuest.GetProperty("success_dialogue_id").GetString()
+		);
+		Equal(
 			"sudo_with_less_material",
 			sudoQuest.GetProperty("material_book_id").GetString()
 		);
@@ -243,6 +251,39 @@ public static class Program
 		Equal(22, lab.GetProperty("readiness").GetProperty("port").GetInt32());
 		Equal("/root/flag.txt", lab.GetProperty("flag_target").GetProperty("path").GetString());
 		DoesNotContain("Flag da missão:", infrastructureJson);
+
+		using JsonDocument dialogueDocument = ReadJsonFile(
+			"Scripts/NPCs/Dialogues/npc_tutor_hubner.json"
+		);
+		JsonElement dialogues =
+			dialogueDocument.RootElement.GetProperty("dialogues");
+		var dialogueIds = new HashSet<string>(StringComparer.Ordinal);
+		foreach (JsonElement dialogue in dialogues.EnumerateArray())
+		{
+			string dialogueId = dialogue.GetProperty("id").GetString();
+			True(
+				!string.IsNullOrWhiteSpace(dialogueId) &&
+				dialogueIds.Add(dialogueId),
+				"Os IDs de diálogo devem existir e ser únicos."
+			);
+		}
+
+		JsonElement offerDialogue = FindById(
+			dialogues,
+			sudoQuest.GetProperty("offer_dialogue_id").GetString()
+		);
+		JsonElement successDialogue = FindById(
+			dialogues,
+			sudoQuest.GetProperty("success_dialogue_id").GetString()
+		);
+		True(
+			offerDialogue.GetProperty("direct_only").GetBoolean(),
+			"O diálogo de oferta deve ser selecionado somente por ID."
+		);
+		True(
+			successDialogue.GetProperty("direct_only").GetBoolean(),
+			"O diálogo de sucesso deve ser selecionado somente por ID."
+		);
 	}
 
 	private static void MigratesAdvancedLegacyProgress()

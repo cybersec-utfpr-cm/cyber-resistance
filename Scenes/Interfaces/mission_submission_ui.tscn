@@ -1,0 +1,140 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Interfaces/MissionSubmissionUi.cs" id="1_script"]
+[ext_resource type="Theme" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StylePanel"]
+bg_color = Color(0.047, 0.075, 0.11, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.16, 0.55, 0.65, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.55)
+shadow_size = 20
+
+[node name="MissionSubmissionUi" type="CanvasLayer"]
+process_mode = 3
+layer = 30
+script = ExtResource("1_script")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+theme = ExtResource("2_theme")
+
+[node name="Backdrop" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0.005, 0.01, 0.018, 0.82)
+
+[node name="Center" type="CenterContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Root/Center"]
+custom_minimum_size = Vector2(520, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StylePanel")
+
+[node name="Margin" type="MarginContainer" parent="Root/Center/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 34
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 34
+theme_override_constants/margin_bottom = 30
+
+[node name="Content" type="VBoxContainer" parent="Root/Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Eyebrow" type="Label" parent="Root/Center/Panel/Margin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.33, 0.82, 0.87, 1)
+theme_override_font_sizes/font_size = 12
+text = "MISSÃO"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="Root/Center/Panel/Margin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.91, 0.96, 0.98, 1)
+theme_override_font_sizes/font_size = 24
+text = "Missão"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Prompt" type="Label" parent="Root/Center/Panel/Margin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.68, 0.76, 0.8, 1)
+theme_override_font_sizes/font_size = 15
+text = "Conseguiu a flag?"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Feedback" type="Label" parent="Root/Center/Panel/Margin/Content"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.42, 0.46, 1)
+theme_override_font_sizes/font_size = 13
+text = "Flag incorreta. Verifique o valor e tente novamente."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="QuestionActions" type="HBoxContainer" parent="Root/Center/Panel/Margin/Content"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="NoButton" type="Button" parent="Root/Center/Panel/Margin/Content/QuestionActions"]
+custom_minimum_size = Vector2(160, 42)
+layout_mode = 2
+text = "Não"
+
+[node name="YesButton" type="Button" parent="Root/Center/Panel/Margin/Content/QuestionActions"]
+custom_minimum_size = Vector2(160, 42)
+layout_mode = 2
+text = "Sim"
+
+[node name="InputSection" type="VBoxContainer" parent="Root/Center/Panel/Margin/Content"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="FlagInput" type="LineEdit" parent="Root/Center/Panel/Margin/Content/InputSection"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+placeholder_text = "Flag da missão"
+clear_button_enabled = true
+
+[node name="InputActions" type="HBoxContainer" parent="Root/Center/Panel/Margin/Content/InputSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="CancelButton" type="Button" parent="Root/Center/Panel/Margin/Content/InputSection/InputActions"]
+custom_minimum_size = Vector2(160, 42)
+layout_mode = 2
+text = "Cancelar"
+
+[node name="SendButton" type="Button" parent="Root/Center/Panel/Margin/Content/InputSection/InputActions"]
+custom_minimum_size = Vector2(160, 42)
+layout_mode = 2
+text = "Enviar"

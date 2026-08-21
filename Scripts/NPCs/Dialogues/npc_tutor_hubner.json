@@ -2,6 +2,7 @@
   "npc_id": "hubner",
   "dialogues": [
 	{
+	  "id": "tutorial_intro",
 	  "condition": "quest_tutorial_stage == 1",
 	  "lines": [
 		"Bem-vindo! Sua primeira missão é falar comigo.",
@@ -16,6 +17,7 @@
 	  ]
 	},
 	{
+	  "id": "tutorial_books",
 	  "condition": "quest_tutorial_stage == 2",
 	  "lines": [
 		"Ótimo! Agora vá até a estante de livros e leia o capítulo sobre comandos básicos."
@@ -23,6 +25,7 @@
 	  "on_end": []
 	},
 	{
+	  "id": "tutorial_computer",
 	  "condition": "quest_tutorial_stage == 3",
 	  "lines": [
 		"Você já leu o livro? Se sim, acesse o computador ao lado para a próxima etapa."
@@ -30,6 +33,7 @@
 	  "on_end": []
 	},
 	{
+	  "id": "university_exam_intro",
 	  "condition": "quest_university_exam_stage == 1",
 	  "lines": [
 		"Agora você precisa passar na prova da universidade. Vá até a universidade e procure o professor.",
@@ -44,6 +48,7 @@
 	  ]
 	},
 	{
+	  "id": "university_exam_pending",
 	  "condition": "quest_university_exam_stage == 2",
 	  "lines": [
 		"Você já fez a prova? Se não, vá até a mesa de provas na universidade."
@@ -51,6 +56,7 @@
 	  "on_end": []
 	},
 	{
+	  "id": "university_exam_complete",
 	  "condition": "quest_university_exam_stage >= 3",
 	  "lines": [
 		"Parabéns! Você passou na prova de cibersegurança!"
@@ -58,6 +64,7 @@
 	  "on_end": []
 	},
 	{
+	  "id": "tutorial_complete",
 	  "condition": "quest_tutorial_stage == 4",
 	  "lines": [
 		"Parabéns! Você completou o tutorial básico. Agora está pronto para as próximas missões."
@@ -65,6 +72,28 @@
 	  "on_end": []
 	},
 	{
+	  "id": "sudo_with_less_offer",
+	  "direct_only": true,
+	  "condition": "",
+	  "lines": [
+		"O professor Campiolo escondeu uma prova de Sistemas Operacionais em uma máquina do laboratório.",
+		"Seu desafio é obter acesso root, encontrar a flag e trazê-la para mim.",
+		"Recomendo consultar o material Sudo with Less na estante antes de começar. A leitura é opcional."
+	  ],
+	  "on_end": []
+	},
+	{
+	  "id": "sudo_with_less_success",
+	  "direct_only": true,
+	  "condition": "",
+	  "lines": [
+		"Excelente trabalho! Você explorou a configuração vulnerável do sudo e obteve acesso root.",
+		"Desafio concluído. Continue estudando para a próxima missão."
+	  ],
+	  "on_end": []
+	},
+	{
+	  "id": "default_greeting",
 	  "condition": "",
 	  "lines": [
 		"Olá! Em que posso ajudar?"

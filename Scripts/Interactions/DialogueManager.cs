@@ -18,6 +18,14 @@ public partial class DialogueManager : Node
 	private bool _isDialogueActive = false;
 	
 	private List<Dictionary<string, string>> _pendingActions;
+	private string _activeNpcId = "";
+	private string _activeDialogueId = "";
+
+	[Signal]
+	public delegate void DialogueFinishedEventHandler(
+		string npcId,
+		string dialogueId
+	);
 
 	public override void _EnterTree()
 	{
@@ -90,10 +98,26 @@ public partial class DialogueManager : Node
 		var dialoguesArray = data["dialogues"].AsGodotArray();
 
 		List<DialogueEntry> dialoguesList = new();
+		var dialogueIds = new HashSet<string>(StringComparer.Ordinal);
 
 		foreach (var dialogueVar in dialoguesArray)
 		{
 			var dialogueDict = dialogueVar.AsGodotDictionary();
+			string dialogueId = dialogueDict.ContainsKey("id")
+				? dialogueDict["id"].AsString()
+				: "";
+
+			if (
+				string.IsNullOrWhiteSpace(dialogueId) ||
+				!dialogueIds.Add(dialogueId)
+			)
+			{
+				GD.PrintErr(
+					$"DialogueManager: ID ausente ou duplicado em {filePath}. " +
+					"Ignorando diálogo."
+				);
+				continue;
+			}
 
 			// Extrai a condição (opcional)
 			string condition = "";
@@ -135,7 +159,11 @@ public partial class DialogueManager : Node
 
 			dialoguesList.Add(new DialogueEntry
 			{
+				Id = dialogueId,
 				Condition = condition,
+				DirectOnly =
+					dialogueDict.ContainsKey("direct_only") &&
+					dialogueDict["direct_only"].AsBool(),
 				Lines = lines,
 				Actions = actions
 			});
@@ -155,18 +183,18 @@ public partial class DialogueManager : Node
 	}
 
 	// Método chamado por um NPC para iniciar o diálogo
-	public void StartDialogue(string npcId)
+	public bool StartDialogue(string npcId)
 	{
 		if (_isDialogueActive)
 		{
 			GD.Print("DialogueManager: Já existe um diálogo ativo.");
-			return;
+			return false;
 		}
 
 		if (!_npcDialogues.ContainsKey(npcId))
 		{
 			GD.PrintErr($"DialogueManager: Nenhum diálogo encontrado para NPC ID '{npcId}'.");
-			return;
+			return false;
 		}
 
 		var dialogues = _npcDialogues[npcId];
@@ -174,6 +202,9 @@ public partial class DialogueManager : Node
 
 		foreach (var entry in dialogues)
 		{
+			if (entry.DirectOnly)
+				continue;
+
 			bool eval = ConditionEvaluator.Evaluate(entry.Condition);
 			GD.Print($"Avaliando condição: {entry.Condition} -> {eval}");
 			if (eval)
@@ -187,24 +218,73 @@ public partial class DialogueManager : Node
 		if (selectedDialogue == null)
 		{
 			GD.PrintErr($"DialogueManager: NPC '{npcId}' não tem diálogo com condição verdadeira.");
-			return;
+			return false;
 		}
+
+		return StartDialogueEntry(npcId, selectedDialogue);
+	}
+
+	public bool StartDialogue(string npcId, string dialogueId)
+	{
+		if (_isDialogueActive)
+		{
+			GD.Print("DialogueManager: Já existe um diálogo ativo.");
+			return false;
+		}
+
+		if (
+			string.IsNullOrWhiteSpace(npcId) ||
+			string.IsNullOrWhiteSpace(dialogueId) ||
+			!_npcDialogues.TryGetValue(npcId, out var dialogues)
+		)
+		{
+			return false;
+		}
+
+		DialogueEntry selectedDialogue = dialogues.FirstOrDefault(
+			entry => entry.Id == dialogueId
+		);
+		if (selectedDialogue == null)
+		{
+			GD.PrintErr(
+				$"DialogueManager: diálogo '{dialogueId}' não encontrado " +
+				$"para NPC '{npcId}'."
+			);
+			return false;
+		}
+
+		return StartDialogueEntry(npcId, selectedDialogue);
+	}
+
+	private bool StartDialogueEntry(
+		string npcId,
+		DialogueEntry selectedDialogue
+	)
+	{
 
 		if (selectedDialogue.Lines == null || selectedDialogue.Lines.Count == 0)
 		{
 			GD.PrintErr($"DialogueManager: Diálogo selecionado para NPC '{npcId}' não tem linhas.");
-			return;
+			return false;
 		}
 
 		_pendingActions = selectedDialogue.Actions; // pode ser null
+		_activeNpcId = npcId;
+		_activeDialogueId = selectedDialogue.Id;
 		_isDialogueActive = true;
 		_dialogBox.StartDialogue(selectedDialogue.Lines);
 		_dialogBox.DialogFinished += OnDialogFinished;
+		return true;
 	}
 
 	private void OnDialogFinished()
 	{
+		string finishedNpcId = _activeNpcId;
+		string finishedDialogueId = _activeDialogueId;
+
 		_isDialogueActive = false;
+		_activeNpcId = "";
+		_activeDialogueId = "";
 		_dialogBox.DialogFinished -= OnDialogFinished;
 
 		GD.Print($"DialogueManager: Diálogo finalizado. Ações pendentes: {(_pendingActions != null ? _pendingActions.Count : 0)}");
@@ -213,6 +293,12 @@ public partial class DialogueManager : Node
 			ActionProcessor.ExecuteActions(_pendingActions);
 			_pendingActions = null;
 		}
+
+		EmitSignal(
+			SignalName.DialogueFinished,
+			finishedNpcId,
+			finishedDialogueId
+		);
 	}
 
 	// Chamado pelo NPC quando o jogador pressiona E durante o diálogo
