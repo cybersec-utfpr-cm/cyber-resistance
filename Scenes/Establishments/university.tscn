@@ -117,7 +117,7 @@ script = ExtResource("3_spawn")
 position = Vector2(368, 456)
 
 [node name="LectureSpot" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(284, 180)
+position = Vector2(288, 184)
 
 [node name="ProfessorRoom" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(250, 350)
@@ -137,7 +137,7 @@ DestinationSpawnName = "UniversityExitSpawn"
 position = Vector2(320, 272)
 
 [node name="ComputerAccess" parent="." instance=ExtResource("8_computer")]
-position = Vector2(592, 160)
+position = Vector2(528, 120)
 collision_layer = 16
 collision_mask = 15
 
