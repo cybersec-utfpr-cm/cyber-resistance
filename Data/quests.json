@@ -2,20 +2,26 @@
   "quests": [
 	{
 	  "id": "tutorial",
-	  "title": "Tutorial de Cibersegurança",
+	  "title": "Boas-vindas à Cyber Resistance",
 	  "is_main": true,
 	  "stages": [
 		{
 		  "id": 1,
-		  "description": "Encontre o professor Hubner e converse com ele para receber sua primeira orientação."
+		  "description": "Apresente-se ao professor Hubner para conhecer o incidente e receber sua primeira orientação.",
+		  "location": "Mundo externo — procure o professor Hubner",
+		  "hint": "Use WASD ou as setas para se mover. Ao se aproximar de Hubner, pressione E."
 		},
 		{
 		  "id": 2,
-		  "description": "Aproxime-se da estante tutora, pressione E e leia o capítulo introdutório de cibersegurança."
+		  "description": "Entre na universidade, abra a estante de estudos do corredor central e leia o primeiro capítulo de Fundamentos de Cibersegurança.",
+		  "location": "Universidade — corredor central",
+		  "hint": "Pressione E na estante, escolha Fundamentos de Cibersegurança e abra o Capítulo 1."
 		},
 		{
 		  "id": 3,
-		  "description": "Acesse o computador indicado por Hubner e conclua a atividade inicial."
+		  "description": "Inicialize um computador autorizado para validar seu acesso ao ambiente de treinamento.",
+		  "location": "Universidade — laboratório superior direito, ou escritório",
+		  "hint": "Pressione E junto ao computador e aguarde a área de trabalho carregar."
 		}
 	  ],
 	  "reward": "100 XP e 25 créditos",
@@ -24,20 +30,26 @@
 	},
 	{
 	  "id": "wifi_hacking",
-	  "title": "Missão Wi-Fi",
+	  "title": "Restabeleça a rede do escritório",
 	  "is_main": true,
 	  "stages": [
 		{
 		  "id": 1,
-		  "description": "Abra a ferramenta de Wi-Fi no computador e identifique a rede correta."
+		  "description": "Use o computador para localizar a rede sem fio do escritório e iniciar uma tentativa de conexão.",
+		  "location": "Computador — Configurações > Wi-Fi",
+		  "hint": "Abra Configurações, entre em Wi-Fi, selecione Escritório e clique em Conectar."
 		},
 		{
 		  "id": 2,
-		  "description": "Use as pistas disponíveis no computador para descobrir a senha da rede."
+		  "description": "Resolva o desafio de segurança apresentado pelo sistema para recuperar a senha correta da rede.",
+		  "location": "Computador — desafio da rede Escritório",
+		  "hint": "Reorganize as letras do anagrama e confirme a palavra formada."
 		},
 		{
 		  "id": 3,
-		  "description": "Informe a senha descoberta e conecte-se à rede correta."
+		  "description": "Aguarde o computador autenticar a senha e confirmar que a rede do escritório foi restabelecida.",
+		  "location": "Computador — tela de conexão Wi-Fi",
+		  "hint": "Não feche a tela até aparecer a confirmação de conexão."
 		}
 	  ],
 	  "reward": "200 XP e 50 créditos",
@@ -46,20 +58,26 @@
 	},
 	{
 	  "id": "university_exam",
-	  "title": "Prova de Cibersegurança",
+	  "title": "Avaliação na universidade",
 	  "is_main": true,
 	  "stages": [
 		{
 		  "id": 1,
-		  "description": "Converse com Hubner, revise os livros e siga para a universidade à direita do escritório."
+		  "description": "Informe Hubner de que a rede voltou e receba a autorização para realizar a avaliação final.",
+		  "location": "Professor Hubner — acompanhe a rota dele",
+		  "hint": "Hubner circula entre o mundo externo, o escritório e a universidade. Aproxime-se e pressione E."
 		},
 		{
 		  "id": 2,
-		  "description": "Na sala inferior direita da universidade, aproxime-se do terminal cyber e responda à prova."
+		  "description": "Realize a prova no terminal da sala de avaliação e alcance a pontuação mínima para aprovação.",
+		  "location": "Universidade — sala inferior direita",
+		  "hint": "Aproxime-se do terminal cyber, pressione E e responda a todas as questões."
 		},
 		{
 		  "id": 3,
-		  "description": "Conclua a prova com a pontuação necessária e volte a conversar com Hubner."
+		  "description": "Volte a conversar com Hubner para entregar o resultado e encerrar seu treinamento inicial.",
+		  "location": "Professor Hubner — acompanhe a rota dele",
+		  "hint": "Procure Hubner, pressione E e conclua o relatório da missão."
 		}
 	  ],
 	  "reward": "300 XP e 75 créditos",

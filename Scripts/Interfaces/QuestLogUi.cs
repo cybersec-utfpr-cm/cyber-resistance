@@ -140,17 +140,20 @@ public partial class QuestLogUi : CanvasLayer
 	private void OnQuestStarted(string questId)
 	{
 		UpdateQuestList();
+		SetCollapsed(false);
 	}
 
 	private void OnQuestAdvanced(string questId, int newStage)
 	{
 		UpdateQuestList();
+		SetCollapsed(false);
 	}
 
 	private void OnQuestCompleted(string questId)
 	{
 		GD.Print($"QuestLogUI: missão '{questId}' concluída.");
 		UpdateQuestList();
+		SetCollapsed(false);
 	}
 
 	private void OnRewardCollected(string questId, string rewardId)
@@ -206,7 +209,7 @@ public partial class QuestLogUi : CanvasLayer
 
 		GD.Print("QuestLogUI: atualizando lista de missões e recompensas.");
 
-		AddSectionTitle("Missões ativas");
+		AddSectionTitle("Objetivo atual");
 
 		var activeQuests = QuestManager.Instance?.GetActiveQuests() ?? new List<string>();
 
@@ -263,9 +266,13 @@ public partial class QuestLogUi : CanvasLayer
 		int stage = QuestManager.Instance.GetQuestStage(questId);
 
 		string description = "";
+		QuestStage currentStage = null;
 
 		if (stage > 0 && stage <= def.Stages.Count)
-			description = def.Stages[stage - 1].Description;
+		{
+			currentStage = def.Stages[stage - 1];
+			description = currentStage.Description;
+		}
 		else if (stage > def.Stages.Count)
 			description = "Concluída";
 
@@ -284,13 +291,43 @@ public partial class QuestLogUi : CanvasLayer
 		titleLabel.AddThemeFontSizeOverride("font_size", 13);
 		entryContent.AddChild(titleLabel);
 
+		var progressLabel = new Label();
+		progressLabel.Text =
+			$"ETAPA {System.Math.Clamp(stage, 1, def.Stages.Count)} " +
+			$"DE {def.Stages.Count}";
+		progressLabel.AddThemeColorOverride("font_color", AccentColor);
+		progressLabel.AddThemeFontSizeOverride("font_size", 9);
+		entryContent.AddChild(progressLabel);
+
 		var descriptionLabel = new Label();
 		descriptionLabel.Text = description;
 		descriptionLabel.AutowrapMode = TextServer.AutowrapMode.WordSmart;
 		descriptionLabel.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
-		descriptionLabel.AddThemeColorOverride("font_color", MutedColor);
+		descriptionLabel.AddThemeColorOverride("font_color", TitleColor);
 		descriptionLabel.AddThemeFontSizeOverride("font_size", 11);
 		entryContent.AddChild(descriptionLabel);
+
+		if (currentStage != null && !string.IsNullOrWhiteSpace(currentStage.Location))
+		{
+			var locationLabel = new Label();
+			locationLabel.Text = $"LOCAL  •  {currentStage.Location}";
+			locationLabel.AutowrapMode = TextServer.AutowrapMode.WordSmart;
+			locationLabel.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+			locationLabel.AddThemeColorOverride("font_color", AccentColor);
+			locationLabel.AddThemeFontSizeOverride("font_size", 10);
+			entryContent.AddChild(locationLabel);
+		}
+
+		if (currentStage != null && !string.IsNullOrWhiteSpace(currentStage.Hint))
+		{
+			var hintLabel = new Label();
+			hintLabel.Text = $"DICA  •  {currentStage.Hint}";
+			hintLabel.AutowrapMode = TextServer.AutowrapMode.WordSmart;
+			hintLabel.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+			hintLabel.AddThemeColorOverride("font_color", MutedColor);
+			hintLabel.AddThemeFontSizeOverride("font_size", 10);
+			entryContent.AddChild(hintLabel);
+		}
 
 		entryMargin.AddChild(entryContent);
 		entryPanel.AddChild(entryMargin);

@@ -5,21 +5,33 @@ public partial class ExamTerminal : Area2D
 	[Export] public PackedScene ExamUIScene; // Arraste a cena ExamUi.tscn no Inspector
 	private bool _playerInRange = false;
 	private ExamUi _activeExamUi;
+	private Label _interactHint;
 
 	public override void _Ready()
 	{
+		_interactHint = GetNodeOrNull<Label>("InteractHint");
 		BodyEntered += OnBodyEntered;
 		BodyExited += OnBodyExited;
 	}
 
 	private void OnBodyEntered(Node body)
 	{
-		if (body.IsInGroup("Player")) _playerInRange = true;
+		if (!body.IsInGroup("Player"))
+			return;
+
+		_playerInRange = true;
+		UpdateInteractHint();
 	}
 
 	private void OnBodyExited(Node body)
 	{
-		if (body.IsInGroup("Player")) _playerInRange = false;
+		if (!body.IsInGroup("Player"))
+			return;
+
+		_playerInRange = false;
+
+		if (_interactHint != null)
+			_interactHint.Visible = false;
 	}
 
 	public override void _Input(InputEvent @event)
@@ -83,12 +95,29 @@ public partial class ExamTerminal : Area2D
 		if (approved)
 		{
 			QuestManager.Instance.SetQuestStage("university_exam", 3);
-			QuestManager.Instance.CompleteQuest("university_exam");
-			GD.Print("Prova aprovada! Missão concluída.");
+			UpdateInteractHint();
+			GD.Print("Prova aprovada! Entregue o resultado ao professor Hubner.");
 		}
 		else
 		{
 			GD.Print("Prova reprovada. Consulte o material na estante.");
 		}
+	}
+
+	private void UpdateInteractHint()
+	{
+		if (_interactHint == null)
+			return;
+
+		int stage =
+			QuestManager.Instance?.GetQuestStage("university_exam") ?? -1;
+
+		_interactHint.Text = stage switch
+		{
+			2 => "E  INICIAR PROVA",
+			3 => "RESULTADO ENVIADO",
+			_ => "FALE COM HUBNER"
+		};
+		_interactHint.Visible = _playerInRange;
 	}
 }

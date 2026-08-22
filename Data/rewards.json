@@ -2,8 +2,8 @@
   "rewards": [
 	{
 	  "id": "reward_tutorial",
-	  "title": "Recompensa do Tutorial",
-	  "description": "Recompensa por concluir os primeiros passos do jogo.",
+	  "title": "Kit de boas-vindas",
+	  "description": "Concedido após a orientação, a leitura inicial e a validação do primeiro computador.",
 	  "xp": 100,
 	  "credits": 25,
 	  "items": [
@@ -16,8 +16,8 @@
 	},
 	{
 	  "id": "reward_wifi_hacking",
-	  "title": "Recompensa da Missão Wi-Fi",
-	  "description": "Recompensa por descobrir a senha e conectar à rede correta.",
+	  "title": "Rede restabelecida",
+	  "description": "Concedido por recuperar a credencial e restabelecer a rede sem fio do escritório.",
 	  "xp": 200,
 	  "credits": 50,
 	  "items": [
@@ -30,8 +30,8 @@
 	},
 	{
 	  "id": "reward_university_exam",
-	  "title": "Recompensa da Prova",
-	  "description": "Recompensa por ser aprovado na prova de cibersegurança.",
+	  "title": "Certificação inicial",
+	  "description": "Concedida após a aprovação na universidade e a entrega do resultado ao professor Hubner.",
 	  "xp": 300,
 	  "credits": 75,
 	  "items": [

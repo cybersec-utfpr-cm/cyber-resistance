@@ -15,6 +15,7 @@ public partial class NPCMovementAI : CharacterBody2D
 	private NavigationAgent2D _agent;
 	private AnimatedSprite2D _sprite;
 	private Area2D _interactionArea;
+	private Label _interactHint;
 	private bool _initialized;
 	private bool _isExecutingTask;
 	private bool _isWaiting;
@@ -64,6 +65,7 @@ public partial class NPCMovementAI : CharacterBody2D
 		_sprite = GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D");
 		_interactionArea =
 			GetNodeOrNull<Area2D>("InteractionArea");
+		_interactHint = GetNodeOrNull<Label>("InteractHint");
 
 		_activeCollisionLayer = CollisionLayer;
 		_activeCollisionMask = CollisionMask;
@@ -126,6 +128,10 @@ public partial class NPCMovementAI : CharacterBody2D
 			}
 
 			_isTalkingToPlayer = false;
+
+			if (_interactHint != null)
+				_interactHint.Visible = _playerInRange && _isInActiveScene;
+
 			RestoreCurrentTaskPresentation();
 		}
 
@@ -357,6 +363,10 @@ public partial class NPCMovementAI : CharacterBody2D
 		if (DialogueManager.Instance.IsDialogueActive())
 		{
 			_isTalkingToPlayer = true;
+
+			if (_interactHint != null)
+				_interactHint.Visible = false;
+
 			PauseForDialogue();
 		}
 	}
@@ -731,6 +741,10 @@ public partial class NPCMovementAI : CharacterBody2D
 	private void SetActiveScenePresentation(bool isActive)
 	{
 		Visible = isActive;
+
+		if (_interactHint != null && !isActive)
+			_interactHint.Visible = false;
+
 		CollisionLayer =
 			isActive ? _activeCollisionLayer : 0;
 		CollisionMask =
@@ -768,13 +782,23 @@ public partial class NPCMovementAI : CharacterBody2D
 	private void OnInteractionBodyEntered(Node body)
 	{
 		if (body.IsInGroup("Player"))
+		{
 			_playerInRange = true;
+
+			if (_interactHint != null && !_isTalkingToPlayer)
+				_interactHint.Visible = true;
+		}
 	}
 
 	private void OnInteractionBodyExited(Node body)
 	{
 		if (body.IsInGroup("Player"))
+		{
 			_playerInRange = false;
+
+			if (_interactHint != null)
+				_interactHint.Visible = false;
+		}
 	}
 
 	public void OnReachedDoor(DoorArea door)
