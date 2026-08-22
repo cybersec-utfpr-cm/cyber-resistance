@@ -7,15 +7,15 @@
 	  "stages": [
 		{
 		  "id": 1,
-		  "description": "Fale com o tutor."
+		  "description": "Encontre o professor Hubner e converse com ele para receber sua primeira orientação."
 		},
 		{
 		  "id": 2,
-		  "description": "Acesse a estante de livros."
+		  "description": "Aproxime-se da estante tutora, pressione E e leia o capítulo introdutório de cibersegurança."
 		},
 		{
 		  "id": 3,
-		  "description": "Acesse o computador."
+		  "description": "Acesse o computador indicado por Hubner e conclua a atividade inicial."
 		}
 	  ],
 	  "reward": "100 XP e 25 créditos",
@@ -29,15 +29,15 @@
 	  "stages": [
 		{
 		  "id": 1,
-		  "description": "Encontre a rede Wi-Fi correta."
+		  "description": "Abra a ferramenta de Wi-Fi no computador e identifique a rede correta."
 		},
 		{
 		  "id": 2,
-		  "description": "Descubra a senha da rede."
+		  "description": "Use as pistas disponíveis no computador para descobrir a senha da rede."
 		},
 		{
 		  "id": 3,
-		  "description": "Conecte-se à rede correta."
+		  "description": "Informe a senha descoberta e conecte-se à rede correta."
 		}
 	  ],
 	  "reward": "200 XP e 50 créditos",
@@ -51,15 +51,15 @@
 	  "stages": [
 		{
 		  "id": 1,
-		  "description": "Inicie a prova no terminal."
+		  "description": "Converse com Hubner, revise os livros e siga para a universidade à direita do escritório."
 		},
 		{
 		  "id": 2,
-		  "description": "Responda às questões da prova."
+		  "description": "Na sala inferior direita da universidade, aproxime-se do terminal cyber e responda à prova."
 		},
 		{
 		  "id": 3,
-		  "description": "Seja aprovada na prova."
+		  "description": "Conclua a prova com a pontuação necessária e volte a conversar com Hubner."
 		}
 	  ],
 	  "reward": "300 XP e 75 créditos",

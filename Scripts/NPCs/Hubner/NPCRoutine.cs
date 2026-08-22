@@ -8,6 +8,8 @@ public partial class NPCRoutine : Node
 		"res://Scenes/Establishments/office.tscn";
 	private const string CafeteriaScene =
 		"res://Scenes/Establishments/cafeteria.tscn";
+	private const string UniversityScene =
+		"res://Scenes/Establishments/university.tscn";
 
 	public Godot.Collections.Array<NPCTask> Routine = new();
 
@@ -106,9 +108,49 @@ public partial class NPCRoutine : Node
 		{
 			Type = NPCTask.TaskType.GoTo,
 			ScenePath = WorldScene,
+			LocationName = "FrontDoorUniversity",
+			Duration = 6.0f,
+			DestinationScenePath = UniversityScene,
+			DestinationSpawnName = "FrontDoorSpawn",
+			ActivityLabel = "10:35 — indo para a universidade"
+		});
+
+		Routine.Add(new NPCTask
+		{
+			Type = NPCTask.TaskType.GoTo,
+			ScenePath = UniversityScene,
+			LocationName = "LectureSpot",
+			Duration = 8.0f,
+			ActivityLabel = "10:45 — caminhando para a sala de aula"
+		});
+
+		Routine.Add(new NPCTask
+		{
+			Type = NPCTask.TaskType.Wait,
+			ScenePath = UniversityScene,
+			Duration = 24.0f,
+			ActivityLabel = "11:00 — orientando alunos na universidade",
+			ActivityAnimation = "idle_up"
+		});
+
+		Routine.Add(new NPCTask
+		{
+			Type = NPCTask.TaskType.GoTo,
+			ScenePath = UniversityScene,
+			LocationName = "FrontDoorSpawn",
+			Duration = 8.0f,
+			DestinationScenePath = WorldScene,
+			DestinationSpawnName = "FrontDoorUniversity",
+			ActivityLabel = "12:00 — saindo da universidade"
+		});
+
+		Routine.Add(new NPCTask
+		{
+			Type = NPCTask.TaskType.GoTo,
+			ScenePath = WorldScene,
 			LocationName = "Center",
 			Duration = 6.0f,
-			ActivityLabel = "10:35 — retornando ao ponto de orientação"
+			ActivityLabel = "12:10 — retornando ao ponto de orientação"
 		});
 	}
 

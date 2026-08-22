@@ -131,6 +131,14 @@ interface; o `ESC` seguinte abre o menu de pausa.
 Os arquivos de áudio ficam em `Assets/Audio`. Consulte o README dessa pasta para
 substituir músicas ou efeitos mantendo a integração existente.
 
+## Universidade
+
+A universidade possui sala de aula, laboratório de computadores, sala dos
+professores e sala de prova. A prova é iniciada no terminal cyber da sala
+inferior direita, e a estante tutora fica no corredor central. O professor
+Hubner inclui a universidade em sua rotina e permanece nela para orientar os
+alunos antes de seguir para os outros ambientes.
+
 
 # Código-fonte: Projeto Cyber Resistance
 

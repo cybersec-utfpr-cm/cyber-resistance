@@ -176,6 +176,25 @@ public partial class GameManager : Node
 				var player =
 						GetTree().GetFirstNodeInGroup("Player") as Node2D;
 				var camera = player?.GetNodeOrNull<Camera2D>("Camera2D");
+				var boundsTopLeft =
+						scene.GetNodeOrNull<Marker2D>("CameraBounds/TopLeft");
+				var boundsBottomRight =
+						scene.GetNodeOrNull<Marker2D>("CameraBounds/BottomRight");
+
+				if (
+						camera != null
+						&& boundsTopLeft != null
+						&& boundsBottomRight != null
+				)
+				{
+						camera.LimitLeft = (int)boundsTopLeft.GlobalPosition.X;
+						camera.LimitTop = (int)boundsTopLeft.GlobalPosition.Y;
+						camera.LimitRight = (int)boundsBottomRight.GlobalPosition.X;
+						camera.LimitBottom = (int)boundsBottomRight.GlobalPosition.Y;
+						camera.ResetSmoothing();
+						return;
+				}
+
 				var ground =
 						scene.GetNodeOrNull<TileMapLayer>("TileMaps/Ground");
 

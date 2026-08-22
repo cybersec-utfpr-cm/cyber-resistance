@@ -10,6 +10,7 @@ externo ou de licenças de terceiros.
 - `Music/gameplay_theme.ogg`: música do jogo;
 - `Ambience/world_ambience.ogg`: ambientação das áreas externas;
 - `Ambience/indoor_ambience.ogg`: ambientação do escritório e da cafeteria;
+- `Ambience/university_ambience.ogg`: ambientação interna calma da universidade;
 - `SFX/`: efeitos de interface, pausa, passos, portas, interações e respostas.
 
 O `AudioManager` carrega esses caminhos diretamente. Para substituir uma faixa

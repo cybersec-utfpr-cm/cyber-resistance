@@ -18,6 +18,8 @@ public partial class AudioManager : Node
 		"res://Assets/Audio/Ambience/world_ambience.ogg";
 	private const string IndoorAmbiencePath =
 		"res://Assets/Audio/Ambience/indoor_ambience.ogg";
+	private const string UniversityAmbiencePath =
+		"res://Assets/Audio/Ambience/university_ambience.ogg";
 
 	private const float DefaultMasterVolume = 0.8f;
 	private const float DefaultMusicVolume = 0.55f;
@@ -96,11 +98,17 @@ public partial class AudioManager : Node
 		PlayLoop(_musicPlayer, GameplayMusicPath, ref _currentMusicPath);
 
 		string normalizedPath = environmentScenePath?.ToLowerInvariant() ?? "";
-		string ambiencePath =
+		string ambiencePath;
+
+		if (normalizedPath.Contains("university"))
+			ambiencePath = UniversityAmbiencePath;
+		else if (
 			normalizedPath.Contains("office") ||
 			normalizedPath.Contains("cafeteria")
-				? IndoorAmbiencePath
-				: WorldAmbiencePath;
+		)
+			ambiencePath = IndoorAmbiencePath;
+		else
+			ambiencePath = WorldAmbiencePath;
 
 		PlayLoop(_ambiencePlayer, ambiencePath, ref _currentAmbiencePath);
 	}

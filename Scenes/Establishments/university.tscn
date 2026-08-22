@@ -1,0 +1,472 @@
+[gd_scene load_steps=34 format=3 uid="uid://chqswtnrr4jyg"]
+
+[ext_resource type="Script" uid="uid://bdllwfbprisvg" path="res://Scripts/Establishments/University.cs" id="1_university"]
+[ext_resource type="Texture2D" uid="uid://ch1c7usw0veyw" path="res://Assets/Environment/University/university_interior.png" id="2_background"]
+[ext_resource type="Script" uid="uid://bkyo7yavgygym" path="res://Scripts/Interactions/SpawnPoints.cs" id="3_spawn"]
+[ext_resource type="Script" uid="uid://bojc33ctc6wyh" path="res://Scripts/Establishments/LocationManager.cs" id="4_locations"]
+[ext_resource type="PackedScene" uid="uid://dqmfqfpm7pqfi" path="res://Scenes/Interactions/door_area.tscn" id="5_door"]
+[ext_resource type="PackedScene" uid="uid://db7i2erx5fix" path="res://Scenes/Interactions/bookshelf.tscn" id="6_bookshelf"]
+[ext_resource type="PackedScene" uid="uid://co5t3srgn0jo0" path="res://Scenes/Interactions/exam_terminal.tscn" id="7_exam"]
+
+[sub_resource type="NavigationPolygon" id="UniversityNavigation"]
+vertices = PackedVector2Array(284, 474, 484, 474, 484, 214, 732, 214, 732, 32, 468, 32, 468, 198, 300, 198, 300, 32, 36, 32, 36, 214, 284, 214)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 11), PackedInt32Array(11, 2, 7, 8), PackedInt32Array(8, 7, 6, 9), PackedInt32Array(9, 6, 5, 10), PackedInt32Array(7, 2, 3, 6), PackedInt32Array(6, 3, 4, 5)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(284, 474, 484, 474, 484, 214, 732, 214, 732, 32, 468, 32, 468, 198, 300, 198, 300, 32, 36, 32, 36, 214, 284, 214)])
+
+[sub_resource type="RectangleShape2D" id="OuterHorizontal"]
+size = Vector2(708, 14)
+
+[sub_resource type="RectangleShape2D" id="OuterVertical"]
+size = Vector2(14, 430)
+
+[sub_resource type="RectangleShape2D" id="RoomBottomWall"]
+size = Vector2(248, 14)
+
+[sub_resource type="RectangleShape2D" id="EntranceBottomWall"]
+size = Vector2(768, 14)
+
+[sub_resource type="RectangleShape2D" id="InternalLongWall"]
+size = Vector2(14, 115)
+
+[sub_resource type="RectangleShape2D" id="InternalShortWall"]
+size = Vector2(14, 28)
+
+[sub_resource type="RectangleShape2D" id="ClassDesk"]
+size = Vector2(38, 27)
+
+[sub_resource type="RectangleShape2D" id="LabDesk"]
+size = Vector2(54, 27)
+
+[sub_resource type="RectangleShape2D" id="WideShelf"]
+size = Vector2(98, 38)
+
+[sub_resource type="RectangleShape2D" id="ProfessorDesk"]
+size = Vector2(79, 42)
+
+[sub_resource type="RectangleShape2D" id="CoffeeCounter"]
+size = Vector2(82, 42)
+
+[sub_resource type="RectangleShape2D" id="MeetingTable"]
+size = Vector2(72, 42)
+
+[sub_resource type="RectangleShape2D" id="ExamTerminalShape"]
+size = Vector2(70, 38)
+
+[sub_resource type="RectangleShape2D" id="ExamDesk"]
+size = Vector2(31.5, 29)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m2eg2"]
+size = Vector2(280, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p50yh"]
+size = Vector2(74, 66)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_usrl8"]
+size = Vector2(8, 58)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_li634"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wvi73"]
+size = Vector2(48, 26)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k8cff"]
+size = Vector2(20, 65)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7c2vt"]
+size = Vector2(20, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0notv"]
+size = Vector2(232, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lmr6k"]
+size = Vector2(28, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5or0w"]
+size = Vector2(8, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cor3t"]
+size = Vector2(84, 40)
+
+[node name="University" type="Node2D"]
+script = ExtResource("1_university")
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -10
+texture_filter = 1
+position = Vector2(384, 256)
+texture = ExtResource("2_background")
+
+[node name="TileMaps" type="Node2D" parent="."]
+
+[node name="Ground" type="TileMapLayer" parent="TileMaps"]
+
+[node name="CameraBounds" type="Node2D" parent="."]
+
+[node name="TopLeft" type="Marker2D" parent="CameraBounds"]
+position = Vector2(28, 18)
+
+[node name="BottomRight" type="Marker2D" parent="CameraBounds"]
+position = Vector2(740, 510)
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+script = ExtResource("3_spawn")
+
+[node name="FrontDoorSpawn" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(368, 456)
+
+[node name="LectureSpot" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(284, 180)
+
+[node name="ProfessorRoom" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(250, 350)
+
+[node name="ExamRoom" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(490, 340)
+
+[node name="LocationManager" type="Node" parent="."]
+script = ExtResource("4_locations")
+
+[node name="ExitDoor" parent="." instance=ExtResource("5_door")]
+position = Vector2(368, 480)
+DestinationScenePath = "res://Scenes/Establishments/world.tscn"
+DestinationSpawnName = "UniversityExitSpawn"
+
+[node name="TutorBookshelf" parent="." instance=ExtResource("6_bookshelf")]
+position = Vector2(320, 272)
+
+[node name="ExamTerminal" parent="." instance=ExtResource("7_exam")]
+position = Vector2(592, 270)
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
+navigation_polygon = SubResource("UniversityNavigation")
+
+[node name="ArchitectureCollisions" type="StaticBody2D" parent="."]
+collision_layer = 4
+collision_mask = 11
+
+[node name="TopWall" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(384, 19)
+scale = Vector2(1.01226, 1.09236)
+shape = SubResource("OuterHorizontal")
+
+[node name="LeftWall" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(28, 234)
+shape = SubResource("OuterVertical")
+
+[node name="RightWall" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(740, 234)
+shape = SubResource("OuterVertical")
+
+[node name="LowerLeftOuterWall" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(152, 440)
+shape = SubResource("RoomBottomWall")
+
+[node name="LowerRightOuterWall" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(612, 432)
+shape = SubResource("RoomBottomWall")
+
+[node name="EntranceBottomWall" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(384, 504)
+shape = SubResource("EntranceBottomWall")
+
+[node name="UpperLeftWallTop" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(306, 92)
+shape = SubResource("InternalLongWall")
+
+[node name="UpperLeftWallBottom" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(306, 206)
+shape = SubResource("InternalShortWall")
+
+[node name="UpperRightWallTop" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(460, 92)
+shape = SubResource("InternalLongWall")
+
+[node name="UpperRightWallBottom" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(460, 206)
+shape = SubResource("InternalShortWall")
+
+[node name="LowerLeftWallTop" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(270, 270.5)
+shape = SubResource("InternalLongWall")
+
+[node name="LowerLeftWallBottom" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(270, 422)
+shape = SubResource("InternalShortWall")
+
+[node name="LowerRightWallTop" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(464, 264)
+shape = SubResource("InternalLongWall")
+
+[node name="LowerRightWallBottom" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(460, 422)
+shape = SubResource("InternalShortWall")
+
+[node name="ClassDesk01" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(84, 126)
+shape = SubResource("ClassDesk")
+
+[node name="ClassDesk02" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(144, 126)
+shape = SubResource("ClassDesk")
+
+[node name="ClassDesk03" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(203, 126)
+shape = SubResource("ClassDesk")
+
+[node name="ClassDesk04" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(260, 126)
+shape = SubResource("ClassDesk")
+
+[node name="ClassDesk05" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(84, 166)
+shape = SubResource("ClassDesk")
+
+[node name="ClassDesk06" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(144, 166)
+shape = SubResource("ClassDesk")
+
+[node name="ClassDesk07" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(203, 166)
+shape = SubResource("ClassDesk")
+
+[node name="ClassDesk08" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(260, 166)
+shape = SubResource("ClassDesk")
+
+[node name="LabDesk01" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(530, 111)
+shape = SubResource("LabDesk")
+
+[node name="LabDesk02" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(592, 111)
+shape = SubResource("LabDesk")
+
+[node name="LabDesk03" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(654, 111)
+shape = SubResource("LabDesk")
+
+[node name="LabDesk04" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(528, 160)
+shape = SubResource("LabDesk")
+
+[node name="LabDesk05" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(592, 160)
+shape = SubResource("LabDesk")
+
+[node name="LabDesk06" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(656, 160)
+shape = SubResource("LabDesk")
+
+[node name="LabDesk07" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(528, 200)
+shape = SubResource("LabDesk")
+
+[node name="LabDesk08" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(592, 200)
+shape = SubResource("LabDesk")
+
+[node name="LabDesk09" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(656, 200)
+shape = SubResource("LabDesk")
+
+[node name="ProfessorShelves" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(118, 260)
+shape = SubResource("WideShelf")
+
+[node name="ProfessorDesk" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(152.5, 337)
+shape = SubResource("ProfessorDesk")
+
+[node name="ProfessorDesk2" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(152.5, 337)
+shape = SubResource("ProfessorDesk")
+
+[node name="CoffeeCounter" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(72, 399)
+shape = SubResource("CoffeeCounter")
+
+[node name="MeetingTable" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(177, 408)
+shape = SubResource("MeetingTable")
+
+[node name="ExamTerminalFurniture" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(592, 263)
+shape = SubResource("ExamTerminalShape")
+
+[node name="ExamDesk01" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(523, 334)
+shape = SubResource("ExamDesk")
+
+[node name="ExamDesk02" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(584, 334)
+shape = SubResource("ExamDesk")
+
+[node name="ExamDesk03" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(640, 336)
+shape = SubResource("ExamDesk")
+
+[node name="ExamDesk04" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(696, 336)
+shape = SubResource("ExamDesk")
+
+[node name="ExamDesk05" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(523, 383)
+shape = SubResource("ExamDesk")
+
+[node name="ExamDesk06" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(584, 383)
+shape = SubResource("ExamDesk")
+
+[node name="ExamDesk07" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(640, 384)
+shape = SubResource("ExamDesk")
+
+[node name="ExamDesk08" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(696, 384)
+shape = SubResource("ExamDesk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(168, 216)
+shape = SubResource("RectangleShape2D_m2eg2")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(309, 255)
+shape = SubResource("RectangleShape2D_p50yh")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(268, 384)
+shape = SubResource("RectangleShape2D_usrl8")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(328, 440)
+shape = SubResource("RectangleShape2D_li634")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(408, 440)
+shape = SubResource("RectangleShape2D_li634")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(296, 419)
+shape = SubResource("RectangleShape2D_wvi73")
+
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(264, 471)
+shape = SubResource("RectangleShape2D_k8cff")
+
+[node name="CollisionShape2D10" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(464, 464.5)
+shape = SubResource("RectangleShape2D_k8cff")
+
+[node name="CollisionShape2D11" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(432, 459)
+shape = SubResource("RectangleShape2D_7c2vt")
+
+[node name="CollisionShape2D12" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(304, 456)
+shape = SubResource("RectangleShape2D_7c2vt")
+
+[node name="CollisionShape2D13" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(152, 256)
+shape = SubResource("RectangleShape2D_0notv")
+
+[node name="CollisionShape2D14" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(584, 256)
+shape = SubResource("RectangleShape2D_0notv")
+
+[node name="CollisionShape2D15" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(680, 256)
+shape = SubResource("RectangleShape2D_0notv")
+
+[node name="CollisionShape2D16" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(576, 56)
+shape = SubResource("RectangleShape2D_0notv")
+
+[node name="CollisionShape2D17" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(728, 56)
+shape = SubResource("RectangleShape2D_0notv")
+
+[node name="CollisionShape2D18" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(152, 56)
+shape = SubResource("RectangleShape2D_0notv")
+
+[node name="CollisionShape2D19" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(304, 56)
+shape = SubResource("RectangleShape2D_0notv")
+
+[node name="CollisionShape2D20" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(424, 56)
+shape = SubResource("RectangleShape2D_0notv")
+
+[node name="CollisionShape2D21" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(250, 72)
+shape = SubResource("RectangleShape2D_lmr6k")
+
+[node name="CollisionShape2D22" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(72, 72)
+shape = SubResource("RectangleShape2D_lmr6k")
+
+[node name="CollisionShape2D23" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(56, 72)
+shape = SubResource("RectangleShape2D_lmr6k")
+
+[node name="CollisionShape2D24" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(168, 88)
+shape = SubResource("RectangleShape2D_lmr6k")
+
+[node name="CollisionShape2D25" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(184, 88)
+shape = SubResource("RectangleShape2D_lmr6k")
+
+[node name="CollisionShape2D26" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(496, 72)
+shape = SubResource("RectangleShape2D_lmr6k")
+
+[node name="CollisionShape2D27" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(512, 72)
+shape = SubResource("RectangleShape2D_lmr6k")
+
+[node name="CollisionShape2D28" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(720, 72)
+shape = SubResource("RectangleShape2D_lmr6k")
+
+[node name="CollisionShape2D29" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(712, 272)
+shape = SubResource("RectangleShape2D_lmr6k")
+
+[node name="CollisionShape2D30" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(480, 272)
+shape = SubResource("RectangleShape2D_lmr6k")
+
+[node name="CollisionShape2D31" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(248, 272)
+shape = SubResource("RectangleShape2D_lmr6k")
+
+[node name="CollisionShape2D32" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(216, 272)
+shape = SubResource("RectangleShape2D_lmr6k")
+
+[node name="CollisionShape2D33" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(56, 272)
+shape = SubResource("RectangleShape2D_lmr6k")
+
+[node name="CollisionShape2D34" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(248, 424)
+shape = SubResource("RectangleShape2D_lmr6k")
+
+[node name="CollisionShape2D35" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(248, 408)
+shape = SubResource("RectangleShape2D_lmr6k")
+
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(440, 416)
+shape = SubResource("RectangleShape2D_wvi73")
+
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(460, 377)
+shape = SubResource("RectangleShape2D_5or0w")
+
+[node name="CollisionShape2D36" type="CollisionShape2D" parent="ArchitectureCollisions"]
+position = Vector2(318, 268)
+shape = SubResource("RectangleShape2D_cor3t")

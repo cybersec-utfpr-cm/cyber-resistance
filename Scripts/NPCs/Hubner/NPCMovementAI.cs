@@ -26,10 +26,16 @@ public partial class NPCMovementAI : CharacterBody2D
 	private double _waitSecondsRemaining;
 	private double _offscreenTravelSecondsRemaining;
 	private double _transitionSecondsRemaining;
+	private double _collisionPauseSecondsRemaining;
+	private double _detourSecondsRemaining;
 	private string _pendingDestinationScenePath = "";
 	private string _pendingDestinationSpawnName = "";
 	private Vector2 _targetPosition;
+	private Vector2 _blockedDirection;
+	private Vector2 _detourDirection;
 	private bool _hasTargetPosition;
+	private int _blockedFrames;
+	private int _detourSign = 1;
 	private MovementAxis _movementAxis;
 	private uint _activeCollisionLayer;
 	private uint _activeCollisionMask;
@@ -39,6 +45,9 @@ public partial class NPCMovementAI : CharacterBody2D
 	private const float ArrivalDistance = 4.0f;
 	private const float AxisAlignmentDistance = 1.5f;
 	private const float DefaultOffscreenTravelSeconds = 4.0f;
+	private const float CollisionPauseSeconds = 1.0f;
+	private const float DetourSeconds = 0.55f;
+	private const int BlockedFramesBeforeRecovery = 3;
 
 	private enum MovementAxis
 	{
@@ -149,6 +158,23 @@ public partial class NPCMovementAI : CharacterBody2D
 
 	private void ProcessVisibleMovement(double delta)
 	{
+		if (_collisionPauseSecondsRemaining > 0.0)
+		{
+			_collisionPauseSecondsRemaining -= delta;
+			StopMovement();
+
+			if (_collisionPauseSecondsRemaining <= 0.0)
+				StartCollisionDetour();
+
+			return;
+		}
+
+		if (_detourSecondsRemaining > 0.0)
+		{
+			ProcessCollisionDetour(delta);
+			return;
+		}
+
 		if (!_agent.IsNavigationFinished())
 		{
 			Vector2 nextPosition = _agent.GetNextPathPosition();
@@ -174,14 +200,17 @@ public partial class NPCMovementAI : CharacterBody2D
 
 			if (
 				GlobalPosition.DistanceTo(previousPosition) < 0.05f
-				&& Math.Abs(offset.X) > AxisAlignmentDistance
-				&& Math.Abs(offset.Y) > AxisAlignmentDistance
+				&& frameSpeed > 0.1f
 			)
 			{
-				_movementAxis =
-					_movementAxis == MovementAxis.Horizontal
-						? MovementAxis.Vertical
-						: MovementAxis.Horizontal;
+				_blockedFrames++;
+
+				if (_blockedFrames >= BlockedFramesBeforeRecovery)
+					BeginCollisionRecovery(direction);
+			}
+			else
+			{
+				_blockedFrames = 0;
 			}
 
 			return;
@@ -194,6 +223,64 @@ public partial class NPCMovementAI : CharacterBody2D
 
 		_isExecutingTask = false;
 		CompleteCurrentTask();
+	}
+
+	private void BeginCollisionRecovery(Vector2 blockedDirection)
+	{
+		_blockedDirection = blockedDirection;
+		_blockedFrames = 0;
+		_collisionPauseSecondsRemaining = CollisionPauseSeconds;
+		StopMovement();
+	}
+
+	private void StartCollisionDetour()
+	{
+		Vector2 remaining = _targetPosition - GlobalPosition;
+		float detourSign;
+
+		if (Math.Abs(_blockedDirection.X) > 0.1f)
+		{
+			detourSign =
+				Math.Abs(remaining.Y) > AxisAlignmentDistance
+					? Math.Sign(remaining.Y)
+					: _detourSign;
+			_detourDirection = new Vector2(0.0f, detourSign);
+		}
+		else
+		{
+			detourSign =
+				Math.Abs(remaining.X) > AxisAlignmentDistance
+					? Math.Sign(remaining.X)
+					: _detourSign;
+			_detourDirection = new Vector2(detourSign, 0.0f);
+		}
+
+		_detourSign *= -1;
+		_collisionPauseSecondsRemaining = 0.0;
+		_detourSecondsRemaining = DetourSeconds;
+	}
+
+	private void ProcessCollisionDetour(double delta)
+	{
+		Vector2 previousPosition = GlobalPosition;
+		Velocity = _detourDirection * Speed * 0.75f;
+		MoveAndSlide();
+		Animate(_detourDirection);
+		_detourSecondsRemaining -= delta;
+
+		if (GlobalPosition.DistanceTo(previousPosition) < 0.05f)
+		{
+			_detourDirection = -_detourDirection;
+			_detourSign *= -1;
+		}
+
+		if (_detourSecondsRemaining > 0.0)
+			return;
+
+		_detourSecondsRemaining = 0.0;
+		_movementAxis = MovementAxis.None;
+		_agent.TargetPosition = _targetPosition;
+		StopMovement();
 	}
 
 	private void ProcessWait(double delta)
@@ -335,6 +422,7 @@ public partial class NPCMovementAI : CharacterBody2D
 		_isInActiveScene = false;
 		_playerInRange = false;
 		SetActiveScenePresentation(false);
+		ResetCollisionRecovery();
 		StopMovement();
 
 		if (_transitionStarted || _isWaiting)
@@ -508,6 +596,7 @@ public partial class NPCMovementAI : CharacterBody2D
 		if (!_isInActiveScene && task.Type == NPCTask.TaskType.GoTo)
 			NPCManager.Instance.RecordOffscreenArrival(this, task);
 
+		ResetCollisionRecovery();
 		_hasTargetPosition = false;
 		_movementAxis = MovementAxis.None;
 
@@ -588,6 +677,15 @@ public partial class NPCMovementAI : CharacterBody2D
 	{
 		Velocity = Vector2.Zero;
 		_sprite?.Play("idle");
+	}
+
+	private void ResetCollisionRecovery()
+	{
+		_blockedFrames = 0;
+		_collisionPauseSecondsRemaining = 0.0;
+		_detourSecondsRemaining = 0.0;
+		_blockedDirection = Vector2.Zero;
+		_detourDirection = Vector2.Zero;
 	}
 
 	private void PauseForDialogue()

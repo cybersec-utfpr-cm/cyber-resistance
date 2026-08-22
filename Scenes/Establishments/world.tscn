@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://clqawdbfopxxv"]
+[gd_scene load_steps=21 format=4 uid="uid://clqawdbfopxxv"]
 
 [ext_resource type="Script" uid="uid://cnyb5l1guh1j3" path="res://Scripts/Establishments/World.cs" id="1_jalqa"]
 [ext_resource type="Texture2D" uid="uid://bwy5rdo6xn2h8" path="res://Assets/Environment/Cafeteria/cafeteria.png" id="2_cvjxg"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://bojc33ctc6wyh" path="res://Scripts/Establishments/LocationManager.cs" id="9_l1mse"]
 [ext_resource type="PackedScene" uid="uid://5oovyyubq63e" path="res://Scenes/Interactions/computer_access.tscn" id="10_3fk4k"]
 [ext_resource type="PackedScene" uid="uid://co5t3srgn0jo0" path="res://Scenes/Interactions/exam_terminal.tscn" id="11_36y0d"]
+[ext_resource type="Texture2D" uid="uid://mn77i06ni1gn" path="res://Assets/Environment/University/university_exterior.png" id="12_university"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x6ost"]
 texture = ExtResource("3_cvjxg")
@@ -255,9 +256,9 @@ texture = ExtResource("5_d78uv")
 sources/0 = SubResource("TileSetAtlasSource_ubmvo")
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_ubmvo"]
-vertices = PackedVector2Array(642, 74, 642, -54, 670.289, -54, 677.688, 190, -78, 190, 182, 74, -78, -54, 182, -54)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(0, 3, 4, 5), PackedInt32Array(5, 4, 6, 7)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-88, -64, 192, -64, 192, 64, 392, 64, 440, 64, 632, 64, 632, -64, 680, -64, 688, 200, -88, 200)])
+vertices = PackedVector2Array(642, 74, 642, -54, 670.289, -54, 677.688, 190, -78, 190, 182, 74, -78, -54, 182, -54, 842, 74, 856, 190)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(0, 3, 4, 5), PackedInt32Array(5, 4, 6, 7), PackedInt32Array(0, 3, 9, 8)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-88, -64, 192, -64, 192, 64, 392, 64, 440, 64, 632, 64, 632, -64, 680, -64, 688, 64, 842, 64, 856, 200, -88, 200)])
 
 [node name="World" type="Node2D"]
 light_mask = 4
@@ -300,6 +301,12 @@ position = Vector2(336, 80)
 [node name="FrontDoorOffice" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(536, 78)
 
+[node name="FrontDoorUniversity" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(736, 78)
+
+[node name="UniversityExitSpawn" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(736, 126)
+
 [node name="Center" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(88, 16)
 
@@ -311,6 +318,17 @@ DestinationSpawnName = "FrontDoorSpawn"
 [node name="DoorAreaOffice" parent="." instance=ExtResource("4_bhj8c")]
 position = Vector2(536, 88)
 DestinationScenePath = "res://Scenes/Establishments/office.tscn"
+DestinationSpawnName = "FrontDoorSpawn"
+
+[node name="UniversityExterior" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(736, -24)
+texture = ExtResource("12_university")
+
+[node name="DoorAreaUniversity" parent="." instance=ExtResource("4_bhj8c")]
+position = Vector2(736, 88)
+DestinationScenePath = "res://Scenes/Establishments/university.tscn"
 DestinationSpawnName = "FrontDoorSpawn"
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
