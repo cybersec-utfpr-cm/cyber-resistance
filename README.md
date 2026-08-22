@@ -135,9 +135,17 @@ substituir músicas ou efeitos mantendo a integração existente.
 
 A universidade possui sala de aula, laboratório de computadores, sala dos
 professores e sala de prova. A prova é iniciada no terminal cyber da sala
-inferior direita, e a estante tutora fica no corredor central. O professor
+inferior direita, a estante tutora fica no corredor central e um computador
+funcional está disponível no laboratório superior direito. O mapa externo não
+mantém mais os pontos de interação usados durante os testes; computadores ficam
+no escritório e na universidade, enquanto a prova permanece exclusiva da
+universidade. O professor
 Hubner inclui a universidade em sua rotina e permanece nela para orientar os
 alunos antes de seguir para os outros ambientes.
+
+O painel de missões exibe etapa, objetivo, local e dica. O roteiro atual segue
+a ordem: orientação de Hubner, leitura na estante, validação do computador,
+recuperação do Wi-Fi, autorização da prova e entrega do resultado ao professor.
 
 
 # Código-fonte: Projeto Cyber Resistance

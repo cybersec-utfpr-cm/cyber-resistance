@@ -26,7 +26,7 @@ LevelLabelPath = NodePath("Root/PlayerHud/HudMargin/HudRow/LevelBlock/LevelLabel
 ExperienceLabelPath = NodePath("Root/PlayerHud/HudMargin/HudRow/ExperienceBlock/ExperienceLabel")
 ExperienceBarPath = NodePath("Root/PlayerHud/HudMargin/HudRow/ExperienceBlock/ExperienceBar")
 CreditsLabelPath = NodePath("Root/PlayerHud/HudMargin/HudRow/CreditsLabel")
-StartCollapsed = true
+StartCollapsed = false
 
 [node name="Root" type="Control" parent="."]
 layout_mode = 3

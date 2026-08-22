@@ -78,10 +78,23 @@ public partial class WiFiScreen : Control
 		_selectedNetworkLabel.Text = _selectedNetwork;
 		_connectButton.Disabled = string.IsNullOrEmpty(_selectedNetwork);
 
-		SetStatus(
-			"Rede selecionada. Pronta para iniciar a conexão.",
-			VisualState.Info
-		);
+		if (
+			QuestManager.Instance.IsQuestActive("wifi_hacking") &&
+			_selectedNetwork != OfficeNetworkName
+		)
+		{
+			SetStatus(
+				$"A missão pede a rede {OfficeNetworkName}. Selecione-a na lista.",
+				VisualState.Warning
+			);
+		}
+		else
+		{
+			SetStatus(
+				"Rede correta selecionada. Clique em Conectar.",
+				VisualState.Info
+			);
+		}
 	}
 
 	private void OnConnectPressed()
@@ -133,7 +146,7 @@ public partial class WiFiScreen : Control
 		if (_selectedNetwork != OfficeNetworkName)
 		{
 			SetStatus(
-				"Esta rede não está disponível para conexão.",
+				$"Selecione a rede {OfficeNetworkName} para continuar a missão.",
 				VisualState.Error
 			);
 			return;
@@ -261,7 +274,7 @@ public partial class WiFiScreen : Control
 				_connectButton.Disabled =
 					string.IsNullOrEmpty(_selectedNetwork);
 				SetStatus(
-					"Encontre e selecione a rede correta.",
+					$"Selecione {OfficeNetworkName} e clique em Conectar.",
 					VisualState.Info
 				);
 				break;
@@ -273,7 +286,7 @@ public partial class WiFiScreen : Control
 				_anagram.Restart();
 				_scanStatus.Text = "● Desafio em andamento";
 				SetStatus(
-					"Descubra a senha para acessar a rede.",
+					"Reorganize as letras, digite a senha e clique em Validar senha.",
 					VisualState.Warning
 				);
 				break;

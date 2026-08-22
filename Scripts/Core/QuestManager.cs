@@ -64,7 +64,13 @@ public partial class QuestManager : Node
 				stages.Add(new QuestStage
 				{
 					StageId = stageDict["id"].AsInt32(),
-					Description = stageDict["description"].AsString()
+					Description = stageDict["description"].AsString(),
+					Location = stageDict.ContainsKey("location")
+						? stageDict["location"].AsString()
+						: "",
+					Hint = stageDict.ContainsKey("hint")
+						? stageDict["hint"].AsString()
+						: ""
 				});
 			}
 
@@ -370,6 +376,8 @@ public class QuestStage
 {
 	public int StageId { get; set; }
 	public string Description { get; set; }
+	public string Location { get; set; }
+	public string Hint { get; set; }
 }
 
 public class QuestDefinition

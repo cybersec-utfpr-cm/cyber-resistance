@@ -4,8 +4,10 @@
 	{
 	  "condition": "quest_tutorial_stage == 1",
 	  "lines": [
-		"Bem-vindo à Cyber Resistance. Eu sou o professor Hubner e vou orientar seu treinamento.",
-		"Comece pela estante tutora. Aproxime-se dela, pressione E e leia o capítulo introdutório de cibersegurança."
+		"Agente, bem-vindo à Cyber Resistance. Eu sou o professor Hubner e vou acompanhar seu treinamento.",
+		"Um ataque interrompeu serviços importantes da cidade. Antes de investigarmos a origem, preciso confirmar que você domina os procedimentos básicos.",
+		"Comece na universidade, o prédio azul à direita do escritório. No corredor central há uma estante de estudos.",
+		"Aproxime-se da estante, pressione E e leia o Capítulo 1 de Fundamentos de Cibersegurança. O painel de Missões continuará mostrando seu próximo passo."
 	  ],
 	  "on_end": [
 		{
@@ -18,23 +20,48 @@
 	{
 	  "condition": "quest_tutorial_stage == 2",
 	  "lines": [
-		"A estante reúne o conteúdo necessário para as missões. Abra-a com E e leia o capítulo indicado antes de continuar."
+		"A universidade fica à direita do escritório. Entre e procure a estante no corredor central.",
+		"Pressione E, escolha Fundamentos de Cibersegurança e abra o primeiro capítulo. A missão avançará assim que a leitura for registrada."
 	  ],
 	  "on_end": []
 	},
 	{
 	  "condition": "quest_tutorial_stage == 3",
 	  "lines": [
-		"Depois da leitura, acesse o computador indicado. Nele você encontrará a próxima atividade do treinamento."
+		"Leitura registrada. Agora valide seu acesso em um computador autorizado.",
+		"Você pode usar o laboratório no canto superior direito da universidade ou o computador do escritório. Pressione E junto ao equipamento e aguarde a área de trabalho carregar."
+	  ],
+	  "on_end": []
+	},
+	{
+	  "condition": "quest_wifi_hacking_stage == 1",
+	  "lines": [
+		"Seu acesso foi validado. Agora precisamos restabelecer a rede sem fio do escritório.",
+		"Em um computador, abra Configurações, entre em Wi-Fi, selecione a rede Escritório e clique em Conectar."
+	  ],
+	  "on_end": []
+	},
+	{
+	  "condition": "quest_wifi_hacking_stage == 2",
+	  "lines": [
+		"A rede correta foi encontrada, mas o sistema exige uma verificação.",
+		"Resolva o anagrama exibido na tela para recuperar a senha. Observe todas as letras antes de confirmar."
+	  ],
+	  "on_end": []
+	},
+	{
+	  "condition": "quest_wifi_hacking_stage == 3",
+	  "lines": [
+		"A senha foi aceita. Mantenha a tela de Wi-Fi aberta até o computador concluir a autenticação e confirmar a conexão."
 	  ],
 	  "on_end": []
 	},
 	{
 	  "condition": "quest_university_exam_stage == 1",
 	  "lines": [
-		"Sua próxima etapa é a prova de cibersegurança. A universidade fica à direita do escritório.",
-		"Antes de iniciar, revise os capítulos disponíveis na estante tutora.",
-		"Na universidade, entre na sala inferior direita e pressione E próximo ao terminal cyber para começar a prova."
+		"A rede do escritório voltou ao ar. Bom trabalho: você identificou o alvo, recuperou a credencial e restabeleceu o serviço.",
+		"Sua última etapa é a avaliação na universidade. Se precisar, revise o material na estante antes de começar.",
+		"A sala de avaliação fica na parte inferior direita. Aproxime-se do terminal cyber e pressione E. Estou liberando seu acesso agora."
 	  ],
 	  "on_end": [
 		{
@@ -47,28 +74,28 @@
 	{
 	  "condition": "quest_university_exam_stage == 2",
 	  "lines": [
-		"A prova ainda está pendente. Vá à sala inferior direita da universidade e use o terminal cyber."
+		"Sua avaliação está liberada. Vá à sala inferior direita da universidade e pressione E junto ao terminal cyber.",
+		"Responda a todas as questões. Se não alcançar a nota mínima, revise a estante e tente novamente."
 	  ],
 	  "on_end": []
 	},
 	{
-	  "condition": "quest_university_exam_stage >= 3",
+	  "condition": "quest_university_exam_stage == 3",
 	  "lines": [
-		"Parabéns! Você passou na prova de cibersegurança!"
+		"Recebi seu resultado: avaliação concluída com aprovação.",
+		"Você encerrou o treinamento inicial da Cyber Resistance. Colete a recompensa no painel de Missões; novas operações serão adicionadas a partir daqui."
 	  ],
-	  "on_end": []
-	},
-	{
-	  "condition": "quest_tutorial_stage == 4",
-	  "lines": [
-		"Parabéns! Você completou o tutorial básico. Agora está pronto para as próximas missões."
-	  ],
-	  "on_end": []
+	  "on_end": [
+		{
+		  "type": "complete_quest",
+		  "quest": "university_exam"
+		}
+	  ]
 	},
 	{
 	  "condition": "",
 	  "lines": [
-		"Olá! Em que posso ajudar?"
+		"Treinamento encerrado por enquanto. Consulte o painel de Missões para conferir recompensas e objetivos disponíveis."
 	  ],
 	  "on_end": []
 	}

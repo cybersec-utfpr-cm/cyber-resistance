@@ -302,9 +302,10 @@ public partial class ExamUi : CanvasLayer
 			$"Você acertou {_correctCount} de {_quiz.Questions.Count} " +
 			$"questões ({percentageValue}%).\n\n" +
 			(approved
-				? "Parabéns! A missão foi concluída."
-				: "Volte à estante, revise os capítulos indicados " +
-					"nas respostas e tente novamente.");
+				? "Parabéns! Feche a avaliação e entregue o resultado " +
+					"ao professor Hubner para concluir a missão."
+				: "Volte à estante da universidade, revise os capítulos " +
+					"indicados nas respostas e tente novamente.");
 
 		EmitSignal(SignalName.ExamFinished, approved);
 	}

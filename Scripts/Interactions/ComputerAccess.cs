@@ -10,23 +10,35 @@ public partial class ComputerAccess : Area2D
 
 		private bool _playerInside;
 		private bool _isOpening;
+		private Label _interactHint;
 
 		public override void _Ready()
 		{
+				_interactHint = GetNodeOrNull<Label>("InteractHint");
 				BodyEntered += OnBodyEntered;
 				BodyExited += OnBodyExited;
 		}
 
 		private void OnBodyEntered(Node body)
 		{
-				if (body.Name == "Player")
-						_playerInside = true;
+				if (!body.IsInGroup("Player"))
+						return;
+
+				_playerInside = true;
+
+				if (_interactHint != null)
+						_interactHint.Visible = !_isOpening;
 		}
 
 		private void OnBodyExited(Node body)
 		{
-				if (body.Name == "Player")
-						_playerInside = false;
+				if (!body.IsInGroup("Player"))
+						return;
+
+				_playerInside = false;
+
+				if (_interactHint != null)
+						_interactHint.Visible = false;
 		}
 
 		public override void _Process(double delta)
@@ -47,6 +59,9 @@ public partial class ComputerAccess : Area2D
 						return;
 
 				_isOpening = true;
+
+				if (_interactHint != null)
+						_interactHint.Visible = false;
 
 				var gameManager = GameManager.Instance;
 
@@ -115,5 +130,8 @@ public partial class ComputerAccess : Area2D
 		private void OnComputerClosed()
 		{
 				_isOpening = false;
+
+				if (_interactHint != null)
+						_interactHint.Visible = _playerInside;
 		}
 }
