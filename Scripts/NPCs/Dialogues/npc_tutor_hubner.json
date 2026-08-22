@@ -4,8 +4,8 @@
 	{
 	  "condition": "quest_tutorial_stage == 1",
 	  "lines": [
-		"Bem-vindo! Sua primeira missão é falar comigo.",
-		"Agora que você falou comigo, vá até a estante de livros e leia o capítulo introdutório."
+		"Bem-vindo à Cyber Resistance. Eu sou o professor Hubner e vou orientar seu treinamento.",
+		"Comece pela estante tutora. Aproxime-se dela, pressione E e leia o capítulo introdutório de cibersegurança."
 	  ],
 	  "on_end": [
 		{
@@ -18,22 +18,23 @@
 	{
 	  "condition": "quest_tutorial_stage == 2",
 	  "lines": [
-		"Ótimo! Agora vá até a estante de livros e leia o capítulo sobre comandos básicos."
+		"A estante reúne o conteúdo necessário para as missões. Abra-a com E e leia o capítulo indicado antes de continuar."
 	  ],
 	  "on_end": []
 	},
 	{
 	  "condition": "quest_tutorial_stage == 3",
 	  "lines": [
-		"Você já leu o livro? Se sim, acesse o computador ao lado para a próxima etapa."
+		"Depois da leitura, acesse o computador indicado. Nele você encontrará a próxima atividade do treinamento."
 	  ],
 	  "on_end": []
 	},
 	{
 	  "condition": "quest_university_exam_stage == 1",
 	  "lines": [
-		"Agora você precisa passar na prova da universidade. Vá até a universidade e procure o professor.",
-		"Estude os capítulos do livro que estão na estante, eles serão úteis."
+		"Sua próxima etapa é a prova de cibersegurança. A universidade fica à direita do escritório.",
+		"Antes de iniciar, revise os capítulos disponíveis na estante tutora.",
+		"Na universidade, entre na sala inferior direita e pressione E próximo ao terminal cyber para começar a prova."
 	  ],
 	  "on_end": [
 		{
@@ -46,7 +47,7 @@
 	{
 	  "condition": "quest_university_exam_stage == 2",
 	  "lines": [
-		"Você já fez a prova? Se não, vá até a mesa de provas na universidade."
+		"A prova ainda está pendente. Vá à sala inferior direita da universidade e use o terminal cyber."
 	  ],
 	  "on_end": []
 	},
