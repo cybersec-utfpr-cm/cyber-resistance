@@ -317,10 +317,12 @@ position = Vector2(536, 88)
 DestinationScenePath = "res://Scenes/Establishments/office.tscn"
 DestinationSpawnName = "FrontDoorSpawn"
 
-[node name="UniversityExterior" type="Sprite2D" parent="."]
-z_index = 1
+[node name="UniversityExteriorSortPivot" type="Node2D" parent="."]
+position = Vector2(736, 88)
+
+[node name="UniversityExterior" type="Sprite2D" parent="UniversityExteriorSortPivot"]
 texture_filter = 1
-position = Vector2(736, -24)
+position = Vector2(0, -112)
 texture = ExtResource("12_university")
 
 [node name="DoorAreaUniversity" parent="." instance=ExtResource("4_bhj8c")]

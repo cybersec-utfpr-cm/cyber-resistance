@@ -108,6 +108,7 @@ polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Arr
 outlines = Array[PackedVector2Array]([PackedVector2Array(32, 296, 512, 296, 512, 576, 480, 576, 480, 608, 512, 608, 512, 640, 352, 640, 352, 608, 288, 608, 288, 672, 256, 672, 256, 608, 192, 608, 192, 640, 64, 640, 64, 608, 32, 608, 32, 416, 64, 416, 64, 384, 32, 384)])
 
 [node name="Office" type="Node2D"]
+y_sort_enabled = true
 
 [node name="TileMaps" type="Node2D" parent="."]
 y_sort_enabled = true
