@@ -126,7 +126,6 @@ animations = [{
 size = Vector2(11, 9)
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
-y_sort_enabled = true
 collision_mask = 14
 script = ExtResource("2_a3d8c")
 Speed = 120.0

@@ -6,18 +6,21 @@
 [ext_resource type="PackedScene" uid="uid://84v74bpfstou" path="res://Scenes/Player/player.tscn" id="5_ibrfe"]
 [ext_resource type="PackedScene" uid="uid://cjxyy5ouo7upq" path="res://Scenes/NPCs/hubner_npc.tscn" id="6_hubner"]
 
-[node name="Game" type="Node"]
+[node name="Game" type="Node2D"]
+y_sort_enabled = true
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("1_mwkus")
 
-[node name="WorldContainer" type="Node" parent="."]
+[node name="WorldContainer" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="World" parent="WorldContainer" instance=ExtResource("2_mwkus")]
 
 [node name="UIContainer" type="CanvasLayer" parent="."]
 
-[node name="NPCContainer" type="Node" parent="."]
+[node name="NPCContainer" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="HubnerNPC" parent="NPCContainer" instance=ExtResource("6_hubner")]
 

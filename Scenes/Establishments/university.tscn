@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://chqswtnrr4jyg"]
+[gd_scene load_steps=37 format=3 uid="uid://chqswtnrr4jyg"]
 
 [ext_resource type="Script" uid="uid://bdllwfbprisvg" path="res://Scripts/Establishments/University.cs" id="1_university"]
 [ext_resource type="Texture2D" uid="uid://ch1c7usw0veyw" path="res://Assets/Environment/University/university_interior.png" id="2_background"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://db7i2erx5fix" path="res://Scenes/Interactions/bookshelf.tscn" id="6_bookshelf"]
 [ext_resource type="PackedScene" uid="uid://co5t3srgn0jo0" path="res://Scenes/Interactions/exam_terminal.tscn" id="7_exam"]
 [ext_resource type="PackedScene" uid="uid://5oovyyubq63e" path="res://Scenes/Interactions/computer_access.tscn" id="8_computer"]
+[ext_resource type="Script" uid="uid://djiupop45k7o3" path="res://Scripts/Establishments/UniversityYSortOccluders.cs" id="9_ysort"]
+[ext_resource type="Texture2D" uid="uid://4kjdtvyxt7hx" path="res://Assets/Environment/University/university_occluders.png" id="10_occluders"]
 
 [sub_resource type="NavigationPolygon" id="UniversityNavigation"]
 vertices = PackedVector2Array(284, 474, 484, 474, 484, 214, 732, 214, 732, 32, 468, 32, 468, 198, 300, 198, 300, 32, 36, 32, 36, 214, 284, 214)
@@ -90,6 +92,7 @@ size = Vector2(8, 50)
 size = Vector2(84, 40)
 
 [node name="University" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_university")
 
 [node name="Background" type="Sprite2D" parent="."]
@@ -97,6 +100,12 @@ z_index = -10
 texture_filter = 1
 position = Vector2(384, 256)
 texture = ExtResource("2_background")
+
+[node name="YSortOccluders" type="Node2D" parent="."]
+y_sort_enabled = true
+texture_filter = 1
+script = ExtResource("9_ysort")
+SourceTexture = ExtResource("10_occluders")
 
 [node name="TileMaps" type="Node2D" parent="."]
 
