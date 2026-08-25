@@ -40,17 +40,71 @@ public partial class NPCRoutine : Node
 		{
 			Type = NPCTask.TaskType.GoTo,
 			ScenePath = OfficeScene,
-			LocationName = "FrontComputer",
+			LocationName = "WorkstationSpot",
 			Duration = 8.0f,
-			ActivityLabel = "08:20 — chegando ao posto de trabalho"
+			ActivityLabel = "08:20 — iniciando o expediente na área de trabalho"
 		});
 
 		Routine.Add(new NPCTask
 		{
 			Type = NPCTask.TaskType.Wait,
 			ScenePath = OfficeScene,
-			Duration = 18.0f,
-			ActivityLabel = "08:30 — trabalhando no escritório",
+			Duration = 10.0f,
+			ActivityLabel = "08:30 — conferindo chamados e mensagens da equipe",
+			ActivityAnimation = "idle_up"
+		});
+
+		Routine.Add(new NPCTask
+		{
+			Type = NPCTask.TaskType.GoTo,
+			ScenePath = OfficeScene,
+			LocationName = "ServerInspectionSpot",
+			Duration = 8.0f,
+			ActivityLabel = "08:45 — indo verificar a sala de servidores"
+		});
+
+		Routine.Add(new NPCTask
+		{
+			Type = NPCTask.TaskType.Wait,
+			ScenePath = OfficeScene,
+			Duration = 10.0f,
+			ActivityLabel = "09:00 — inspecionando serviços e conexões",
+			ActivityAnimation = "idle_up"
+		});
+
+		Routine.Add(new NPCTask
+		{
+			Type = NPCTask.TaskType.GoTo,
+			ScenePath = OfficeScene,
+			LocationName = "MeetingRoomSpot",
+			Duration = 8.0f,
+			ActivityLabel = "09:20 — indo para a sala de reuniões"
+		});
+
+		Routine.Add(new NPCTask
+		{
+			Type = NPCTask.TaskType.Wait,
+			ScenePath = OfficeScene,
+			Duration = 10.0f,
+			ActivityLabel = "09:30 — revisando prioridades com a equipe",
+			ActivityAnimation = "idle_up"
+		});
+
+		Routine.Add(new NPCTask
+		{
+			Type = NPCTask.TaskType.GoTo,
+			ScenePath = OfficeScene,
+			LocationName = "ReceptionDesk",
+			Duration = 6.0f,
+			ActivityLabel = "09:45 — acompanhando o atendimento ao cliente"
+		});
+
+		Routine.Add(new NPCTask
+		{
+			Type = NPCTask.TaskType.Wait,
+			ScenePath = OfficeScene,
+			Duration = 6.0f,
+			ActivityLabel = "09:50 — orientando a equipe de atendimento",
 			ActivityAnimation = "idle_up"
 		});
 
