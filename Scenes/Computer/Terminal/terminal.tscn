@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://wwrcmdmm8vo5" path="res://Scripts/Computer/Terminal/Terminal.cs" id="1_3q2kj"]
 [ext_resource type="Script" uid="uid://csgpoymc47tv6" path="res://Scripts/Computer/Terminal/InputText.cs" id="2_lrjhj"]
-[ext_resource type="Theme" path="res://Resources/Themes/computer_theme.tres" id="3_theme"]
+[ext_resource type="Theme" uid="uid://do6fllrcg1xgf" path="res://Resources/Themes/computer_theme.tres" id="3_theme"]
 
 [node name="Terminal" type="Control"]
 layout_mode = 3
@@ -85,7 +85,6 @@ focus_mode = 2
 scroll_following = true
 threaded = true
 selection_enabled = true
-shortcut_keys_enabled = true
 
 [node name="InputHint" type="Label" parent="ContentMargin/TerminalContent"]
 layout_mode = 2
@@ -97,5 +96,4 @@ text = "COMANDO"
 custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 placeholder_text = "Digite um comando e pressione Enter"
-wrap_mode = 0
 script = ExtResource("2_lrjhj")

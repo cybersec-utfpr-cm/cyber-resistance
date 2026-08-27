@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://clqawdbfopxxv" path="res://Scenes/Establishments/world.tscn" id="2_mwkus"]
 [ext_resource type="PackedScene" uid="uid://84v74bpfstou" path="res://Scenes/Player/player.tscn" id="5_ibrfe"]
 [ext_resource type="PackedScene" uid="uid://cjxyy5ouo7upq" path="res://Scenes/NPCs/hubner_npc.tscn" id="6_hubner"]
-[ext_resource type="Script" path="res://Scripts/Interactions/MissionInteractionManager.cs" id="7_mission_interaction"]
+[ext_resource type="Script" uid="uid://bco0q4g5rhkbh" path="res://Scripts/Interactions/MissionInteractionManager.cs" id="7_mission_interaction"]
 
 [node name="Game" type="Node"]
 
