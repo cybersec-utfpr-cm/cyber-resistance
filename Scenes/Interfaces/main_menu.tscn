@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=7 format=3 uid="uid://cyok82i86mywg"]
 
-[ext_resource type="Script" path="res://Scripts/Interfaces/MainMenu.cs" id="1_menu"]
-[ext_resource type="Theme" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
+[ext_resource type="Script" uid="uid://bwx8ajcvsyffs" path="res://Scripts/Interfaces/MainMenu.cs" id="1_menu"]
+[ext_resource type="Theme" uid="uid://do6fllrcg1xgf" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
 
 [sub_resource type="StyleBoxFlat" id="StyleMenuPanel"]
 bg_color = Color(0.027, 0.047, 0.075, 0.98)
@@ -16,20 +16,6 @@ corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 shadow_color = Color(0, 0, 0, 0.5)
 shadow_size = 24
-
-[sub_resource type="StyleBoxFlat" id="StyleConfirmPanel"]
-bg_color = Color(0.047, 0.075, 0.11, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.72, 0.22, 0.25, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-shadow_color = Color(0, 0, 0, 0.55)
-shadow_size = 18
 
 [sub_resource type="StyleBoxFlat" id="StyleTitleLine"]
 bg_color = Color(0.2, 0.76, 0.82, 0.9)
@@ -49,6 +35,20 @@ corner_radius_top_left = 7
 corner_radius_top_right = 7
 corner_radius_bottom_right = 7
 corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleConfirmPanel"]
+bg_color = Color(0.047, 0.075, 0.11, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72, 0.22, 0.25, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.55)
+shadow_size = 18
 
 [node name="MainMenu" type="Control"]
 process_mode = 3
@@ -190,7 +190,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 0
 
 [node name="Backdrop" type="ColorRect" parent="ConfirmationOverlay"]
 layout_mode = 1
