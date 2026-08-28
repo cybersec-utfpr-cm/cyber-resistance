@@ -10,5 +10,7 @@
 	<Compile Include="../../Scripts/Core/MissionFlagService.cs" Link="MissionFlagService.cs" />
 	<Compile Include="../../Scripts/Core/MissionInfrastructureCatalog.cs" Link="MissionInfrastructureCatalog.cs" />
 	<Compile Include="../../Scripts/Core/SaveGameData.cs" Link="SaveGameData.cs" />
+	<Compile Include="../../Scripts/Computer/Terminal/TelnetInterface.cs" Link="TelnetInterface.cs" />
+	<Compile Include="../../Scripts/Computer/Terminal/TerminalOutputSanitizer.cs" Link="TerminalOutputSanitizer.cs" />
   </ItemGroup>
 </Project>

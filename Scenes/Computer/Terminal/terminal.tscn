@@ -83,7 +83,6 @@ layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 2
 scroll_following = true
-threaded = true
 selection_enabled = true
 
 [node name="InputHint" type="Label" parent="ContentMargin/TerminalContent"]

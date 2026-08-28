@@ -5,7 +5,7 @@ public static class Program
 	private static int _passed;
 	private static int _failed;
 
-	public static int Main()
+	public static async Task<int> Main()
 	{
 		Run("extrai título e capítulos", ExtractsTitleAndChapters);
 		Run("converte Markdown suportado", ConvertsSupportedMarkdown);
@@ -22,6 +22,42 @@ public static class Program
 		Run("mantém a flag fora do comando Docker", KeepsFlagOutOfDockerCommand);
 		Run("compara flag sem alterar persistência", ComparesFlagInput);
 		Run("preserva flag ao serializar o save", PersistsFlagAcrossSerialization);
+		await RunAsync(
+			"entrega o prompt inicial do login Telnet",
+			TerminalStreamingTests.DeliversInitialPromptAsync
+		);
+		await RunAsync(
+			"entrega fragmentos antes do fim do comando",
+			TerminalStreamingTests.DeliversFragmentsBeforeCommandEndsAsync
+		);
+		await RunAsync(
+			"não espera uma pausa arbitrária na saída",
+			TerminalStreamingTests.DoesNotWaitForPauseAsync
+		);
+		await RunAsync(
+			"preserva UTF-8 e remove ANSI divididos",
+			TerminalStreamingTests.SanitizesSplitSequencesAsync
+		);
+		await RunAsync(
+			"cancela uma leitura pendente",
+			TerminalStreamingTests.CancelsPendingReadAsync
+		);
+		await RunAsync(
+			"reporta desconexão sem travar",
+			TerminalStreamingTests.ReportsDisconnectAsync
+		);
+		await RunAsync(
+			"mantém leitura e escrita independentes",
+			TerminalStreamingTests.KeepsReadAndWriteIndependentAsync
+		);
+		await RunAsync(
+			"preserva negociação Telnet dividida",
+			TerminalStreamingTests.PreservesSplitTelnetNegotiationAsync
+		);
+		await RunAsync(
+			"delega eco e ocultação de senha ao servidor",
+			TerminalStreamingTests.UsesServerControlledEchoAsync
+		);
 
 		Console.WriteLine($"\nResultado: {_passed} passou; {_failed} falhou.");
 		return _failed == 0 ? 0 : 1;
@@ -32,6 +68,22 @@ public static class Program
 		try
 		{
 			test();
+			_passed++;
+			Console.WriteLine($"PASSOU: {name}");
+		}
+		catch (Exception exception)
+		{
+			_failed++;
+			Console.Error.WriteLine($"FALHOU: {name}");
+			Console.Error.WriteLine(exception.Message);
+		}
+	}
+
+	private static async Task RunAsync(string name, Func<Task> test)
+	{
+		try
+		{
+			await test();
 			_passed++;
 			Console.WriteLine($"PASSOU: {name}");
 		}

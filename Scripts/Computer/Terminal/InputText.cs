@@ -1,30 +1,9 @@
 using Godot;
 using System;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 public partial class InputText : TextEdit
 {
-        private static readonly Regex OscSequence = new(
-                @"\x1B\][^\x07\x1B]*(?:\x07|\x1B\\)",
-                RegexOptions.Compiled
-        );
-
-        private static readonly Regex VisibleShellSequence = new(
-                @"\]3008;[^\x07\r\n]*?(?:\x07|\\)",
-                RegexOptions.Compiled
-        );
-
-        private static readonly Regex CsiSequence = new(
-                @"\x1B\[[0-?]*[ -/]*[@-~]",
-                RegexOptions.Compiled
-        );
-
-        private static readonly Regex UnsupportedControlCharacters = new(
-                @"[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]",
-                RegexOptions.Compiled
-        );
-
         [Export] public string terminalHost = "127.0.0.1";
         [Export] public int terminalPort = 5000;
         [Export] public string terminalUsername = "player";
@@ -37,6 +16,7 @@ public partial class InputText : TextEdit
 
         private RichTextLabel outputText;
         private TerminalController terminalController;
+        private readonly TerminalOutputSanitizer terminalOutputSanitizer = new();
 
         private Control connectionOverlay;
         private Label statusLabel;
@@ -190,6 +170,8 @@ public partial class InputText : TextEdit
 
         private void OnConnectionStarted()
         {
+                terminalOutputSanitizer.Reset();
+
                 ShowConnectingState(
                         "Iniciando o computador...",
                         "Conectando ao serviço do terminal."
@@ -303,27 +285,10 @@ public partial class InputText : TextEdit
 
         private void AppendOutput(string output)
         {
-                Log.Info("InputText: saída do comando adicionada.");
-                outputText.AppendText(SanitizeTerminalOutput(output));
-        }
+                string sanitized = terminalOutputSanitizer.Process(output);
 
-        private static string SanitizeTerminalOutput(string output)
-        {
-                if (string.IsNullOrEmpty(output))
-                        return string.Empty;
-
-                string sanitized = OscSequence.Replace(output, string.Empty);
-                sanitized = VisibleShellSequence.Replace(
-                        sanitized,
-                        string.Empty
-                );
-                sanitized = CsiSequence.Replace(sanitized, string.Empty);
-                sanitized = UnsupportedControlCharacters.Replace(
-                        sanitized,
-                        string.Empty
-                );
-
-                return sanitized;
+                if (!string.IsNullOrEmpty(sanitized))
+                        outputText.AppendText(sanitized);
         }
 
         private Computer FindComputer()
@@ -411,6 +376,7 @@ public partial class InputText : TextEdit
 
                         case "clear":
                                 outputText.Text = string.Empty;
+                                terminalOutputSanitizer.Reset();
                                 break;
 
                         default:
