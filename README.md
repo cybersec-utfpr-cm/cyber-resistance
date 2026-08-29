@@ -34,26 +34,26 @@ Nesse caso, podemos seguir as instruções apresentadas [aqui](https://stackover
 
 1. Remova outras instalações do dotnet-sdk, dotnet-runtime e dotnet-host:
 
-    ```bash
-    sudo apt-get remove dotnet-sdk-<version>
-    sudo apt-get remove dotnet-runtime-<version>
-    sudo apt-get remove dotnet-host-<version>
-    ```
+	```bash
+	sudo apt-get remove dotnet-sdk-<version>
+	sudo apt-get remove dotnet-runtime-<version>
+	sudo apt-get remove dotnet-host-<version>
+	```
 
 2. Execute os comandos a seguir para adicionar o repositório de origem do pacote:
 
-    ```bash
-    wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-    sudo dpkg -i packages-microsoft-prod.deb
-    rm packages-microsoft-prod.deb
-    ```
+	```bash
+	wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+	sudo dpkg -i packages-microsoft-prod.deb
+	rm packages-microsoft-prod.deb
+	```
 
 3. Execute os comandos a seguir para instalar o dotnet-host e o dotnet-sdk:
 
-    ```bash
-    sudo apt-get update
-    sudo apt-get install -y dotnet-host aspnetcore-runtime-8.0
-    ```
+	```bash
+	sudo apt-get update
+	sudo apt-get install -y dotnet-host aspnetcore-runtime-8.0
+	```
 
 </details>
 
