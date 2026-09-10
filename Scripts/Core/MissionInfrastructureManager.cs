@@ -404,7 +404,11 @@ public partial class MissionInfrastructureManager : Node
 
 	public Task QuitApplicationAsync()
 	{
-		_applicationQuitTask ??= ShutdownAndQuitAsync();
+		if (_applicationQuitTask != null)
+			return _applicationQuitTask;
+
+		_applicationQuitTask = Task.CompletedTask;
+		RequestShutdownAndQuit();
 		return _applicationQuitTask;
 	}
 
@@ -473,22 +477,18 @@ public partial class MissionInfrastructureManager : Node
 		}
 	}
 
-	private async Task ShutdownAndQuitAsync()
+	private void RequestShutdownAndQuit()
 	{
 		try
 		{
-			if (!await ShutdownAsync())
-			{
-				GD.PrintErr(
-					"MissionInfrastructureManager: encerramento concluído " +
-						"com recursos que não puderam ser parados."
-				);
-			}
+			_lifetimeCancellation.Cancel();
+			RequestShutdown();
 		}
 		catch (Exception exception)
 		{
 			GD.PrintErr(
-				"MissionInfrastructureManager: falha ao encerrar recursos: " +
+				"MissionInfrastructureManager: falha ao solicitar o " +
+					"encerramento dos recursos: " +
 					exception.Message
 			);
 		}
@@ -496,6 +496,25 @@ public partial class MissionInfrastructureManager : Node
 		{
 			GetTree().Quit();
 		}
+	}
+
+	private void RequestShutdown()
+	{
+		if (!IsCatalogReady())
+			return;
+
+		foreach (
+			MissionInfrastructureDefinition mission in
+				_catalog.Definitions.Where(
+					definition =>
+						definition.Kind == MissionInfrastructureKind.Mission
+				)
+		)
+		{
+			TryRequestStopContainer(mission.Id);
+		}
+
+		TryRequestStopContainer(_playerDefinition.Id);
 	}
 
 	public MissionLabState GetMissionState(string questId)
@@ -850,6 +869,21 @@ public partial class MissionInfrastructureManager : Node
 				$"'{infrastructureId}': {exception.Message}"
 			);
 			return false;
+		}
+	}
+
+	private void TryRequestStopContainer(string infrastructureId)
+	{
+		try
+		{
+			_docker.RequestStopContainer(infrastructureId);
+		}
+		catch (Exception exception)
+		{
+			GD.PrintErr(
+				$"MissionInfrastructureManager: falha ao solicitar a parada " +
+				$"de '{infrastructureId}': {exception.Message}"
+			);
 		}
 	}
 

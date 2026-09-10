@@ -146,6 +146,45 @@ public sealed class DockerManager
 		);
 	}
 
+	public void RequestStopContainer(string infrastructureId)
+	{
+		MissionInfrastructureDefinition definition =
+			_catalog.GetDefinition(infrastructureId);
+		var startInfo = new ProcessStartInfo
+		{
+			FileName = "docker",
+			UseShellExecute = false,
+			CreateNoWindow = true
+		};
+
+		startInfo.ArgumentList.Add("container");
+		startInfo.ArgumentList.Add("stop");
+		startInfo.ArgumentList.Add(definition.ContainerName);
+
+		try
+		{
+			using Process process = Process.Start(startInfo);
+			if (process == null)
+			{
+				throw new DockerOperationException(
+					"Não foi possível solicitar a parada do container."
+				);
+			}
+		}
+		catch (DockerOperationException)
+		{
+			throw;
+		}
+		catch (Exception exception)
+		{
+			throw new DockerOperationException(
+				"Não foi possível solicitar a parada do container. " +
+					"Verifique se o Docker está disponível.",
+				exception
+			);
+		}
+	}
+
 	public async Task RemoveContainerAsync(
 		string infrastructureId,
 		CancellationToken cancellationToken = default
