@@ -1,0 +1,180 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Interfaces/FairModeMenu.cs" id="1_fair"]
+[ext_resource type="Theme" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StyleMainPanel"]
+bg_color = Color(0.027, 0.047, 0.075, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.15, 0.52, 0.65, 0.8)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleAvailable"]
+bg_color = Color(0.055, 0.16, 0.2, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.78, 0.84, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBack"]
+bg_color = Color(0.047, 0.075, 0.11, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.16, 0.28, 0.38, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[node name="FairModeMenu" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_fair")
+NetworkMazeButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton")
+BackButtonPath = NodePath("Center/MainPanel/MainMargin/Content/BottomRow/BackButton")
+StatusLabelPath = NodePath("Center/MainPanel/MainMargin/Content/StatusLabel")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.008, 0.018, 0.03, 1)
+
+[node name="Glow" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.02, 0.16, 0.18, 0.16)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainPanel" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(1040, 600)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleMainPanel")
+
+[node name="MainMargin" type="MarginContainer" parent="Center/MainPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 46
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 46
+theme_override_constants/margin_bottom = 32
+
+[node name="Content" type="VBoxContainer" parent="Center/MainPanel/MainMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Eyebrow" type="Label" parent="Center/MainPanel/MainMargin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 13
+text = "EXPERIÊNCIA RÁPIDA • FEIRA DE PROFISSÕES"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.92, 0.97, 0.99, 1)
+theme_override_font_sizes/font_size = 34
+text = "MODO FEIRA"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Center/MainPanel/MainMargin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+theme_override_font_sizes/font_size = 15
+text = "Escolha um desafio de cibersegurança. As partidas são curtas e independentes do progresso da campanha."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Spacer" type="Control" parent="Center/MainPanel/MainMargin/Content"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+
+[node name="Challenges" type="HBoxContainer" parent="Center/MainPanel/MainMargin/Content"]
+custom_minimum_size = Vector2(0, 285)
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="NetworkMazeButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
+custom_minimum_size = Vector2(292, 270)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleAvailable")
+text = "LABIRINTO DA REDE\n\nLeve um pacote até o servidor.\nEncontre a autenticação, atravesse\no firewall e evite malwares.\n\nDISPONÍVEL"
+
+[node name="PhishingButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
+custom_minimum_size = Vector2(292, 270)
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+theme_override_font_sizes/font_size = 19
+text = "CAÇA AO PHISHING\n\nInvestigue mensagens e descubra\nquais são confiáveis antes\nde clicar.\n\nEM BREVE"
+
+[node name="ServerDefenseButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
+custom_minimum_size = Vector2(292, 270)
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+theme_override_font_sizes/font_size = 19
+text = "DEFENDA O SERVIDOR\n\nBloqueie ataques sem impedir\no tráfego legítimo da rede.\n\nEM BREVE"
+
+[node name="StatusLabel" type="Label" parent="Center/MainPanel/MainMargin/Content"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.42, 0.46, 1)
+theme_override_font_sizes/font_size = 12
+text = "Não foi possível abrir o desafio."
+horizontal_alignment = 1
+
+[node name="BottomRow" type="HBoxContainer" parent="Center/MainPanel/MainMargin/Content"]
+layout_mode = 2
+alignment = 1
+
+[node name="BackButton" type="Button" parent="Center/MainPanel/MainMargin/Content/BottomRow"]
+custom_minimum_size = Vector2(220, 44)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBack")
+text = "Voltar ao menu principal"
+
+[node name="Footer" type="Label" parent="Center/MainPanel/MainMargin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.32, 0.43, 0.48, 1)
+theme_override_font_sizes/font_size = 11
+text = "ESC volta ao menu principal"
+horizontal_alignment = 1
