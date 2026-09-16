@@ -1,0 +1,534 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Minigames/PhishingHunt.cs" id="1_game"]
+[ext_resource type="Theme" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StylePanel"]
+bg_color = Color(0.027, 0.047, 0.075, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.15, 0.52, 0.65, 0.8)
+corner_radius_top_left = 11
+corner_radius_top_right = 11
+corner_radius_bottom_right = 11
+corner_radius_bottom_left = 11
+shadow_color = Color(0, 0, 0, 0.44)
+shadow_size = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleMessage"]
+bg_color = Color(0.035, 0.07, 0.095, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.14, 0.32, 0.39, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+
+[sub_resource type="StyleBoxFlat" id="StyleInvestigation"]
+bg_color = Color(0.055, 0.105, 0.12, 0.96)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.44, 0.7, 0.72, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleSafe"]
+bg_color = Color(0.055, 0.25, 0.17, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.86, 0.59, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleDanger"]
+bg_color = Color(0.29, 0.075, 0.09, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.96, 0.36, 0.4, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleNeutralButton"]
+bg_color = Color(0.055, 0.14, 0.18, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.66, 0.72, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleOverlay"]
+bg_color = Color(0.035, 0.065, 0.09, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.78, 0.84, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.58)
+shadow_size = 24
+
+[node name="PhishingHunt" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_game")
+TimeLabelPath = NodePath("Page/Main/TopBar/Stats/TimeLabel")
+ScoreLabelPath = NodePath("Page/Main/TopBar/Stats/ScoreLabel")
+ComboLabelPath = NodePath("Page/Main/TopBar/Stats/ComboLabel")
+ProgressLabelPath = NodePath("Page/Main/GameArea/Left/MessagePanel/MessageMargin/MessageContent/ProgressLabel")
+SenderLabelPath = NodePath("Page/Main/GameArea/Left/MessagePanel/MessageMargin/MessageContent/SenderLabel")
+SubjectLabelPath = NodePath("Page/Main/GameArea/Left/MessagePanel/MessageMargin/MessageContent/SubjectLabel")
+BodyLabelPath = NodePath("Page/Main/GameArea/Left/MessagePanel/MessageMargin/MessageContent/BodyLabel")
+LinkLabelPath = NodePath("Page/Main/GameArea/Left/MessagePanel/MessageMargin/MessageContent/LinkLabel")
+InvestigationPanelPath = NodePath("Page/Main/GameArea/Right/InvestigationPanel")
+InvestigationTextPath = NodePath("Page/Main/GameArea/Right/InvestigationPanel/InvestigationMargin/InvestigationContent/InvestigationText")
+FeedbackLabelPath = NodePath("Page/Main/FeedbackPanel/FeedbackMargin/FeedbackLabel")
+InvestigateButtonPath = NodePath("Page/Main/GameArea/Right/InvestigateButton")
+TrustworthyButtonPath = NodePath("Page/Main/DecisionRow/TrustworthyButton")
+PhishingButtonPath = NodePath("Page/Main/DecisionRow/PhishingButton")
+BackButtonPath = NodePath("Page/Main/BottomRow/BackButton")
+TutorialOverlayPath = NodePath("TutorialOverlay")
+StartButtonPath = NodePath("TutorialOverlay/Center/TutorialPanel/TutorialMargin/TutorialContent/StartButton")
+ResultOverlayPath = NodePath("ResultOverlay")
+ResultTitlePath = NodePath("ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent/ResultTitle")
+ResultSummaryPath = NodePath("ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent/ResultSummary")
+RetryButtonPath = NodePath("ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent/Actions/RetryButton")
+ResultBackButtonPath = NodePath("ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent/Actions/BackButton")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.008, 0.018, 0.03, 1)
+
+[node name="Glow" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.02, 0.16, 0.18, 0.14)
+
+[node name="Page" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 34.0
+offset_top = 24.0
+offset_right = -34.0
+offset_bottom = -22.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Main" type="VBoxContainer" parent="Page"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TopBar" type="HBoxContainer" parent="Page/Main"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+
+[node name="TitleBlock" type="VBoxContainer" parent="Page/Main/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Eyebrow" type="Label" parent="Page/Main/TopBar/TitleBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 12
+text = "MODO FEIRA • DESAFIO 02"
+
+[node name="Title" type="Label" parent="Page/Main/TopBar/TitleBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 30
+text = "CAÇA AO PHISHING"
+
+[node name="Subtitle" type="Label" parent="Page/Main/TopBar/TitleBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.54, 0.67, 0.72, 1)
+theme_override_font_sizes/font_size = 12
+text = "Observe. Investigue. Decida antes de clicar."
+
+[node name="Stats" type="HBoxContainer" parent="Page/Main/TopBar"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 2
+
+[node name="TimeLabel" type="Label" parent="Page/Main/TopBar/Stats"]
+custom_minimum_size = Vector2(132, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.8, 0.34, 1)
+theme_override_font_sizes/font_size = 17
+text = "TEMPO  01:15"
+vertical_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="Page/Main/TopBar/Stats"]
+custom_minimum_size = Vector2(132, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
+theme_override_font_sizes/font_size = 17
+text = "PONTOS  0"
+vertical_alignment = 1
+
+[node name="ComboLabel" type="Label" parent="Page/Main/TopBar/Stats"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.79, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "COMBO  —"
+vertical_alignment = 1
+
+[node name="GameArea" type="HBoxContainer" parent="Page/Main"]
+custom_minimum_size = Vector2(0, 388)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="Left" type="VBoxContainer" parent="Page/Main/GameArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MessagePanel" type="PanelContainer" parent="Page/Main/GameArea/Left"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleMessage")
+
+[node name="MessageMargin" type="MarginContainer" parent="Page/Main/GameArea/Left/MessagePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 22
+
+[node name="MessageContent" type="VBoxContainer" parent="Page/Main/GameArea/Left/MessagePanel/MessageMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ProgressLabel" type="Label" parent="Page/Main/GameArea/Left/MessagePanel/MessageMargin/MessageContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 12
+text = "CASO 1/8"
+
+[node name="IncomingLabel" type="Label" parent="Page/Main/GameArea/Left/MessagePanel/MessageMargin/MessageContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.53, 0.65, 0.7, 1)
+theme_override_font_sizes/font_size = 11
+text = "MENSAGEM RECEBIDA"
+
+[node name="SenderLabel" type="Label" parent="Page/Main/GameArea/Left/MessagePanel/MessageMargin/MessageContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.95, 0.97, 1)
+theme_override_font_sizes/font_size = 16
+text = "De: remetente@exemplo.com"
+autowrap_mode = 2
+
+[node name="SubjectLabel" type="Label" parent="Page/Main/GameArea/Left/MessagePanel/MessageMargin/MessageContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.81, 0.39, 1)
+theme_override_font_sizes/font_size = 19
+text = "Assunto: Mensagem"
+autowrap_mode = 2
+
+[node name="Divider" type="HSeparator" parent="Page/Main/GameArea/Left/MessagePanel/MessageMargin/MessageContent"]
+layout_mode = 2
+
+[node name="BodyLabel" type="Label" parent="Page/Main/GameArea/Left/MessagePanel/MessageMargin/MessageContent"]
+custom_minimum_size = Vector2(0, 110)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.74, 0.84, 0.87, 1)
+theme_override_font_sizes/font_size = 16
+text = "Conteúdo da mensagem"
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="LinkLabel" type="Label" parent="Page/Main/GameArea/Left/MessagePanel/MessageMargin/MessageContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.78, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "Link exibido: https://exemplo.com"
+autowrap_mode = 2
+
+[node name="Right" type="VBoxContainer" parent="Page/Main/GameArea"]
+custom_minimum_size = Vector2(390, 0)
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="InvestigationPanel" type="PanelContainer" parent="Page/Main/GameArea/Right"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleInvestigation")
+
+[node name="InvestigationMargin" type="MarginContainer" parent="Page/Main/GameArea/Right/InvestigationPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 18
+
+[node name="InvestigationContent" type="VBoxContainer" parent="Page/Main/GameArea/Right/InvestigationPanel/InvestigationMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Page/Main/GameArea/Right/InvestigationPanel/InvestigationMargin/InvestigationContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.9, 0.94, 1)
+theme_override_font_sizes/font_size = 13
+text = "PAINEL DE INVESTIGAÇÃO"
+
+[node name="InvestigationText" type="Label" parent="Page/Main/GameArea/Right/InvestigationPanel/InvestigationMargin/InvestigationContent"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.72, 0.84, 0.86, 1)
+theme_override_font_sizes/font_size = 13
+text = "As pistas aparecem aqui."
+autowrap_mode = 2
+
+[node name="InvestigateButton" type="Button" parent="Page/Main/GameArea/Right"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleNeutralButton")
+text = "INVESTIGAR PISTAS"
+
+[node name="FeedbackPanel" type="PanelContainer" parent="Page/Main"]
+custom_minimum_size = Vector2(0, 66)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StylePanel")
+
+[node name="FeedbackMargin" type="MarginContainer" parent="Page/Main/FeedbackPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 10
+
+[node name="FeedbackLabel" type="Label" parent="Page/Main/FeedbackPanel/FeedbackMargin"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.66, 0.79, 0.83, 1)
+theme_override_font_sizes/font_size = 13
+text = "Golpe ou mensagem legítima? Observe antes de escolher."
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="DecisionRow" type="HBoxContainer" parent="Page/Main"]
+custom_minimum_size = Vector2(0, 62)
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="TrustworthyButton" type="Button" parent="Page/Main/DecisionRow"]
+custom_minimum_size = Vector2(330, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+theme_override_styles/normal = SubResource("StyleSafe")
+text = "✓  CONFIÁVEL"
+
+[node name="PhishingButton" type="Button" parent="Page/Main/DecisionRow"]
+custom_minimum_size = Vector2(330, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+theme_override_styles/normal = SubResource("StyleDanger")
+text = "!  PHISHING"
+
+[node name="BottomRow" type="HBoxContainer" parent="Page/Main"]
+layout_mode = 2
+alignment = 1
+
+[node name="BackButton" type="Button" parent="Page/Main/BottomRow"]
+custom_minimum_size = Vector2(220, 38)
+layout_mode = 2
+text = "Voltar ao Modo Feira"
+
+[node name="TutorialOverlay" type="Control" parent="."]
+z_index = 100
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="TutorialOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.003, 0.008, 0.015, 0.9)
+
+[node name="Center" type="CenterContainer" parent="TutorialOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TutorialPanel" type="PanelContainer" parent="TutorialOverlay/Center"]
+custom_minimum_size = Vector2(690, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleOverlay")
+
+[node name="TutorialMargin" type="MarginContainer" parent="TutorialOverlay/Center/TutorialPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 30
+
+[node name="TutorialContent" type="VBoxContainer" parent="TutorialOverlay/Center/TutorialPanel/TutorialMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Eyebrow" type="Label" parent="TutorialOverlay/Center/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 13
+text = "SUA MISSÃO"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="TutorialOverlay/Center/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "Não caia na armadilha"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="TutorialOverlay/Center/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.68, 0.8, 0.84, 1)
+theme_override_font_sizes/font_size = 15
+text = "Você receberá 8 mensagens. Para cada uma:\n\n1. LEIA o remetente, o assunto e o conteúdo.\n2. Use INVESTIGAR PISTAS para revelar o endereço real e o destino do link.\n3. Decida: CONFIÁVEL ou PHISHING.\n4. Acertos em sequência aumentam seu combo e sua pontuação."
+autowrap_mode = 2
+
+[node name="Tip" type="Label" parent="TutorialOverlay/Center/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.8, 0.34, 1)
+theme_override_font_sizes/font_size = 13
+text = "DICA: urgência, prêmio inesperado, domínio estranho e pedido de senha merecem atenção."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="StartButton" type="Button" parent="TutorialOverlay/Center/TutorialPanel/TutorialMargin/TutorialContent"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "INICIAR INVESTIGAÇÃO"
+
+[node name="ResultOverlay" type="Control" parent="."]
+visible = false
+z_index = 110
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="ResultOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.003, 0.008, 0.015, 0.92)
+
+[node name="Center" type="CenterContainer" parent="ResultOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResultPanel" type="PanelContainer" parent="ResultOverlay/Center"]
+custom_minimum_size = Vector2(650, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleOverlay")
+
+[node name="ResultMargin" type="MarginContainer" parent="ResultOverlay/Center/ResultPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 32
+
+[node name="ResultContent" type="VBoxContainer" parent="ResultOverlay/Center/ResultPanel/ResultMargin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Eyebrow" type="Label" parent="ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 13
+text = "RESULTADO DO DESAFIO"
+horizontal_alignment = 1
+
+[node name="ResultTitle" type="Label" parent="ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
+theme_override_font_sizes/font_size = 27
+text = "INVESTIGAÇÃO CONCLUÍDA"
+horizontal_alignment = 1
+
+[node name="ResultSummary" type="Label" parent="ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.82, 0.86, 1)
+theme_override_font_sizes/font_size = 15
+text = "Resultado"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Actions" type="HBoxContainer" parent="ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent"]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="RetryButton" type="Button" parent="ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent/Actions"]
+custom_minimum_size = Vector2(230, 46)
+layout_mode = 2
+text = "Jogar novamente"
+
+[node name="BackButton" type="Button" parent="ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent/Actions"]
+custom_minimum_size = Vector2(230, 46)
+layout_mode = 2
+text = "Outro desafio"

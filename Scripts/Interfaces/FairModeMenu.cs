@@ -6,11 +6,15 @@ public partial class FairModeMenu : Control
 		"res://Scenes/Interfaces/main_menu.tscn";
 	[Export] public string NetworkMazeScenePath { get; set; } =
 		"res://Scenes/Minigames/network_maze.tscn";
+	[Export] public string PhishingHuntScenePath { get; set; } =
+		"res://Scenes/Minigames/phishing_hunt.tscn";
 	[Export] public NodePath NetworkMazeButtonPath { get; set; }
+	[Export] public NodePath PhishingButtonPath { get; set; }
 	[Export] public NodePath BackButtonPath { get; set; }
 	[Export] public NodePath StatusLabelPath { get; set; }
 
 	private Button _networkMazeButton;
+	private Button _phishingButton;
 	private Button _backButton;
 	private Label _statusLabel;
 
@@ -18,16 +22,18 @@ public partial class FairModeMenu : Control
 	{
 		AudioManager.Instance?.SetMenuContext();
 		_networkMazeButton = GetNodeOrNull<Button>(NetworkMazeButtonPath);
+		_phishingButton = GetNodeOrNull<Button>(PhishingButtonPath);
 		_backButton = GetNodeOrNull<Button>(BackButtonPath);
 		_statusLabel = GetNodeOrNull<Label>(StatusLabelPath);
 
-		if (_networkMazeButton == null || _backButton == null)
+		if (_networkMazeButton == null || _phishingButton == null || _backButton == null)
 		{
 			GD.PrintErr("FairModeMenu: estrutura da interface não encontrada.");
 			return;
 		}
 
 		_networkMazeButton.Pressed += OnNetworkMazePressed;
+		_phishingButton.Pressed += OnPhishingPressed;
 		_backButton.Pressed += OnBackPressed;
 
 		if (_statusLabel != null)
@@ -40,6 +46,9 @@ public partial class FairModeMenu : Control
 	{
 		if (_networkMazeButton != null)
 			_networkMazeButton.Pressed -= OnNetworkMazePressed;
+
+		if (_phishingButton != null)
+			_phishingButton.Pressed -= OnPhishingPressed;
 
 		if (_backButton != null)
 			_backButton.Pressed -= OnBackPressed;
@@ -59,6 +68,11 @@ public partial class FairModeMenu : Control
 		OpenScene(NetworkMazeScenePath);
 	}
 
+	private void OnPhishingPressed()
+	{
+		OpenScene(PhishingHuntScenePath);
+	}
+
 	private void OnBackPressed()
 	{
 		OpenScene(MainMenuScenePath);
@@ -66,17 +80,25 @@ public partial class FairModeMenu : Control
 
 	private void OpenScene(string scenePath)
 	{
-		_networkMazeButton.Disabled = true;
-		_backButton.Disabled = true;
+		SetButtonsDisabled(true);
 
 		Error error = GetTree().ChangeSceneToFile(scenePath);
 
 		if (error == Error.Ok)
 			return;
 
-		_networkMazeButton.Disabled = false;
-		_backButton.Disabled = false;
+		SetButtonsDisabled(false);
 		ShowStatus($"Não foi possível abrir a tela: {error}.");
+	}
+
+	private void SetButtonsDisabled(bool disabled)
+	{
+		if (_networkMazeButton != null)
+			_networkMazeButton.Disabled = disabled;
+		if (_phishingButton != null)
+			_phishingButton.Disabled = disabled;
+		if (_backButton != null)
+			_backButton.Disabled = disabled;
 	}
 
 	private void ShowStatus(string message)
