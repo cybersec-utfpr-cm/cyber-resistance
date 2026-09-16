@@ -15,7 +15,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 shadow_color = Color(0, 0, 0, 0.5)
-shadow_size = 24
+shadow_size = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleAvailable"]
 bg_color = Color(0.055, 0.16, 0.2, 0.96)
@@ -41,7 +41,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 shadow_color = Color(0.08, 0.72, 0.78, 0.18)
-shadow_size = 10
+shadow_size = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleUnavailable"]
 bg_color = Color(0.035, 0.06, 0.082, 0.84)
@@ -80,6 +80,7 @@ script = ExtResource("1_fair")
 NetworkMazeButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton")
 PhishingButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/PhishingButton")
 ServerDefenseButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton")
+RansomwareEscapeButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton")
 BackButtonPath = NodePath("Center/MainPanel/MainMargin/Content/BottomRow/BackButton")
 StatusLabelPath = NodePath("Center/MainPanel/MainMargin/Content/StatusLabel")
 
@@ -111,57 +112,56 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="MainPanel" type="PanelContainer" parent="Center"]
-custom_minimum_size = Vector2(1100, 640)
+custom_minimum_size = Vector2(1190, 684)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleMainPanel")
 
 [node name="MainMargin" type="MarginContainer" parent="Center/MainPanel"]
 layout_mode = 2
-theme_override_constants/margin_left = 44
-theme_override_constants/margin_top = 32
-theme_override_constants/margin_right = 44
-theme_override_constants/margin_bottom = 28
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 14
 
 [node name="Content" type="VBoxContainer" parent="Center/MainPanel/MainMargin"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 6
 
 [node name="Eyebrow" type="Label" parent="Center/MainPanel/MainMargin/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 11
 text = "EXPERIÊNCIA RÁPIDA • FEIRA DE PROFISSÕES"
 horizontal_alignment = 1
 
 [node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.92, 0.97, 0.99, 1)
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 28
 text = "MODO FEIRA"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="Center/MainPanel/MainMargin/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
-theme_override_font_sizes/font_size = 15
-text = "Escolha uma missão. Cada desafio dura poucos minutos e testa uma habilidade diferente de cibersegurança."
+theme_override_font_sizes/font_size = 13
+text = "Escolha uma missão de cibersegurança. Os desafios disponíveis podem ser jogados em poucos minutos."
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="Spacer" type="Control" parent="Center/MainPanel/MainMargin/Content"]
-custom_minimum_size = Vector2(0, 10)
+[node name="Challenges" type="GridContainer" parent="Center/MainPanel/MainMargin/Content"]
+custom_minimum_size = Vector2(0, 464)
 layout_mode = 2
-
-[node name="Challenges" type="HBoxContainer" parent="Center/MainPanel/MainMargin/Content"]
-custom_minimum_size = Vector2(0, 330)
-layout_mode = 2
-theme_override_constants/separation = 18
-alignment = 1
+size_flags_vertical = 3
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 12
+columns = 3
 
 [node name="NetworkMazeButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
-custom_minimum_size = Vector2(320, 318)
+custom_minimum_size = Vector2(350, 226)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleAvailable")
 theme_override_styles/hover = SubResource("StyleAvailableHover")
 theme_override_styles/focus = SubResource("StyleAvailableHover")
@@ -173,64 +173,46 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 24.0
-offset_top = 22.0
-offset_right = -24.0
-offset_bottom = -20.0
+offset_left = 18.0
+offset_top = 15.0
+offset_right = -18.0
+offset_bottom = -14.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
 [node name="Card" type="VBoxContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 6
 mouse_filter = 2
 
 [node name="Tag" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin/Card"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.42, 0.9, 0.94, 1)
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 10
 text = "DESAFIO 01  •  MOVIMENTO"
 mouse_filter = 2
 
 [node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin/Card"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
-theme_override_font_sizes/font_size = 23
+theme_override_font_sizes/font_size = 19
 text = "LABIRINTO DA REDE"
 mouse_filter = 2
 
 [node name="Hook" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin/Card"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.82, 0.86, 1)
-theme_override_font_sizes/font_size = 14
-text = "Entregue o pacote ao servidor antes que a rede seja comprometida."
+theme_override_font_sizes/font_size = 12
+text = "Leve o pacote ao servidor antes que a rede seja comprometida."
 autowrap_mode = 2
-mouse_filter = 2
-
-[node name="Divider" type="HSeparator" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin/Card"]
-layout_mode = 2
 mouse_filter = 2
 
 [node name="Step1" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin/Card"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.98, 0.8, 0.32, 1)
-theme_override_font_sizes/font_size = 13
-text = "◆ Pegue a chave de autenticação"
-mouse_filter = 2
-
-[node name="Step2" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin/Card"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.42, 0.88, 0.92, 1)
-theme_override_font_sizes/font_size = 13
-text = "◆ Atravesse o firewall"
-mouse_filter = 2
-
-[node name="Step3" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin/Card"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.98, 0.48, 0.5, 1)
-theme_override_font_sizes/font_size = 13
-text = "◆ Desvie dos malwares"
+theme_override_font_sizes/font_size = 11
+text = "◆ Chave  ◆ Firewall  ◆ Malwares"
 mouse_filter = 2
 
 [node name="Fill" type="Control" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin/Card"]
@@ -241,14 +223,15 @@ mouse_filter = 2
 [node name="Action" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin/Card"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 text = "JOGAR AGORA  →"
 mouse_filter = 2
 
 [node name="PhishingButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
-custom_minimum_size = Vector2(320, 318)
+custom_minimum_size = Vector2(350, 226)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleAvailable")
 theme_override_styles/hover = SubResource("StyleAvailableHover")
 theme_override_styles/focus = SubResource("StyleAvailableHover")
@@ -260,64 +243,46 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 24.0
-offset_top = 22.0
-offset_right = -24.0
-offset_bottom = -20.0
+offset_left = 18.0
+offset_top = 15.0
+offset_right = -18.0
+offset_bottom = -14.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
 [node name="Card" type="VBoxContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 6
 mouse_filter = 2
 
 [node name="Tag" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin/Card"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.42, 0.9, 0.94, 1)
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 10
 text = "DESAFIO 02  •  INVESTIGAÇÃO"
 mouse_filter = 2
 
 [node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin/Card"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
-theme_override_font_sizes/font_size = 23
+theme_override_font_sizes/font_size = 19
 text = "CAÇA AO PHISHING"
 mouse_filter = 2
 
 [node name="Hook" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin/Card"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.82, 0.86, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 text = "Golpe ou mensagem legítima? Encontre as pistas antes de decidir."
 autowrap_mode = 2
 mouse_filter = 2
 
-[node name="Divider" type="HSeparator" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin/Card"]
-layout_mode = 2
-mouse_filter = 2
-
 [node name="Step1" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.68, 0.82, 0.88, 1)
-theme_override_font_sizes/font_size = 13
-text = "◆ Confira o remetente"
-mouse_filter = 2
-
-[node name="Step2" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin/Card"]
-layout_mode = 2
 theme_override_colors/font_color = Color(0.98, 0.8, 0.32, 1)
-theme_override_font_sizes/font_size = 13
-text = "◆ Investigue o link"
-mouse_filter = 2
-
-[node name="Step3" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin/Card"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
-theme_override_font_sizes/font_size = 13
-text = "◆ Decida antes do tempo acabar"
+theme_override_font_sizes/font_size = 11
+text = "◆ Remetente  ◆ Link  ◆ Decisão"
 mouse_filter = 2
 
 [node name="Fill" type="Control" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin/Card"]
@@ -328,14 +293,15 @@ mouse_filter = 2
 [node name="Action" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin/Card"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 text = "JOGAR AGORA  →"
 mouse_filter = 2
 
 [node name="ServerDefenseButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
-custom_minimum_size = Vector2(320, 318)
+custom_minimum_size = Vector2(350, 226)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleAvailable")
 theme_override_styles/hover = SubResource("StyleAvailableHover")
 theme_override_styles/focus = SubResource("StyleAvailableHover")
@@ -347,64 +313,46 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 24.0
-offset_top = 22.0
-offset_right = -24.0
-offset_bottom = -20.0
+offset_left = 18.0
+offset_top = 15.0
+offset_right = -18.0
+offset_bottom = -14.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
 [node name="Card" type="VBoxContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 6
 mouse_filter = 2
 
 [node name="Tag" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.42, 0.9, 0.94, 1)
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 10
 text = "DESAFIO 03  •  DEFESA"
 mouse_filter = 2
 
 [node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
-theme_override_font_sizes/font_size = 23
+theme_override_font_sizes/font_size = 19
 text = "DEFENDA O SERVIDOR"
 mouse_filter = 2
 
 [node name="Hook" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.82, 0.86, 1)
-theme_override_font_sizes/font_size = 14
-text = "Ataques estão chegando. Bloqueie as ameaças sem barrar usuários legítimos."
+theme_override_font_sizes/font_size = 12
+text = "Bloqueie ameaças sem impedir o tráfego legítimo."
 autowrap_mode = 2
-mouse_filter = 2
-
-[node name="Divider" type="HSeparator" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
-layout_mode = 2
 mouse_filter = 2
 
 [node name="Step1" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.98, 0.48, 0.5, 1)
-theme_override_font_sizes/font_size = 13
-text = "◆ Bloqueie MALWARE e ataques"
-mouse_filter = 2
-
-[node name="Step2" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
-theme_override_font_sizes/font_size = 13
-text = "◆ Libere USUÁRIOS e UPDATES"
-mouse_filter = 2
-
-[node name="Step3" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.72, 0.5, 0.92, 1)
-theme_override_font_sizes/font_size = 13
-text = "◆ Resista ao ataque DDoS final"
+theme_override_font_sizes/font_size = 11
+text = "◆ Firewall  ◆ Antivírus  ◆ DDoS"
 mouse_filter = 2
 
 [node name="Fill" type="Control" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
@@ -415,15 +363,223 @@ mouse_filter = 2
 [node name="Action" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 text = "JOGAR AGORA  →"
+mouse_filter = 2
+
+[node name="RansomwareEscapeButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
+custom_minimum_size = Vector2(350, 226)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleAvailable")
+theme_override_styles/hover = SubResource("StyleAvailableHover")
+theme_override_styles/focus = SubResource("StyleAvailableHover")
+theme_override_styles/pressed = SubResource("StyleAvailableHover")
+text = ""
+
+[node name="CardMargin" type="MarginContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 15.0
+offset_right = -18.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Card" type="VBoxContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton/CardMargin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+mouse_filter = 2
+
+[node name="Tag" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.48, 0.5, 1)
+theme_override_font_sizes/font_size = 10
+text = "NOVO • DESAFIO 04  •  CORRIDA"
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
+theme_override_font_sizes/font_size = 19
+text = "FUGA DO RANSOMWARE"
+mouse_filter = 2
+
+[node name="Hook" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.82, 0.86, 1)
+theme_override_font_sizes/font_size = 12
+text = "Salve seus arquivos e faça backup antes que tudo seja criptografado."
+autowrap_mode = 2
+mouse_filter = 2
+
+[node name="Step1" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.8, 0.32, 1)
+theme_override_font_sizes/font_size = 11
+text = "◆ Arquivos  ◆ Backup  ◆ Recuperação"
+mouse_filter = 2
+
+[node name="Fill" type="Control" parent="Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton/CardMargin/Card"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Action" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
+theme_override_font_sizes/font_size = 12
+text = "JOGAR AGORA  →"
+mouse_filter = 2
+
+[node name="WifiGhostButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
+disabled = true
+custom_minimum_size = Vector2(350, 226)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleUnavailable")
+theme_override_styles/disabled = SubResource("StyleUnavailable")
+text = ""
+
+[node name="CardMargin" type="MarginContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 15.0
+offset_right = -18.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Card" type="VBoxContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+mouse_filter = 2
+
+[node name="Tag" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.49, 0.55, 1)
+theme_override_font_sizes/font_size = 10
+text = "DESAFIO 05  •  EXPLORAÇÃO"
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.54, 0.63, 0.67, 1)
+theme_override_font_sizes/font_size = 17
+text = "OPERAÇÃO WI-FI FANTASMA"
+mouse_filter = 2
+
+[node name="Hook" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.5, 0.54, 1)
+theme_override_font_sizes/font_size = 12
+text = "Investigue redes falsas e proteja seus dados em uma área pública."
+autowrap_mode = 2
+mouse_filter = 2
+
+[node name="Step1" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.49, 0.55, 1)
+theme_override_font_sizes/font_size = 11
+text = "◆ Scanner  ◆ Evil Twin  ◆ VPN"
+mouse_filter = 2
+
+[node name="Fill" type="Control" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Action" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.46, 0.55, 0.58, 1)
+theme_override_font_sizes/font_size = 12
+text = "EM BREVE"
+mouse_filter = 2
+
+[node name="DataCenterButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
+disabled = true
+custom_minimum_size = Vector2(350, 226)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleUnavailable")
+theme_override_styles/disabled = SubResource("StyleUnavailable")
+text = ""
+
+[node name="CardMargin" type="MarginContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 15.0
+offset_right = -18.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Card" type="VBoxContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+mouse_filter = 2
+
+[node name="Tag" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.49, 0.55, 1)
+theme_override_font_sizes/font_size = 10
+text = "DESAFIO 06  •  RESPOSTA"
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.54, 0.63, 0.67, 1)
+theme_override_font_sizes/font_size = 19
+text = "RESGATE NO DATA CENTER"
+mouse_filter = 2
+
+[node name="Hook" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.5, 0.54, 1)
+theme_override_font_sizes/font_size = 12
+text = "Corra pelos corredores e contenha os incidentes nos servidores."
+autowrap_mode = 2
+mouse_filter = 2
+
+[node name="Step1" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.49, 0.55, 1)
+theme_override_font_sizes/font_size = 11
+text = "◆ Quarentena  ◆ Acesso  ◆ Energia"
+mouse_filter = 2
+
+[node name="Fill" type="Control" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Action" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.46, 0.55, 0.58, 1)
+theme_override_font_sizes/font_size = 12
+text = "EM BREVE"
 mouse_filter = 2
 
 [node name="StatusLabel" type="Label" parent="Center/MainPanel/MainMargin/Content"]
 visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.96, 0.42, 0.46, 1)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 11
 text = "Não foi possível abrir o desafio."
 horizontal_alignment = 1
 
@@ -432,7 +588,7 @@ layout_mode = 2
 alignment = 1
 
 [node name="BackButton" type="Button" parent="Center/MainPanel/MainMargin/Content/BottomRow"]
-custom_minimum_size = Vector2(220, 42)
+custom_minimum_size = Vector2(210, 34)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBack")
 text = "Voltar ao menu principal"
@@ -440,6 +596,6 @@ text = "Voltar ao menu principal"
 [node name="Footer" type="Label" parent="Center/MainPanel/MainMargin/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.32, 0.43, 0.48, 1)
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 10
 text = "ESC volta ao menu principal"
 horizontal_alignment = 1
