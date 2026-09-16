@@ -8,13 +8,17 @@ public partial class FairModeMenu : Control
 		"res://Scenes/Minigames/network_maze.tscn";
 	[Export] public string PhishingHuntScenePath { get; set; } =
 		"res://Scenes/Minigames/phishing_hunt.tscn";
+	[Export] public string ServerDefenseScenePath { get; set; } =
+		"res://Scenes/Minigames/server_defense.tscn";
 	[Export] public NodePath NetworkMazeButtonPath { get; set; }
 	[Export] public NodePath PhishingButtonPath { get; set; }
+	[Export] public NodePath ServerDefenseButtonPath { get; set; }
 	[Export] public NodePath BackButtonPath { get; set; }
 	[Export] public NodePath StatusLabelPath { get; set; }
 
 	private Button _networkMazeButton;
 	private Button _phishingButton;
+	private Button _serverDefenseButton;
 	private Button _backButton;
 	private Label _statusLabel;
 
@@ -23,10 +27,12 @@ public partial class FairModeMenu : Control
 		AudioManager.Instance?.SetMenuContext();
 		_networkMazeButton = GetNodeOrNull<Button>(NetworkMazeButtonPath);
 		_phishingButton = GetNodeOrNull<Button>(PhishingButtonPath);
+		_serverDefenseButton = GetNodeOrNull<Button>(ServerDefenseButtonPath);
 		_backButton = GetNodeOrNull<Button>(BackButtonPath);
 		_statusLabel = GetNodeOrNull<Label>(StatusLabelPath);
 
-		if (_networkMazeButton == null || _phishingButton == null || _backButton == null)
+		if (_networkMazeButton == null || _phishingButton == null ||
+			_serverDefenseButton == null || _backButton == null)
 		{
 			GD.PrintErr("FairModeMenu: estrutura da interface não encontrada.");
 			return;
@@ -34,6 +40,7 @@ public partial class FairModeMenu : Control
 
 		_networkMazeButton.Pressed += OnNetworkMazePressed;
 		_phishingButton.Pressed += OnPhishingPressed;
+		_serverDefenseButton.Pressed += OnServerDefensePressed;
 		_backButton.Pressed += OnBackPressed;
 
 		if (_statusLabel != null)
@@ -49,6 +56,9 @@ public partial class FairModeMenu : Control
 
 		if (_phishingButton != null)
 			_phishingButton.Pressed -= OnPhishingPressed;
+
+		if (_serverDefenseButton != null)
+			_serverDefenseButton.Pressed -= OnServerDefensePressed;
 
 		if (_backButton != null)
 			_backButton.Pressed -= OnBackPressed;
@@ -71,6 +81,11 @@ public partial class FairModeMenu : Control
 	private void OnPhishingPressed()
 	{
 		OpenScene(PhishingHuntScenePath);
+	}
+
+	private void OnServerDefensePressed()
+	{
+		OpenScene(ServerDefenseScenePath);
 	}
 
 	private void OnBackPressed()
@@ -97,6 +112,8 @@ public partial class FairModeMenu : Control
 			_networkMazeButton.Disabled = disabled;
 		if (_phishingButton != null)
 			_phishingButton.Disabled = disabled;
+		if (_serverDefenseButton != null)
+			_serverDefenseButton.Disabled = disabled;
 		if (_backButton != null)
 			_backButton.Disabled = disabled;
 	}

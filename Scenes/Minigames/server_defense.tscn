@@ -1,0 +1,689 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Minigames/ServerDefense.cs" id="1_game"]
+[ext_resource type="Theme" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StylePanel"]
+bg_color = Color(0.027, 0.047, 0.075, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.15, 0.52, 0.65, 0.8)
+corner_radius_top_left = 11
+corner_radius_top_right = 11
+corner_radius_bottom_right = 11
+corner_radius_bottom_left = 11
+shadow_color = Color(0, 0, 0, 0.44)
+shadow_size = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleField"]
+bg_color = Color(0.022, 0.055, 0.075, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.16, 0.42, 0.5, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+
+[sub_resource type="StyleBoxFlat" id="StyleDefensePanel"]
+bg_color = Color(0.035, 0.075, 0.095, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.18, 0.43, 0.48, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+
+[sub_resource type="StyleBoxFlat" id="StyleBlockButton"]
+bg_color = Color(0.28, 0.075, 0.09, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.94, 0.35, 0.39, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleAntivirus"]
+bg_color = Color(0.055, 0.22, 0.19, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.31, 0.83, 0.68, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleRateLimit"]
+bg_color = Color(0.18, 0.09, 0.27, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.62, 0.42, 0.82, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleOverlay"]
+bg_color = Color(0.035, 0.065, 0.09, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.78, 0.84, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.58)
+shadow_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleFeedback"]
+bg_color = Color(0.027, 0.047, 0.075, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12, 0.3, 0.36, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[node name="ServerDefense" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_game")
+TimeLabelPath = NodePath("Page/Main/TopBar/Stats/TimeLabel")
+ScoreLabelPath = NodePath("Page/Main/TopBar/Stats/ScoreLabel")
+IntegrityLabelPath = NodePath("Page/Main/TopBar/Stats/IntegrityLabel")
+ComboLabelPath = NodePath("Page/Main/TopBar/Stats/ComboLabel")
+WaveLabelPath = NodePath("Page/Main/WavePanel/WaveLabel")
+GameFieldPath = NodePath("Page/Main/GameRow/GameField")
+PacketLayerPath = NodePath("Page/Main/GameRow/GameField/PacketLayer")
+FeedbackLabelPath = NodePath("Page/Main/FeedbackPanel/FeedbackMargin/FeedbackLabel")
+Lane1ButtonPath = NodePath("Page/Main/GameRow/DefensePanel/DefenseMargin/DefenseContent/LaneButtons/Lane1Button")
+Lane2ButtonPath = NodePath("Page/Main/GameRow/DefensePanel/DefenseMargin/DefenseContent/LaneButtons/Lane2Button")
+Lane3ButtonPath = NodePath("Page/Main/GameRow/DefensePanel/DefenseMargin/DefenseContent/LaneButtons/Lane3Button")
+AntivirusButtonPath = NodePath("Page/Main/GameRow/DefensePanel/DefenseMargin/DefenseContent/AntivirusButton")
+RateLimitButtonPath = NodePath("Page/Main/GameRow/DefensePanel/DefenseMargin/DefenseContent/RateLimitButton")
+BackButtonPath = NodePath("Page/Main/BottomRow/BackButton")
+TutorialOverlayPath = NodePath("TutorialOverlay")
+StartButtonPath = NodePath("TutorialOverlay/Center/TutorialPanel/TutorialMargin/TutorialContent/StartButton")
+ResultOverlayPath = NodePath("ResultOverlay")
+ResultTitlePath = NodePath("ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent/ResultTitle")
+ResultSummaryPath = NodePath("ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent/ResultSummary")
+RetryButtonPath = NodePath("ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent/Actions/RetryButton")
+ResultBackButtonPath = NodePath("ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent/Actions/BackButton")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.008, 0.018, 0.03, 1)
+
+[node name="Glow" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.08, 0.12, 0.19, 0.18)
+
+[node name="Page" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = 20.0
+offset_right = -28.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Main" type="VBoxContainer" parent="Page"]
+layout_mode = 2
+theme_override_constants/separation = 9
+
+[node name="TopBar" type="HBoxContainer" parent="Page/Main"]
+custom_minimum_size = Vector2(0, 62)
+layout_mode = 2
+
+[node name="TitleBlock" type="VBoxContainer" parent="Page/Main/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Eyebrow" type="Label" parent="Page/Main/TopBar/TitleBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 12
+text = "MODO FEIRA • DESAFIO 03"
+
+[node name="Title" type="Label" parent="Page/Main/TopBar/TitleBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "DEFENDA O SERVIDOR"
+
+[node name="Subtitle" type="Label" parent="Page/Main/TopBar/TitleBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.54, 0.67, 0.72, 1)
+theme_override_font_sizes/font_size = 12
+text = "Filtre o tráfego em tempo real: ameaça bloqueia, usuário legítimo passa."
+
+[node name="Stats" type="HBoxContainer" parent="Page/Main/TopBar"]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 2
+
+[node name="TimeLabel" type="Label" parent="Page/Main/TopBar/Stats"]
+custom_minimum_size = Vector2(122, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.8, 0.34, 1)
+theme_override_font_sizes/font_size = 16
+text = "TEMPO  01:00"
+vertical_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="Page/Main/TopBar/Stats"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
+theme_override_font_sizes/font_size = 16
+text = "PONTOS  0"
+vertical_alignment = 1
+
+[node name="IntegrityLabel" type="Label" parent="Page/Main/TopBar/Stats"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
+theme_override_font_sizes/font_size = 16
+text = "INTEGRIDADE  5/5"
+vertical_alignment = 1
+
+[node name="ComboLabel" type="Label" parent="Page/Main/TopBar/Stats"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.79, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "COMBO  —"
+vertical_alignment = 1
+
+[node name="WavePanel" type="PanelContainer" parent="Page/Main"]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StylePanel")
+
+[node name="WaveLabel" type="Label" parent="Page/Main/WavePanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.9, 0.94, 1)
+theme_override_font_sizes/font_size = 13
+text = "ONDA 1/3  •  TRÁFEGO NORMAL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GameRow" type="HBoxContainer" parent="Page/Main"]
+custom_minimum_size = Vector2(0, 410)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 14
+
+[node name="GameField" type="Panel" parent="Page/Main/GameRow"]
+custom_minimum_size = Vector2(720, 400)
+layout_mode = 2
+size_flags_horizontal = 3
+clip_contents = true
+theme_override_styles/panel = SubResource("StyleField")
+
+[node name="Lane1Bg" type="ColorRect" parent="Page/Main/GameRow/GameField"]
+layout_mode = 1
+anchor_right = 0.333333
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -1.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.04, 0.105, 0.13, 0.72)
+
+[node name="Lane2Bg" type="ColorRect" parent="Page/Main/GameRow/GameField"]
+layout_mode = 1
+anchor_left = 0.333333
+anchor_right = 0.666667
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 4.0
+offset_right = -1.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.03, 0.085, 0.115, 0.72)
+
+[node name="Lane3Bg" type="ColorRect" parent="Page/Main/GameRow/GameField"]
+layout_mode = 1
+anchor_left = 0.666667
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.04, 0.105, 0.13, 0.72)
+
+[node name="Separator1" type="ColorRect" parent="Page/Main/GameRow/GameField"]
+z_index = 2
+layout_mode = 1
+anchor_left = 0.333333
+anchor_right = 0.333333
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.15, 0.35, 0.4, 0.6)
+
+[node name="Separator2" type="ColorRect" parent="Page/Main/GameRow/GameField"]
+z_index = 2
+layout_mode = 1
+anchor_left = 0.666667
+anchor_right = 0.666667
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.15, 0.35, 0.4, 0.6)
+
+[node name="Lane1Label" type="Label" parent="Page/Main/GameRow/GameField"]
+z_index = 3
+layout_mode = 1
+anchor_right = 0.333333
+offset_top = 8.0
+offset_bottom = 34.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.55, 0.72, 0.76, 1)
+theme_override_font_sizes/font_size = 11
+text = "ROTA 1"
+horizontal_alignment = 1
+
+[node name="Lane2Label" type="Label" parent="Page/Main/GameRow/GameField"]
+z_index = 3
+layout_mode = 1
+anchor_left = 0.333333
+anchor_right = 0.666667
+offset_top = 8.0
+offset_bottom = 34.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.55, 0.72, 0.76, 1)
+theme_override_font_sizes/font_size = 11
+text = "ROTA 2"
+horizontal_alignment = 1
+
+[node name="Lane3Label" type="Label" parent="Page/Main/GameRow/GameField"]
+z_index = 3
+layout_mode = 1
+anchor_left = 0.666667
+anchor_right = 1.0
+offset_top = 8.0
+offset_bottom = 34.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.55, 0.72, 0.76, 1)
+theme_override_font_sizes/font_size = 11
+text = "ROTA 3"
+horizontal_alignment = 1
+
+[node name="PacketLayer" type="Control" parent="Page/Main/GameRow/GameField"]
+z_index = 10
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ServerZone" type="ColorRect" parent="Page/Main/GameRow/GameField"]
+z_index = 20
+layout_mode = 1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -78.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+color = Color(0.03, 0.2, 0.18, 0.96)
+
+[node name="DefenseLine" type="ColorRect" parent="Page/Main/GameRow/GameField"]
+z_index = 21
+layout_mode = 1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -80.0
+offset_bottom = -76.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+color = Color(0.28, 0.85, 0.72, 1)
+
+[node name="ServerLabel" type="Label" parent="Page/Main/GameRow/GameField"]
+z_index = 22
+layout_mode = 1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -67.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.78, 0.98, 0.91, 1)
+theme_override_font_sizes/font_size = 18
+text = "[ SERVIDOR CENTRAL ]\nFIREWALL ATIVO"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DefensePanel" type="PanelContainer" parent="Page/Main/GameRow"]
+custom_minimum_size = Vector2(340, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleDefensePanel")
+
+[node name="DefenseMargin" type="MarginContainer" parent="Page/Main/GameRow/DefensePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 16
+
+[node name="DefenseContent" type="VBoxContainer" parent="Page/Main/GameRow/DefensePanel/DefenseMargin"]
+layout_mode = 2
+theme_override_constants/separation = 9
+
+[node name="Title" type="Label" parent="Page/Main/GameRow/DefensePanel/DefenseMargin/DefenseContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.9, 0.94, 1)
+theme_override_font_sizes/font_size = 13
+text = "CONTROLE DO FIREWALL"
+horizontal_alignment = 1
+
+[node name="Rule" type="Label" parent="Page/Main/GameRow/DefensePanel/DefenseMargin/DefenseContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.83, 0.86, 1)
+theme_override_font_sizes/font_size = 12
+text = "VERDE/AZUL = deixe passar\nVERMELHO/LARANJA/ROXO = bloqueie"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="LaneButtons" type="VBoxContainer" parent="Page/Main/GameRow/DefensePanel/DefenseMargin/DefenseContent"]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="Lane1Button" type="Button" parent="Page/Main/GameRow/DefensePanel/DefenseMargin/DefenseContent/LaneButtons"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBlockButton")
+text = "[1]  BLOQUEAR ROTA 1"
+
+[node name="Lane2Button" type="Button" parent="Page/Main/GameRow/DefensePanel/DefenseMargin/DefenseContent/LaneButtons"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBlockButton")
+text = "[2]  BLOQUEAR ROTA 2"
+
+[node name="Lane3Button" type="Button" parent="Page/Main/GameRow/DefensePanel/DefenseMargin/DefenseContent/LaneButtons"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBlockButton")
+text = "[3]  BLOQUEAR ROTA 3"
+
+[node name="SpecialTitle" type="Label" parent="Page/Main/GameRow/DefensePanel/DefenseMargin/DefenseContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.7, 0.75, 1)
+theme_override_font_sizes/font_size = 11
+text = "DEFESAS ESPECIAIS"
+horizontal_alignment = 1
+
+[node name="AntivirusButton" type="Button" parent="Page/Main/GameRow/DefensePanel/DefenseMargin/DefenseContent"]
+custom_minimum_size = Vector2(0, 43)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleAntivirus")
+text = "ANTIVÍRUS [A]  •  PRONTO"
+
+[node name="RateLimitButton" type="Button" parent="Page/Main/GameRow/DefensePanel/DefenseMargin/DefenseContent"]
+custom_minimum_size = Vector2(0, 43)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleRateLimit")
+text = "RATE LIMIT [R]  •  LIBERA NA ONDA 3"
+
+[node name="Hint" type="Label" parent="Page/Main/GameRow/DefensePanel/DefenseMargin/DefenseContent"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.48, 0.61, 0.66, 1)
+theme_override_font_sizes/font_size = 11
+text = "ANTIVÍRUS remove MALWARE da tela.\nRATE LIMIT contém BOTS durante o DDoS.\n\nBloquear tráfego legítimo custa pontos e quebra seu combo."
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="FeedbackPanel" type="PanelContainer" parent="Page/Main"]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleFeedback")
+
+[node name="FeedbackMargin" type="MarginContainer" parent="Page/Main/FeedbackPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
+
+[node name="FeedbackLabel" type="Label" parent="Page/Main/FeedbackPanel/FeedbackMargin"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.66, 0.79, 0.83, 1)
+theme_override_font_sizes/font_size = 12
+text = "Observe o tráfego: verde passa, ameaça deve ser bloqueada."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="BottomRow" type="HBoxContainer" parent="Page/Main"]
+layout_mode = 2
+alignment = 1
+
+[node name="BackButton" type="Button" parent="Page/Main/BottomRow"]
+custom_minimum_size = Vector2(220, 36)
+layout_mode = 2
+text = "Voltar ao Modo Feira"
+
+[node name="TutorialOverlay" type="Control" parent="."]
+z_index = 100
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="TutorialOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.003, 0.008, 0.015, 0.91)
+
+[node name="Center" type="CenterContainer" parent="TutorialOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TutorialPanel" type="PanelContainer" parent="TutorialOverlay/Center"]
+custom_minimum_size = Vector2(760, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleOverlay")
+
+[node name="TutorialMargin" type="MarginContainer" parent="TutorialOverlay/Center/TutorialPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 28
+
+[node name="TutorialContent" type="VBoxContainer" parent="TutorialOverlay/Center/TutorialPanel/TutorialMargin"]
+layout_mode = 2
+theme_override_constants/separation = 13
+
+[node name="Eyebrow" type="Label" parent="TutorialOverlay/Center/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 13
+text = "SUA MISSÃO"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="TutorialOverlay/Center/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "Segure a linha por 60 segundos"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="TutorialOverlay/Center/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.82, 0.86, 1)
+theme_override_font_sizes/font_size = 15
+text = "Pacotes descem por 3 rotas até o servidor.\n\n[OK] USUÁRIO / UPDATE → NÃO bloqueie. Deixe chegar ao servidor.\n[!] MALWARE / BRUTE FORCE / BOT DDoS → BLOQUEIE antes que cheguem.\n\nUse [1], [2] e [3] para bloquear a ameaça mais próxima em cada rota.\nANTIVÍRUS [A] elimina malwares. Na última onda, RATE LIMIT [R] contém os bots do ataque DDoS."
+autowrap_mode = 2
+
+[node name="Tip" type="Label" parent="TutorialOverlay/Center/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.8, 0.34, 1)
+theme_override_font_sizes/font_size = 13
+text = "IMPORTANTE: um bom firewall não bloqueia tudo. Ele separa tráfego legítimo de tráfego malicioso."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="StartButton" type="Button" parent="TutorialOverlay/Center/TutorialPanel/TutorialMargin/TutorialContent"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "ATIVAR DEFESAS"
+
+[node name="ResultOverlay" type="Control" parent="."]
+visible = false
+z_index = 110
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="ResultOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.003, 0.008, 0.015, 0.92)
+
+[node name="Center" type="CenterContainer" parent="ResultOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResultPanel" type="PanelContainer" parent="ResultOverlay/Center"]
+custom_minimum_size = Vector2(670, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleOverlay")
+
+[node name="ResultMargin" type="MarginContainer" parent="ResultOverlay/Center/ResultPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 30
+
+[node name="ResultContent" type="VBoxContainer" parent="ResultOverlay/Center/ResultPanel/ResultMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Eyebrow" type="Label" parent="ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 13
+text = "RESULTADO DO DESAFIO"
+horizontal_alignment = 1
+
+[node name="ResultTitle" type="Label" parent="ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
+theme_override_font_sizes/font_size = 27
+text = "SERVIDOR PROTEGIDO"
+horizontal_alignment = 1
+
+[node name="ResultSummary" type="Label" parent="ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.82, 0.86, 1)
+theme_override_font_sizes/font_size = 14
+text = "Resultado"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Actions" type="HBoxContainer" parent="ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent"]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="RetryButton" type="Button" parent="ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent/Actions"]
+custom_minimum_size = Vector2(230, 46)
+layout_mode = 2
+text = "Jogar novamente"
+
+[node name="BackButton" type="Button" parent="ResultOverlay/Center/ResultPanel/ResultMargin/ResultContent/Actions"]
+custom_minimum_size = Vector2(230, 46)
+layout_mode = 2
+text = "Outro desafio"

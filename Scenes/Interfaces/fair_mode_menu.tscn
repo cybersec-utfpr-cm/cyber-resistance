@@ -79,6 +79,7 @@ theme = ExtResource("2_theme")
 script = ExtResource("1_fair")
 NetworkMazeButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton")
 PhishingButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/PhishingButton")
+ServerDefenseButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton")
 BackButtonPath = NodePath("Center/MainPanel/MainMargin/Content/BottomRow/BackButton")
 StatusLabelPath = NodePath("Center/MainPanel/MainMargin/Content/StatusLabel")
 
@@ -335,9 +336,10 @@ mouse_filter = 2
 custom_minimum_size = Vector2(320, 318)
 layout_mode = 2
 size_flags_horizontal = 3
-disabled = true
-focus_mode = 0
-theme_override_styles/disabled = SubResource("StyleUnavailable")
+theme_override_styles/normal = SubResource("StyleAvailable")
+theme_override_styles/hover = SubResource("StyleAvailableHover")
+theme_override_styles/focus = SubResource("StyleAvailableHover")
+theme_override_styles/pressed = SubResource("StyleAvailableHover")
 text = ""
 
 [node name="CardMargin" type="MarginContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton"]
@@ -360,23 +362,23 @@ mouse_filter = 2
 
 [node name="Tag" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.38, 0.48, 0.53, 1)
+theme_override_colors/font_color = Color(0.42, 0.9, 0.94, 1)
 theme_override_font_sizes/font_size = 11
-text = "DESAFIO 03  •  REFLEXO"
+text = "DESAFIO 03  •  DEFESA"
 mouse_filter = 2
 
 [node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.56, 0.64, 0.67, 1)
+theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
 theme_override_font_sizes/font_size = 23
 text = "DEFENDA O SERVIDOR"
 mouse_filter = 2
 
 [node name="Hook" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.49, 0.53, 1)
+theme_override_colors/font_color = Color(0.7, 0.82, 0.86, 1)
 theme_override_font_sizes/font_size = 14
-text = "Bloqueie ataques sem derrubar o tráfego legítimo da rede."
+text = "Ataques estão chegando. Bloqueie as ameaças sem barrar usuários legítimos."
 autowrap_mode = 2
 mouse_filter = 2
 
@@ -386,16 +388,23 @@ mouse_filter = 2
 
 [node name="Step1" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.38, 0.48, 0.53, 1)
+theme_override_colors/font_color = Color(0.98, 0.48, 0.5, 1)
 theme_override_font_sizes/font_size = 13
-text = "◆ Reconheça os ataques"
+text = "◆ Bloqueie MALWARE e ataques"
 mouse_filter = 2
 
 [node name="Step2" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.38, 0.48, 0.53, 1)
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
 theme_override_font_sizes/font_size = 13
-text = "◆ Proteja o servidor"
+text = "◆ Libere USUÁRIOS e UPDATES"
+mouse_filter = 2
+
+[node name="Step3" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.5, 0.92, 1)
+theme_override_font_sizes/font_size = 13
+text = "◆ Resista ao ataque DDoS final"
 mouse_filter = 2
 
 [node name="Fill" type="Control" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
@@ -405,9 +414,9 @@ mouse_filter = 2
 
 [node name="Action" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.44, 0.5, 0.53, 1)
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
 theme_override_font_sizes/font_size = 14
-text = "EM BREVE"
+text = "JOGAR AGORA  →"
 mouse_filter = 2
 
 [node name="StatusLabel" type="Label" parent="Center/MainPanel/MainMargin/Content"]
