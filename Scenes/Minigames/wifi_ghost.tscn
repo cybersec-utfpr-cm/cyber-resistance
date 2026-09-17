@@ -1,0 +1,411 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Minigames/WifiGhost.cs" id="1_wifi"]
+[ext_resource type="Theme" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StyleHud"]
+bg_color = Color(0.027, 0.047, 0.075, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.38, 0.3, 0.72, 0.9)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.42)
+shadow_size = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleInfo"]
+bg_color = Color(0.04, 0.055, 0.12, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.27, 0.52, 0.9)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleTutorial"]
+bg_color = Color(0.035, 0.055, 0.1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72, 0.5, 0.96, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.58)
+shadow_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleResult"]
+bg_color = Color(0.035, 0.065, 0.09, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.28, 0.82, 0.58, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.58)
+shadow_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBack"]
+bg_color = Color(0.047, 0.075, 0.11, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.16, 0.28, 0.38, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[node name="WifiGhost" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_wifi")
+TimeLabelPath = NodePath("HudPanel/HudMargin/HudContent/TimeLabel")
+DataLabelPath = NodePath("HudPanel/HudMargin/HudContent/DataLabel")
+ScannerLabelPath = NodePath("HudPanel/HudMargin/HudContent/ScannerLabel")
+NetworkLabelPath = NodePath("HudPanel/HudMargin/HudContent/NetworkLabel")
+ScoreLabelPath = NodePath("HudPanel/HudMargin/HudContent/ScoreLabel")
+ScanLogLabelPath = NodePath("HudPanel/HudMargin/HudContent/ScanPanel/ScanMargin/ScanLogLabel")
+StatusLabelPath = NodePath("StatusPanel/StatusMargin/StatusLabel")
+TutorialOverlayPath = NodePath("TutorialOverlay")
+StartButtonPath = NodePath("TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent/StartButton")
+ResultOverlayPath = NodePath("ResultOverlay")
+ResultTitlePath = NodePath("ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent/ResultTitle")
+ResultSummaryPath = NodePath("ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent/ResultSummary")
+RetryButtonPath = NodePath("ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent/Actions/RetryButton")
+ResultBackButtonPath = NodePath("ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent/Actions/ResultBackButton")
+BackButtonPath = NodePath("HudPanel/HudMargin/HudContent/BackButton")
+
+[node name="Header" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 22.0
+offset_right = 1244.0
+offset_bottom = 92.0
+theme_override_constants/separation = 14
+
+[node name="TitleBlock" type="VBoxContainer" parent="Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="Eyebrow" type="Label" parent="Header/TitleBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.5, 0.96, 1)
+theme_override_font_sizes/font_size = 12
+text = "MODO FEIRA • DESAFIO 05"
+
+[node name="Title" type="Label" parent="Header/TitleBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.92, 0.97, 0.99, 1)
+theme_override_font_sizes/font_size = 30
+text = "OPERAÇÃO WI-FI FANTASMA"
+
+[node name="Objective" type="Label" parent="Header"]
+custom_minimum_size = Vector2(430, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "Investigue as redes, evite Evil Twins e entregue seus dados sem ser interceptado."
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="HudPanel" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 884.0
+offset_top = 112.0
+offset_right = 1244.0
+offset_bottom = 640.0
+theme_override_styles/panel = SubResource("StyleHud")
+
+[node name="HudMargin" type="MarginContainer" parent="HudPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 18
+
+[node name="HudContent" type="VBoxContainer" parent="HudPanel/HudMargin"]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="HudTitle" type="Label" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.5, 0.96, 1)
+theme_override_font_sizes/font_size = 13
+text = "ANÁLISE DE REDE"
+
+[node name="TimeLabel" type="Label" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+text = "Tempo  01:30"
+
+[node name="DataLabel" type="Label" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.92, 0.65, 1)
+theme_override_font_sizes/font_size = 16
+text = "Dados  100%"
+
+[node name="ScannerLabel" type="Label" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Scanner  4/4 cargas"
+
+[node name="NetworkLabel" type="Label" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.78, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "Conectado  NENHUMA REDE"
+autowrap_mode = 2
+
+[node name="ScoreLabel" type="Label" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Pontos  0"
+
+[node name="ScanPanel" type="PanelContainer" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleInfo")
+
+[node name="ScanMargin" type="MarginContainer" parent="HudPanel/HudMargin/HudContent/ScanPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="ScanLogLabel" type="Label" parent="HudPanel/HudMargin/HudContent/ScanPanel/ScanMargin"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.66, 0.77, 0.84, 1)
+theme_override_font_sizes/font_size = 11
+text = "Nenhuma rede investigada."
+autowrap_mode = 2
+
+[node name="ControlsTitle" type="Label" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.5, 0.96, 1)
+theme_override_font_sizes/font_size = 12
+text = "CONTROLES"
+
+[node name="ControlsText" type="Label" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.9, 0.93, 1)
+theme_override_font_sizes/font_size = 12
+text = "WASD / SETAS  •  MOVER\n[E]  •  ESCANEAR\n[C]  •  CONECTAR"
+autowrap_mode = 2
+
+[node name="BackButton" type="Button" parent="HudPanel/HudMargin/HudContent"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBack")
+text = "Voltar ao Modo Feira"
+
+[node name="StatusPanel" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 654.0
+offset_right = 1244.0
+offset_bottom = 702.0
+theme_override_styles/panel = SubResource("StyleInfo")
+
+[node name="StatusMargin" type="MarginContainer" parent="StatusPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 8
+
+[node name="StatusLabel" type="Label" parent="StatusPanel/StatusMargin"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.92, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "[WASD / SETAS] Aproxime-se de um roteador."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TutorialOverlay" type="Control" parent="."]
+z_index = 100
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="TutorialOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.003, 0.008, 0.015, 0.9)
+
+[node name="TutorialCenter" type="CenterContainer" parent="TutorialOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TutorialPanel" type="PanelContainer" parent="TutorialOverlay/TutorialCenter"]
+custom_minimum_size = Vector2(720, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleTutorial")
+
+[node name="TutorialMargin" type="MarginContainer" parent="TutorialOverlay/TutorialCenter/TutorialPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 28
+
+[node name="TutorialContent" type="VBoxContainer" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin"]
+layout_mode = 2
+theme_override_constants/separation = 13
+
+[node name="Eyebrow" type="Label" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.5, 0.96, 1)
+theme_override_font_sizes/font_size = 13
+text = "SUA MISSÃO"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 27
+text = "Descubra qual Wi-Fi é verdadeiro"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.81, 0.84, 1)
+theme_override_font_sizes/font_size = 15
+text = "COMO JOGAR\n\n1. [WASD / SETAS] Vá até um roteador numerado.\n2. [E] Escaneie e leia as pistas no painel direito.\n3. Escaneie pelo menos 2 redes e compare nome, proteção e identidade.\n4. [C] Conecte-se perto da rede que você acredita ser verdadeira.\n5. Depois de acertar, corra até o TERMINAL VERDE."
+autowrap_mode = 2
+
+[node name="Warning" type="Label" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.55, 0.56, 1)
+theme_override_font_sizes/font_size = 13
+text = "ATENÇÃO: rede falsa rouba 30% dos dados. Sniffer vermelho rouba 20%. A VPN roxa bloqueia uma interceptação."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Concept" type="Label" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.88, 0.67, 1)
+theme_override_font_sizes/font_size = 13
+text = "Dica: o mesmo nome de rede não garante que o roteador seja o verdadeiro."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="StartButton" type="Button" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "INICIAR OPERAÇÃO"
+
+[node name="ResultOverlay" type="Control" parent="."]
+visible = false
+z_index = 110
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="ResultOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.003, 0.008, 0.015, 0.92)
+
+[node name="ResultCenter" type="CenterContainer" parent="ResultOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResultPanel" type="PanelContainer" parent="ResultOverlay/ResultCenter"]
+custom_minimum_size = Vector2(660, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleResult")
+
+[node name="ResultMargin" type="MarginContainer" parent="ResultOverlay/ResultCenter/ResultPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 28
+
+[node name="ResultContent" type="VBoxContainer" parent="ResultOverlay/ResultCenter/ResultPanel/ResultMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Eyebrow" type="Label" parent="ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.5, 0.96, 1)
+theme_override_font_sizes/font_size = 13
+text = "RESULTADO DO DESAFIO"
+horizontal_alignment = 1
+
+[node name="ResultTitle" type="Label" parent="ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
+theme_override_font_sizes/font_size = 28
+text = "CONEXÃO SEGURA"
+horizontal_alignment = 1
+
+[node name="ResultSummary" type="Label" parent="ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.83, 0.86, 1)
+theme_override_font_sizes/font_size = 14
+text = "Pontuação: 0\nDados preservados: 100%"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Actions" type="HBoxContainer" parent="ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="RetryButton" type="Button" parent="ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent/Actions"]
+custom_minimum_size = Vector2(220, 46)
+layout_mode = 2
+text = "JOGAR NOVAMENTE"
+
+[node name="ResultBackButton" type="Button" parent="ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent/Actions"]
+custom_minimum_size = Vector2(220, 46)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBack")
+text = "OUTRO DESAFIO"
