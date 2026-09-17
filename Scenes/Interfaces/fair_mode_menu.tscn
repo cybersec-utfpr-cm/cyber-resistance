@@ -85,6 +85,22 @@ WifiGhostButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/W
 DataCenterButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton")
 BackButtonPath = NodePath("Center/MainPanel/MainMargin/Content/BottomRow/BackButton")
 StatusLabelPath = NodePath("Center/MainPanel/MainMargin/Content/StatusLabel")
+CurrentPlayerLabelPath = NodePath("Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow/PlayerBlock/CurrentPlayerLabel")
+CurrentStatsLabelPath = NodePath("Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow/PlayerBlock/CurrentStatsLabel")
+NewParticipantButtonPath = NodePath("Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow/NewParticipantButton")
+RankingButtonPath = NodePath("Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow/RankingButton")
+ResetDataButtonPath = NodePath("Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow/ResetDataButton")
+RegistrationOverlayPath = NodePath("RegistrationOverlay")
+NameInputPath = NodePath("RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent/NameInput")
+StartParticipantButtonPath = NodePath("RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent/Actions/StartParticipantButton")
+RegistrationCancelButtonPath = NodePath("RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent/Actions/RegistrationCancelButton")
+RegistrationErrorLabelPath = NodePath("RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent/ErrorLabel")
+RankingOverlayPath = NodePath("RankingOverlay")
+RankingTextPath = NodePath("RankingOverlay/RankingCenter/RankingPanel/RankingMargin/RankingContent/RankingScroll/RankingText")
+CloseRankingButtonPath = NodePath("RankingOverlay/RankingCenter/RankingPanel/RankingMargin/RankingContent/CloseRankingButton")
+ResetOverlayPath = NodePath("ResetOverlay")
+ConfirmResetButtonPath = NodePath("ResetOverlay/ResetCenter/ResetPanel/ResetMargin/ResetContent/Actions/ConfirmResetButton")
+CancelResetButtonPath = NodePath("ResetOverlay/ResetCenter/ResetPanel/ResetMargin/ResetContent/Actions/CancelResetButton")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -151,8 +167,58 @@ text = "Escolha uma missão de cibersegurança. Os desafios disponíveis podem s
 horizontal_alignment = 1
 autowrap_mode = 2
 
+[node name="ParticipantPanel" type="PanelContainer" parent="Center/MainPanel/MainMargin/Content"]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBack")
+
+[node name="ParticipantMargin" type="MarginContainer" parent="Center/MainPanel/MainMargin/Content/ParticipantPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+
+[node name="ParticipantRow" type="HBoxContainer" parent="Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PlayerBlock" type="VBoxContainer" parent="Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="CurrentPlayerLabel" type="Label" parent="Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow/PlayerBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
+theme_override_font_sizes/font_size = 14
+text = "NENHUM PARTICIPANTE ATIVO"
+
+[node name="CurrentStatsLabel" type="Label" parent="Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow/PlayerBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.82, 0.86, 1)
+theme_override_font_sizes/font_size = 12
+text = "Cadastre um nome para liberar os desafios."
+autowrap_mode = 2
+
+[node name="NewParticipantButton" type="Button" parent="Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow"]
+custom_minimum_size = Vector2(142, 38)
+layout_mode = 2
+text = "NOVO PARTICIPANTE"
+
+[node name="RankingButton" type="Button" parent="Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow"]
+custom_minimum_size = Vector2(104, 38)
+layout_mode = 2
+text = "RANKING"
+
+[node name="ResetDataButton" type="Button" parent="Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow"]
+custom_minimum_size = Vector2(116, 38)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBack")
+text = "RESETAR DADOS"
+
 [node name="Challenges" type="GridContainer" parent="Center/MainPanel/MainMargin/Content"]
-custom_minimum_size = Vector2(0, 464)
+custom_minimum_size = Vector2(0, 392)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/h_separation = 14
@@ -160,7 +226,7 @@ theme_override_constants/v_separation = 12
 columns = 3
 
 [node name="NetworkMazeButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
-custom_minimum_size = Vector2(350, 226)
+custom_minimum_size = Vector2(350, 190)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -230,7 +296,7 @@ text = "JOGAR AGORA  →"
 mouse_filter = 2
 
 [node name="PhishingButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
-custom_minimum_size = Vector2(350, 226)
+custom_minimum_size = Vector2(350, 190)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -300,7 +366,7 @@ text = "JOGAR AGORA  →"
 mouse_filter = 2
 
 [node name="ServerDefenseButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
-custom_minimum_size = Vector2(350, 226)
+custom_minimum_size = Vector2(350, 190)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -370,7 +436,7 @@ text = "JOGAR AGORA  →"
 mouse_filter = 2
 
 [node name="RansomwareEscapeButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
-custom_minimum_size = Vector2(350, 226)
+custom_minimum_size = Vector2(350, 190)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -440,7 +506,7 @@ text = "JOGAR AGORA  →"
 mouse_filter = 2
 
 [node name="WifiGhostButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
-custom_minimum_size = Vector2(350, 226)
+custom_minimum_size = Vector2(350, 190)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -510,7 +576,7 @@ text = "JOGAR AGORA  →"
 mouse_filter = 2
 
 [node name="DataCenterButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
-custom_minimum_size = Vector2(350, 226)
+custom_minimum_size = Vector2(350, 190)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -603,3 +669,249 @@ theme_override_colors/font_color = Color(0.32, 0.43, 0.48, 1)
 theme_override_font_sizes/font_size = 10
 text = "ESC volta ao menu principal"
 horizontal_alignment = 1
+
+[node name="RegistrationOverlay" type="Control" parent="."]
+visible = false
+z_index = 100
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="RegistrationOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.003, 0.008, 0.015, 0.92)
+
+[node name="RegistrationCenter" type="CenterContainer" parent="RegistrationOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RegistrationPanel" type="PanelContainer" parent="RegistrationOverlay/RegistrationCenter"]
+custom_minimum_size = Vector2(610, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleMainPanel")
+
+[node name="RegistrationMargin" type="MarginContainer" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 42
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 42
+theme_override_constants/margin_bottom = 30
+
+[node name="RegistrationContent" type="VBoxContainer" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Eyebrow" type="Label" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 12
+text = "MODO FEIRA • NOVA SESSÃO"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "Quem vai jogar agora?"
+horizontal_alignment = 1
+
+[node name="Explanation" type="Label" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.68, 0.79, 0.83, 1)
+theme_override_font_sizes/font_size = 14
+text = "Digite um nome para criar uma sessão nova. Pontos, partidas e vitórias ficarão registrados somente neste computador. Sessões anteriores aparecem apenas no ranking e não podem ser retomadas."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="NameInput" type="LineEdit" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+placeholder_text = "Digite seu nome"
+max_length = 18
+select_all_on_focus = true
+
+[node name="ErrorLabel" type="Label" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.45, 0.48, 1)
+theme_override_font_sizes/font_size = 13
+text = "Digite um nome com pelo menos 2 caracteres."
+horizontal_alignment = 1
+
+[node name="Actions" type="HBoxContainer" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="RegistrationCancelButton" type="Button" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent/Actions"]
+custom_minimum_size = Vector2(180, 44)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBack")
+text = "VOLTAR AO MENU"
+
+[node name="StartParticipantButton" type="Button" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent/Actions"]
+custom_minimum_size = Vector2(210, 44)
+layout_mode = 2
+text = "CRIAR E COMEÇAR"
+
+[node name="RankingOverlay" type="Control" parent="."]
+visible = false
+z_index = 110
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="RankingOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.003, 0.008, 0.015, 0.92)
+
+[node name="RankingCenter" type="CenterContainer" parent="RankingOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RankingPanel" type="PanelContainer" parent="RankingOverlay/RankingCenter"]
+custom_minimum_size = Vector2(840, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleMainPanel")
+
+[node name="RankingMargin" type="MarginContainer" parent="RankingOverlay/RankingCenter/RankingPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 26
+
+[node name="RankingContent" type="VBoxContainer" parent="RankingOverlay/RankingCenter/RankingPanel/RankingMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="RankingOverlay/RankingCenter/RankingPanel/RankingMargin/RankingContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "RANKING LOCAL"
+horizontal_alignment = 1
+
+[node name="Explanation" type="Label" parent="RankingOverlay/RankingCenter/RankingPanel/RankingMargin/RankingContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "Participantes anteriores são somente leitura. Para jogar, use sempre o jogador atual."
+horizontal_alignment = 1
+
+[node name="RankingScroll" type="ScrollContainer" parent="RankingOverlay/RankingCenter/RankingPanel/RankingMargin/RankingContent"]
+custom_minimum_size = Vector2(0, 280)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RankingText" type="Label" parent="RankingOverlay/RankingCenter/RankingPanel/RankingMargin/RankingContent/RankingScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.76, 0.87, 0.9, 1)
+theme_override_font_sizes/font_size = 15
+text = "Nenhum participante concluiu uma partida ainda."
+autowrap_mode = 2
+
+[node name="CloseRankingButton" type="Button" parent="RankingOverlay/RankingCenter/RankingPanel/RankingMargin/RankingContent"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "VOLTAR AOS DESAFIOS"
+
+[node name="ResetOverlay" type="Control" parent="."]
+visible = false
+z_index = 120
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="ResetOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.003, 0.008, 0.015, 0.94)
+
+[node name="ResetCenter" type="CenterContainer" parent="ResetOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResetPanel" type="PanelContainer" parent="ResetOverlay/ResetCenter"]
+custom_minimum_size = Vector2(590, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleMainPanel")
+
+[node name="ResetMargin" type="MarginContainer" parent="ResetOverlay/ResetCenter/ResetPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 28
+
+[node name="ResetContent" type="VBoxContainer" parent="ResetOverlay/ResetCenter/ResetPanel/ResetMargin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="ResetOverlay/ResetCenter/ResetPanel/ResetMargin/ResetContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.45, 0.48, 1)
+theme_override_font_sizes/font_size = 25
+text = "APAGAR TODO O RANKING?"
+horizontal_alignment = 1
+
+[node name="Warning" type="Label" parent="ResetOverlay/ResetCenter/ResetPanel/ResetMargin/ResetContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.82, 0.84, 1)
+theme_override_font_sizes/font_size = 14
+text = "Essa ação remove todos os participantes, partidas, vitórias e pontos gravados neste computador. Não será possível recuperar os dados."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Actions" type="HBoxContainer" parent="ResetOverlay/ResetCenter/ResetPanel/ResetMargin/ResetContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="CancelResetButton" type="Button" parent="ResetOverlay/ResetCenter/ResetPanel/ResetMargin/ResetContent/Actions"]
+custom_minimum_size = Vector2(180, 44)
+layout_mode = 2
+text = "CANCELAR"
+
+[node name="ConfirmResetButton" type="Button" parent="ResetOverlay/ResetCenter/ResetPanel/ResetMargin/ResetContent/Actions"]
+custom_minimum_size = Vector2(210, 44)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBack")
+text = "SIM, APAGAR TUDO"

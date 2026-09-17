@@ -201,6 +201,10 @@ public partial class DataCenterRescue : Control
 			if (_statusRemaining <= 0.0f)
 				_statusLabel.Text = GetDefaultStatus();
 		}
+		else if (_running && !_finished)
+		{
+			_statusLabel.Text = GetDefaultStatus();
+		}
 
 		if (_running && !_finished)
 		{
@@ -334,7 +338,7 @@ public partial class DataCenterRescue : Control
 		BuildBots();
 		_tutorialOverlay.Visible = showTutorial;
 		_resultOverlay.Visible = false;
-		_statusLabel.Text = "Aproxime-se de um servidor e aplique a resposta correta.";
+		_statusLabel.Text = "[WASD / SETAS] Aproxime-se de um servidor. O comando aparecerá aqui.";
 		UpdateHud(force: true);
 
 		if (showTutorial)
@@ -388,7 +392,7 @@ public partial class DataCenterRescue : Control
 		_tutorialOverlay.Visible = false;
 		_running = true;
 		_timeRemaining = RoundDurationSeconds;
-		_backButton.GrabFocus();
+		GetViewport().GuiReleaseFocus();
 		AudioManager.Instance?.PlayInteraction();
 	}
 
@@ -396,6 +400,7 @@ public partial class DataCenterRescue : Control
 	{
 		ResetRound(showTutorial: false);
 		_running = true;
+		GetViewport().GuiReleaseFocus();
 		AudioManager.Instance?.PlayInteraction();
 	}
 
@@ -458,13 +463,32 @@ public partial class DataCenterRescue : Control
 		if (index < 0)
 			return;
 		ServerState server = _servers[index];
-		string lockText = server.RequiresLevel2 && !_hasLevel2Card
-			? " • ACESSO NÍVEL 2 NECESSÁRIO"
-			: "";
+		if (server.RequiresLevel2 && !_hasLevel2Card)
+		{
+			ShowTemporaryStatus(
+				$"SERVIDOR {index + 1} BLOQUEADO — pegue o CARTÃO AMARELO no centro do mapa.",
+				1.5f
+			);
+			return;
+		}
+
 		ShowTemporaryStatus(
-			$"SERVIDOR {index + 1}: {GetIncidentName(server.Incident)}{lockText}",
-			1.2f
+			GetResponsePrompt(index, server),
+			1.5f
 		);
+	}
+
+	private static string GetResponsePrompt(int index, ServerState server)
+	{
+		return server.Incident switch
+		{
+			IncidentKind.Malware =>
+				$"SERVIDOR {index + 1}: MALWARE — aperte [Q] para QUARENTENA.",
+			IncidentKind.BruteForce =>
+				$"SERVIDOR {index + 1}: BRUTE FORCE — aperte [B] para BLOQUEAR ACESSO.",
+			_ =>
+				$"SERVIDOR {index + 1}: FALHA DE ENERGIA — aperte [P] para RESTAURAR."
+		};
 	}
 
 	private void RespondToNearestServer(ResponseAction action)
@@ -655,8 +679,20 @@ public partial class DataCenterRescue : Control
 	private string GetDefaultStatus()
 	{
 		if (_resolvedCount == _servers.Count)
-			return "Todos os incidentes foram resolvidos. Retorne ao terminal verde.";
-		return "Aproxime-se de um servidor e use Q, B ou P conforme o incidente.";
+			return "[OBJETIVO] Todos os servidores estão seguros — volte ao TERMINAL VERDE.";
+
+		int index = FindNearestServer(includeResolved: true);
+		if (index >= 0)
+		{
+			ServerState server = _servers[index];
+			if (server.Resolved)
+				return $"SERVIDOR {index + 1} já foi resolvido. Procure outro rack numerado.";
+			if (server.RequiresLevel2 && !_hasLevel2Card)
+				return $"SERVIDOR {index + 1} BLOQUEADO — pegue o CARTÃO AMARELO no centro do mapa.";
+			return GetResponsePrompt(index, server);
+		}
+
+		return "[WASD / SETAS] Aproxime-se de um servidor. O comando aparecerá aqui.";
 	}
 
 	private void ShowTemporaryStatus(string message, float duration)
@@ -681,6 +717,12 @@ public partial class DataCenterRescue : Control
 		{
 			AudioManager.Instance?.PlayError();
 		}
+		FairModeProgress.RecordResult(
+			"data_center_rescue",
+			"Resgate no Data Center",
+			success,
+			_score
+		);
 
 		_resultTitle.Text = success ? "DATA CENTER PROTEGIDO" : "DATA CENTER COMPROMETIDO";
 		string lesson = success

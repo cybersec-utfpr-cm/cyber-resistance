@@ -711,6 +711,13 @@ public partial class ServerDefense : Control
 		UpdateDefenseButtons();
 		ClearPackets();
 		_resultTitle.Text = title;
+		bool victory = title == "SERVIDOR PROTEGIDO" && _integrity > 0;
+		FairModeProgress.RecordResult(
+			"server_defense",
+			"Defenda o Servidor",
+			victory,
+			_score
+		);
 
 		string lesson;
 		if (_integrity <= 0)

@@ -286,7 +286,7 @@ public partial class RansomwareEscape : Control
 		_running = true;
 		_timeRemaining = RoundDurationSeconds;
 		_spreadCountdown = GetSpreadInterval();
-		_backButton.GrabFocus();
+		GetViewport().GuiReleaseFocus();
 		AudioManager.Instance?.PlayInteraction();
 	}
 
@@ -294,6 +294,7 @@ public partial class RansomwareEscape : Control
 	{
 		ResetRound(showTutorial: false);
 		_running = true;
+		GetViewport().GuiReleaseFocus();
 		AudioManager.Instance?.PlayInteraction();
 	}
 
@@ -470,6 +471,12 @@ public partial class RansomwareEscape : Control
 		{
 			AudioManager.Instance?.PlayError();
 		}
+		FairModeProgress.RecordResult(
+			"ransomware_escape",
+			"Fuga do Ransomware",
+			success,
+			_score
+		);
 
 		_resultTitle.Text = success ? "ARQUIVOS PROTEGIDOS" : "SISTEMA CRIPTOGRAFADO";
 		string lesson = success

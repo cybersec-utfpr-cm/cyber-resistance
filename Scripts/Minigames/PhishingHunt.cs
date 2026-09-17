@@ -525,6 +525,16 @@ public partial class PhishingHunt : Control
 		_resultTitle.Text = title;
 
 		int accuracy = _answered == 0 ? 0 : (int)Math.Round(_correct * 100.0 / _answered);
+		bool victory = _answered >= CasesPerRound && accuracy >= 63;
+		_resultTitle.Text = victory
+			? "INVESTIGAÇÃO VENCIDA"
+			: "MISSÃO NÃO VENCIDA";
+		FairModeProgress.RecordResult(
+			"phishing_hunt",
+			"Caça ao Phishing",
+			victory,
+			_score
+		);
 		string observation = accuracy >= 88
 			? "Você identificou muito bem os sinais de fraude."
 			: accuracy >= 63

@@ -294,7 +294,7 @@ public partial class NetworkMaze : Control
 		_elapsedSeconds = 0.0f;
 		_moveCooldown = 0.0f;
 		_malwareCooldown = MalwareMoveInterval;
-		_backButton?.GrabFocus();
+		GetViewport().GuiReleaseFocus();
 		AudioManager.Instance?.PlayInteraction();
 	}
 
@@ -302,6 +302,7 @@ public partial class NetworkMaze : Control
 	{
 		ResetRound(showTutorial: false);
 		_running = true;
+		GetViewport().GuiReleaseFocus();
 		AudioManager.Instance?.PlayInteraction();
 	}
 
@@ -467,6 +468,12 @@ public partial class NetworkMaze : Control
 		_running = false;
 		_finished = true;
 		int score = CalculateScore(success);
+		FairModeProgress.RecordResult(
+			"network_maze",
+			"Labirinto da Rede",
+			success,
+			score
+		);
 
 		if (_resultTitle != null)
 			_resultTitle.Text = success ? "CONEXÃO SEGURA" : "MISSÃO INTERROMPIDA";

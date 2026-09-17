@@ -187,6 +187,10 @@ public partial class WifiGhost : Control
 			if (_statusRemaining <= 0.0f)
 				_statusLabel.Text = GetDefaultStatus();
 		}
+		else if (_running && !_finished)
+		{
+			_statusLabel.Text = GetDefaultStatus();
+		}
 
 		if (_running && !_finished)
 		{
@@ -225,7 +229,7 @@ public partial class WifiGhost : Control
 			!keyEvent.Pressed || keyEvent.Echo)
 			return;
 
-		if (@event.IsActionPressed("interact") || IsKey(keyEvent, Key.Space))
+		if (@event.IsActionPressed("interact"))
 			ScanNearestAccessPoint();
 		else if (IsKey(keyEvent, Key.C))
 			ConnectToNearestAccessPoint();
@@ -321,7 +325,7 @@ public partial class WifiGhost : Control
 		_tutorialOverlay.Visible = showTutorial;
 		_resultOverlay.Visible = false;
 		_scanLogLabel.Text = "Nenhuma rede investigada.";
-		_statusLabel.Text = "Aproxime-se de um roteador e pressione E ou ESPAÇO para escanear.";
+		_statusLabel.Text = "[WASD / SETAS] Aproxime-se de um roteador numerado.";
 		UpdateHud(force: true);
 
 		if (showTutorial)
@@ -374,7 +378,7 @@ public partial class WifiGhost : Control
 		_tutorialOverlay.Visible = false;
 		_running = true;
 		_timeRemaining = RoundDurationSeconds;
-		_backButton.GrabFocus();
+		GetViewport().GuiReleaseFocus();
 		AudioManager.Instance?.PlayInteraction();
 	}
 
@@ -382,6 +386,7 @@ public partial class WifiGhost : Control
 	{
 		ResetRound(showTutorial: false);
 		_running = true;
+		GetViewport().GuiReleaseFocus();
 		AudioManager.Instance?.PlayInteraction();
 	}
 
@@ -485,7 +490,7 @@ public partial class WifiGhost : Control
 		AccessPointState accessPoint = _accessPoints[index];
 		if (!accessPoint.Scanned)
 		{
-			ShowTemporaryStatus("Rede não investigada. Pressione E ou ESPAÇO antes de conectar.", 1.8f);
+			ShowTemporaryStatus("Rede não investigada. Pressione [E] antes de conectar.", 1.8f);
 			return;
 		}
 
@@ -639,10 +644,22 @@ public partial class WifiGhost : Control
 	private string GetDefaultStatus()
 	{
 		if (_connected)
-			return "Conexão segura ativa. Alcance o terminal verde sem perder os dados.";
+			return "[OBJETIVO] CONEXÃO SEGURA — corra até o TERMINAL VERDE.";
+
+		int index = FindNearestAccessPoint();
+		if (index >= 0)
+		{
+			AccessPointState accessPoint = _accessPoints[index];
+			if (!accessPoint.Scanned)
+				return $"PONTO {index + 1} AO ALCANCE — aperte [E] para ESCANEAR.";
+			if (_scannedCount < 2)
+				return $"PONTO {index + 1} ESCANEADO — encontre outra rede e aperte [E].";
+			return $"PONTO {index + 1}: {accessPoint.Ssid} — aperte [C] para CONECTAR ou procure outra rede.";
+		}
+
 		if (_scannedCount < 2)
-			return "Investigue pelo menos duas redes usando E ou ESPAÇO.";
-		return "Compare as evidências, aproxime-se da rede escolhida e pressione C.";
+			return "[WASD / SETAS] Vá até um roteador. Perto dele, aperte [E].";
+		return "[DECIDA] Vá até a rede escolhida e aperte [C] para CONECTAR.";
 	}
 
 	private void ShowTemporaryStatus(string message, float duration)
@@ -667,6 +684,12 @@ public partial class WifiGhost : Control
 		{
 			AudioManager.Instance?.PlayError();
 		}
+		FairModeProgress.RecordResult(
+			"wifi_ghost",
+			"Operação Wi-Fi Fantasma",
+			success,
+			_score
+		);
 
 		_resultTitle.Text = success ? "CONEXÃO SEGURA" : "DADOS COMPROMETIDOS";
 		string lesson = success
