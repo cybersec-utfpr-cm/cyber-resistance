@@ -125,7 +125,7 @@ custom_minimum_size = Vector2(430, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
 theme_override_font_sizes/font_size = 13
-text = "Resolva os incidentes com a ação correta antes que os sistemas críticos falhem."
+text = "Chegue perto dos racks e use a tecla indicada antes que os sistemas falhem."
 horizontal_alignment = 2
 vertical_alignment = 1
 autowrap_mode = 2
@@ -204,8 +204,8 @@ theme_override_constants/margin_bottom = 12
 [node name="GuideText" type="Label" parent="HudPanel/HudMargin/HudContent/GuidePanel/GuideMargin"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.79, 0.82, 1)
-theme_override_font_sizes/font_size = 12
-text = "PROTOCOLO DE RESPOSTA\n\nVermelho • MALWARE\n[Q] QUARENTENA\n\nAmarelo • BRUTE FORCE\n[B] BLOQUEAR ACESSO\n\nRoxo • FALHA DE ENERGIA\n[P] RESTAURAR ENERGIA\n\nCartão amarelo libera os racks com cadeado."
+theme_override_font_sizes/font_size = 13
+text = "TECLAS DE RESPOSTA\n\n[Q]  MALWARE\n      QUARENTENA\n\n[B]  BRUTE FORCE\n      BLOQUEAR ACESSO\n\n[P]  FALHA DE ENERGIA\n      RESTAURAR ENERGIA\n\nO aviso inferior indica a tecla certa."
 autowrap_mode = 2
 
 [node name="BackButton" type="Button" parent="HudPanel/HudMargin/HudContent"]
@@ -218,7 +218,7 @@ text = "Voltar ao Modo Feira"
 layout_mode = 0
 offset_left = 36.0
 offset_top = 654.0
-offset_right = 852.0
+offset_right = 1244.0
 offset_bottom = 702.0
 theme_override_styles/panel = SubResource("StyleInfo")
 
@@ -231,9 +231,10 @@ theme_override_constants/margin_bottom = 8
 
 [node name="StatusLabel" type="Label" parent="StatusPanel/StatusMargin"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.86, 0.89, 0.9, 1)
-theme_override_font_sizes/font_size = 13
-text = "Aproxime-se de um servidor e aplique a resposta correta."
+theme_override_colors/font_color = Color(0.95, 0.97, 0.98, 1)
+theme_override_font_sizes/font_size = 15
+text = "[WASD / SETAS] Aproxime-se de um servidor. O comando aparecerá aqui."
+horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
@@ -290,21 +291,21 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(0.94, 0.98, 1, 1)
 theme_override_font_sizes/font_size = 27
-text = "Contenha seis incidentes simultâneos"
+text = "Resolva os 6 servidores e volte ao terminal"
 horizontal_alignment = 1
 
 [node name="Description" type="Label" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.81, 0.84, 1)
-theme_override_font_sizes/font_size = 14
-text = "1. Explore usando WASD ou as setas.\n2. Aproxime-se de cada servidor e identifique a cor do incidente.\n3. Use Q para MALWARE, B para BRUTE FORCE e P para FALHA DE ENERGIA.\n4. Encontre o CARTÃO amarelo para acessar os racks com cadeado.\n5. Resolva os seis incidentes e retorne ao terminal verde."
+theme_override_font_sizes/font_size = 15
+text = "COMO JOGAR\n\n1. [WASD / SETAS] Vá até um servidor numerado.\n2. Ao chegar perto, leia o AVISO INFERIOR: ele mostrará o incidente e a tecla.\n3. [Q] Malware  •  [B] Brute force  •  [P] Falha de energia.\n4. Pegue o CARTÃO AMARELO para liberar os racks com cadeado.\n5. Resolva os 6 servidores e volte ao TERMINAL VERDE."
 autowrap_mode = 2
 
 [node name="Warning" type="Label" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.55, 0.46, 1)
 theme_override_font_sizes/font_size = 13
-text = "Cada servidor possui seu próprio prazo. Resposta errada custa 7 segundos; bots retiram integridade e devolvem você ao início."
+text = "ATENÇÃO: resposta errada custa 7 segundos. Bots vermelhos retiram integridade e devolvem você ao início."
 horizontal_alignment = 1
 autowrap_mode = 2
 
