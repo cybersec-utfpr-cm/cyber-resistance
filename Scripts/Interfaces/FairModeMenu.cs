@@ -12,10 +12,16 @@ public partial class FairModeMenu : Control
 		"res://Scenes/Minigames/server_defense.tscn";
 	[Export] public string RansomwareEscapeScenePath { get; set; } =
 		"res://Scenes/Minigames/ransomware_escape.tscn";
+	[Export] public string WifiGhostScenePath { get; set; } =
+		"res://Scenes/Minigames/wifi_ghost.tscn";
+	[Export] public string DataCenterRescueScenePath { get; set; } =
+		"res://Scenes/Minigames/data_center_rescue.tscn";
 	[Export] public NodePath NetworkMazeButtonPath { get; set; }
 	[Export] public NodePath PhishingButtonPath { get; set; }
 	[Export] public NodePath ServerDefenseButtonPath { get; set; }
 	[Export] public NodePath RansomwareEscapeButtonPath { get; set; }
+	[Export] public NodePath WifiGhostButtonPath { get; set; }
+	[Export] public NodePath DataCenterButtonPath { get; set; }
 	[Export] public NodePath BackButtonPath { get; set; }
 	[Export] public NodePath StatusLabelPath { get; set; }
 
@@ -23,6 +29,8 @@ public partial class FairModeMenu : Control
 	private Button _phishingButton;
 	private Button _serverDefenseButton;
 	private Button _ransomwareEscapeButton;
+	private Button _wifiGhostButton;
+	private Button _dataCenterButton;
 	private Button _backButton;
 	private Label _statusLabel;
 
@@ -33,12 +41,14 @@ public partial class FairModeMenu : Control
 		_phishingButton = GetNodeOrNull<Button>(PhishingButtonPath);
 		_serverDefenseButton = GetNodeOrNull<Button>(ServerDefenseButtonPath);
 		_ransomwareEscapeButton = GetNodeOrNull<Button>(RansomwareEscapeButtonPath);
+		_wifiGhostButton = GetNodeOrNull<Button>(WifiGhostButtonPath);
+		_dataCenterButton = GetNodeOrNull<Button>(DataCenterButtonPath);
 		_backButton = GetNodeOrNull<Button>(BackButtonPath);
 		_statusLabel = GetNodeOrNull<Label>(StatusLabelPath);
 
 		if (_networkMazeButton == null || _phishingButton == null ||
 			_serverDefenseButton == null || _ransomwareEscapeButton == null ||
-			_backButton == null)
+			_wifiGhostButton == null || _dataCenterButton == null || _backButton == null)
 		{
 			GD.PrintErr("FairModeMenu: estrutura da interface não encontrada.");
 			return;
@@ -48,6 +58,8 @@ public partial class FairModeMenu : Control
 		_phishingButton.Pressed += OnPhishingPressed;
 		_serverDefenseButton.Pressed += OnServerDefensePressed;
 		_ransomwareEscapeButton.Pressed += OnRansomwareEscapePressed;
+		_wifiGhostButton.Pressed += OnWifiGhostPressed;
+		_dataCenterButton.Pressed += OnDataCenterPressed;
 		_backButton.Pressed += OnBackPressed;
 
 		if (_statusLabel != null)
@@ -69,6 +81,12 @@ public partial class FairModeMenu : Control
 
 		if (_ransomwareEscapeButton != null)
 			_ransomwareEscapeButton.Pressed -= OnRansomwareEscapePressed;
+
+		if (_wifiGhostButton != null)
+			_wifiGhostButton.Pressed -= OnWifiGhostPressed;
+
+		if (_dataCenterButton != null)
+			_dataCenterButton.Pressed -= OnDataCenterPressed;
 
 		if (_backButton != null)
 			_backButton.Pressed -= OnBackPressed;
@@ -103,6 +121,16 @@ public partial class FairModeMenu : Control
 		OpenScene(RansomwareEscapeScenePath);
 	}
 
+	private void OnWifiGhostPressed()
+	{
+		OpenScene(WifiGhostScenePath);
+	}
+
+	private void OnDataCenterPressed()
+	{
+		OpenScene(DataCenterRescueScenePath);
+	}
+
 	private void OnBackPressed()
 	{
 		OpenScene(MainMenuScenePath);
@@ -131,6 +159,10 @@ public partial class FairModeMenu : Control
 			_serverDefenseButton.Disabled = disabled;
 		if (_ransomwareEscapeButton != null)
 			_ransomwareEscapeButton.Disabled = disabled;
+		if (_wifiGhostButton != null)
+			_wifiGhostButton.Disabled = disabled;
+		if (_dataCenterButton != null)
+			_dataCenterButton.Disabled = disabled;
 		if (_backButton != null)
 			_backButton.Disabled = disabled;
 	}

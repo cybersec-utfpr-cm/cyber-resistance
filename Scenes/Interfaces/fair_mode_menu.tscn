@@ -81,6 +81,8 @@ NetworkMazeButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges
 PhishingButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/PhishingButton")
 ServerDefenseButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton")
 RansomwareEscapeButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton")
+WifiGhostButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton")
+DataCenterButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton")
 BackButtonPath = NodePath("Center/MainPanel/MainMargin/Content/BottomRow/BackButton")
 StatusLabelPath = NodePath("Center/MainPanel/MainMargin/Content/StatusLabel")
 
@@ -438,13 +440,14 @@ text = "JOGAR AGORA  →"
 mouse_filter = 2
 
 [node name="WifiGhostButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
-disabled = true
 custom_minimum_size = Vector2(350, 226)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/normal = SubResource("StyleUnavailable")
-theme_override_styles/disabled = SubResource("StyleUnavailable")
+theme_override_styles/normal = SubResource("StyleAvailable")
+theme_override_styles/hover = SubResource("StyleAvailableHover")
+theme_override_styles/focus = SubResource("StyleAvailableHover")
+theme_override_styles/pressed = SubResource("StyleAvailableHover")
 text = ""
 
 [node name="CardMargin" type="MarginContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton"]
@@ -467,21 +470,21 @@ mouse_filter = 2
 
 [node name="Tag" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.36, 0.49, 0.55, 1)
+theme_override_colors/font_color = Color(0.42, 0.9, 0.94, 1)
 theme_override_font_sizes/font_size = 10
 text = "DESAFIO 05  •  EXPLORAÇÃO"
 mouse_filter = 2
 
 [node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.54, 0.63, 0.67, 1)
+theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
 theme_override_font_sizes/font_size = 17
 text = "OPERAÇÃO WI-FI FANTASMA"
 mouse_filter = 2
 
 [node name="Hook" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.5, 0.54, 1)
+theme_override_colors/font_color = Color(0.7, 0.82, 0.86, 1)
 theme_override_font_sizes/font_size = 12
 text = "Investigue redes falsas e proteja seus dados em uma área pública."
 autowrap_mode = 2
@@ -489,7 +492,7 @@ mouse_filter = 2
 
 [node name="Step1" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.36, 0.49, 0.55, 1)
+theme_override_colors/font_color = Color(0.72, 0.5, 0.96, 1)
 theme_override_font_sizes/font_size = 11
 text = "◆ Scanner  ◆ Evil Twin  ◆ VPN"
 mouse_filter = 2
@@ -501,19 +504,20 @@ mouse_filter = 2
 
 [node name="Action" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.46, 0.55, 0.58, 1)
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
 theme_override_font_sizes/font_size = 12
-text = "EM BREVE"
+text = "JOGAR AGORA  →"
 mouse_filter = 2
 
 [node name="DataCenterButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
-disabled = true
 custom_minimum_size = Vector2(350, 226)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/normal = SubResource("StyleUnavailable")
-theme_override_styles/disabled = SubResource("StyleUnavailable")
+theme_override_styles/normal = SubResource("StyleAvailable")
+theme_override_styles/hover = SubResource("StyleAvailableHover")
+theme_override_styles/focus = SubResource("StyleAvailableHover")
+theme_override_styles/pressed = SubResource("StyleAvailableHover")
 text = ""
 
 [node name="CardMargin" type="MarginContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton"]
@@ -536,21 +540,21 @@ mouse_filter = 2
 
 [node name="Tag" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.36, 0.49, 0.55, 1)
+theme_override_colors/font_color = Color(0.42, 0.9, 0.94, 1)
 theme_override_font_sizes/font_size = 10
 text = "DESAFIO 06  •  RESPOSTA"
 mouse_filter = 2
 
 [node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.54, 0.63, 0.67, 1)
+theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
 theme_override_font_sizes/font_size = 19
 text = "RESGATE NO DATA CENTER"
 mouse_filter = 2
 
 [node name="Hook" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.5, 0.54, 1)
+theme_override_colors/font_color = Color(0.7, 0.82, 0.86, 1)
 theme_override_font_sizes/font_size = 12
 text = "Corra pelos corredores e contenha os incidentes nos servidores."
 autowrap_mode = 2
@@ -558,7 +562,7 @@ mouse_filter = 2
 
 [node name="Step1" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.36, 0.49, 0.55, 1)
+theme_override_colors/font_color = Color(0.98, 0.48, 0.5, 1)
 theme_override_font_sizes/font_size = 11
 text = "◆ Quarentena  ◆ Acesso  ◆ Energia"
 mouse_filter = 2
@@ -570,9 +574,9 @@ mouse_filter = 2
 
 [node name="Action" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.46, 0.55, 0.58, 1)
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
 theme_override_font_sizes/font_size = 12
-text = "EM BREVE"
+text = "JOGAR AGORA  →"
 mouse_filter = 2
 
 [node name="StatusLabel" type="Label" parent="Center/MainPanel/MainMargin/Content"]
