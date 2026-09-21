@@ -5,3 +5,8 @@ README.md.backup
 Export/
 Tests/**/bin/
 Tests/**/obj/
+
+# Nesta pasta estará arquivos e planos de implementação para a issue que
+# está sendo trabalhada, além da saída do agente. Tudo de maneira local,
+# por isso não deve ser versionado.
+AGENT/
