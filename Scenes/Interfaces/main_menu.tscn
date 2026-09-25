@@ -61,6 +61,7 @@ grow_vertical = 2
 theme = ExtResource("2_theme")
 script = ExtResource("1_menu")
 NewGameButtonPath = NodePath("Center/MenuPanel/MenuMargin/MenuContent/Buttons/NewGameButton")
+MultiplayerButtonPath = NodePath("Center/MenuPanel/MenuMargin/MenuContent/Buttons/MultiplayerButton")
 ContinueButtonPath = NodePath("Center/MenuPanel/MenuMargin/MenuContent/Buttons/ContinueButton")
 FairModeButtonPath = NodePath("Center/MenuPanel/MenuMargin/MenuContent/Buttons/FairModeButton")
 ExitButtonPath = NodePath("Center/MenuPanel/MenuMargin/MenuContent/Buttons/ExitButton")
@@ -151,6 +152,12 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Novo jogo"
+
+[node name="MultiplayerButton" type="Button" parent="Center/MenuPanel/MenuMargin/MenuContent/Buttons"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Multiplayer"
 
 [node name="ContinueButton" type="Button" parent="Center/MenuPanel/MenuMargin/MenuContent/Buttons"]
 custom_minimum_size = Vector2(0, 50)

@@ -5,6 +5,7 @@ public partial class MainMenu : Control
 	[Export] public string GameScenePath { get; set; } =
 		"res://Scenes/Core/game.tscn";
 	[Export] public NodePath NewGameButtonPath { get; set; }
+	[Export] public NodePath MultiplayerButtonPath { get; set; }
 	[Export] public NodePath ContinueButtonPath { get; set; }
 	[Export] public NodePath FairModeButtonPath { get; set; }
 	[Export] public NodePath ExitButtonPath { get; set; }
@@ -16,6 +17,7 @@ public partial class MainMenu : Control
 		"res://Scenes/Interfaces/fair_mode_menu.tscn";
 
 	private Button _newGameButton;
+	private Button _multiplayerButton;
 	private Button _continueButton;
 	private Button _fairModeButton;
 	private Button _exitButton;
@@ -29,6 +31,7 @@ public partial class MainMenu : Control
 	{
 		AudioManager.Instance?.SetMenuContext();
 		_newGameButton = GetNodeOrNull<Button>(NewGameButtonPath);
+		_multiplayerButton = GetNodeOrNull<Button>(MultiplayerButtonPath);
 		_continueButton = GetNodeOrNull<Button>(ContinueButtonPath);
 		_fairModeButton = GetNodeOrNull<Button>(FairModeButtonPath);
 		_exitButton = GetNodeOrNull<Button>(ExitButtonPath);
@@ -40,6 +43,7 @@ public partial class MainMenu : Control
 
 		if (
 			_newGameButton == null ||
+			_multiplayerButton == null ||
 			_continueButton == null ||
 			_fairModeButton == null ||
 			_exitButton == null ||
@@ -55,6 +59,7 @@ public partial class MainMenu : Control
 		}
 
 		_newGameButton.Pressed += OnNewGamePressed;
+		_multiplayerButton.Pressed += OnMultiplayerPressed;
 		_continueButton.Pressed += OnContinuePressed;
 		_fairModeButton.Pressed += OnFairModePressed;
 		_exitButton.Pressed += OnExitPressed;
@@ -78,7 +83,10 @@ public partial class MainMenu : Control
 	{
 		if (_newGameButton != null)
 			_newGameButton.Pressed -= OnNewGamePressed;
-
+		
+		if (_multiplayerButton != null)
+			_multiplayerButton.Pressed -= OnMultiplayerPressed;
+		
 		if (_continueButton != null)
 			_continueButton.Pressed -= OnContinuePressed;
 
@@ -118,7 +126,17 @@ public partial class MainMenu : Control
 
 		CreateNewGame();
 	}
+	
+	private void OnMultiplayerPressed()
+	{
+		if (SaveManager.Instance?.HasSaveGame() ?? false)
+		{
+			OpenConfirmation();
+			return;
+		}
 
+		CreateNewGame();
+	}
 	private void OnContinuePressed()
 	{
 		if (!(SaveManager.Instance?.HasSaveGame() ?? false))
@@ -202,6 +220,7 @@ public partial class MainMenu : Control
 		_continueButton.Disabled = true;
 		_fairModeButton.Disabled = true;
 		_exitButton.Disabled = true;
+		_multiplayerButton.Disabled = true;
 
 		Error error = GetTree().ChangeSceneToFile(GameScenePath);
 
@@ -222,6 +241,7 @@ public partial class MainMenu : Control
 		_continueButton.Disabled = true;
 		_fairModeButton.Disabled = true;
 		_exitButton.Disabled = true;
+		_multiplayerButton.Disabled = true;
 
 		Error error = GetTree().ChangeSceneToFile(FairModeScenePath);
 
