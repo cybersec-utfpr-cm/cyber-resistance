@@ -1,0 +1,62 @@
+[gd_scene load_steps=2 format=3 uid="uid://btap1jy8jyvnk"]
+
+[ext_resource type="Script" uid="uid://dkkrsyb3fqc5j" path="res://Scripts/Multiplayer/server_main.gd" id="1_main"]
+
+[node name="ServerMain" type="Control" unique_id=62437603]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_main")
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=62437604]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -140.0
+offset_right = 220.0
+offset_bottom = 140.0
+
+[node name="Title" type="Label" parent="VBox" unique_id=62437605]
+layout_mode = 2
+text = "Cyber Resistance - Servidor"
+horizontal_alignment = 1
+
+[node name="IpRow" type="HBoxContainer" parent="VBox" unique_id=62437606]
+layout_mode = 2
+
+[node name="IpLabel" type="Label" parent="VBox/IpRow" unique_id=62437607]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "IP:"
+
+[node name="IpLine" type="LineEdit" parent="VBox/IpRow" unique_id=62437608]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "ex.: 192.168.0.10"
+
+[node name="PortRow" type="HBoxContainer" parent="VBox" unique_id=62437609]
+layout_mode = 2
+
+[node name="PortLabel" type="Label" parent="VBox/PortRow" unique_id=62437610]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "Porta:"
+
+[node name="PortLine" type="LineEdit" parent="VBox/PortRow" unique_id=62437611]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "42069"
+
+[node name="StartButton" type="Button" parent="VBox" unique_id=62437612]
+layout_mode = 2
+text = "Iniciar servidor"
+
+[node name="StatusLabel" type="Label" parent="VBox" unique_id=62437613]
+layout_mode = 2
+text = "Status: parado"
+horizontal_alignment = 1

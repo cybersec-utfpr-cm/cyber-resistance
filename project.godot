@@ -26,6 +26,8 @@ RewardManager="*res://Scripts/Core/RewardManager.cs"
 SaveManager="*res://Scripts/Core/SaveManager.cs"
 AudioManager="*res://Scripts/Core/AudioManager.cs"
 PauseManager="*res://Scripts/Core/PauseManager.cs"
+ProtNetworkHandler="*res://Scripts/Multiplayer/network_handler.gd"
+ServerPacketHandler="*res://Scripts/Multiplayer/server_packet_handler.gd"
 
 [display]
 

@@ -4,6 +4,8 @@ public partial class MainMenu : Control
 {
 	[Export] public string GameScenePath { get; set; } =
 		"res://Scenes/Core/game.tscn";
+	[Export] public string MultiplayerScenePath { get; set; } = 
+		"res://Scenes/Multiplayer/server_main.tscn";
 	[Export] public NodePath NewGameButtonPath { get; set; }
 	[Export] public NodePath MultiplayerButtonPath { get; set; }
 	[Export] public NodePath ContinueButtonPath { get; set; }
@@ -129,13 +131,7 @@ public partial class MainMenu : Control
 	
 	private void OnMultiplayerPressed()
 	{
-		if (SaveManager.Instance?.HasSaveGame() ?? false)
-		{
-			OpenConfirmation();
-			return;
-		}
-
-		CreateNewGame();
+		OpenMultiplayerScene();
 	}
 	private void OnContinuePressed()
 	{
@@ -234,6 +230,28 @@ public partial class MainMenu : Control
 		_exitButton.Disabled = false;
 		ShowStatus($"Não foi possível abrir o jogo: {error}.");
 	}
+
+	private void OpenMultiplayerScene()
+	{
+		_newGameButton.Disabled = true;
+		_continueButton.Disabled = true;
+		_fairModeButton.Disabled = true;
+		_exitButton.Disabled = true;
+		_multiplayerButton.Disabled = true;
+
+		Error error = GetTree().ChangeSceneToFile(MultiplayerScenePath);
+
+		if (error == Error.Ok)
+			return;
+
+		_newGameButton.Disabled = false;
+		_continueButton.Disabled =
+			!(SaveManager.Instance?.HasSaveGame() ?? false);
+		_fairModeButton.Disabled = false;
+		_exitButton.Disabled = false;
+		ShowStatus($"Não foi possível abrir o multiplayer: {error}.");
+	}
+
 
 	private void OpenFairMode()
 	{
