@@ -1,0 +1,151 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://prototype/scripts/client_main.gd" id="1_main"]
+
+[node name="ClientMain" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_main")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.012, 0.024, 0.039, 1)
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Root" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="HBoxContainer" parent="Margin/Root"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Margin/Root/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.92, 0.97, 0.99, 1)
+theme_override_font_sizes/font_size = 22
+text = "Cyber Resistance - Cliente"
+
+[node name="BackButton" type="Button" parent="Margin/Root/Header"]
+layout_mode = 2
+text = "Voltar ao menu"
+
+[node name="ConnectionRow" type="HBoxContainer" parent="Margin/Root"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="IpLabel" type="Label" parent="Margin/Root/ConnectionRow"]
+layout_mode = 2
+text = "IP do servidor:"
+
+[node name="IpLine" type="LineEdit" parent="Margin/Root/ConnectionRow"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+placeholder_text = "ex.: 127.0.0.1"
+
+[node name="PortLabel" type="Label" parent="Margin/Root/ConnectionRow"]
+layout_mode = 2
+text = "Porta:"
+
+[node name="PortLine" type="LineEdit" parent="Margin/Root/ConnectionRow"]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+text = "42069"
+
+[node name="ConnectButton" type="Button" parent="Margin/Root/ConnectionRow"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Conectar"
+
+[node name="StatusLabel" type="Label" parent="Margin/Root/ConnectionRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.48, 0.85, 0.88, 1)
+theme_override_font_sizes/font_size = 13
+text = "Desconectado"
+autowrap_mode = 3
+
+[node name="PlayerRow" type="HBoxContainer" parent="Margin/Root"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="NameLabel" type="Label" parent="Margin/Root/PlayerRow"]
+layout_mode = 2
+text = "Nome:"
+
+[node name="NameLine" type="LineEdit" parent="Margin/Root/PlayerRow"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+placeholder_text = "seu nome"
+
+[node name="HostIpLabel" type="Label" parent="Margin/Root/PlayerRow"]
+layout_mode = 2
+text = "Seu IP (para a sala):"
+
+[node name="HostIpLine" type="LineEdit" parent="Margin/Root/PlayerRow"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+placeholder_text = "ex.: 192.168.0.10"
+
+[node name="Split" type="HBoxContainer" parent="Margin/Root"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="RoomsBox" type="VBoxContainer" parent="Margin/Root/Split"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+theme_override_constants/separation = 8
+
+[node name="RoomsTitle" type="Label" parent="Margin/Root/Split/RoomsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 16
+text = "Salas disponiveis"
+
+[node name="RoomList" type="ItemList" parent="Margin/Root/Split/RoomsBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RoomButtons" type="HBoxContainer" parent="Margin/Root/Split/RoomsBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="RefreshButton" type="Button" parent="Margin/Root/Split/RoomsBox/RoomButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Atualizar salas"
+
+[node name="CreateRoomButton" type="Button" parent="Margin/Root/Split/RoomsBox/RoomButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Criar sala"
+
+[node name="JoinButton" type="Button" parent="Margin/Root/Split/RoomsBox/RoomButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "Entrar na sala"

@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://dxb8r5pmk0cqc"]
+
+[ext_resource type="Script" path="res://prototype/scripts/world_scripts/minigame_starter.gd" id="1_mgst"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mgst"]
+size = Vector2(48, 48)
+
+[node name="MinigameStarter" type="Area2D" unique_id=910000001]
+script = ExtResource("1_mgst")
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=910000002]
+shape = SubResource("RectangleShape2D_mgst")
+
+[node name="Marker" type="ColorRect" parent="." unique_id=910000004]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(0.9, 0.7, 0.1, 1)
+
+[node name="Prompt" type="Label" parent="." unique_id=910000003]
+offset_left = -64.0
+offset_top = -56.0
+offset_right = 64.0
+offset_bottom = -32.0
+text = "[E] Iniciar desafio"
+horizontal_alignment = 1

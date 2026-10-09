@@ -1,0 +1,173 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" uid="uid://d1cgkdsca1o5c" path="res://Scripts/Professor/professor_main.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://dl3a1yfx0rn73" path="res://Scripts/Professor/professor_network.gd" id="2_net"]
+
+[node name="ProfessorMain" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_main")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.012, 0.024, 0.039, 1)
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="Root" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="HBoxContainer" parent="Margin/Root"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Margin/Root/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.92, 0.97, 0.99, 1)
+theme_override_font_sizes/font_size = 22
+text = "Cyber Resistance - Console do Professor"
+
+[node name="BackButton" type="Button" parent="Margin/Root/Header"]
+layout_mode = 2
+text = "Voltar ao menu"
+
+[node name="ConnectionRow" type="HBoxContainer" parent="Margin/Root"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="IpLabel" type="Label" parent="Margin/Root/ConnectionRow"]
+layout_mode = 2
+text = "IP do servidor:"
+
+[node name="IpLine" type="LineEdit" parent="Margin/Root/ConnectionRow"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+placeholder_text = "ex.: 127.0.0.1"
+
+[node name="PortLabel" type="Label" parent="Margin/Root/ConnectionRow"]
+layout_mode = 2
+text = "Porta:"
+
+[node name="PortLine" type="LineEdit" parent="Margin/Root/ConnectionRow"]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+text = "42069"
+
+[node name="ConnectButton" type="Button" parent="Margin/Root/ConnectionRow"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Conectar"
+
+[node name="StatusLabel" type="Label" parent="Margin/Root/ConnectionRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.48, 0.85, 0.88, 1)
+theme_override_font_sizes/font_size = 13
+text = "Desconectado"
+autowrap_mode = 3
+
+[node name="Split" type="HBoxContainer" parent="Margin/Root"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="RoomsBox" type="VBoxContainer" parent="Margin/Root/Split"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.0
+theme_override_constants/separation = 8
+
+[node name="RoomsTitle" type="Label" parent="Margin/Root/Split/RoomsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 16
+text = "Salas"
+
+[node name="RoomList" type="ItemList" parent="Margin/Root/Split/RoomsBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RefreshButton" type="Button" parent="Margin/Root/Split/RoomsBox"]
+layout_mode = 2
+text = "Atualizar salas"
+
+[node name="SubmissionsBox" type="VBoxContainer" parent="Margin/Root/Split"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+theme_override_constants/separation = 8
+
+[node name="SubmissionsTitle" type="Label" parent="Margin/Root/Split/SubmissionsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 16
+text = "Submissoes recebidas"
+
+[node name="SubmissionList" type="ItemList" parent="Margin/Root/Split/SubmissionsBox"]
+custom_minimum_size = Vector2(0, 104)
+layout_mode = 2
+
+[node name="DetailLabel" type="Label" parent="Margin/Root/Split/SubmissionsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.72, 0.76, 1)
+theme_override_font_sizes/font_size = 14
+text = "Detalhes da dupla"
+
+[node name="Detail" type="RichTextLabel" parent="Margin/Root/Split/SubmissionsBox"]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+bbcode_enabled = true
+text = ""
+scroll_following = true
+
+[node name="GradeBox" type="HBoxContainer" parent="Margin/Root/Split/SubmissionsBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="GradeLabel" type="Label" parent="Margin/Root/Split/SubmissionsBox/GradeBox"]
+layout_mode = 2
+text = "Nota:"
+
+[node name="GradeSpin" type="SpinBox" parent="Margin/Root/Split/SubmissionsBox/GradeBox"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+max_value = 10.0
+step = 0.5
+value = 7.0
+
+[node name="CommentLine" type="LineEdit" parent="Margin/Root/Split/SubmissionsBox/GradeBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Comentario (opcional)"
+
+[node name="SendGradeButton" type="Button" parent="Margin/Root/Split/SubmissionsBox/GradeBox"]
+layout_mode = 2
+text = "Enviar nota"
+
+[node name="Network" type="Node" parent="."]
+script = ExtResource("2_net")

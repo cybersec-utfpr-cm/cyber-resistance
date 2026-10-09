@@ -1,0 +1,2902 @@
+[
+  {
+	"id": 1,
+	"assunto": "Senhas",
+	"texto": "Qual é a característica mais importante de uma senha segura?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Evitar sequências óbvias como datas pessoais"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Ser igual ao nome de usuário"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Conter uma mistura de caracteres especiais, números e letras"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Ser curta para facilitar a memorização"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Usar apenas letras maiúsculas"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "Senhas seguras combinam diferentes tipos de caracteres para dificultar a adivinhação."
+  },
+  {
+	"id": 2,
+	"assunto": "Senhas",
+	"texto": "Por que não devemos compartilhar senhas por e-mail ou mensagem?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Esses métodos não garantem privacidade total"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Não há risco real"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Só é seguro usar redes sociais"
+	  },
+	  {
+		"letra": "D",
+		"texto": "O armazenamento em nuvem é mais eficiente"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Porque pode causar confusão"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "E-mails e mensagens não são totalmente seguros, facilitando o roubo de senhas."
+  },
+  {
+	"id": 3,
+	"assunto": "Senhas",
+	"texto": "Qual é o risco de usar senhas como '123456'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "São bloqueadas automaticamente"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Podem ser descobertas rapidamente em ataques automatizados"
+	  },
+	  {
+		"letra": "C",
+		"texto": "São recomendadas para contas temporárias"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Funcionam apenas em dispositivos móveis"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhum risco significativo"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Senhas óbvias são alvo fácil para ataques de força bruta."
+  },
+  {
+	"id": 4,
+	"assunto": "Senhas",
+	"texto": "O que é um 'gerenciador de senhas'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um software que armazena senhas de forma criptografada"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um sistema que sincroniza senhas entre dispositivos"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Uma ferramenta para recuperar senhas perdidas"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um tipo de antivírus"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um bloco de notas físico"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Gerenciadores de senhas geram e guardam senhas complexas com segurança."
+  },
+  {
+	"id": 5,
+	"assunto": "Senhas",
+	"texto": "Por que devemos alterar senhas periodicamente?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Para melhorar a velocidade de login"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Para atender a requisitos de sistemas legados"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Para reduzir o uso de caracteres especiais"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Porque evita que vazamentos antigos comprometam contas atuais"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das alternativas"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "Trocar senhas regularmente limita o tempo de acesso de um possível invasor."
+  },
+  {
+	"id": 6,
+	"assunto": "Senhas",
+	"texto": "Qual é a vantagem de usar uma 'frase secreta' como senha?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Pode incluir espaços e ser mais longa, aumentando a complexidade"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Evita a necessidade de autenticação de dois fatores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Facilita o compartilhamento público"
+	  },
+	  {
+		"letra": "D",
+		"texto": "É compatível com todos os sistemas sem restrições"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Não requer atualizações frequentes"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Frases longas com palavras aleatórias são mais seguras e fáceis de lembrar."
+  },
+  {
+	"id": 7,
+	"assunto": "Senhas",
+	"texto": "Por que não devemos usar informações pessoais em senhas?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Exigem atualização constante"
+	  },
+	  {
+		"letra": "B",
+		"texto": "São mais suscetíveis a erros de digitação"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Podem ser obtidas por meio de engenharia social"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhuma razão específica"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Elas são difíceis de escrever"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "Dados como aniversários ou nomes de pets são fáceis de encontrar."
+  },
+  {
+	"id": 8,
+	"assunto": "Senhas",
+	"texto": "O que é autenticação de dois fatores (2FA)?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Duas senhas diferentes para a mesma conta"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Uma verificação adicional além da senha, como um código SMS"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um método para criptografar arquivos"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Uma forma de backup de senhas"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "O 2FA exige algo que você sabe (senha) e algo que você tem (ex: smartphone)."
+  },
+  {
+	"id": 9,
+	"assunto": "Senhas",
+	"texto": "Qual é o problema de salvar senhas no navegador?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Aumenta o consumo de memória RAM"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhum problema relevante"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Desativa automaticamente o 2FA"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Risco de exposição em caso de invasão do dispositivo"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Limita o acesso a redes Wi-Fi públicas"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "Navegadores podem ser vulneráveis a malware que rouba dados armazenados."
+  },
+  {
+	"id": 10,
+	"assunto": "Senhas",
+	"texto": "O que é uma 'senha de uso único'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Código válido por um único acesso ou período curto"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Senha que não pode ser alterada"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Senha temporária para contas novas"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Senha compartilhada entre múltiplos usuários"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Senhas de uso único (OTP) são temporárias e aumentam a segurança."
+  },
+  {
+	"id": 11,
+	"assunto": "Senhas",
+	"texto": "Por que senhas longas são mais seguras?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Evitam a necessidade de símbolos"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Aumentam a complexidade e o tempo necessário para quebrá-las"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Funcionam melhor em dispositivos móveis"
+	  },
+	  {
+		"letra": "E",
+		"texto": "São mais fáceis de memorizar"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Quanto mais longa a senha, mais tempo leva para ser quebrada."
+  },
+  {
+	"id": 12,
+	"assunto": "Senhas",
+	"texto": "O que é um 'ataque de força bruta'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Teste sistemático de todas as combinações possíveis"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Acesso físico a servidores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Uso de engenharia social para obter senhas"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Invasão via redes Wi-Fi públicas"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Ataques de força bruta tentam todas as combinações até acertar a senha."
+  },
+  {
+	"id": 13,
+	"assunto": "Senhas",
+	"texto": "Qual é a função de um 'token físico' de segurança?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Criar backups automáticos de senhas"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Gerar códigos temporários para autenticação em duas etapas"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Monitorar tentativas de login suspeitas"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Armazenar senhas em formato texto"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Tokens físicos geram códigos únicos para autenticação em duas etapas."
+  },
+  {
+	"id": 14,
+	"assunto": "Senhas",
+	"texto": "Por que não devemos usar senhas padrão como 'admin'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "São alvos comuns em tentativas de invasão"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhum motivo específico"
+	  },
+	  {
+		"letra": "C",
+		"texto": "São bloqueadas por padrão em sistemas modernos"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Não funcionam em redes privadas"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Exigem autenticação biométrica adicional"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Senhas padrão são amplamente conhecidas e fáceis de explorar."
+  },
+  {
+	"id": 15,
+	"assunto": "Senhas",
+	"texto": "O que é 'phishing' relacionado a senhas?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um método de criptografia de dados"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um tipo de gerenciador de senhas"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Uma tentativa de enganar usuários para obter suas credenciais"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Uma técnica para criar senhas aleatórias"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "Phishing usa mensagens falsas para induzir a revelação de senhas."
+  },
+  {
+	"id": 16,
+	"assunto": "Senhas",
+	"texto": "Qual é a vantagem de usar senhas diferentes para cada conta?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Evitar que todas as contas sejam comprometidas simultaneamente"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Facilitar a recuperação de senhas"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhuma vantagem prática"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Melhorar a velocidade de login"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Reduzir a necessidade de atualizações"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Senhas únicas evitam que todas as contas sejam comprometidas."
+  },
+  {
+	"id": 17,
+	"assunto": "Senhas",
+	"texto": "O que é um 'keylogger'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Protocolo de comunicação seguro"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Dispositivo para armazenar senhas em segurança"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Software que registra todas as teclas digitadas"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Ferramenta para gerar senhas complexas"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "Keyloggers capturam teclas digitadas, incluindo senhas."
+  },
+  {
+	"id": 18,
+	"assunto": "Senhas",
+	"texto": "Por que senhas com padrões como 'qwerty' são inseguras?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "São previsíveis e frequentemente usadas em ataques"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Causam conflitos com sistemas operacionais"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhum motivo relevante"
+	  },
+	  {
+		"letra": "D",
+		"texto": "São difíceis de reproduzir em teclados estrangeiros"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Exigem autenticação adicional"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Padrões de teclado são fáceis de deduzir em ataques."
+  },
+  {
+	"id": 19,
+	"assunto": "Senhas",
+	"texto": "O que é um 'hash' de senha?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um método para compartilhar senhas com terceiros"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Uma senha criptografada que pode ser revertida"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um processo irreversível que transforma senhas em códigos únicos"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Uma técnica para encurtar senhas longas"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Uma forma de armazenar senhas em texto simples"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "O hash é um algoritmo que transforma a senha em um código único e irreversível para armazenamento seguro."
+  },
+  {
+	"id": 20,
+	"assunto": "Senhas",
+	"texto": "Qual é a melhor prática ao criar uma pergunta de segurança?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Ignorar a configuração de perguntas de segurança"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Utilizar a mesma resposta para todas as contas"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Usar perguntas com respostas públicas conhecidas"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Escolher respostas que não possam ser descobertas facilmente"
+	  }
+	],
+	"resposta_correta": "E",
+	"explicacao": "Respostas pessoais devem ser únicas e não-óbvias para evitar fraudes."
+  },
+  {
+	"id": 21,
+	"assunto": "Segurança de dados",
+	"texto": "O que é um antivírus?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um software que detecta e remove malware"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um tipo de cabo de rede"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um dispositivo de armazenamento"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um programa que acelera a internet"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Antivírus protege contra vírus, spyware e outros programas maliciosos."
+  },
+  {
+	"id": 22,
+	"assunto": "Segurança de dados",
+	"texto": "Para quê serve um firewall?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Aumentar a velocidade da internet"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Criar senhas seguras"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Bloquear acessos não autorizados à rede"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Compactar arquivos"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "Firewall monitora e controla o tráfego de rede, agindo como uma barreira de segurança."
+  },
+  {
+	"id": 23,
+	"assunto": "Segurança de dados",
+	"texto": "O que é um backup em nuvem?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Apagar arquivos permanentemente"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Armazenar dados em servidores remotos via internet"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Criptografar dados no computador"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um tipo de vírus"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Backup em nuvem salva cópias de dados em servidores online para recuperação em caso de perda."
+  },
+  {
+	"id": 24,
+	"assunto": "Segurança de dados",
+	"texto": "Por que é importante atualizar softwares regularmente?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Para corrigir falhas de segurança"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Aumentar o consumo de energia"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhum motivo importante"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Tornar o dispositivo mais lento"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Para mudar a cor da interface"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Atualizações incluem correções para vulnerabilidades exploradas por hackers."
+  },
+  {
+	"id": 25,
+	"assunto": "Segurança de dados",
+	"texto": "O que é um 'ransomware'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Malware que bloqueia dados e exige resgate"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um protocolo de internet"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um tipo de antivírus"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um software de backup"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Ransomware criptografa dados da vítima e exige algo para liberá-los (geralmente dinheiro)."
+  },
+  {
+	"id": 26,
+	"assunto": "Segurança de dados",
+	"texto": "O que é criptografia de dados?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Codificar informações para torná-las ilegíveis sem autorização"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Compactar arquivos"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Enviar dados por e-mail"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Apagar dados permanentemente"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Criptografia protege a confidencialidade dos dados durante transmissão ou armazenamento."
+  },
+  {
+	"id": 27,
+	"assunto": "Segurança de dados",
+	"texto": "O que é uma 'brecha de segurança'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um dispositivo de armazenamento"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Uma falha em um sistema que pode ser explorada"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um cabo de rede defeituoso"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um tipo de antivírus"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Brechas são vulnerabilidades que permitem ataques se não corrigidas."
+  },
+  {
+	"id": 28,
+	"assunto": "Segurança de dados",
+	"texto": "Qual é a função de um sistema de detecção de intrusões (IDS)?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Criar senhas fortes"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Remover vírus do computador"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Acelerar a rede"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Compactar arquivos"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "IDS identifica comportamentos anormais que podem indicar um ataque."
+  },
+  {
+	"id": 29,
+	"assunto": "Segurança de dados",
+	"texto": "O que é um 'phishing'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um dispositivo de rede"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Fraude para enganar pessoas e roubar dados"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um protocolo de segurança"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um tipo de backup"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Phishing usa mensagens falsas para induzir a revelação de informações sensíveis."
+  },
+  {
+	"id": 30,
+	"assunto": "Segurança de dados",
+	"texto": "Por que é importante usar HTTPS em sites?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Aumentar o espaço de armazenamento"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Melhorar o design do site"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Para tornar o site mais rápido"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Criptografar a comunicação entre navegador e servidor"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "HTTPS garante que os dados trafeguem de forma segura e criptografada."
+  },
+  {
+	"id": 31,
+	"assunto": "Segurança de dados",
+	"texto": "Por que empresas adotam políticas de senhas corporativas?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Para evitar o uso de antivírus"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Para reduzir o número de dispositivos"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Para padronizar e fortalecer a segurança interna"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Para garantir que funcionários usem senhas fracas"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "Políticas de senhas corporativas definem regras (ex: complexidade, troca periódica) para reduzir riscos de invasões."
+  },
+  {
+	"id": 32,
+	"assunto": "Segurança de dados",
+	"texto": "O que é um 'token de segurança'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um programa de edição de texto"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um antivírus"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um dispositivo de armazenamento de senhas"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um tipo de cabo de rede"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Tokens são dispositivos que geram códigos únicos para autenticação em duas etapas."
+  },
+  {
+	"id": 33,
+	"assunto": "Segurança de dados",
+	"texto": "O que é um 'backup offline'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Backup salvo na nuvem"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Backup parcial"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Backup armazenado em dispositivos desconectados da rede"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Backup feito especificamente em um pen drive"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Backup automático"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "Backup offline protege contra ransomware, pois não está acessível remotamente."
+  },
+  {
+	"id": 34,
+	"assunto": "Segurança de dados",
+	"texto": "O que é um 'malware'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Software desenvolvido com falhas e brechas"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um dispositivo de armazenamento"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um tipo de firewall"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um protocolo de internet"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "Malware inclui vírus, worms, ransomware e outros programas desenvolvidos com intuitos maliciosos."
+  },
+  {
+	"id": 35,
+	"assunto": "Segurança de dados",
+	"texto": "Por que devemos evitar redes Wi-Fi públicas?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Podem ser monitoradas por hackers"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Não permitem acesso a sites"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Consomem mais bateria"
+	  },
+	  {
+		"letra": "D",
+		"texto": "São mais lentas"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Redes públicas têm menos segurança, facilitando interceptação de dados."
+  },
+  {
+	"id": 36,
+	"assunto": "Segurança de dados",
+	"texto": "O que é um 'certificado digital'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um tipo de antivírus"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um documento que comprova segurança de um site"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um protocolo de rede"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um sistema operacional"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "Certificados digitais validam a autenticidade de sites e criptografam conexões."
+  },
+  {
+	"id": 37,
+	"assunto": "Segurança de dados",
+	"texto": "O que é 'engenharia social'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Manipular pessoas para obter informações confidenciais"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um método de backup"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um software de edição de texto"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um tipo de cabo de rede"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Engenharia social explora a confiança humana para roubar dados."
+  },
+  {
+	"id": 38,
+	"assunto": "Segurança de dados",
+	"texto": "O que é um 'patching' de software?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Instalar novos programas"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Atualizar o software para corrigir falhas"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Formatar o sistema"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Desligar o computador"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Patching corrige vulnerabilidades e melhora a segurança."
+  },
+  {
+	"id": 39,
+	"assunto": "Segurança de dados",
+	"texto": "O que é 'criptografia de ponta a ponta'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um método de backup"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Criptografia que só pode ser lida pelo servidor"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um protocolo de rede"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Criptografia baseada em hash"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Garante que apenas as partes envolvidas na comunicação (remetente e destinatário) possam ler os dados."
+  },
+  {
+	"id": 40,
+	"assunto": "Segurança de dados",
+	"texto": "O que é um 'dispositivo de autenticação física'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um software que gera senhas temporárias"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um token físico que gera códigos de segurança"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um tipo de antivírus"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Uma dispositivo de autenticação por RFID"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Dispositivos físicos aumentam a segurança ao exigir posse do item para autenticação."
+  },
+  {
+	"id": 41,
+	"assunto": "Engenharia social",
+	"texto": "O que é engenharia social?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Uma técnica de construção civil"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Uma área de aprofundamento da psicologia"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Manipulação psicológica para obter informações confidenciais"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um projeto que conecta pessoas de forma digital"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "Engenharia social explora a confiança das pessoas para roubar dados ou acesso."
+  },
+  {
+	"id": 42,
+	"assunto": "Engenharia social",
+	"texto": "Qual é um exemplo clássico de phishing?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um SMS do banco pedindo dados da conta"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um e-mail promovendo produtos"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um anúncio em rede social"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Uma ligação de telemarketing"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Phishing usa mensagens falsas que imitam instituições confiáveis para enganar vítimas."
+  },
+  {
+	"id": 43,
+	"assunto": "Engenharia social",
+	"texto": "O que é 'pretexting'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um tipo de vírus"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Criar um cenário falso para obter informações"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um método de criptografia"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Uma ferramenta de backup"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Pretexting envolve inventar uma história convincente para manipular a vítima."
+  },
+  {
+	"id": 44,
+	"assunto": "Engenharia social",
+	"texto": "O que é 'baiting'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um método de autenticação"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um dispositivo de rede"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Oferecer algo atraente para roubar dados"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um tipo de senha forte"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "Exemplo: Pen drives infectados deixados em locais públicos para serem usados por vítimas."
+  },
+  {
+	"id": 45,
+	"assunto": "Engenharia social",
+	"texto": "O que é 'vishing'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Phishing por ligação telefônica"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um tipo de vírus"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um tipo de correção de falha"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um software de segurança"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Phishing por telegrama"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Vishing usa chamadas falsas para enganar vítimas, como se passando por suporte técnico."
+  },
+  {
+	"id": 46,
+	"assunto": "Engenharia social",
+	"texto": "Como se proteger contra engenharia social?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Fornecer dados pessoais a qualquer solicitação"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Desconfiar de mensagens não solicitadas pedindo informações"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Usar senhas fracas"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Ignorar atualizações de segurança"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Verifique sempre a autenticidade da solicitação antes de compartilhar dados."
+  },
+  {
+	"id": 47,
+	"assunto": "Engenharia social",
+	"texto": "O que é 'smishing'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um antivírus"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um método de criptografia"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um tipo de cabo de rede"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Phishing por SMS ou mensagens de texto"
+	  }
+	],
+	"resposta_correta": "E",
+	"explicacao": "Smishing usa mensagens de texto com links ou solicitações falsas."
+  },
+  {
+	"id": 48,
+	"assunto": "Engenharia social",
+	"texto": "Qual é um sinal de e-mail de phishing?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Remetente desconhecido ou suspeito"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Links para sites não confiáveis"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Erros de gramática ou ortografia"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "Phishing geralmente combina erros, remetentes falsos e links maliciosos."
+  },
+  {
+	"id": 49,
+	"assunto": "Engenharia social",
+	"texto": "O que é 'tailgating'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um tipo de senha"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Acessar uma área restrita seguindo alguém autorizado"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um método de backup"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um dispositivo de rede"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Tailgating é uma tática física onde o invasor entra em locais restritos sem autorização."
+  },
+  {
+	"id": 50,
+	"assunto": "Engenharia social",
+	"texto": "Por que os ataques de engenharia social são eficazes?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Exploram a confiança e a ingenuidade das pessoas"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Usam tecnologia avançada"
+	  },
+	  {
+		"letra": "C",
+		"texto": "São difíceis de identificar"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Engenharia social depende mais de manipulação humana do que de falhas técnicas."
+  },
+  {
+	"id": 51,
+	"assunto": "Engenharia social",
+	"texto": "O que fazer se receber uma ligação suspeita pedindo dados pessoais?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Ignorar completamente"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Fornecer os dados imediatamente"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Desligar e entrar em contato com a instituição por um canal oficial"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Compartilhar apenas parte dos dados"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "Nunca confirme dados por telefone se a ligação for iniciada por terceiros."
+  },
+  {
+	"id": 52,
+	"assunto": "Engenharia social",
+	"texto": "O que é 'quid pro quo' em engenharia social?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um método de criptografia"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um dispositivo de rede"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um tipo de malware"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Oferecer um benefício em troca de informações"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "Exemplo: Um falso técnico oferece ajuda em troca de senhas."
+  },
+  {
+	"id": 53,
+	"assunto": "Engenharia social",
+	"texto": "Como identificar um perfil falso em redes sociais?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Poucas postagens ou interações"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Solicitações de dinheiro ou dados"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Fotos genéricas ou roubadas"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Perfis falsos geralmente têm inconsistências e pedidos suspeitos."
+  },
+  {
+	"id": 54,
+	"assunto": "Engenharia social",
+	"texto": "O que é 'dumpster diving'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um esporte radical"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um método de backup"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Revirar lixo para encontrar informações sensíveis"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um tipo de senha"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "Invasores buscam documentos descartados com dados pessoais ou corporativos."
+  },
+  {
+	"id": 55,
+	"assunto": "Engenharia social",
+	"texto": "Por que os ataques de engenharia social são comuns?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "São mais baratos e fáceis que ataques técnicos"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "São detectados rapidamente por antivírus"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Exigem conhecimento avançado de programação"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Muitas vezes, manipular pessoas é mais eficaz do que explorar sistemas."
+  },
+  {
+	"id": 56,
+	"assunto": "Engenharia social",
+	"texto": "O que é uma 'honeytrap'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um tipo de vírus"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Armadilha amorosa para obter informações confidenciais"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um dispositivo de rede"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um método de autenticação"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "Honeytrap envolve sedução ou relacionamento falso para extrair dados."
+  },
+  {
+	"id": 57,
+	"assunto": "Engenharia social",
+	"texto": "Como se proteger de golpes por e-mail?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Não clicar em links suspeitos"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Verificar o endereço do remetente"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Usar antivírus atualizado"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Todas as anteriores"
+	  }
+	],
+	"resposta_correta": "E",
+	"explicacao": "Combinação de atenção, ferramentas e verificação reduz riscos."
+  },
+  {
+	"id": 58,
+	"assunto": "Engenharia social",
+	"texto": "O que é 'scareware'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um método de criptografia"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Software que assusta a vítima para vender falsas soluções"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um dispositivo de backup"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um tipo de firewall"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "Exemplo: Pop-ups alertando sobre supostos vírus que induzem a instalar um malware mascarado."
+  },
+  {
+	"id": 59,
+	"assunto": "Engenharia social",
+	"texto": "O que é 'shoulder surfing'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Observar por cima do ombro para roubar senhas"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um método de autenticação"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um tipo de exercício físico"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um dispositivo de rede"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Técnica comum em locais públicos para capturar informações visualmente."
+  },
+  {
+	"id": 60,
+	"assunto": "Engenharia social",
+	"texto": "Qual é a melhor resposta a uma mensagem suspeita pedindo dados?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Encaminhar para amigos"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Ignorar e bloquear o remetente"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Fornecer os dados imediatamente"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Nunca interaja com mensagens suspeitas; denuncie e exclua."
+  },
+  {
+	"id": 61,
+	"assunto": "Métodos de autenticação",
+	"texto": "O que é autenticação baseada em risco?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Usar senhas muito longas"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um tipo de vírus"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Ignorar verificações de segurança"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Ajustar a segurança conforme o contexto (ex: localização ou dispositivo)"
+	  }
+	],
+	"resposta_correta": "E",
+	"explicacao": "Autenticação baseada em risco avalia fatores como localização, dispositivo ou comportamento para decidir se solicita verificação adicional."
+  },
+  {
+	"id": 62,
+	"assunto": "Métodos de autenticação",
+	"texto": "Qual é um exemplo de autenticação biométrica?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Digitar uma senha"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Clicar em um link de confirmação"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Usar impressão digital ou reconhecimento facial"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Responder perguntas de segurança"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "Biometria usa características físicas únicas para autenticação."
+  },
+  {
+	"id": 63,
+	"assunto": "Métodos de autenticação",
+	"texto": "O que é um token de segurança?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um dispositivo que gera senhas temporárias"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um tipo de cabo de rede"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um programa de edição de texto"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um antivírus"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Tokens geram códigos únicos para autenticação em duas etapas."
+  },
+  {
+	"id": 64,
+	"assunto": "Métodos de autenticação",
+	"texto": "Qual é a vantagem de usar um autenticador de aplicativo (como Google Authenticator)?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "É mais seguro que SMS para 2FA"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Ambas as anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Substitui completamente a senha"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Não requer internet para gerar códigos"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Aplicativos de autenticação são offline e menos vulneráveis que SMS."
+  },
+  {
+	"id": 65,
+	"assunto": "Métodos de autenticação",
+	"texto": "O que é 'Single Sign-On' (SSO)?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um método para criar senhas fracas"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um tipo de vírus"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Usar uma única senha para todos os serviços"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Acessar múltiplos sistemas com um único login"
+	  }
+	],
+	"resposta_correta": "E",
+	"explicacao": "SSO permite acesso a vários serviços com uma única autenticação (ex: Google, Facebook)."
+  },
+  {
+	"id": 66,
+	"assunto": "Métodos de autenticação",
+	"texto": "Por que SMS não é o método mais seguro para 2FA?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Não funciona sem internet"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Mensagens podem ser interceptadas ou SIM clonado"
+	  },
+	  {
+		"letra": "C",
+		"texto": "É muito lento"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhum motivo"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "SMS é vulnerável a ataques de engenharia social e interceptação."
+  },
+  {
+	"id": 67,
+	"assunto": "Métodos de autenticação",
+	"texto": "O que é uma 'senha de uso único' (OTP)?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Senha usada apenas uma vez"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Senha compartilhada entre amigos"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Senha muito longa"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Senha que expira após um tempo determinado"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "OTP (One-Time Password) é gerada para uma única sessão ou transação."
+  },
+  {
+	"id": 68,
+	"assunto": "Métodos de autenticação",
+	"texto": "Qual é a diferença entre 2FA e MFA?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "2FA é mais seguro que MFA"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Não há diferença"
+	  },
+	  {
+		"letra": "C",
+		"texto": "MFA é um tipo de vírus"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "MFA usa dois ou mais métodos de autenticação"
+	  }
+	],
+	"resposta_correta": "E",
+	"explicacao": "MFA (Autenticação Multifator) pode incluir mais de dois fatores."
+  },
+  {
+	"id": 69,
+	"assunto": "Métodos de autenticação",
+	"texto": "O que é um 'security key' física (ex: YubiKey)?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um método de backup"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um antivírus"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um tipo de cabo de rede"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Dispositivo USB para autenticação sem senha"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "Chaves físicas são dispositivos que substituem ou complementam senhas."
+  },
+  {
+	"id": 70,
+	"assunto": "Métodos de autenticação",
+	"texto": "Por que perguntas de segurança (ex: nome do pet) não são ideais?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Respostas podem ser adivinhadas ou pesquisadas"
+	  },
+	  {
+		"letra": "C",
+		"texto": "São muito seguras"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Exigem digitação rápida"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhum motivo"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Dados pessoais são fáceis de descobrir em redes sociais ou vazamentos."
+  },
+  {
+	"id": 71,
+	"assunto": "Métodos de autenticação",
+	"texto": "O que é autenticação por push notification?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Enviar senhas por e-mail"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um tipo de vírus"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Receber uma notificação no celular para aprovar o login"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um método de backup"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "Exemplo: Aplicativos como Google ou Microsoft enviam uma notificação para confirmar acesso."
+  },
+  {
+	"id": 72,
+	"assunto": "Métodos de autenticação",
+	"texto": "O que é autenticação baseada em comportamento?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Analisar padrões como digitação ou movimentos do mouse"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Usar senhas longas"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um tipo de phishing"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Todas as anteriores"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Sistemas identificam usuários por hábitos únicos (ex: velocidade de digitação)."
+  },
+  {
+	"id": 73,
+	"assunto": "Métodos de autenticação",
+	"texto": "Qual é a vantagem de usar um gerenciador de senhas?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Nenhuma vantagem"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Armazenar senhas complexas sem precisar memorizá-las"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Reduzir a necessidade de 2FA"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Compartilhar senhas publicamente"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "Gerenciadores geram e guardam senhas únicas e fortes para cada conta."
+  },
+  {
+	"id": 74,
+	"assunto": "Métodos de autenticação",
+	"texto": "O que é autenticação adaptativa?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um método para clonar senhas"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um tipo de senha fraca"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Ajustar o nível de segurança com base no contexto (ex: localização)"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Todas as anteriores"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "Exemplo: Solicitar 2FA apenas em logins de dispositivos desconhecidos."
+  },
+  {
+	"id": 75,
+	"assunto": "Métodos de autenticação",
+	"texto": "O que é um 'cartão inteligente' (smart card)?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Cartão com chip para autenticação física"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um dispositivo de rede"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um cartão de crédito comum"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um tipo de vírus"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Smart cards armazenam certificados digitais para acesso seguro."
+  },
+  {
+	"id": 76,
+	"assunto": "Métodos de autenticação",
+	"texto": "Por que a biometria é considerada segura?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "É mais fácil de hackear que senhas"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Características físicas são únicas e difíceis de copiar"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Não requer hardware especial"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Impressões digitais ou reconhecimento facial são difíceis de falsificar."
+  },
+  {
+	"id": 77,
+	"assunto": "Métodos de autenticação",
+	"texto": "O que é autenticação por certificado digital?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Digitar uma senha simples"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um método de phishing"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Usar um arquivo eletrônico que comprova identidade"
+	  }
+	],
+	"resposta_correta": "E",
+	"explicacao": "Certificados digitais são usados por empresas e governos para autenticação forte."
+  },
+  {
+	"id": 78,
+	"assunto": "Métodos de autenticação",
+	"texto": "O que é 'FIDO2'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um tipo de malware"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um método de backup"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Padrão de autenticação sem senha usando dispositivos físicos"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "FIDO2 permite login seguro com chaves físicas ou biometria, sem senhas."
+  },
+  {
+	"id": 79,
+	"assunto": "Métodos de autenticação",
+	"texto": "Qual é um risco de usar a mesma senha em múltiplas contas?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Melhora a segurança"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Se uma conta for invadida, todas estarão em risco"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhum risco"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Facilita a memorização"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Reutilizar senhas é uma das maiores falhas de segurança."
+  },
+  {
+	"id": 80,
+	"assunto": "Métodos de autenticação",
+	"texto": "O que é 'senha descartável'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Senha temporária gerada para uma única sessão"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Senha que nunca expira"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Senha compartilhada publicamente"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Usada em casos específicos, como recuperação de conta."
+  },
+  {
+	"id": 81,
+	"assunto": "Privacidade",
+	"texto": "Por que devemos evitar compartilhar localização em tempo real?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Aumenta velocidade do celular"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Consome bateria"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Expõe rotina pessoal a riscos"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Melhora a conexão"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "Compartilhar localização pode facilitar rastreamento por pessoas mal-intencionadas."
+  },
+  {
+	"id": 82,
+	"assunto": "Privacidade",
+	"texto": "O que é VPN?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Rede privada que protege sua navegação"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um antivírus"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Rede que expõe seu IP"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um tipo de senha"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "VPN mascara seu IP e criptografa dados, protegendo sua privacidade online."
+  },
+  {
+	"id": 83,
+	"assunto": "Privacidade",
+	"texto": "Qual é a função do modo anônimo/navegação privada?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Criptografar todos os dados do dispositivo"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Impedir que o navegador salve histórico e cookies"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Bloquear vírus automaticamente"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Aumentar a velocidade da internet"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Modo anônimo não torna você completamente invisível, mas não salva histórico."
+  },
+  {
+	"id": 84,
+	"assunto": "Privacidade",
+	"texto": "Por que é perigoso usar redes Wi-Fi públicas sem proteção?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Hackers podem interceptar dados transmitidos"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Aumenta o consumo de dados"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Não há perigo"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Melhora o desempenho do celular"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Redes públicas são alvos fáceis para espionagem de dados."
+  },
+  {
+	"id": 85,
+	"assunto": "Privacidade",
+	"texto": "O que são cookies de rastreamento?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um tipo de antivírus"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Arquivos que monitoram sua atividade online"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Biscoitos digitais"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Dispositivos de hardware"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "Cookies de rastreamento coletam dados para personalizar anúncios."
+  },
+  {
+	"id": 86,
+	"assunto": "Privacidade",
+	"texto": "Por que devemos revisar permissões de aplicativos?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Evitar que apps acessem dados desnecessários"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Aumentar o espaço no celular"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Melhorar a velocidade do dispositivo"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhum motivo"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Apps podem coletar dados como contatos, localização ou câmera sem necessidade."
+  },
+  {
+	"id": 87,
+	"assunto": "Privacidade",
+	"texto": "O que é GDPR?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Protocolo de rede"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um tipo de vírus"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um dispositivo de armazenamento"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Lei europeia de proteção de dados"
+	  }
+	],
+	"resposta_correta": "E",
+	"explicacao": "GDPR regula como empresas coletam e usam dados pessoais na UE."
+  },
+  {
+	"id": 88,
+	"assunto": "Privacidade",
+	"texto": "Por que não devemos postar fotos de documentos pessoais?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Evitar roubo de identidade"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Melhorar a qualidade da imagem"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Aumentar likes"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhum motivo"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Documentos expostos podem ser usados para falsificação ou fraudes."
+  },
+  {
+	"id": 89,
+	"assunto": "Privacidade",
+	"texto": "O que é um 'vazamento de dados'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Um método de criptografia"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um dispositivo de rede"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um tipo de backup"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Exposão não autorizada de informações confidenciais"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "Vazamentos podem expor senhas, e-mails e dados financeiros."
+  },
+  {
+	"id": 90,
+	"assunto": "Privacidade",
+	"texto": "Qual é a função de um ad blocker?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Criptografar dados"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Bloquear anúncios e rastreadores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Acelerar a internet"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Melhorar o design de sites"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Ad blockers reduzem coleta de dados por anunciantes."
+  },
+  {
+	"id": 91,
+	"assunto": "Privacidade",
+	"texto": "Por que usar mensagens criptografadas?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Melhorar a velocidade da internet"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Nenhum motivo"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Aumentar o número de contatos"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Proteger o conteúdo das conversas"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Todas as anteriores"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "Apps como Signal ou WhatsApp (com criptografia ativada) protegem suas mensagens."
+  },
+  {
+	"id": 92,
+	"assunto": "Privacidade",
+	"texto": "O que é 'metadados'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Informações sobre dados (ex: hora e local de uma mensagem)"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Método de backup"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Um tipo de vírus"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Dispositivo de armazenamento"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Metadados revelam padrões de comportamento mesmo sem conteúdo explícito."
+  },
+  {
+	"id": 93,
+	"assunto": "Privacidade",
+	"texto": "Por que não devemos usar redes sociais para login em outros sites?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Aumenta a velocidade de login"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Se a rede social for invadida, outras contas serão comprometidas"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Melhora a segurança"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Não há problema"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma das anteriores"
+	  }
+	],
+	"resposta_correta": "B",
+	"explicacao": "Login único amplia riscos se a conta principal for violada."
+  },
+  {
+	"id": 94,
+	"assunto": "Privacidade",
+	"texto": "O que é 'doxxing'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Dispositivo de rede"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Um tipo de senha forte"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Expor informações pessoais de alguém sem consentimento"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Método de criptografia"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "Doxxing é usado para assediar ou ameaçar pessoas online."
+  },
+  {
+	"id": 95,
+	"assunto": "Privacidade",
+	"texto": "Qual é a vantagem de usar navegadores focados em privacidade (ex: Brave)?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Permitem mais personalização"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Aceleram a internet"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Bloqueiam rastreadores e anúncios por padrão"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Nenhuma vantagem"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "Navegadores como Brave ou Firefox Focus priorizam a privacidade do usuário."
+  },
+  {
+	"id": 96,
+	"assunto": "Privacidade",
+	"texto": "O que é 'modo de segurança' em redes sociais?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Configurações que limitam interações de estranhos"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Um tipo de anúncio"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um filtro de fotos"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "Modo de segurança ajuda a bloquear comentários ou mensagens ofensivas."
+  },
+  {
+	"id": 97,
+	"assunto": "Privacidade",
+	"texto": "Por que não deveríamos clicar em 'Concordar' sem ler termos de serviço?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Melhora o desempenho do app"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Podemos autorizar coleta indevida de dados"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Não há problema"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Aumenta a segurança"
+	  }
+	],
+	"resposta_correta": "C",
+	"explicacao": "Termos podem incluir permissões para vender dados a terceiros."
+  },
+  {
+	"id": 98,
+	"assunto": "Privacidade",
+	"texto": "O que é 'privacidade por design'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Método para acelerar dispositivos"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Integrar proteção de privacidade desde a criação de um produto"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Um tipo de vírus"
+	  }
+	],
+	"resposta_correta": "D",
+	"explicacao": "Privacidade por design prioriza a segurança dos dados desde o início do desenvolvimento."
+  },
+  {
+	"id": 99,
+	"assunto": "Privacidade",
+	"texto": "Qual é a função de uma 'conta de e-mail descartável'?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Proteger o e-mail principal de spam ou vazamentos"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Substituir senhas"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Nenhuma das anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Aumentar a velocidade de navegação"
+	  }
+	],
+	"resposta_correta": "A",
+	"explicacao": "E-mails descartáveis são úteis para cadastros em sites pouco confiáveis."
+  },
+  {
+	"id": 100,
+	"assunto": "Privacidade",
+	"texto": "Por que devemos apagar contas não utilizadas?",
+	"alternativas": [
+	  {
+		"letra": "A",
+		"texto": "Melhorar o desempenho do dispositivo"
+	  },
+	  {
+		"letra": "B",
+		"texto": "Aumentar espaço de armazenamento"
+	  },
+	  {
+		"letra": "C",
+		"texto": "Todas as anteriores"
+	  },
+	  {
+		"letra": "D",
+		"texto": "Nenhum motivo"
+	  },
+	  {
+		"letra": "E",
+		"texto": "Reduzir riscos em caso de vazamento de dados"
+	  }
+	],
+	"resposta_correta": "E",
+	"explicacao": "Contas antigas podem ser alvo de ataques se não forem monitoradas."
+  }
+]

@@ -1,0 +1,116 @@
+
+{
+	"npc_id": "ravi",
+	"dialogues": [
+	{
+	  "id": "intro_1",
+	  "text": ["Hey, nunca te vi por aqui! Quem é você...? 
+				Bom, eu me chamo Ravi. Seja bem vindo a cidade.",
+				
+				"Imagino que tenha se mudado pra cá por causa da Universidade... 
+				É a única coisa que traz as pessoas para cá, haha.",
+				
+				"Bom, aconselho que você converse com o professor Hubner. 
+				Ele pode te passar uns trabalhos.",
+				
+				"Enfim, tenho que ir. Até mais, colega."],
+	  "conditions": {
+		"once": true, 
+		"required_task": "task_1",
+		"task_status": "in_progress"
+	  },
+	  "used": false
+	},
+	{
+	  "id": "random_1",
+	  "text": ["Tô pensando em trancar o curso e virar influencer."],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+		{
+	  "id": "random_2",
+	  "text": ["Esse semestre vou me organizar… (mentira, já sei)."],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+		{
+	  "id": "random_3",
+	  "text": ["Cadê o grupo do WhatsApp da turma?"],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+		{
+	  "id": "random_4",
+	  "text": ["Tem vaga no seu trabalho? Tô precisando pagar as contas."],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+		{
+	  "id": "random_5",
+	  "text": ["Dormi duas horas essa noite… vida de universitário!"],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+		{
+	  "id": "random_6",
+	  "text": ["Hoje não, obrigado. Tô de recuperação em três matérias."],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+	{
+	  "id": "random_7",
+	  "text": ["Esse professor não explica nada direito!"],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+	{
+	  "id": "random_8",
+	  "text": ["Vou viver de café até a prova passar."],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},	
+	{
+	  "id": "random_9",
+	  "text": ["E aquela prova do Campiolo??? ;-;"],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+	{
+	  "id": "task_dialog_1",
+	  "text": "Ei, você pode me ajudar a configurar uma senha segura?",
+	  "conditions": {
+		"once": true,
+		"required_task": "seguranca_senhas",
+		"task_status": "in_progress"
+	  },
+	  "used": false
+	}
+  ]
+}

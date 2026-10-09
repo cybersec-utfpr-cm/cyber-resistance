@@ -1,0 +1,50 @@
+{
+  "level_id": 0,
+  "tasks": [
+	{
+	  "id": "task_1",
+	  "title": "Novo por aqui?",
+	  "description": "Explore o espaço e encontre o Ravi. Ele pode te ajudar. APERTE C para iniciar a conversa.",
+	  "status": "in_progress",
+	  "completed": false,
+	  "claimed": false,
+	  "reward": 5
+	},
+	{
+	  "id": "task_2",
+	  "title": "Conheça o Professor",
+	  "description": "CONVERSE com o Professor. Ele te dará algumas instruções...",
+	  "status": "not_started",
+	  "completed": false,
+	  "claimed": false,
+	  "reward": 5
+	},
+	{
+	  "id": "task_3",
+	  "title": "Cheirinho de café...",
+	  "description": "Agora, FALE com Bernadete. Ela costuma ficar na cafeteria.",
+	  "status": "not_started",
+	  "completed": false,
+	  "claimed": false,
+	  "reward": 5
+	},
+	{
+	  "id": "task_4",
+	  "title": "Problemas?",
+	  "description": "Acesse o computador da cafeteria (tecla E). Navegue por lá, desvende o ANAGRAMA e conecte ao Wi-fi.",
+	  "status": "not_started",
+	  "completed": false,
+	  "claimed": false,
+	  "reward": 15
+	},
+	{
+	  "id": "task_5",
+	  "title": "Teste seus conhecimentos",
+	  "description": "Agora sim! Volte a falar com o professor Hubner. Ele tem um Quiz importante para você!",
+	  "status": "not_started",
+	  "completed": false,
+	  "claimed": false,
+	  "reward": 15
+	}
+  ]
+}

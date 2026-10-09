@@ -62,6 +62,8 @@ theme = ExtResource("2_theme")
 script = ExtResource("1_menu")
 NewGameButtonPath = NodePath("Center/MenuPanel/MenuMargin/MenuContent/Buttons/NewGameButton")
 MultiplayerButtonPath = NodePath("Center/MenuPanel/MenuMargin/MenuContent/Buttons/MultiplayerButton")
+MultiplayerLobbyButtonPath = NodePath("Center/MenuPanel/MenuMargin/MenuContent/Buttons/MultiplayerLobbyButton")
+ProfessorButtonPath = NodePath("Center/MenuPanel/MenuMargin/MenuContent/Buttons/ProfessorButton")
 ContinueButtonPath = NodePath("Center/MenuPanel/MenuMargin/MenuContent/Buttons/ContinueButton")
 FairModeButtonPath = NodePath("Center/MenuPanel/MenuMargin/MenuContent/Buttons/FairModeButton")
 ExitButtonPath = NodePath("Center/MenuPanel/MenuMargin/MenuContent/Buttons/ExitButton")
@@ -98,20 +100,20 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="MenuPanel" type="PanelContainer" parent="Center"]
-custom_minimum_size = Vector2(500, 585)
+custom_minimum_size = Vector2(500, 650)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleMenuPanel")
 
 [node name="MenuMargin" type="MarginContainer" parent="Center/MenuPanel"]
 layout_mode = 2
 theme_override_constants/margin_left = 52
-theme_override_constants/margin_top = 46
+theme_override_constants/margin_top = 38
 theme_override_constants/margin_right = 52
-theme_override_constants/margin_bottom = 42
+theme_override_constants/margin_bottom = 34
 
 [node name="MenuContent" type="VBoxContainer" parent="Center/MenuPanel/MenuMargin"]
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 12
 
 [node name="Eyebrow" type="Label" parent="Center/MenuPanel/MenuMargin/MenuContent"]
 layout_mode = 2
@@ -153,17 +155,29 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Novo jogo"
 
-[node name="MultiplayerButton" type="Button" parent="Center/MenuPanel/MenuMargin/MenuContent/Buttons"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "Multiplayer"
-
 [node name="ContinueButton" type="Button" parent="Center/MenuPanel/MenuMargin/MenuContent/Buttons"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Continuar"
+
+[node name="MultiplayerLobbyButton" type="Button" parent="Center/MenuPanel/MenuMargin/MenuContent/Buttons"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Multiplayer"
+
+[node name="MultiplayerButton" type="Button" parent="Center/MenuPanel/MenuMargin/MenuContent/Buttons"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Server"
+
+[node name="ProfessorButton" type="Button" parent="Center/MenuPanel/MenuMargin/MenuContent/Buttons"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Professor"
 
 [node name="FairModeButton" type="Button" parent="Center/MenuPanel/MenuMargin/MenuContent/Buttons"]
 custom_minimum_size = Vector2(0, 50)

@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bvpu23uhi1oqg"]
+
+[ext_resource type="PackedScene" uid="uid://dj75hacb2m7bp" path="res://prototype/scenes/in_game_reusables/player_spawner.tscn" id="1_kq536"]
+[ext_resource type="PackedScene" uid="uid://c0hr4dt4lhpdp" path="res://prototype/scenes/in_game_reusables/scene_spawner.tscn" id="2_ro182"]
+
+[node name="SceneSpawner" type="Node2D" unique_id=503785100]
+
+[node name="PlayerSpawner" parent="." unique_id=1281485086 instance=ExtResource("1_kq536")]
+
+[node name="SceneSpawner" parent="." unique_id=1700431378 instance=ExtResource("2_ro182")]

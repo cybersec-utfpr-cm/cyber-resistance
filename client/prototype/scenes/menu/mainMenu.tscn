@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://behkmrjp0si6m"]
+
+[ext_resource type="Script" uid="uid://bl7qkec0fsjne" path="res://prototype/scripts/main_menu.gd" id="1_8l5d7"]
+
+[node name="Main_Menu" type="Control" unique_id=2041392934]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8l5d7")
+
+[node name="Panel" type="Panel" parent="." unique_id=995257512]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=1311083710]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=639851443]
+layout_mode = 2
+theme_override_constants/separation = 120
+
+[node name="Seperator" type="Control" parent="Panel/MarginContainer/VBoxContainer" unique_id=156407624]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer" unique_id=2064641282]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "MAIN MENU"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer" unique_id=506729578]
+layout_mode = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/HBoxContainer" unique_id=1770593635]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1110179398]
+layout_mode = 2
+text = "192.168.18.14"
+placeholder_text = "Server IPv4"
+
+[node name="Seperator2" type="Control" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=278828528]
+layout_mode = 2
+
+[node name="Start" type="Button" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=288672829]
+custom_minimum_size = Vector2(120, 32)
+layout_mode = 2
+text = "START"
+
+[node name="Seperator" type="Control" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1433387555]
+layout_mode = 2
+
+[node name="Exit" type="Button" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=2126845583]
+custom_minimum_size = Vector2(120, 32)
+layout_mode = 2
+text = "EXIT"
+
+[connection signal="pressed" from="Panel/MarginContainer/HBoxContainer/VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="button_down" from="Panel/MarginContainer/HBoxContainer/VBoxContainer/Exit" to="." method="_on_exit_button_down"]

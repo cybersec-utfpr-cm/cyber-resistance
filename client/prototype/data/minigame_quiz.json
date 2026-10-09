@@ -1,0 +1,26 @@
+{
+  "document_title": "Manual de Defesa Cibernética — Apoio para a Dupla",
+  "document_text": "Este documento reúne os tópicos necessários para apoiar seu parceiro na resolução das perguntas. Leia com atenção e repasse as informações relevantes conforme cada questão aparecer.\n\n1) SQL Injection (SQLi)\nÉ um ataque onde o invasor insere fragmentos de SQL em campos de entrada (login, busca, formulários) para alterar a consulta original do banco de dados. Um payload clássico é ' OR '1'='1, que transforma a cláusula WHERE em algo sempre verdadeiro e permite burlar a autenticação.\nMitigação principal: Prepared Statements (também chamados de Consultas Parametrizadas). Eles separam o código SQL dos dados enviados pelo usuário, garantindo que a entrada nunca seja interpretada como código.\n\n2) Amplificação de DNS\nÉ um ataque DDoS volumétrico realizado sobre UDP. O atacante envia consultas DNS pequenas com IP de origem forjado (o da vítima) para servidores DNS abertos; as respostas, muito maiores que a consulta, chegam na vítima e saturam sua banda. A porta envolvida é a 53/UDP. Sintomas típicos: enxurrada de pacotes UDP grandes vindos de fora, com alvo na porta 53.\n\n3) Cálculo de Sub-rede (CIDR)\nPara abrigar N hosts em uma sub-rede, precisamos de pelo menos N + 2 endereços, pois o primeiro endereço é reservado para a rede e o último para broadcast — eles não contam como hosts utilizáveis.\nTabela rápida de máscaras pequenas:\n  /30 — 4 endereços —  2 hosts úteis\n  /29 — 8 endereços —  6 hosts úteis\n  /28 — 16 endereços — 14 hosts úteis\n  /27 — 32 endereços — 30 hosts úteis\nPara 12 hosts, a menor sub-rede possível é /28, que oferece 14 hosts úteis. A /29 só cobre 6 hosts, insuficiente.\n\n4) ARP Spoofing (Man-in-the-Middle local)\nO atacante envia respostas ARP falsas associando seu próprio endereço MAC ao IP do gateway padrão (ou de outra máquina alvo). Assim, as vítimas passam a rotear o tráfego através dele, permitindo interceptação e até alteração das comunicações dentro da LAN. É uma forma clássica de Man-in-the-Middle.\nMitigação no switch: Inspeção ARP Dinâmica (Dynamic ARP Inspection — DAI). Esse recurso valida cada resposta ARP contra a tabela do DHCP Snooping e descarta as falsificadas. Deve ser habilitada nas portas de acesso.\n\n5) Ransomware — Primeira ação\nQuando uma máquina é criptografada por ransomware e exibe pedido de resgate, a prioridade absoluta é cortar a propagação lateral antes que outras máquinas e compartilhamentos de rede sejam afetados. A primeira ação imediata é isolar a máquina da rede: desconectar o cabo Ethernet, desativar o Wi-Fi e/ou segregar a VLAN.\nSomente depois desse isolamento seguem-se as etapas de análise forense, restauração via backup e notificação às autoridades competentes (ex.: CERT, polícia, jurídico).",
+  "questions": [
+    {
+      "prompt": "Identificamos que um atacante invadiu nosso sistema inserindo o texto ' OR '1'='1 no campo de login do nosso site institucional. Ele conseguiu burlar a autenticação. Qual é o nome técnico desse ataque e qual é a solução para mitigar isso?",
+      "answer": "Ataque: SQL Injection (SQLi). Solução: implementar Prepared Statements (Consultas Parametrizadas)."
+    },
+    {
+      "prompt": "O firewall disparou um alerta. Estamos recebendo uma enxurrada de pacotes UDP gigantes vindos de fora, e o tráfego está saturando nossa banda. O monitoramento aponta que o alvo é a porta 53. Que tipo de ataque está acontecendo agora?",
+      "answer": "Amplificação de DNS (ataque DDoS volumétrico via DNS sobre UDP/53)."
+    },
+    {
+      "prompt": "Precisamos isolar uma equipe de segurança que tem exatamente 12 computadores. Olhando a tabela de máscaras CIDR, qual é a menor sub-rede (a que desperdiça menos IPs) que consegue abrigar esses 12 hosts estritamente, sabendo que não podemos usar os IPs de rede e broadcast?",
+      "answer": "/28 (14 hosts úteis). A /29 cobre só 6 hosts, insuficiente para 12."
+    },
+    {
+      "prompt": "Um usuário da rede local reportou que suas comunicações estão sendo interceptadas. Descobrimos que um dispositivo desconhecido enviou respostas falsas associando o endereço MAC dele ao IP do nosso roteador padrão (gateway). Que técnica de ataque está acontecendo aqui e o que devemos configurar no Switch para pará-lo?",
+      "answer": "Ataque: ARP Spoofing (Man-in-the-Middle local). Solução no switch: Inspeção ARP Dinâmica (Dynamic ARP Inspection / DAI)."
+    },
+    {
+      "prompt": "A tela do computador do Diretor Financeiro ficou preta e agora exibe um cronômetro exigindo o pagamento de 2 Bitcoins para liberar os arquivos que foram misteriosamente criptografados. Qual é a primeira ação imediata que devemos tomar?",
+      "answer": "Isolar a máquina da rede imediatamente (desconectar cabo, desativar Wi-Fi/VLAN) para impedir o movimento lateral do ransomware."
+    }
+  ]
+}

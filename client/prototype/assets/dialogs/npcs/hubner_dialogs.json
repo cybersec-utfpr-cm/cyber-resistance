@@ -1,0 +1,126 @@
+
+{
+	"npc_id": "hubner",
+	"portrait_path": "",
+	"dialogues": [
+	{
+	  "id": "intro_1",
+	  "text": ["Olá! Sou o professor Hubner. Que bom que conseguiu entrar no curso que queria... ou não?",
+		"Independente, iremos te ajudar nessa jornada. Para começar, tenho um trabalho simples para você.",
+		"Imagino que não tenha muito o que fazer ainda, então passe na cafeteria e conheça o lugar.
+		 Converse um pouco com Bernadete, a cozinheira. Ela tem reclamado da conexão com Wi-Fi.",
+		"Vá lá e aproveite para tomar um café. Depois conversaremos mais!"],
+	  "conditions": {
+		"once": true, 
+		"required_task": "task_2",
+		"task_status": "in_progress"
+	  },
+	  "used": false
+	},
+	{
+	  "id": "quiz_1",
+	  "text": ["Fiquei sabendo que conseguiu conectar o computador da cafeteria ao Wifi.
+				Começou bem...", 
+				"Agora, tenho um teste para saber seus conhecimentos sobre
+				cibersegurança."],
+	  "conditions": {
+		"once": true, 
+		"required_task": "task_5",
+		"task_status": "in_progress"
+	  },
+	  "used": false
+	},
+		{
+	  "id": "random_1",
+	  "text": ["O Wi-Fi caiu de novo? Bom, pelo menos vocês vão aprender a programar offline."],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+		{
+	  "id": "random_2",
+	  "text": ["A universidade gastou milhões no servidor, mas o roteador é de 2003."],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+		{
+	  "id": "random_3",
+	  "text": ["Isso não é um erro de sintaxe, é um erro de raciocínio."],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+		{
+	  "id": "random_4",
+	  "text": ["Vocês reclamam de POO, mas nem sabem fazer café sem um tutorial no YouTube."],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+		{
+	  "id": "random_5",
+	  "text": ["Lembrem-se: até o Google começou em uma garagem. E sem Wi-Fi."],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+		{
+	  "id": "random_6",
+	  "text": ["Se o seu código funciona na sua máquina, mas não aqui, o problema é sempre seu."],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+		{
+	  "id": "random_7",
+	  "text": ["Daqui a 10 anos, vocês vão rir de ter chorado por um projeto de estrutura de dados."],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+		{
+	  "id": "random_8",
+	  "text": ["Um cafezinho é sempre bom, né?"],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+		{
+	  "id": "random_9",
+	  "text": ["Sim, a prova vai ser no papel."],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+
+	{
+	  "id": "task_dialog_1",
+	  "text": "Ei, você pode me ajudar a configurar uma senha segura?",
+	  "conditions": {
+		"once": true,
+		"required_task": "seguranca_senhas",
+		"task_status": "in_progress"
+	  },
+	  "used": false
+	}
+  ]
+}

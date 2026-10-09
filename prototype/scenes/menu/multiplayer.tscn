@@ -1,0 +1,79 @@
+[gd_scene load_steps=2 format=3 uid="uid://cg3be3tn5ksqa"]
+
+[ext_resource type="Script" uid="uid://du5effsb6eepq" path="res://prototype/scripts/multiplayer.gd" id="1_hb6dx"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hb6dx")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BackToMenu" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Voltar"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="IpRow" type="HBoxContainer" parent="Panel/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="IpLabel" type="Label" parent="Panel/VBoxContainer/IpRow"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Meu IP (host):"
+
+[node name="IpLine" type="LineEdit" parent="Panel/VBoxContainer/IpRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "ex.: 192.168.0.10 (preencher antes de Nova sala)"
+
+[node name="StatusLabel" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+text = ""
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Refresh" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Refresh"
+
+[node name="NewRoom" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Nova sala"
+
+[connection signal="button_down" from="Panel/VBoxContainer/BackToMenu" to="." method="_on_back_to_menu_button_down"]
+[connection signal="button_down" from="Panel/VBoxContainer/HBoxContainer/Refresh" to="." method="_on_refresh_button_down"]
+[connection signal="button_down" from="Panel/VBoxContainer/HBoxContainer/NewRoom" to="." method="_on_new_room_button_down"]

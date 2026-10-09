@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://nos1s3ei7bbe"]
+
+[ext_resource type="Script" uid="uid://cdyc8s4j0qsaj" path="res://prototype/scripts/chat.gd" id="1_obn26"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_obn26"]
+bg_color = Color(0, 0, 0, 0.5882353)
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=509079986]
+
+[node name="Control" type="Control" parent="." unique_id=586463554]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_obn26")
+
+[node name="Panel" type="Panel" parent="Control" unique_id=1744522513]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -200.0
+offset_right = 320.0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_obn26")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/Panel" unique_id=1202049605]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Display" type="RichTextLabel" parent="Control/Panel/VBoxContainer" unique_id=1409546461]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+scroll_following = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/Panel/VBoxContainer" unique_id=1259098700]
+layout_mode = 2
+
+[node name="InputLine" type="LineEdit" parent="Control/Panel/VBoxContainer/HBoxContainer" unique_id=1405196365]
+modulate = Color(1, 1, 1, 0.5058824)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+placeholder_text = "Pressione [Enter]"
+
+[node name="Send" type="Button" parent="Control/Panel/VBoxContainer/HBoxContainer" unique_id=87079811]
+modulate = Color(1, 1, 1, 0.5058824)
+layout_mode = 2
+text = "Send"
+
+[connection signal="pressed" from="Control/Panel/VBoxContainer/HBoxContainer/Send" to="Control" method="_on_send_pressed"]

@@ -1,0 +1,1220 @@
+.
+├── APLICAR.md
+├── arvore.txt
+├── Assets
+│   ├── Audio
+│   │   ├── Ambience
+│   │   │   ├── indoor_ambience.ogg
+│   │   │   ├── indoor_ambience.ogg.import
+│   │   │   ├── university_ambience.ogg
+│   │   │   ├── university_ambience.ogg.import
+│   │   │   ├── world_ambience.ogg
+│   │   │   └── world_ambience.ogg.import
+│   │   ├── Music
+│   │   │   ├── gameplay_theme.ogg
+│   │   │   ├── gameplay_theme.ogg.import
+│   │   │   ├── lofi_city_after_rain.ogg
+│   │   │   ├── lofi_city_after_rain.ogg.import
+│   │   │   ├── lofi_coffee_and_code.ogg
+│   │   │   ├── lofi_coffee_and_code.ogg.import
+│   │   │   ├── lofi_quiet_terminal.ogg
+│   │   │   ├── lofi_quiet_terminal.ogg.import
+│   │   │   ├── lofi_signal_at_dusk.ogg
+│   │   │   ├── lofi_signal_at_dusk.ogg.import
+│   │   │   ├── lofi_study_loop.ogg
+│   │   │   ├── lofi_study_loop.ogg.import
+│   │   │   ├── menu_theme.ogg
+│   │   │   └── menu_theme.ogg.import
+│   │   ├── README.md
+│   │   └── SFX
+│   │       ├── door.wav
+│   │       ├── door.wav.import
+│   │       ├── error.wav
+│   │       ├── error.wav.import
+│   │       ├── footstep.wav
+│   │       ├── footstep.wav.import
+│   │       ├── interaction.wav
+│   │       ├── interaction.wav.import
+│   │       ├── pause_close.wav
+│   │       ├── pause_close.wav.import
+│   │       ├── pause_open.wav
+│   │       ├── pause_open.wav.import
+│   │       ├── success.wav
+│   │       ├── success.wav.import
+│   │       ├── ui_click.wav
+│   │       └── ui_click.wav.import
+│   ├── Characters
+│   │   ├── NPCs
+│   │   │   ├── bernadeteCharacter.png
+│   │   │   ├── bernadeteCharacter.png.import
+│   │   │   ├── hubnerCharacter.png
+│   │   │   ├── hubnerCharacter.png.import
+│   │   │   ├── raviCharacter.png
+│   │   │   └── raviCharacter.png.import
+│   │   └── Player
+│   │       ├── playerCharacter.png
+│   │       └── playerCharacter.png.import
+│   └── Environment
+│       ├── Cafeteria
+│       │   ├── cafeteria_exterior_v2.png
+│       │   ├── cafeteria_exterior_v2.png.import
+│       │   ├── cafeteria_interior_v2.png
+│       │   ├── cafeteria_interior_v2.png.import
+│       │   ├── cafeteria_interior_v3.png
+│       │   ├── cafeteria_interior_v3.png.import
+│       │   ├── cafeteria_interior_v3_warm.png
+│       │   ├── cafeteria_interior_v3_warm.png.import
+│       │   ├── cafeteria_interior_v5_final.png
+│       │   ├── cafeteria_interior_v5_final.png.import
+│       │   ├── cafeteria_interior_v6_precise.png
+│       │   ├── cafeteria_interior_v6_precise.png.import
+│       │   ├── cafeteria_occluders_v3.png
+│       │   ├── cafeteria_occluders_v3.png.import
+│       │   ├── cafeteria.png
+│       │   ├── cafeteria.png.import
+│       │   ├── cafeteria_ysort_occluders_v1.png
+│       │   ├── cafeteria_ysort_occluders_v1.png.import
+│       │   ├── cafeteria_ysort_occluders_v2.png
+│       │   ├── cafeteria_ysort_occluders_v2.png.import
+│       │   ├── cafeteria_ysort_occluders_v4_final.png
+│       │   ├── cafeteria_ysort_occluders_v4_final.png.import
+│       │   ├── cafeteria_ysort_occluders_v5_precise.png
+│       │   ├── cafeteria_ysort_occluders_v5_precise.png.import
+│       │   ├── doorCafeteria-sheet.png
+│       │   ├── doorCafeteria-sheet.png.import
+│       │   ├── interiorCafeteria.png
+│       │   ├── interiorCafeteria.png.import
+│       │   ├── tableCafeteria.png
+│       │   └── tableCafeteria.png.import
+│       ├── Computer
+│       │   ├── colors.png
+│       │   ├── colors.png.import
+│       │   ├── computer.png
+│       │   ├── computer.png.import
+│       │   ├── Icons
+│       │   │   ├── browser_icon.png
+│       │   │   ├── browser_icon.png.import
+│       │   │   ├── computer_icon.png
+│       │   │   ├── computer_icon.png.import
+│       │   │   ├── configuration_icon.png
+│       │   │   ├── configuration_icon.png.import
+│       │   │   ├── dump_icon.png
+│       │   │   ├── dump_icon.png.import
+│       │   │   ├── folder_icon.png
+│       │   │   ├── folder_icon.png.import
+│       │   │   ├── message_icon.png
+│       │   │   ├── message_icon.png.import
+│       │   │   ├── terminal_icon.png
+│       │   │   ├── terminal_icon.png.import
+│       │   │   ├── text_icon.png
+│       │   │   ├── text_icon.png.import
+│       │   │   ├── wifi_icon.png
+│       │   │   └── wifi_icon.png.import
+│       │   ├── left_arrow.png
+│       │   ├── left_arrow.png.import
+│       │   ├── open_padlock.png
+│       │   ├── open_padlock.png.import
+│       │   ├── padlock.png
+│       │   ├── padlock.png.import
+│       │   ├── x.png
+│       │   └── x.png.import
+│       ├── Furniture
+│       │   ├── bookshelf_top_down.png
+│       │   └── bookshelf_top_down.png.import
+│       ├── Hospital
+│       │   ├── hospital_exterior_v1.png
+│       │   └── hospital_exterior_v1.png.import
+│       ├── Hotel
+│       │   ├── hotel_exterior_v1.png
+│       │   └── hotel_exterior_v1.png.import
+│       ├── Houses
+│       │   ├── house_blue_exterior_v1.png
+│       │   ├── house_blue_exterior_v1.png.import
+│       │   ├── house_brick_exterior_v1.png
+│       │   ├── house_brick_exterior_v1.png.import
+│       │   ├── house_green_exterior_v1.png
+│       │   └── house_green_exterior_v1.png.import
+│       ├── Office
+│       │   ├── groundAndWallOffice-sheet.png
+│       │   ├── groundAndWallOffice-sheet.png.import
+│       │   ├── office_exterior_v2.png
+│       │   ├── office_exterior_v2.png.import
+│       │   ├── office_interior_v2.png
+│       │   ├── office_interior_v2.png.import
+│       │   ├── office_interior_v3.png
+│       │   ├── office_interior_v3.png.import
+│       │   ├── office_interior_v4.png
+│       │   ├── office_interior_v4.png.import
+│       │   ├── office_interior_v5.png
+│       │   ├── office_interior_v5.png.import
+│       │   ├── office_occluders_v2.png
+│       │   ├── office_occluders_v2.png.import
+│       │   ├── office_occluders_v3.png
+│       │   ├── office_occluders_v3.png.import
+│       │   ├── office_occluders_v4.png
+│       │   ├── office_occluders_v4.png.import
+│       │   ├── office_occluders_v5.png
+│       │   ├── office_occluders_v5.png.import
+│       │   ├── office-sheet.png
+│       │   ├── office-sheet.png.import
+│       │   ├── office-sheet-sheet.png
+│       │   ├── office-sheet-sheet.png.import
+│       │   ├── tables_office.png
+│       │   └── tables_office.png.import
+│       ├── University
+│       │   ├── university_exterior.png
+│       │   ├── university_exterior.png.import
+│       │   ├── university_exterior_v2.png
+│       │   ├── university_exterior_v2.png.import
+│       │   ├── university_interior.png
+│       │   ├── university_interior.png.import
+│       │   ├── university_occluders.png
+│       │   └── university_occluders.png.import
+│       └── World
+│           ├── asphaltTile.png
+│           ├── asphaltTile.png.import
+│           ├── grassTile.png
+│           ├── grassTile.png.import
+│           ├── objectsTiles.png
+│           ├── objectsTiles.png.import
+│           ├── sideWalk.png
+│           ├── sideWalk.png.import
+│           ├── sidewalkTile.png
+│           ├── sidewalkTile.png.import
+│           ├── Town
+│           │   ├── Ground
+│           │   │   ├── cobblestone_road_v1.png
+│           │   │   ├── cobblestone_road_v1.png.import
+│           │   │   ├── grass_v1.png
+│           │   │   ├── grass_v1.png.import
+│           │   │   ├── plaza_pavers_v1.png
+│           │   │   ├── plaza_pavers_v1.png.import
+│           │   │   ├── stone_sidewalk_v1.png
+│           │   │   └── stone_sidewalk_v1.png.import
+│           │   ├── Props
+│           │   │   ├── bench_topdown_v2.png
+│           │   │   ├── bench_topdown_v2.png.import
+│           │   │   ├── bench_topdown_v3.png
+│           │   │   ├── bench_topdown_v3.png.import
+│           │   │   ├── bench_v1.png
+│           │   │   ├── bench_v1.png.import
+│           │   │   ├── bicycle_rack_v1.png
+│           │   │   ├── bicycle_rack_v1.png.import
+│           │   │   ├── bus_stop_sign_v1.png
+│           │   │   ├── bus_stop_sign_v1.png.import
+│           │   │   ├── digital_freedom_monument_v1.png
+│           │   │   ├── digital_freedom_monument_v1.png.import
+│           │   │   ├── directional_sign_v1.png
+│           │   │   ├── directional_sign_v1.png.import
+│           │   │   ├── fire_hydrant_v1.png
+│           │   │   ├── fire_hydrant_v1.png.import
+│           │   │   ├── flower_planter_v1.png
+│           │   │   ├── flower_planter_v1.png.import
+│           │   │   ├── fountain_v1.png
+│           │   │   ├── fountain_v1.png.import
+│           │   │   ├── notice_board_v1.png
+│           │   │   ├── notice_board_v1.png.import
+│           │   │   ├── recycling_bin_v1.png
+│           │   │   ├── recycling_bin_v1.png.import
+│           │   │   ├── recycling_bin_v2.png
+│           │   │   ├── recycling_bin_v2.png.import
+│           │   │   ├── stone_bollard_v1.png
+│           │   │   ├── stone_bollard_v1.png.import
+│           │   │   ├── stop_sign_v1.png
+│           │   │   ├── stop_sign_v1.png.import
+│           │   │   ├── streetlamp_v1.png
+│           │   │   ├── streetlamp_v1.png.import
+│           │   │   ├── trash_bin_v1.png
+│           │   │   ├── trash_bin_v1.png.import
+│           │   │   ├── trash_bin_v2.png
+│           │   │   └── trash_bin_v2.png.import
+│           │   ├── Shaders
+│           │   │   ├── fountain_water.gdshader
+│           │   │   └── fountain_water.gdshader.uid
+│           │   ├── town_ground_v1.png
+│           │   ├── town_ground_v1.png.import
+│           │   ├── town_ground_v2.png
+│           │   ├── town_ground_v2.png.import
+│           │   └── Trees
+│           │       ├── tree_evergreen_v1.png
+│           │       ├── tree_evergreen_v1.png.import
+│           │       ├── tree_flowering_v1.png
+│           │       ├── tree_flowering_v1.png.import
+│           │       ├── tree_oval_v1.png
+│           │       ├── tree_oval_v1.png.import
+│           │       ├── tree_round_v1.png
+│           │       └── tree_round_v1.png.import
+│           ├── treesTiles.png
+│           └── treesTiles.png.import
+├── client
+│   └── prototype
+│       ├── data
+│       │   └── minigame_quiz.json
+│       └── scripts
+│           └── packets
+│               ├── bases
+│               │   ├── packet_type.gd
+│               │   ├── packet_type.gd.uid
+│               │   ├── room_summary.gd
+│               │   └── room_summary.gd.uid
+│               ├── has_joined.gd
+│               ├── has_joined.gd.uid
+│               ├── has_quitted.gd
+│               ├── has_quitted.gd.uid
+│               ├── join_request_packet.gd
+│               ├── join_request_packet.gd.uid
+│               ├── join_room_packet.gd
+│               ├── join_room_packet.gd.uid
+│               ├── minigame_grade_packet.gd
+│               ├── minigame_grade_packet.gd.uid
+│               ├── minigame_submission_packet.gd
+│               ├── minigame_submission_packet.gd.uid
+│               ├── peer_id_packet.gd
+│               ├── peer_id_packet.gd.uid
+│               ├── professor_hello_packet.gd
+│               ├── professor_hello_packet.gd.uid
+│               ├── quit_request_packet.gd
+│               ├── quit_request_packet.gd.uid
+│               ├── quit_room_packet.gd
+│               ├── quit_room_packet.gd.uid
+│               ├── refresh_packet.gd
+│               ├── refresh_packet.gd.uid
+│               ├── refresh_request_packet.gd
+│               ├── refresh_request_packet.gd.uid
+│               ├── room_info_packet.gd
+│               ├── room_info_packet.gd.uid
+│               ├── room_request_packet.gd
+│               ├── room_request_packet.gd.uid
+│               ├── start_room_packet.gd
+│               └── start_room_packet.gd.uid
+├── Cyber-Resistance-Nov25.csproj
+├── Cyber-Resistance-Nov25.sln
+├── Data
+│   ├── books.json
+│   ├── questions.json
+│   ├── quests.json
+│   ├── quizzes.json
+│   └── rewards.json
+├── Dockerfiles
+│   └── Dockerfile.player
+├── export_presets.cfg
+├── .git
+│   ├── branches
+│   ├── config
+│   ├── description
+│   ├── FETCH_HEAD
+│   ├── HEAD
+│   ├── hooks
+│   │   ├── applypatch-msg.sample
+│   │   ├── commit-msg.sample
+│   │   ├── fsmonitor-watchman.sample
+│   │   ├── post-update.sample
+│   │   ├── pre-applypatch.sample
+│   │   ├── pre-commit.sample
+│   │   ├── pre-merge-commit.sample
+│   │   ├── prepare-commit-msg.sample
+│   │   ├── pre-push.sample
+│   │   ├── pre-rebase.sample
+│   │   ├── pre-receive.sample
+│   │   ├── push-to-checkout.sample
+│   │   ├── sendemail-validate.sample
+│   │   └── update.sample
+│   ├── index
+│   ├── info
+│   │   └── exclude
+│   ├── logs
+│   │   ├── HEAD
+│   │   └── refs
+│   │       ├── heads
+│   │       │   └── main
+│   │       └── remotes
+│   │           └── origin
+│   │               └── HEAD
+│   ├── objects
+│   │   ├── info
+│   │   └── pack
+│   │       ├── pack-e8c8716f94cd2defbf42e1c8ee0268b995b92313.idx
+│   │       ├── pack-e8c8716f94cd2defbf42e1c8ee0268b995b92313.pack
+│   │       └── pack-e8c8716f94cd2defbf42e1c8ee0268b995b92313.rev
+│   ├── ORIG_HEAD
+│   ├── packed-refs
+│   └── refs
+│       ├── heads
+│       │   └── main
+│       ├── remotes
+│       │   └── origin
+│       │       └── HEAD
+│       └── tags
+├── .gitattributes
+├── .github
+│   └── workflows
+│       └── validate-main-pr-source.yml
+├── .gitignore
+├── .godot
+│   ├── editor
+│   │   ├── computer_theme.tres-folding-831a969b483589959c6d21dee28cb382.cfg
+│   │   ├── door.wav-106afb744cf6e81acae56a9d9bad5f9f.sample-folding-3f53de7fd290981771a30a2aa41356b3.cfg
+│   │   ├── editor_layout.cfg
+│   │   ├── error.wav-9432d3ccab25276c0f864cecf189e93f.sample-folding-29b6fa9b1d060e5b49d7e858d580cdf4.cfg
+│   │   ├── filesystem_cache10
+│   │   ├── filesystem_update4
+│   │   ├── footstep.wav-4e6ee4f7fec3f0cb9c9dffe075bf25c0.sample-folding-282f85844dcb900822cc9955b45f72ca.cfg
+│   │   ├── gameplay_theme.ogg-1a4a82bd1205009d93f24db2f9b6e343.oggvorbisstr-folding-7b5c6b1ccc0abb9ee8c5f6aa9ea62ee2.cfg
+│   │   ├── indoor_ambience.ogg-fcf5ffecf37e9b818a4cda1782a07509.oggvorbisstr-folding-1c7fe35342683dc08899063aa2ec669e.cfg
+│   │   ├── interaction.wav-52a7a06f3eb0b67cd3463da59396b9de.sample-folding-5a9f54eedcc78479ba72799389c632fb.cfg
+│   │   ├── lofi_city_after_rain.ogg-f61db27b496d656e3818c1bccfe37893.oggvorbisstr-folding-66103c73d6322bc354d430730acc2317.cfg
+│   │   ├── lofi_coffee_and_code.ogg-a0c25e47b497c25b5a0d018bea6c05ca.oggvorbisstr-folding-ad92363578c27427f6b7056bb02bed74.cfg
+│   │   ├── lofi_quiet_terminal.ogg-434516900e3f36b69c61662f03897f46.oggvorbisstr-folding-a7de2908e4153775c2ef68ac7667e087.cfg
+│   │   ├── lofi_signal_at_dusk.ogg-5c5a52c7089015e9e6cf0aee3981ab47.oggvorbisstr-folding-efcee77a5ec46e1056b948543b55f925.cfg
+│   │   ├── lofi_study_loop.ogg-e377df613c2abb4f5fdb4beb77f936a1.oggvorbisstr-folding-032c27ac7df45546945a75e0d1f211db.cfg
+│   │   ├── main_menu.tscn-editstate-ec065aa1a10adbb9faea31b91b6cee8c.cfg
+│   │   ├── main_menu.tscn-folding-ec065aa1a10adbb9faea31b91b6cee8c.cfg
+│   │   ├── menu_theme.ogg-c77eab81efdd0d39a4991d1d03093d43.oggvorbisstr-folding-b037dbce5242586c13e340535031b891.cfg
+│   │   ├── pause_close.wav-0f62539b343d62c67b762cccd6fb206c.sample-folding-49f65f6c1664894f28e0e2847936f295.cfg
+│   │   ├── pause_open.wav-9c7578856052255e997f3704e51c287e.sample-folding-f216f7689fa58c4e4660a634611281be.cfg
+│   │   ├── project_metadata.cfg
+│   │   ├── script_editor_cache.cfg
+│   │   ├── success.wav-6c3ddc0d34ee9dbe2810957be244fab6.sample-folding-c9c3195cc8a7ec7b062880e7212a3b50.cfg
+│   │   ├── ui_click.wav-57f00c538ef11abf23cb84803435bfe8.sample-folding-b2a2f528756bb33b2bb3536f5ae883aa.cfg
+│   │   ├── university_ambience.ogg-d3c0246c446ba1bc6ebe9a0400435fcb.oggvorbisstr-folding-aeb1ba44570d6cfc433e9fd9d9667983.cfg
+│   │   └── world_ambience.ogg-18ab0a19b57a7f7166701113036abf88.oggvorbisstr-folding-2e6e0381cb301e192b96c3d49551f858.cfg
+│   ├── .gdignore
+│   ├── global_script_class_cache.cfg
+│   ├── imported
+│   │   ├── asphaltTile.png-cd223ec72d921839dfa46feaece895f3.ctex
+│   │   ├── asphaltTile.png-cd223ec72d921839dfa46feaece895f3.md5
+│   │   ├── bench_topdown_v2.png-4eb4d528465bb710683e4d3c4dbae32b.ctex
+│   │   ├── bench_topdown_v2.png-4eb4d528465bb710683e4d3c4dbae32b.md5
+│   │   ├── bench_topdown_v3.png-ee6ae4731fc0912dac223161133bcb16.ctex
+│   │   ├── bench_topdown_v3.png-ee6ae4731fc0912dac223161133bcb16.md5
+│   │   ├── bench_v1.png-4e505ec028daf8eb15549080ac2f0cba.ctex
+│   │   ├── bench_v1.png-4e505ec028daf8eb15549080ac2f0cba.md5
+│   │   ├── bernadeteCharacter.png-580135f8670e2b8943e0c6ab99daaf2d.ctex
+│   │   ├── bernadeteCharacter.png-580135f8670e2b8943e0c6ab99daaf2d.md5
+│   │   ├── bicycle_rack_v1.png-2d9c2dcece991228916ee6eb2f380ac6.ctex
+│   │   ├── bicycle_rack_v1.png-2d9c2dcece991228916ee6eb2f380ac6.md5
+│   │   ├── bookshelf_top_down.png-36ea368a7ad8494b8bd5e51b844b3a08.ctex
+│   │   ├── bookshelf_top_down.png-36ea368a7ad8494b8bd5e51b844b3a08.md5
+│   │   ├── browser_icon.png-bfeb2e491cf3d6878522f9c9577c3a6c.ctex
+│   │   ├── browser_icon.png-bfeb2e491cf3d6878522f9c9577c3a6c.md5
+│   │   ├── bus_stop_sign_v1.png-72cc7acf02af3186aa6127efe97d1d50.ctex
+│   │   ├── bus_stop_sign_v1.png-72cc7acf02af3186aa6127efe97d1d50.md5
+│   │   ├── cafeteria_exterior_v2.png-76c83fb60c632db2b721115ae0e92a6b.ctex
+│   │   ├── cafeteria_exterior_v2.png-76c83fb60c632db2b721115ae0e92a6b.md5
+│   │   ├── cafeteria_interior_v2.png-e24877f2ab361713f1d6a748377be208.ctex
+│   │   ├── cafeteria_interior_v2.png-e24877f2ab361713f1d6a748377be208.md5
+│   │   ├── cafeteria_interior_v3.png-01463e55bbf2b0b2af713cb6734cec93.ctex
+│   │   ├── cafeteria_interior_v3.png-01463e55bbf2b0b2af713cb6734cec93.md5
+│   │   ├── cafeteria_interior_v3_warm.png-e479687ace81b7ca439dd9fa40cd176f.ctex
+│   │   ├── cafeteria_interior_v3_warm.png-e479687ace81b7ca439dd9fa40cd176f.md5
+│   │   ├── cafeteria_interior_v5_final.png-f32375d4b95f621450514350997c89d3.ctex
+│   │   ├── cafeteria_interior_v5_final.png-f32375d4b95f621450514350997c89d3.md5
+│   │   ├── cafeteria_interior_v6_precise.png-20ae8797b82e648076ed4b91687b19b2.ctex
+│   │   ├── cafeteria_interior_v6_precise.png-20ae8797b82e648076ed4b91687b19b2.md5
+│   │   ├── cafeteria_occluders_v3.png-b52201d912811c6b4543ef8d8dc32c6b.ctex
+│   │   ├── cafeteria_occluders_v3.png-b52201d912811c6b4543ef8d8dc32c6b.md5
+│   │   ├── cafeteria.png-c0dbb1079c48cd024050babeddd9adf4.ctex
+│   │   ├── cafeteria.png-c0dbb1079c48cd024050babeddd9adf4.md5
+│   │   ├── cafeteria_ysort_occluders_v1.png-51eec92810887d688a4e9c85aeb14fb0.ctex
+│   │   ├── cafeteria_ysort_occluders_v1.png-51eec92810887d688a4e9c85aeb14fb0.md5
+│   │   ├── cafeteria_ysort_occluders_v2.png-0993cc7d12f256dae5bb6ba822083eee.ctex
+│   │   ├── cafeteria_ysort_occluders_v2.png-0993cc7d12f256dae5bb6ba822083eee.md5
+│   │   ├── cafeteria_ysort_occluders_v4_final.png-1583ff4aedc2ebeb33c19f794dc4121c.ctex
+│   │   ├── cafeteria_ysort_occluders_v4_final.png-1583ff4aedc2ebeb33c19f794dc4121c.md5
+│   │   ├── cafeteria_ysort_occluders_v5_precise.png-0150e83812e202c5b568c9ea5f8d32fd.ctex
+│   │   ├── cafeteria_ysort_occluders_v5_precise.png-0150e83812e202c5b568c9ea5f8d32fd.md5
+│   │   ├── cobblestone_road_v1.png-61beed84f3df511c9cd10e8e9c452c10.ctex
+│   │   ├── cobblestone_road_v1.png-61beed84f3df511c9cd10e8e9c452c10.md5
+│   │   ├── colors.png-37282b68194459c61a14757d066022e8.ctex
+│   │   ├── colors.png-37282b68194459c61a14757d066022e8.md5
+│   │   ├── computer_icon.png-4cf629e124a8c58caaea3cc41282bf44.ctex
+│   │   ├── computer_icon.png-4cf629e124a8c58caaea3cc41282bf44.md5
+│   │   ├── computer.png-8a950cda07d43894b34bf1e8a3c1c675.ctex
+│   │   ├── computer.png-8a950cda07d43894b34bf1e8a3c1c675.md5
+│   │   ├── configuration_icon.png-3f99a794e7ae2d3a8b861f7e33c24a03.ctex
+│   │   ├── configuration_icon.png-3f99a794e7ae2d3a8b861f7e33c24a03.md5
+│   │   ├── cyber_resistance_red_shield.svg-f0d08bb2b641a0143411e3dfffb7a7b6.ctex
+│   │   ├── cyber_resistance_red_shield.svg-f0d08bb2b641a0143411e3dfffb7a7b6.md5
+│   │   ├── digital_freedom_monument_v1.png-af50603353dec960cf8901bdf57a7f96.ctex
+│   │   ├── digital_freedom_monument_v1.png-af50603353dec960cf8901bdf57a7f96.md5
+│   │   ├── directional_sign_v1.png-f25d6f351391244be517a96e6bcdc89a.ctex
+│   │   ├── directional_sign_v1.png-f25d6f351391244be517a96e6bcdc89a.md5
+│   │   ├── doorCafeteria-sheet.png-68ae13b038b05f903d4b69ad45fe4d10.ctex
+│   │   ├── doorCafeteria-sheet.png-68ae13b038b05f903d4b69ad45fe4d10.md5
+│   │   ├── door.wav-106afb744cf6e81acae56a9d9bad5f9f.md5
+│   │   ├── door.wav-106afb744cf6e81acae56a9d9bad5f9f.sample
+│   │   ├── dump_icon.png-c8231fec7f90672753b94511ef2f2cfc.ctex
+│   │   ├── dump_icon.png-c8231fec7f90672753b94511ef2f2cfc.md5
+│   │   ├── error.wav-9432d3ccab25276c0f864cecf189e93f.md5
+│   │   ├── error.wav-9432d3ccab25276c0f864cecf189e93f.sample
+│   │   ├── fire_hydrant_v1.png-9b87af3e54b4c1c98cacac47ab12aa4c.ctex
+│   │   ├── fire_hydrant_v1.png-9b87af3e54b4c1c98cacac47ab12aa4c.md5
+│   │   ├── flower_planter_v1.png-890ab35a2b91970f0dd54bcbb81b5c01.ctex
+│   │   ├── flower_planter_v1.png-890ab35a2b91970f0dd54bcbb81b5c01.md5
+│   │   ├── folder_icon.png-5ed4af7beab59dd2af5478f4f00e3a7d.ctex
+│   │   ├── folder_icon.png-5ed4af7beab59dd2af5478f4f00e3a7d.md5
+│   │   ├── footstep.wav-4e6ee4f7fec3f0cb9c9dffe075bf25c0.md5
+│   │   ├── footstep.wav-4e6ee4f7fec3f0cb9c9dffe075bf25c0.sample
+│   │   ├── fountain_v1.png-18be6203dcf6bba305d860aedbea8d67.ctex
+│   │   ├── fountain_v1.png-18be6203dcf6bba305d860aedbea8d67.md5
+│   │   ├── gameplay_theme.ogg-1a4a82bd1205009d93f24db2f9b6e343.md5
+│   │   ├── gameplay_theme.ogg-1a4a82bd1205009d93f24db2f9b6e343.oggvorbisstr
+│   │   ├── grassTile.png-fd126716e5d895d0975fb5d02f180b2a.ctex
+│   │   ├── grassTile.png-fd126716e5d895d0975fb5d02f180b2a.md5
+│   │   ├── grass_v1.png-ecfd492f64d971cb4de6b9cdab8f38a8.ctex
+│   │   ├── grass_v1.png-ecfd492f64d971cb4de6b9cdab8f38a8.md5
+│   │   ├── groundAndWallOffice-sheet.png-bc7fccd5a5bb19ce4ff39c8dfb99599e.ctex
+│   │   ├── groundAndWallOffice-sheet.png-bc7fccd5a5bb19ce4ff39c8dfb99599e.md5
+│   │   ├── hospital_exterior_v1.png-251d90a9de6ac2d452f48057dd2101ba.ctex
+│   │   ├── hospital_exterior_v1.png-251d90a9de6ac2d452f48057dd2101ba.md5
+│   │   ├── hotel_exterior_v1.png-323226ff209549b4759ffd06b8837aa2.ctex
+│   │   ├── hotel_exterior_v1.png-323226ff209549b4759ffd06b8837aa2.md5
+│   │   ├── house_blue_exterior_v1.png-d4da7bfea0d6f8a3d1bcf40bf477f207.ctex
+│   │   ├── house_blue_exterior_v1.png-d4da7bfea0d6f8a3d1bcf40bf477f207.md5
+│   │   ├── house_brick_exterior_v1.png-e81f8dd5ac0fa0b1500754cb13b2b1aa.ctex
+│   │   ├── house_brick_exterior_v1.png-e81f8dd5ac0fa0b1500754cb13b2b1aa.md5
+│   │   ├── house_green_exterior_v1.png-1e32e67201adfb46a102841d85d72bc7.ctex
+│   │   ├── house_green_exterior_v1.png-1e32e67201adfb46a102841d85d72bc7.md5
+│   │   ├── hubnerCharacter.png-7cc79248d0f37d5fb16fedf0f0cf9922.ctex
+│   │   ├── hubnerCharacter.png-7cc79248d0f37d5fb16fedf0f0cf9922.md5
+│   │   ├── icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex
+│   │   ├── icon.svg-218a8f2b3041327d8a5756f3a245f83b.md5
+│   │   ├── indoor_ambience.ogg-fcf5ffecf37e9b818a4cda1782a07509.md5
+│   │   ├── indoor_ambience.ogg-fcf5ffecf37e9b818a4cda1782a07509.oggvorbisstr
+│   │   ├── interaction.wav-52a7a06f3eb0b67cd3463da59396b9de.md5
+│   │   ├── interaction.wav-52a7a06f3eb0b67cd3463da59396b9de.sample
+│   │   ├── interiorCafeteria.png-e112e4b9800543b0ae53eb7c52a10428.ctex
+│   │   ├── interiorCafeteria.png-e112e4b9800543b0ae53eb7c52a10428.md5
+│   │   ├── left_arrow.png-a479c66b77e4c6106cb0fbd190d89275.ctex
+│   │   ├── left_arrow.png-a479c66b77e4c6106cb0fbd190d89275.md5
+│   │   ├── lofi_city_after_rain.ogg-f61db27b496d656e3818c1bccfe37893.md5
+│   │   ├── lofi_city_after_rain.ogg-f61db27b496d656e3818c1bccfe37893.oggvorbisstr
+│   │   ├── lofi_coffee_and_code.ogg-a0c25e47b497c25b5a0d018bea6c05ca.md5
+│   │   ├── lofi_coffee_and_code.ogg-a0c25e47b497c25b5a0d018bea6c05ca.oggvorbisstr
+│   │   ├── lofi_quiet_terminal.ogg-434516900e3f36b69c61662f03897f46.md5
+│   │   ├── lofi_quiet_terminal.ogg-434516900e3f36b69c61662f03897f46.oggvorbisstr
+│   │   ├── lofi_signal_at_dusk.ogg-5c5a52c7089015e9e6cf0aee3981ab47.md5
+│   │   ├── lofi_signal_at_dusk.ogg-5c5a52c7089015e9e6cf0aee3981ab47.oggvorbisstr
+│   │   ├── lofi_study_loop.ogg-e377df613c2abb4f5fdb4beb77f936a1.md5
+│   │   ├── lofi_study_loop.ogg-e377df613c2abb4f5fdb4beb77f936a1.oggvorbisstr
+│   │   ├── menu_theme.ogg-c77eab81efdd0d39a4991d1d03093d43.md5
+│   │   ├── menu_theme.ogg-c77eab81efdd0d39a4991d1d03093d43.oggvorbisstr
+│   │   ├── message_icon.png-ca16089e370101a219de2811562a903e.ctex
+│   │   ├── message_icon.png-ca16089e370101a219de2811562a903e.md5
+│   │   ├── notice_board_v1.png-2cd75b5690d6bace35c0dc204de3e984.ctex
+│   │   ├── notice_board_v1.png-2cd75b5690d6bace35c0dc204de3e984.md5
+│   │   ├── objectsTiles.png-539cf7766115d7706f3a14d9627b61e8.ctex
+│   │   ├── objectsTiles.png-539cf7766115d7706f3a14d9627b61e8.md5
+│   │   ├── office_exterior_v2.png-cea42424a77895a38bcf2db54b486bfa.ctex
+│   │   ├── office_exterior_v2.png-cea42424a77895a38bcf2db54b486bfa.md5
+│   │   ├── office_interior_v2.png-103c1fd55eb69dce8d8041f55ad907b8.ctex
+│   │   ├── office_interior_v2.png-103c1fd55eb69dce8d8041f55ad907b8.md5
+│   │   ├── office_interior_v3.png-a520a61c1381906507c30675a254002a.ctex
+│   │   ├── office_interior_v3.png-a520a61c1381906507c30675a254002a.md5
+│   │   ├── office_interior_v4.png-272e3331438c63aa23717f7d20dfa4d6.ctex
+│   │   ├── office_interior_v4.png-272e3331438c63aa23717f7d20dfa4d6.md5
+│   │   ├── office_interior_v5.png-78c605d07e45b22faaa5fe781e92aafb.ctex
+│   │   ├── office_interior_v5.png-78c605d07e45b22faaa5fe781e92aafb.md5
+│   │   ├── office_occluders_v2.png-bacf4e75c931c9aeb30f2f0fe163c144.ctex
+│   │   ├── office_occluders_v2.png-bacf4e75c931c9aeb30f2f0fe163c144.md5
+│   │   ├── office_occluders_v3.png-2bd9c1afe41308217e2c96598b83d309.ctex
+│   │   ├── office_occluders_v3.png-2bd9c1afe41308217e2c96598b83d309.md5
+│   │   ├── office_occluders_v4.png-15b66f5d3876b7b8410e34f8f368bd79.ctex
+│   │   ├── office_occluders_v4.png-15b66f5d3876b7b8410e34f8f368bd79.md5
+│   │   ├── office_occluders_v5.png-7085dfd7027135289b962c60a2424de1.ctex
+│   │   ├── office_occluders_v5.png-7085dfd7027135289b962c60a2424de1.md5
+│   │   ├── office-sheet.png-f00af4982fe80fbe2324d500b98006a5.ctex
+│   │   ├── office-sheet.png-f00af4982fe80fbe2324d500b98006a5.md5
+│   │   ├── office-sheet-sheet.png-adf605fee735fa7fb634ee6e72d0a104.ctex
+│   │   ├── office-sheet-sheet.png-adf605fee735fa7fb634ee6e72d0a104.md5
+│   │   ├── open_padlock.png-02baec22dc07ed722243d73a6120ad0d.ctex
+│   │   ├── open_padlock.png-02baec22dc07ed722243d73a6120ad0d.md5
+│   │   ├── padlock.png-17ce0484305ccc4a393743fee603a226.ctex
+│   │   ├── padlock.png-17ce0484305ccc4a393743fee603a226.md5
+│   │   ├── pause_close.wav-0f62539b343d62c67b762cccd6fb206c.md5
+│   │   ├── pause_close.wav-0f62539b343d62c67b762cccd6fb206c.sample
+│   │   ├── pause_open.wav-9c7578856052255e997f3704e51c287e.md5
+│   │   ├── pause_open.wav-9c7578856052255e997f3704e51c287e.sample
+│   │   ├── playerCharacter.png-bfeee71feb5693df7fef2d75b6a96e45.ctex
+│   │   ├── playerCharacter.png-bfeee71feb5693df7fef2d75b6a96e45.md5
+│   │   ├── plaza_pavers_v1.png-020bfd83aff3602b371ec633a541673d.ctex
+│   │   ├── plaza_pavers_v1.png-020bfd83aff3602b371ec633a541673d.md5
+│   │   ├── raviCharacter.png-cb3182de7f3d8b2b977fd9cfd223aea0.ctex
+│   │   ├── raviCharacter.png-cb3182de7f3d8b2b977fd9cfd223aea0.md5
+│   │   ├── recycling_bin_v1.png-de3c4bdbae86fb222f5cb9c51fd12f1a.ctex
+│   │   ├── recycling_bin_v1.png-de3c4bdbae86fb222f5cb9c51fd12f1a.md5
+│   │   ├── recycling_bin_v2.png-3616da23892a8247fb575ccb11326127.ctex
+│   │   ├── recycling_bin_v2.png-3616da23892a8247fb575ccb11326127.md5
+│   │   ├── sideWalk.png-1e96e2ded489bbc9c47f62cfce734e94.ctex
+│   │   ├── sideWalk.png-1e96e2ded489bbc9c47f62cfce734e94.md5
+│   │   ├── sidewalkTile.png-d76823a39c961f395da22db3d2241f04.ctex
+│   │   ├── sidewalkTile.png-d76823a39c961f395da22db3d2241f04.md5
+│   │   ├── stone_bollard_v1.png-7bbb577eeb6b6c698d7edeb7b26158b0.ctex
+│   │   ├── stone_bollard_v1.png-7bbb577eeb6b6c698d7edeb7b26158b0.md5
+│   │   ├── stone_sidewalk_v1.png-13d23a5f4c7ea0a9daa338cc38f14431.ctex
+│   │   ├── stone_sidewalk_v1.png-13d23a5f4c7ea0a9daa338cc38f14431.md5
+│   │   ├── stop_sign_v1.png-785c36ca914e585cc4de1c4c34bcce91.ctex
+│   │   ├── stop_sign_v1.png-785c36ca914e585cc4de1c4c34bcce91.md5
+│   │   ├── streetlamp_v1.png-027226688829c050e13b633ea340e93c.ctex
+│   │   ├── streetlamp_v1.png-027226688829c050e13b633ea340e93c.md5
+│   │   ├── success.wav-6c3ddc0d34ee9dbe2810957be244fab6.md5
+│   │   ├── success.wav-6c3ddc0d34ee9dbe2810957be244fab6.sample
+│   │   ├── tableCafeteria.png-d696c056f08db16b173e167c9bb7a29b.ctex
+│   │   ├── tableCafeteria.png-d696c056f08db16b173e167c9bb7a29b.md5
+│   │   ├── tables_office.png-d8678db5c7e232edab1a3e4de22de825.ctex
+│   │   ├── tables_office.png-d8678db5c7e232edab1a3e4de22de825.md5
+│   │   ├── terminal_icon.png-6e693a7cfa340cceec4f7f80bfd0342b.ctex
+│   │   ├── terminal_icon.png-6e693a7cfa340cceec4f7f80bfd0342b.md5
+│   │   ├── text_icon.png-5bb99d9e4dbcd85937ec7799003c2185.ctex
+│   │   ├── text_icon.png-5bb99d9e4dbcd85937ec7799003c2185.md5
+│   │   ├── town_ground_v1.png-c8e948b7fa05b3c3309140b32131f280.ctex
+│   │   ├── town_ground_v1.png-c8e948b7fa05b3c3309140b32131f280.md5
+│   │   ├── town_ground_v2.png-e1092380f4d6f057c152ea88df8ce22d.ctex
+│   │   ├── town_ground_v2.png-e1092380f4d6f057c152ea88df8ce22d.md5
+│   │   ├── trash_bin_v1.png-cf963e8e6f25f87bf4554171c44916e2.ctex
+│   │   ├── trash_bin_v1.png-cf963e8e6f25f87bf4554171c44916e2.md5
+│   │   ├── trash_bin_v2.png-2f9e0ebe5a09d733a2a357c9dadc9f14.ctex
+│   │   ├── trash_bin_v2.png-2f9e0ebe5a09d733a2a357c9dadc9f14.md5
+│   │   ├── tree_evergreen_v1.png-083fdd91e94931ca0ed44400e230a377.ctex
+│   │   ├── tree_evergreen_v1.png-083fdd91e94931ca0ed44400e230a377.md5
+│   │   ├── tree_flowering_v1.png-932d870289424017ed7ed03ea237500e.ctex
+│   │   ├── tree_flowering_v1.png-932d870289424017ed7ed03ea237500e.md5
+│   │   ├── tree_oval_v1.png-da5166ffe4b78cebcdc29818e8ef2deb.ctex
+│   │   ├── tree_oval_v1.png-da5166ffe4b78cebcdc29818e8ef2deb.md5
+│   │   ├── tree_round_v1.png-6b227f1460950568e9bb12ffc5b78c8a.ctex
+│   │   ├── tree_round_v1.png-6b227f1460950568e9bb12ffc5b78c8a.md5
+│   │   ├── treesTiles.png-c45dc8fbf106bc4a3d31c303d84838b7.ctex
+│   │   ├── treesTiles.png-c45dc8fbf106bc4a3d31c303d84838b7.md5
+│   │   ├── ui_click.wav-57f00c538ef11abf23cb84803435bfe8.md5
+│   │   ├── ui_click.wav-57f00c538ef11abf23cb84803435bfe8.sample
+│   │   ├── university_ambience.ogg-d3c0246c446ba1bc6ebe9a0400435fcb.md5
+│   │   ├── university_ambience.ogg-d3c0246c446ba1bc6ebe9a0400435fcb.oggvorbisstr
+│   │   ├── university_exterior.png-1f6480153d2bb8a328a07c4ac966e0b5.ctex
+│   │   ├── university_exterior.png-1f6480153d2bb8a328a07c4ac966e0b5.md5
+│   │   ├── university_exterior_v2.png-8db7feafa93c1566242376d170f8073e.ctex
+│   │   ├── university_exterior_v2.png-8db7feafa93c1566242376d170f8073e.md5
+│   │   ├── university_interior.png-eb85f2862f152d2816e3558bf79a32ff.ctex
+│   │   ├── university_interior.png-eb85f2862f152d2816e3558bf79a32ff.md5
+│   │   ├── university_occluders.png-4cb2bdb0df9881e6ecb3010296aa5fcb.ctex
+│   │   ├── university_occluders.png-4cb2bdb0df9881e6ecb3010296aa5fcb.md5
+│   │   ├── wifi_icon.png-e201c112670166e7e2918a172b22ee68.ctex
+│   │   ├── wifi_icon.png-e201c112670166e7e2918a172b22ee68.md5
+│   │   ├── world_ambience.ogg-18ab0a19b57a7f7166701113036abf88.md5
+│   │   ├── world_ambience.ogg-18ab0a19b57a7f7166701113036abf88.oggvorbisstr
+│   │   ├── x.png-311e2e3496ff6996b352b9de5874e697.ctex
+│   │   └── x.png-311e2e3496ff6996b352b9de5874e697.md5
+│   ├── mono
+│   │   ├── metadata
+│   │   │   └── ide_messaging_meta.txt
+│   │   └── temp
+│   │       ├── bin
+│   │       │   └── Debug
+│   │       │       ├── Cyber-Resistance-Nov25.deps.json
+│   │       │       ├── Cyber-Resistance-Nov25.dll
+│   │       │       ├── Cyber-Resistance-Nov25.pdb
+│   │       │       ├── Cyber-Resistance-Nov25.runtimeconfig.json
+│   │       │       ├── GodotSharp.dll
+│   │       │       └── GodotSharpEditor.dll
+│   │       └── obj
+│   │           ├── Cyber-Resistance-Nov25.csproj.nuget.dgspec.json
+│   │           ├── Cyber-Resistance-Nov25.csproj.nuget.g.props
+│   │           ├── Cyber-Resistance-Nov25.csproj.nuget.g.targets
+│   │           ├── Debug
+│   │           │   ├── Cyber-Re.5368AD15.Up2Date
+│   │           │   ├── Cyber-Resistance-Nov25.AssemblyInfo.cs
+│   │           │   ├── Cyber-Resistance-Nov25.AssemblyInfoInputs.cache
+│   │           │   ├── Cyber-Resistance-Nov25.assets.cache
+│   │           │   ├── Cyber-Resistance-Nov25.csproj.AssemblyReference.cache
+│   │           │   ├── Cyber-Resistance-Nov25.csproj.CoreCompileInputs.cache
+│   │           │   ├── Cyber-Resistance-Nov25.csproj.FileListAbsolute.txt
+│   │           │   ├── Cyber-Resistance-Nov25.dll
+│   │           │   ├── Cyber-Resistance-Nov25.GeneratedMSBuildEditorConfig.editorconfig
+│   │           │   ├── Cyber-Resistance-Nov25.genruntimeconfig.cache
+│   │           │   ├── Cyber-Resistance-Nov25.pdb
+│   │           │   ├── Cyber-Resistance-Nov25.sourcelink.json
+│   │           │   ├── .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+│   │           │   ├── ref
+│   │           │   │   └── Cyber-Resistance-Nov25.dll
+│   │           │   └── refint
+│   │           │       └── Cyber-Resistance-Nov25.dll
+│   │           ├── project.assets.json
+│   │           └── project.nuget.cache
+│   ├── scene_groups_cache.cfg
+│   ├── shader_cache
+│   │   ├── BestFitNormalShaderRD
+│   │   │   └── 8e57fa0af64c4982bd0512464bd22fb5a3dffe2852758f16611aadef2b3b7d16
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── BlitShaderRD
+│   │   │   └── 6bbad7b1df24b1e6a01cb13a38bb37fa5843a152cf45776cf1ea7056a60da747
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── BokehDofShaderRD
+│   │   │   └── d0ba728edb0d5aa1788297ca96536c6364a3cd9db8685f0efcc0ee2099639a3d
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── CanvasOcclusionShaderRD
+│   │   │   └── 24395cddd90fa750721950b0375ab20a099c2bbedbd65233ec27ff0aa2bca301
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── CanvasSdfShaderRD
+│   │   │   └── 7db9ab3d0f786aeab10dbab1a015ec6afd901ec4d41a636b481664ba4a694d0e
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── CanvasShaderRD
+│   │   │   └── 6471062056f3683b00b7925ddd7695010de17821c4bc628fdf6a51766f9a77b3
+│   │   │       ├── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   │       ├── 45fb1ddc6499e56682916a355ce2839e61f42dfe.vulkan.cache
+│   │   │       ├── 8a7277c8d3ac029b087c3fa9c55de85560be5119.vulkan.cache
+│   │   │       ├── b585f2cdc5a17ed2e467f8af814098acbdc2006f.vulkan.cache
+│   │   │       ├── c0a681ae42aa3e0b5abba232ccae0b036be455e4.vulkan.cache
+│   │   │       ├── ddbe30d4d1be5d69b00075293fd27da8decd4af2.vulkan.cache
+│   │   │       └── f3e258e8f7ec2e7e740b62f3bc48ecf5c99fb0db.vulkan.cache
+│   │   ├── ClusterDebugShaderRD
+│   │   │   └── 4fc188dcb269145dbda2443285f83cc8cc7ad3cc7e7858c8a75f0b3e4ac55523
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── ClusterRenderShaderRD
+│   │   │   └── 7c107888146783e87fdbb0e24441fa132f26f24e5b1df4b9e6754525ce104795
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── ClusterStoreShaderRD
+│   │   │   └── 6e1f93e18e58c20e222233fa26b392e7f93c8beaf570f099c1ebf35049fbe096
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── CopyShaderRD
+│   │   │   └── beacf1c3d10508b628690b3e8e57f6cd69b6e07bb68cf7a4d8a203f4563fa6a2
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── CopyToFbShaderRD
+│   │   │   └── 95b2ca88b6830882f5f71f1d6acc2a417cd8866d709eba65f9230d68c11d4656
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── CubemapDownsamplerShaderRD
+│   │   │   └── 3f74bec616f28e24cecadec7d922ddca84db2b8821a43f62b28525a8095bf8b6
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── CubemapFilterShaderRD
+│   │   │   └── 991c13dbe3658c4e0b489fa82e432be5770b26d962975a95c3cbcf8b20a034cd
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── CubemapRoughnessShaderRD
+│   │   │   └── 8b9d5899372e30075f30e4392f1fe8f5f51e097ef7fc04dd9451ff8e986a851f
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── CubeToDpShaderRD
+│   │   │   └── 4b620450fda667251610f2c67e13fbd72d2be7583f967cb021510eceb0674658
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── Fsr2AccumulatePassShaderRD
+│   │   │   └── d6ce606b04d2631d041eddb5ad40aa46ffc520bf37c8e611a363e61fb2973f07
+│   │   ├── Fsr2AutogenReactivePassShaderRD
+│   │   │   └── 5ba84b1eb38ec8e74bcfda46db95de3c37b3e1f610567c088bfff71b01b59487
+│   │   ├── Fsr2ComputeLuminancePyramidPassShaderRD
+│   │   │   └── d9d663962b732beac21f5a2f375912f0451e5412a7549de7fc77c65f64a058e5
+│   │   ├── Fsr2DepthClipPassShaderRD
+│   │   │   └── b7cf0972a2a2f9eb67c793e3d4119f4fbc490e5f171a2b056ea0646acd298468
+│   │   ├── Fsr2LockPassShaderRD
+│   │   │   └── 81c284f59f7f48f637b8dab6497cba3b88c8de4c04001f078cadfe5f43ca481b
+│   │   ├── Fsr2RcasPassShaderRD
+│   │   │   └── 31cd66726cb1d901cb75dcdea993e0399b801767135c7b8bf9c70bae26ed2753
+│   │   ├── Fsr2ReconstructPreviousDepthPassShaderRD
+│   │   │   └── db08ed24222d9cf67d212c90eaf9200072a559c3fdd42886f34ac0bebfb2fa30
+│   │   ├── Fsr2TcrAutogenPassShaderRD
+│   │   │   └── 66072aec1db58bd054f82374721d1c0e6a18917b76fefe65b1d53f7519788747
+│   │   ├── FsrUpscaleShaderRD
+│   │   │   └── 5ce7951900c864d5224e1e6c09bc0a20c6181165903b29b10baeceddb052e0ce
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── GiShaderRD
+│   │   │   └── eab79a313099c55f8a1ce02503e7f17060c834680ad58daa03db0e7c956509d3
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── LuminanceReduceShaderRD
+│   │   │   └── 33702ba39d5040c52dbb56e65e80d1345cefe676f39f6ec51c2e8982cc5b58f5
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── MotionVectorsShaderRD
+│   │   │   └── ef00ea8eb5f7129a15f78e81f496f99588e80f5108ef5f35e04bb178a9b3a3d4
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── ParticlesCopyShaderRD
+│   │   │   └── 998169938bb2670984876404c09c9571c09364b793f634cac0bbb474a56d4519
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── ParticlesShaderRD
+│   │   │   └── f7a0907ce9f8c3ab054455dcf5ed7a8756b16c586811326264874cbd5be49cbf
+│   │   │       └── f128cab0b22fb7e0d9f023d6cdb81309be392d95.vulkan.cache
+│   │   ├── ResolveShaderRD
+│   │   │   └── 3dd2094837d530d0264aab5596f03f442d89336c72e28af8902cc096dcd03253
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SceneForwardClusteredShaderRD
+│   │   │   ├── 284291eedec7256b2a2be740c5fff461d1570bf3d7319181cb559452122ce71e
+│   │   │   ├── bc4b6abdbb6d39f0bc16e5b5349533a43e3605751493d8b65051aaef7484a799
+│   │   │   │   ├── 0f1bcf11b9f7757773a7866f1cd2e297cb2acf5f.vulkan.cache
+│   │   │   │   ├── 218e36a984b0c78c760adc7bcda857a77b17ad85.vulkan.cache
+│   │   │   │   ├── 2b50e38e5fd009c28175cc76423501d3f1de866f.vulkan.cache
+│   │   │   │   ├── 5f3097572932b33c93eebb3c968bad4acf0a97a9.vulkan.cache
+│   │   │   │   ├── 618494189447b24dfbb3e43c9f38e6d9f04604b0.vulkan.cache
+│   │   │   │   ├── 6ee0392e6ccb46d27eb7b08ea14ec6d5cf221168.vulkan.cache
+│   │   │   │   ├── 757ab33d4789b9457fab88a7a982d67d6209d600.vulkan.cache
+│   │   │   │   ├── 7b3dadb0d33a464bbb0a7962224c158af07f1381.vulkan.cache
+│   │   │   │   ├── 7fb66440f65dac23b75016fc52fb82ae26e9393f.vulkan.cache
+│   │   │   │   ├── 86e1b93c3d7bd17d2e21c13871086aa19aa333e7.vulkan.cache
+│   │   │   │   ├── 964e2bf8e1eed26e7e9ed4b223d256b6a0bda12a.vulkan.cache
+│   │   │   │   ├── 9f9294903cdaab4eeb10f39defaee7f48b9ad675.vulkan.cache
+│   │   │   │   ├── a6d99b637dfee75712ae57f13dc63ae39e299a45.vulkan.cache
+│   │   │   │   ├── ab60f8b228c0dad11d9d882c2ab4f61eb6ca2f20.vulkan.cache
+│   │   │   │   ├── b396ad98c064d54194bbfe9f2c4d30adaaa1f6af.vulkan.cache
+│   │   │   │   ├── b7b2f398c116e26c751517dd8d44535f700f825f.vulkan.cache
+│   │   │   │   ├── bb38165ecd6242eb97573e5f293c2d3c40d25eee.vulkan.cache
+│   │   │   │   ├── c4c828897f8a3fe72e3713d35b4ba452d7ed9acf.vulkan.cache
+│   │   │   │   └── c911b2eb203b7525047b1fc26929407fb3d4191d.vulkan.cache
+│   │   │   ├── da4d1f434f35e2acdd855a860d224d68b1fb8b2620d1035317ce03311d707cfc
+│   │   │   └── effeccd534cb8fe4ee3862c253ccb3bc3c4045928701d0380e2ebacd9153d921
+│   │   ├── ScreenSpaceReflectionFilterShaderRD
+│   │   │   └── 59c4cef02779a8acd50c9188405d1ea70c65111d4532f05a1689cc183bddabee
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── ScreenSpaceReflectionScaleShaderRD
+│   │   │   └── 85f765cbe264a9f710b844795c36fcf791759760c63382c432f6d92af2173818
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── ScreenSpaceReflectionShaderRD
+│   │   │   └── 43bd171c5ba3a0778ece40a1918594346918610c253c97c75d19bda6f995265f
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SdfgiDebugProbesShaderRD
+│   │   │   └── 3c7700e8cbf46f88e23a8c41f2556b6ddc696a4a35dbdb6c1acf803761dd2de4
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SdfgiDebugShaderRD
+│   │   │   └── 22f9042b8aa1257f53dae8ddf2c94438c3380e00064a90a506d36b480d82293f
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SdfgiDirectLightShaderRD
+│   │   │   └── fa2af256007e2ad2e4bcf72c9f08a49e04863114a688a267ce861744581e04a5
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SdfgiIntegrateShaderRD
+│   │   │   └── 870462c8b85a92972df18d521541bfbfff33533d931b01dbf5716450663146b8
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SdfgiPreprocessShaderRD
+│   │   │   └── 88a022f9fff8fe752ed04fa4da077d83ea496ddb3615ad22cc7848c983f2638c
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── ShadowFrustumShaderRD
+│   │   │   └── fef30036f10d283c13667c3acca97edee65d56245010f434fd421d76f7843f90
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SkeletonShaderRD
+│   │   │   └── de5a3a7e05eac017a9f4f0f51e89fbb5bf553bd7df946889349ad7b6f8bd64c5
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SkyShaderRD
+│   │   │   └── 6b0c241e0a7f44ca806203103a84ea8cacbd1a4e84ab77616240ceebcbf3160a
+│   │   │       ├── 03e3b11c69e24394b2d955a8c0ba85587bb70839.vulkan.cache
+│   │   │       ├── 0a0fb987bd6ede673a5edeb59834f887758ae2a6.vulkan.cache
+│   │   │       ├── 301c34f080b0d9fb9ff1c17636ea175173a43e1c.vulkan.cache
+│   │   │       └── de678811d1bad3cad4892a8db7b6ea0be197d51d.vulkan.cache
+│   │   ├── SortShaderRD
+│   │   │   └── 545e106bd1191907a8316d3d86738d8c384eb4a1a067c798e8bfd0bac1279c73
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SpecularMergeShaderRD
+│   │   │   └── 8e8e9c33e6781c596d7765bd91017b68792d6b36e5b23c973cd2d6f7f056a216
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SsaoBlurShaderRD
+│   │   │   └── 443c1fff5ae7fb8aec81b9a845aab916147757a779cb7a7c8521d4974457c074
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SsaoImportanceMapShaderRD
+│   │   │   └── 9f192829df90879a0fc512ae18df2239b4c9a733103215d90dee0acb66642345
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SsaoInterleaveShaderRD
+│   │   │   └── 070f0ebce33834c2a82b068bc61b53971cb86d05880e427b03d1fe15723e7b87
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SsaoShaderRD
+│   │   │   └── 4bd727d4d8aa846ca43b23eafd124a9487f022b5ad8a7e0623a25388f09b3282
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SsEffectsDownsampleShaderRD
+│   │   │   └── 48f2cebb7f0dd3aab6b580abf6ec276aa76825fcc054877ac8b7895fbef4822a
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SsilBlurShaderRD
+│   │   │   └── 1ff53580e212a26e3c01205f648b3324cf30b75626d2d6b9417b742efa240618
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SsilImportanceMapShaderRD
+│   │   │   └── a8d4b57c4f99232c0cc47d574eb04d179f9dc6fe84a1ae91c8b81f3d0d81c6aa
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SsilInterleaveShaderRD
+│   │   │   └── 3992715e3126a98fbfa73122e1b8aa14b976ed9b02ca0f036430fc6c69e8c36d
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SsilShaderRD
+│   │   │   └── c5424e1c372d343ebc21ab0b54d4e74f4d6d4f47b686ef3622428f9d18c9644d
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── SubsurfaceScatteringShaderRD
+│   │   │   └── cb6df44422e6b060890c97b1ac8cb5d23844d093097d8bf32df53d19232ad36d
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── TaaResolveShaderRD
+│   │   │   └── d856f62499bed2c137e901f764f02a079f2b1851a3e9c263aa3712eddcd894f9
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── TonemapShaderRD
+│   │   │   └── 9ccc8d64d0d26d4a9825e5daef5ecdf69730d3309201f45326792f102c406132
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── VolumetricFogProcessShaderRD
+│   │   │   └── 9f96111fefd8c8761450e07cd7d47feb4a3cecec5ea1aa26692f9da2496bd1d3
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   ├── VolumetricFogShaderRD
+│   │   │   └── 389521db0490d391aa9dc787fe796cec0f155e1074e7e3c91152a2063c8e90bf
+│   │   │       └── 9a227745af2d65830f930370a9fbba551fbd6f60.vulkan.cache
+│   │   ├── VoxelGiDebugShaderRD
+│   │   │   └── bc87e8b93497a3429573311bcf22a69629dffcf6013cd3648cfa1844e4936d9e
+│   │   │       └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   │   └── VoxelGiShaderRD
+│   │       └── 827a442457226baf262095b27bc036a605b10332fad2074a502704d2c817f741
+│   │           └── 087916079fba7c625e62b0c2cca570e0fb87c99a.vulkan.cache
+│   └── uid_cache.bin
+├── Icons
+│   ├── cyber_resistance_red_shield.svg
+│   └── cyber_resistance_red_shield.svg.import
+├── icon.svg
+├── icon.svg.import
+├── install-docker-machines.sh
+├── Materials
+│   └── Scenario1
+│       └── material-didatico.md
+├── professor
+│   ├── data
+│   │   └── minigame_quiz.json
+│   └── scripts
+│       └── packets
+│           ├── bases
+│           │   ├── packet_type.gd
+│           │   ├── packet_type.gd.uid
+│           │   ├── room_summary.gd
+│           │   └── room_summary.gd.uid
+│           ├── has_joined.gd
+│           ├── has_joined.gd.uid
+│           ├── has_quitted.gd
+│           ├── has_quitted.gd.uid
+│           ├── join_request_packet.gd
+│           ├── join_request_packet.gd.uid
+│           ├── join_room_packet.gd
+│           ├── join_room_packet.gd.uid
+│           ├── minigame_grade_packet.gd
+│           ├── minigame_grade_packet.gd.uid
+│           ├── minigame_submission_packet.gd
+│           ├── minigame_submission_packet.gd.uid
+│           ├── peer_id_packet.gd
+│           ├── peer_id_packet.gd.uid
+│           ├── professor_hello_packet.gd
+│           ├── professor_hello_packet.gd.uid
+│           ├── quit_request_packet.gd
+│           ├── quit_request_packet.gd.uid
+│           ├── quit_room_packet.gd
+│           ├── quit_room_packet.gd.uid
+│           ├── refresh_packet.gd
+│           ├── refresh_packet.gd.uid
+│           ├── refresh_request_packet.gd
+│           ├── refresh_request_packet.gd.uid
+│           ├── room_info_packet.gd
+│           ├── room_info_packet.gd.uid
+│           ├── room_request_packet.gd
+│           ├── room_request_packet.gd.uid
+│           ├── start_room_packet.gd
+│           └── start_room_packet.gd.uid
+├── project.godot
+├── README.md
+├── Resources
+│   └── Themes
+│       ├── bookshelf_theme.tres
+│       └── computer_theme.tres
+├── Scenarios
+│   └── Scenario1
+│       ├── Dockerfile
+│       ├── entrypoint.sh
+│       ├── README.md
+│       └── sudoers.bob
+├── Scenes
+│   ├── Computer
+│   │   ├── anagram_popup.tscn
+│   │   ├── computer.tscn
+│   │   ├── Terminal
+│   │   │   └── terminal.tscn
+│   │   └── wi_fi_screen.tscn
+│   ├── Core
+│   │   ├── book_manager.tscn
+│   │   ├── game.tscn
+│   │   ├── quest_manager.tscn
+│   │   └── quiz_manager.tscn
+│   ├── Establishments
+│   │   ├── cafeteria.tscn
+│   │   ├── office.tscn
+│   │   ├── university.tscn
+│   │   └── world.tscn
+│   ├── Interactions
+│   │   ├── bookshelf.tscn
+│   │   ├── computer_access.tscn
+│   │   ├── dialog_box.tscn
+│   │   ├── door_area.tscn
+│   │   └── exam_terminal.tscn
+│   ├── Interfaces
+│   │   ├── bookshelf_ui.tscn
+│   │   ├── exam_ui.tscn
+│   │   ├── fair_mode_menu.tscn
+│   │   ├── main_menu.tscn
+│   │   ├── pause_menu.tscn
+│   │   ├── quest_log_ui.tscn
+│   │   └── quiz_ui.tscn
+│   ├── Minigames
+│   │   ├── data_center_rescue.tscn
+│   │   ├── network_maze.tscn
+│   │   ├── phishing_hunt.tscn
+│   │   ├── ransomware_escape.tscn
+│   │   ├── server_defense.tscn
+│   │   └── wifi_ghost.tscn
+│   ├── Multiplayer
+│   │   └── server_main.tscn
+│   ├── NPCs
+│   │   ├── hubner_npc.tscn
+│   │   └── npc_tutor_hubner.tscn
+│   └── Player
+│       └── player.tscn
+├── Scripts
+│   ├── Computer
+│   │   ├── Anagram.cs
+│   │   ├── Anagram.cs.uid
+│   │   ├── Computer.cs
+│   │   ├── Computer.cs.uid
+│   │   ├── Desktop.cs
+│   │   ├── Desktop.cs.uid
+│   │   ├── Screens
+│   │   │   ├── Settings.cs
+│   │   │   └── Settings.cs.uid
+│   │   ├── Screens.cs
+│   │   ├── Screens.cs.uid
+│   │   ├── Terminal
+│   │   │   ├── DockerManager.cs
+│   │   │   ├── DockerManager.cs.uid
+│   │   │   ├── InputText.cs
+│   │   │   ├── InputText.cs.uid
+│   │   │   ├── Log.cs
+│   │   │   ├── Log.cs.uid
+│   │   │   ├── TelnetInterface.cs
+│   │   │   ├── TelnetInterface.cs.uid
+│   │   │   ├── TerminalController.cs
+│   │   │   ├── TerminalController.cs.uid
+│   │   │   ├── Terminal.cs
+│   │   │   └── Terminal.cs.uid
+│   │   ├── Terminal.cs.uid
+│   │   ├── WiFiScreen.cs
+│   │   └── WiFiScreen.cs.uid
+│   ├── Core
+│   │   ├── AudioManager.cs
+│   │   ├── AudioManager.cs.uid
+│   │   ├── BookManager.cs
+│   │   ├── BookManager.cs.uid
+│   │   ├── FairModeProgress.cs
+│   │   ├── FairModeProgress.cs.uid
+│   │   ├── GameManager.cs
+│   │   ├── GameManager.cs.uid
+│   │   ├── InventoryManager.cs
+│   │   ├── InventoryManager.cs.uid
+│   │   ├── PauseManager.cs
+│   │   ├── PauseManager.cs.uid
+│   │   ├── QuestionManager.cs
+│   │   ├── QuestionManager.cs.uid
+│   │   ├── QuestManager.cs
+│   │   ├── QuestManager.cs.uid
+│   │   ├── QuizManager.cs
+│   │   ├── QuizManager.cs.uid
+│   │   ├── RewardManager.cs
+│   │   ├── RewardManager.cs.uid
+│   │   ├── RewardModels.cs
+│   │   ├── RewardModels.cs.uid
+│   │   ├── SaveManager.cs
+│   │   └── SaveManager.cs.uid
+│   ├── Establishments
+│   │   ├── Cafeteria.cs
+│   │   ├── Cafeteria.cs.uid
+│   │   ├── CafeteriaYSortOccluders.cs
+│   │   ├── CafeteriaYSortOccluders.cs.uid
+│   │   ├── LocationManager.cs
+│   │   ├── LocationManager.cs.uid
+│   │   ├── NPCSpawner.cs
+│   │   ├── NPCSpawner.cs.uid
+│   │   ├── OfficeYSortOccluders.cs
+│   │   ├── OfficeYSortOccluders.cs.uid
+│   │   ├── University.cs
+│   │   ├── University.cs.uid
+│   │   ├── UniversityYSortOccluders.cs
+│   │   ├── UniversityYSortOccluders.cs.uid
+│   │   ├── World.cs
+│   │   └── World.cs.uid
+│   ├── Interactions
+│   │   ├── Bookshelf.cs
+│   │   ├── Bookshelf.cs.uid
+│   │   ├── ComputerAccess.cs
+│   │   ├── ComputerAccess.cs.uid
+│   │   ├── DialogBox.cs
+│   │   ├── DialogBox.cs.uid
+│   │   ├── DialogueManager.cs
+│   │   ├── DialogueManager.cs.uid
+│   │   ├── DoorArea.cs
+│   │   ├── DoorArea.cs.uid
+│   │   ├── ExamTerminal.cs
+│   │   ├── ExamTerminal.cs.uid
+│   │   ├── QuestManager.cs
+│   │   ├── QuestManager.cs.uid
+│   │   ├── RestrictedDoor.cs
+│   │   ├── RestrictedDoor.cs.uid
+│   │   ├── SpawnPoints.cs
+│   │   └── SpawnPoints.cs.uid
+│   ├── Interfaces
+│   │   ├── BookshelfUi.cs
+│   │   ├── BookshelfUi.cs.uid
+│   │   ├── ExamUi.cs
+│   │   ├── ExamUi.cs.uid
+│   │   ├── FairModeMenu.cs
+│   │   ├── FairModeMenu.cs.uid
+│   │   ├── MainMenu.cs
+│   │   ├── MainMenu.cs.uid
+│   │   ├── PauseMenu.cs
+│   │   ├── PauseMenu.cs.uid
+│   │   ├── QuestLogUi.cs
+│   │   ├── QuestLogUi.cs.uid
+│   │   ├── QuizUi.cs
+│   │   └── QuizUi.cs.uid
+│   ├── Minigames
+│   │   ├── DataCenterRescue.cs
+│   │   ├── DataCenterRescue.cs.uid
+│   │   ├── NetworkMaze.cs
+│   │   ├── NetworkMaze.cs.uid
+│   │   ├── PhishingHunt.cs
+│   │   ├── PhishingHunt.cs.uid
+│   │   ├── RansomwareEscape.cs
+│   │   ├── RansomwareEscape.cs.uid
+│   │   ├── ServerDefense.cs
+│   │   ├── ServerDefense.cs.uid
+│   │   ├── WifiGhost.cs
+│   │   └── WifiGhost.cs.uid
+│   ├── Multiplayer
+│   │   ├── network_handler.gd
+│   │   ├── network_handler.gd.uid
+│   │   ├── packets
+│   │   │   ├── bases
+│   │   │   │   ├── packet_type.gd
+│   │   │   │   ├── packet_type.gd.uid
+│   │   │   │   ├── room_summary.gd
+│   │   │   │   └── room_summary.gd.uid
+│   │   │   ├── has_joined.gd
+│   │   │   ├── has_joined.gd.uid
+│   │   │   ├── has_quitted.gd
+│   │   │   ├── has_quitted.gd.uid
+│   │   │   ├── join_request_packet.gd
+│   │   │   ├── join_request_packet.gd.uid
+│   │   │   ├── join_room_packet.gd
+│   │   │   ├── join_room_packet.gd.uid
+│   │   │   ├── minigame_grade_packet.gd
+│   │   │   ├── minigame_grade_packet.gd.uid
+│   │   │   ├── minigame_submission_packet.gd
+│   │   │   ├── minigame_submission_packet.gd.uid
+│   │   │   ├── peer_id_packet.gd
+│   │   │   ├── peer_id_packet.gd.uid
+│   │   │   ├── professor_hello_packet.gd
+│   │   │   ├── professor_hello_packet.gd.uid
+│   │   │   ├── quit_request_packet.gd
+│   │   │   ├── quit_request_packet.gd.uid
+│   │   │   ├── quit_room_packet.gd
+│   │   │   ├── quit_room_packet.gd.uid
+│   │   │   ├── refresh_packet.gd
+│   │   │   ├── refresh_packet.gd.uid
+│   │   │   ├── refresh_request_packet.gd
+│   │   │   ├── refresh_request_packet.gd.uid
+│   │   │   ├── room_info_packet.gd
+│   │   │   ├── room_info_packet.gd.uid
+│   │   │   ├── room_request_packet.gd
+│   │   │   ├── room_request_packet.gd.uid
+│   │   │   ├── start_room_packet.gd
+│   │   │   └── start_room_packet.gd.uid
+│   │   ├── server_main.gd
+│   │   ├── server_main.gd.uid
+│   │   ├── server_packet_handler.gd
+│   │   ├── server_packet_handler.gd.uid
+│   │   └── storage_classes
+│   │       ├── room_storage.gd
+│   │       └── room_storage.gd.uid
+│   ├── NPCs
+│   │   ├── Dialogues
+│   │   │   ├── DialogueData.cs
+│   │   │   ├── DialogueData.cs.uid
+│   │   │   └── npc_tutor_hubner.json
+│   │   ├── Hubner
+│   │   │   ├── NPCMovementAI.cs
+│   │   │   ├── NPCMovementAI.cs.uid
+│   │   │   ├── NPCRoutine.cs
+│   │   │   ├── NPCRoutine.cs.uid
+│   │   │   ├── NPCTask.cs
+│   │   │   └── NPCTask.cs.uid
+│   │   ├── NPCData.cs
+│   │   ├── NPCData.cs.uid
+│   │   ├── NPCManager.cs
+│   │   ├── NPCManager.cs.uid
+│   │   ├── NPCTutorHubner.cs
+│   │   └── NPCTutorHubner.cs.uid
+│   └── Player
+│       ├── PlayerMovement.cs
+│       └── PlayerMovement.cs.uid
+├── server
+│   └── scripts
+│       └── packets
+│           ├── bases
+│           │   ├── packet_type.gd
+│           │   ├── packet_type.gd.uid
+│           │   ├── room_summary.gd
+│           │   └── room_summary.gd.uid
+│           ├── has_joined.gd
+│           ├── has_joined.gd.uid
+│           ├── has_quitted.gd
+│           ├── has_quitted.gd.uid
+│           ├── join_request_packet.gd
+│           ├── join_request_packet.gd.uid
+│           ├── join_room_packet.gd
+│           ├── join_room_packet.gd.uid
+│           ├── minigame_grade_packet.gd
+│           ├── minigame_grade_packet.gd.uid
+│           ├── minigame_submission_packet.gd
+│           ├── minigame_submission_packet.gd.uid
+│           ├── peer_id_packet.gd
+│           ├── peer_id_packet.gd.uid
+│           ├── professor_hello_packet.gd
+│           ├── professor_hello_packet.gd.uid
+│           ├── quit_request_packet.gd
+│           ├── quit_request_packet.gd.uid
+│           ├── quit_room_packet.gd
+│           ├── quit_room_packet.gd.uid
+│           ├── refresh_packet.gd
+│           ├── refresh_packet.gd.uid
+│           ├── refresh_request_packet.gd
+│           ├── refresh_request_packet.gd.uid
+│           ├── room_info_packet.gd
+│           ├── room_info_packet.gd.uid
+│           ├── room_request_packet.gd
+│           ├── room_request_packet.gd.uid
+│           ├── start_room_packet.gd
+│           └── start_room_packet.gd.uid
+├── shared
+│   ├── data
+│   │   └── minigame_quiz.json
+│   ├── .gdignore
+│   └── packets
+│       ├── bases
+│       │   ├── packet_type.gd
+│       │   ├── packet_type.gd.uid
+│       │   ├── room_summary.gd
+│       │   └── room_summary.gd.uid
+│       ├── has_joined.gd
+│       ├── has_joined.gd.uid
+│       ├── has_quitted.gd
+│       ├── has_quitted.gd.uid
+│       ├── join_request_packet.gd
+│       ├── join_request_packet.gd.uid
+│       ├── join_room_packet.gd
+│       ├── join_room_packet.gd.uid
+│       ├── minigame_grade_packet.gd
+│       ├── minigame_submission_packet.gd
+│       ├── minigame_submission_packet.gd.uid
+│       ├── peer_id_packet.gd
+│       ├── peer_id_packet.gd.uid
+│       ├── professor_hello_packet.gd
+│       ├── quit_request_packet.gd
+│       ├── quit_request_packet.gd.uid
+│       ├── quit_room_packet.gd
+│       ├── quit_room_packet.gd.uid
+│       ├── refresh_packet.gd
+│       ├── refresh_packet.gd.uid
+│       ├── refresh_request_packet.gd
+│       ├── refresh_request_packet.gd.uid
+│       ├── room_info_packet.gd
+│       ├── room_info_packet.gd.uid
+│       ├── room_request_packet.gd
+│       ├── room_request_packet.gd.uid
+│       ├── start_room_packet.gd
+│       └── start_room_packet.gd.uid
+├── sync_packets.ps1
+├── sync_packets.sh
+└── Tools
+    └── Audio
+        └── generate_lofi_tracks.py
+
+238 directories, 980 files

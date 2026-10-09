@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnnk20ejw87e6"]
+
+[ext_resource type="Script" uid="uid://bsdwvsb38rw03" path="res://prototype/scripts/pause_control.gd" id="1_ut2o7"]
+
+[node name="PauseControl" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ut2o7")
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(300, 250)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+custom_minimum_size = Vector2(200, 150)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.5
+offset_top = -33.0
+offset_right = 39.5
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Continue" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Continue"
+
+[node name="Quit" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Quit"
+
+[connection signal="button_down" from="Panel/VBoxContainer/Continue" to="." method="_on_continue_button_down"]
+[connection signal="button_down" from="Panel/VBoxContainer/Quit" to="." method="_on_quit_button_down"]

@@ -1,0 +1,79 @@
+
+{
+	"npc_id": "bernadete",
+	"portrait_path": "",
+	"dialogues": [
+	{
+	  "id": "intro_1",
+	  "text": ["Ual... Novo por aqui ou um turista que veio conhecer meu Café...?",
+				"Seja bem vindo a Cafeteria da cidade!
+				 Temos várias opções de salgados, bolos, chás, sobremesas...",
+				"Mas avaliando daqui, acho que nada te agrada mais que um delicioso café, né??",
+				"O primeiro será por conta da casa! Mas quero aproveitar e pedir um favor:",
+				"Você pode acessar o computador da caferia e conectar ao wifi? 
+				Tenho dificuldade com essas coisas e não sei mais o que fazer..."],
+	  "conditions": {
+		"once": true, 
+		"required_task": "task_3",
+		"task_status": "in_progress"
+	  },
+	  "used": false
+	},
+	{
+	  "id": "agradecimento_conexao_wifi",
+	  "text": ["Nossa, muito obrigada mesmo por ter conectado o computador ao wifi. 
+				Estava precisando muito disso.",
+				"Como prometido, aqui está o seu cafézinho! Espero que goste"],
+	  	"conditions": {
+		"once": true, 
+		"required_task": "task_4",
+		"task_status": "completed"
+	  },
+	  "used": false
+	},
+	
+	{
+	  "id": "random_1",
+	  "text": ["Bom dia! O que posso preparar para você hoje?"],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+	{"id": "random_2",
+	  "text": ["Recomendo nosso bolo de chocolate caseiro, acabou de sair do forno!"],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+	{"id": "random_3",
+	  "text": ["Quer experimentar nosso café especial da casa? É um blend exclusivo!"],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+	{"id": "random_4",
+	  "text": ["Hoje temos um croissant recheado com doce de leite, quer um?"],
+	  "conditions": {
+		"once": false,
+		"required_task": null
+	  },
+	  "used": false
+	},
+	{
+	  "id": "task_dialog_1",
+	  "text": "Ei, você pode me ajudar a configurar uma senha segura?",
+	  "conditions": {
+		"once": true,
+		"required_task": "seguranca_senhas",
+		"task_status": "in_progress"
+	  },
+	  "used": false
+	}
+  ]
+}
