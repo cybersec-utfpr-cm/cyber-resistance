@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://btap1jy8jyvnk"]
 
-[ext_resource type="Script" uid="uid://dkkrsyb3fqc5j" path="res://Scripts/Multiplayer/server_main.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://cf23ohvg8ba" path="res://Scripts/Multiplayer/ServerMain.cs" id="1_main"]
 
 [node name="ServerMain" type="Control" unique_id=62437603]
 layout_mode = 3
