@@ -221,18 +221,6 @@ public partial class InputText : TextEdit
 
                 GrabFocus();
 
-                int tutorialStage =
-                        QuestManager.Instance?.GetQuestStage("tutorial") ?? 0;
-
-                if (tutorialStage == 3)
-                {
-                        QuestManager.Instance.SetQuestStage("tutorial", 4);
-
-                        GD.Print(
-                                "InputText: tutorial avançado após conexão " +
-                                "bem-sucedida com o computador."
-                        );
-                }
         }
 
         private void OnConnectionFailed(string message)
