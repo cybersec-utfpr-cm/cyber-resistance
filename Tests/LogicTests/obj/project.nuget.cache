@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "6U31+pHe8B4=",
+  "success": true,
+  "projectFilePath": "/home/unknowndev/GitHub/Cyber Resistance/cyber-resistance/Tests/LogicTests/LogicTests.csproj",
+  "expectedPackageFiles": [
+    "/home/unknowndev/.nuget/packages/microsoft.netcore.app.ref/8.0.30/microsoft.netcore.app.ref.8.0.30.nupkg.sha512",
+    "/home/unknowndev/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.30/microsoft.aspnetcore.app.ref.8.0.30.nupkg.sha512",
+    "/home/unknowndev/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.30/microsoft.netcore.app.host.linux-x64.8.0.30.nupkg.sha512"
+  ],
+  "logs": []
+}

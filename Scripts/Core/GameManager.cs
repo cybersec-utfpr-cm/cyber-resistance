@@ -10,13 +10,14 @@ public partial class GameManager : Node
 		private string _nextSpawnName = "";
 		private DockerManager _docker;
 		private readonly SemaphoreSlim _dockerLock = new(1, 1);
+		private bool _playerMachineReady;
 		private bool _isExiting;
 
 		public static GameManager Instance;
 		public Node WorldContainer;
 		public Node UIContainer;
 
-		public override async void _Ready()
+		public override void _Ready()
 		{
 				Instance = this;
 				WorldContainer = GetNode("/root/Game/WorldContainer");
@@ -57,7 +58,6 @@ public partial class GameManager : Node
 				}
 
 				_docker = new DockerManager(PlayerMachineContainerName);
-				await EnsurePlayerMachineStartedAsync();
 		}
 
 		public async Task<bool> EnsurePlayerMachineStartedAsync()
@@ -77,6 +77,7 @@ public partial class GameManager : Node
 						);
 
 						await _docker.StartAsync();
+						_playerMachineReady = true;
 
 						GD.Print(
 								$"GameManager: container '{PlayerMachineContainerName}' está pronto."
@@ -86,6 +87,7 @@ public partial class GameManager : Node
 				}
 				catch (Exception exception)
 				{
+						_playerMachineReady = false;
 						GD.PrintErr(
 								$"GameManager: falha ao preparar container " +
 								$"'{PlayerMachineContainerName}': {exception.Message}"
@@ -109,12 +111,15 @@ public partial class GameManager : Node
 
 						try
 						{
-								await _docker.StopAsync();
+								if (_playerMachineReady)
+								{
+										await _docker.StopAsync();
 
-								GD.Print(
-										$"GameManager: container " +
-										$"'{PlayerMachineContainerName}' parado."
-								);
+										GD.Print(
+												$"GameManager: container " +
+												$"'{PlayerMachineContainerName}' parado."
+										);
+								}
 						}
 						catch (Exception exception)
 						{
@@ -125,6 +130,7 @@ public partial class GameManager : Node
 						}
 						finally
 						{
+								_playerMachineReady = false;
 								_docker.Dispose();
 								_docker = null;
 								_dockerLock.Release();
