@@ -95,6 +95,10 @@ public partial class ServerNetworkHandler : Node
 		return true;
 	}
 
+	// Alias para compatibilidade com testes GDScript (Tools/networkTests).
+	public bool start_server(string ipAddress, int port = 42069) =>
+		StartServer(ipAddress, port);
+
 	public void PeerConnected(ENetPacketPeer peer)
 	{
 		int peerId = PopAvailableId();
@@ -111,7 +115,9 @@ public partial class ServerNetworkHandler : Node
 	public void PeerDisconnected(ENetPacketPeer peer)
 	{
 		int peerId = peer.GetMeta("id").AsInt32();
+		ServerPacketHandler.Instance?.OnPeerDisconnected(peer);
 		AvailablePeerIds.Add(peerId);
+		AvailablePeerIds.Sort((a, b) => b.CompareTo(a));
 		PeersConnected.Remove(peerId);
 		GD.Print($"Peer: {peerId} successfully disconnected");
 	}

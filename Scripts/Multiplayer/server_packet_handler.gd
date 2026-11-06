@@ -156,7 +156,7 @@ func quit_room_request(peer: ENetPacketPeer, data: PackedByteArray) -> void:
 		rooms.erase(room_req_id)
 		created_rooms_id.erase(room_req_id)
 		num_room.append(room_req_id)
-		num_room.sort()
+		num_room.sort_custom(func(a: int, b: int) -> bool: return a > b)
 		return
 
 	room.remove_player(peer)
@@ -166,6 +166,31 @@ func quit_room_request(peer: ENetPacketPeer, data: PackedByteArray) -> void:
 	QuitRoomClass.create().send(peer)
 	for current_peer in room.current_players:
 		HasQuittedPkt.create(room.current_players_id).send(current_peer)
+
+func on_peer_disconnected(peer: ENetPacketPeer) -> void:
+	if peer == professor_peer:
+		professor_peer = null
+	for room_id in created_rooms_id.duplicate():
+		if not rooms.has(room_id):
+			continue
+		var room: RoomStorage = rooms[room_id]
+		if peer == room.host_peer:
+			for current_peer in room.current_players.duplicate():
+				if current_peer != peer and current_peer.get_state() == ENetPacketPeer.STATE_CONNECTED:
+					current_peer.set_meta("in_room", false)
+					QuitRoomClass.create().send(current_peer)
+			rooms.erase(room_id)
+			created_rooms_id.erase(room_id)
+			num_room.append(room_id)
+			num_room.sort_custom(func(a: int, b: int) -> bool: return a > b)
+		elif room.current_players.has(peer):
+			room.remove_player(peer)
+			if peer.has_meta("id"):
+				room.remove_player_id(peer.get_meta("id"))
+			room.remove_player_name(peer.get_meta("name", ""))
+			for current_peer in room.current_players:
+				if current_peer.get_state() == ENetPacketPeer.STATE_CONNECTED:
+					HasQuittedPkt.create(room.current_players_id).send(current_peer)
 
 #func is_peer_owner(room_id: int, peer: ENetPacketPeer) -> bool:
 	#if not rooms.has(room_id) or rooms[room_id].is_empty():

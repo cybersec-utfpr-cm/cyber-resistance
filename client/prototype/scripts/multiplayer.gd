@@ -30,7 +30,7 @@ func _ready() -> void:
 	RefreshRequestClass.create().send(ProtNetworkHandler.server_peer)
 
 func _on_back_to_menu_button_down() -> void:
-	get_tree().change_scene_to_file("res://prototype/scenes/main_menu.tscn")
+	get_tree().change_scene_to_file("res://prototype/scenes/menu/mainMenu.tscn")
 
 	#send a room creation packet to server_packet_handler when the new room button is pressed
 func _on_new_room_button_down() -> void:

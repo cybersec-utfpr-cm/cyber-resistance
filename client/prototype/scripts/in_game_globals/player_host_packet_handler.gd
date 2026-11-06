@@ -22,6 +22,10 @@ var is_host: bool
 # (host_packet_handler entende SCENE_FORCE_PACKET, player_packet_handler não).
 func setup_packet_handler() -> void:
 	is_host = GamePacketHandler.is_host
+	if GamePacketHandler.from_player_packet.is_connected(player_packet_handler):
+		GamePacketHandler.from_player_packet.disconnect(player_packet_handler)
+	if GamePacketHandler.from_host_packet.is_connected(host_packet_handler):
+		GamePacketHandler.from_host_packet.disconnect(host_packet_handler)
 	if is_host:
 		GamePacketHandler.from_player_packet.connect(player_packet_handler)
 	else :

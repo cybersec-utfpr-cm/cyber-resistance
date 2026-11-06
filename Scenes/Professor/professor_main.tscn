@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" uid="uid://d1cgkdsca1o5c" path="res://Scripts/Professor/professor_main.gd" id="1_main"]
-[ext_resource type="Script" uid="uid://dl3a1yfx0rn73" path="res://Scripts/Professor/professor_network.gd" id="2_net"]
+[ext_resource type="Script" uid="uid://deb6rwrix813y" path="res://Scripts/Professor/ProfessorMain.cs" id="1_main"]
+[ext_resource type="Script" uid="uid://414wof4pm6lo" path="res://Scripts/Professor/ProfessorNetwork.cs" id="2_net"]
 
 [node name="ProfessorMain" type="Control"]
 layout_mode = 3

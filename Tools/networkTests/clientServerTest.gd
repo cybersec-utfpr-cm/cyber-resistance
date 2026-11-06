@@ -43,11 +43,15 @@ func _ready() -> void:
 	_finish()
 
 func _first_room_id() -> int:
+	if ServerPacketHandler.has_method("first_room_id"):
+		return int(ServerPacketHandler.first_room_id())
 	if ServerPacketHandler.rooms.is_empty():
 		return -1
 	return int(ServerPacketHandler.rooms.keys()[0])
 
 func _max_players() -> int:
+	if ServerPacketHandler.has_method("max_players"):
+		return int(ServerPacketHandler.max_players())
 	var best: int = 0
 	for room_id in ServerPacketHandler.rooms:
 		best = maxi(best, ServerPacketHandler.rooms[room_id].current_players.size())

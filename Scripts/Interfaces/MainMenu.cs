@@ -261,6 +261,7 @@ public partial class MainMenu : Control
 			!(SaveManager.Instance?.HasSaveGame() ?? false);
 		_fairModeButton.Disabled = false;
 		_exitButton.Disabled = false;
+		_multiplayerButton.Disabled = false;
 		_multiplayerLobbyButton.Disabled = false;
 		_professorButton.Disabled = false;
 		ShowStatus($"Não foi possível abrir o jogo: {error}.");
@@ -286,6 +287,7 @@ public partial class MainMenu : Control
 			!(SaveManager.Instance?.HasSaveGame() ?? false);
 		_fairModeButton.Disabled = false;
 		_exitButton.Disabled = false;
+		_multiplayerButton.Disabled = false;
 		_multiplayerLobbyButton.Disabled = false;
 		_professorButton.Disabled = false;
 		ShowStatus($"Não foi possível abrir o multiplayer: {error}.");
@@ -312,6 +314,7 @@ public partial class MainMenu : Control
 		_fairModeButton.Disabled = false;
 		_exitButton.Disabled = false;
 		_multiplayerButton.Disabled = false;
+		_multiplayerLobbyButton.Disabled = false;
 		_professorButton.Disabled = false;
 		ShowStatus($"Não foi possível abrir o multiplayer: {error}.");
 	}
@@ -336,6 +339,7 @@ public partial class MainMenu : Control
 			!(SaveManager.Instance?.HasSaveGame() ?? false);
 		_fairModeButton.Disabled = false;
 		_exitButton.Disabled = false;
+		_multiplayerButton.Disabled = false;
 		_multiplayerLobbyButton.Disabled = false;
 		_professorButton.Disabled = false;
 		ShowStatus($"Não foi possível abrir o console do professor: {error}.");
@@ -362,6 +366,7 @@ public partial class MainMenu : Control
 			!(SaveManager.Instance?.HasSaveGame() ?? false);
 		_fairModeButton.Disabled = false;
 		_exitButton.Disabled = false;
+		_multiplayerButton.Disabled = false;
 		_multiplayerLobbyButton.Disabled = false;
 		_professorButton.Disabled = false;
 		ShowStatus($"Não foi possível abrir o Modo Feira: {error}.");

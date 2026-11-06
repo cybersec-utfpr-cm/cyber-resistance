@@ -5,7 +5,7 @@ var room_port: int
 var remote_ids: Array[int]
 var host_ip: String
 
-const FIXED_HEADER_SIZE = 6 
+const FIXED_HEADER_SIZE = 5 
 
 static func create(room: int, port: int, ip: String, _remote_ids: Array[int]) -> JoinRoomClass:
 	var new_packet: JoinRoomClass = JoinRoomClass.new(PACKET_TYPE.JOIN_ROOM)

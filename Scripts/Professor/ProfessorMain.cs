@@ -113,7 +113,10 @@ public partial class ProfessorMain : Control
 		_ipLine.Editable = false;
 		_portLine.Editable = false;
 
-		_network.ConnectToServer(ip, port);
+		if (_network.ConnectToServer(ip, port) != Error.Ok)
+		{
+			OnDisconnected();
+		}
 	}
 
 	private void OnRefreshPressed()
@@ -132,6 +135,8 @@ public partial class ProfessorMain : Control
 	{
 		_connectButton.Text = "Conectar";
 		_connectButton.Disabled = false;
+		_ipLine.Editable = true;
+		_portLine.Editable = true;
 		UpdateGradeControls();
 	}
 

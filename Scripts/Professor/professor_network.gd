@@ -37,12 +37,12 @@ func connect_to_server(ip: String, port: int) -> Error:
 	return OK
 
 func disconnect_from_server() -> void:
-	var was_connected: bool = is_connected_to_server()
+	var had_session: bool = is_connected_to_server() or _connection != null
 	if _connection != null:
 		_connection.destroy()
 	_connection = null
 	_server_peer = null
-	if was_connected:
+	if had_session:
 		status_changed.emit("Desconectado do servidor")
 		disconnected_from_server.emit()
 
@@ -96,14 +96,12 @@ func _on_connected(peer: ENetPacketPeer) -> void:
 	request_rooms()
 
 func _on_disconnected(_peer: ENetPacketPeer) -> void:
-	var was_connected: bool = is_connected_to_server()
 	_server_peer = null
 	if _connection != null:
 		_connection.destroy()
 		_connection = null
 	status_changed.emit("Conexao com o servidor encerrada")
-	if was_connected:
-		disconnected_from_server.emit()
+	disconnected_from_server.emit()
 
 func _on_receive(peer: ENetPacketPeer) -> void:
 	var data: PackedByteArray = peer.get_packet()

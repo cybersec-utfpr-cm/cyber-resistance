@@ -8,7 +8,7 @@ public class JoinRoomClass : PacketTypeClass
 	public List<int> RemoteIds = new();
 	public string HostIp;
 
-	public const int FixedHeaderSize = 6;
+	public const int FixedHeaderSize = 5;
 
 	public JoinRoomClass(
 		PACKET_TYPE packetType = PACKET_TYPE.JOIN_ROOM,

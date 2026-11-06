@@ -1,7 +1,7 @@
 extends PanelContainer
 class_name RoomItem
 
-@export_file("*.tscn") var room_scene_path: String = "res://prototype/scenes/legacy/chat.tscn"
+@export_file("*.tscn") var room_scene_path: String = "res://prototype/scenes/in_game_reusables/chat.tscn"
 var id: int = -1
 
 func _init() -> void:

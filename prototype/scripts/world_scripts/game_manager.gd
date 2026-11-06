@@ -5,7 +5,8 @@ var current_scene_path: String = ""
 
 func _ready() -> void:
 	# Define a cena inicial assim que o jogo começa
-	current_scene_path = get_tree().current_scene.scene_file_path
+	if get_tree().current_scene != null:
+		current_scene_path = get_tree().current_scene.scene_file_path
 
 # Ponto ÚNICO de troca de cena durante o jogo. Chamar
 # get_tree().change_scene_to_file direto não dispara SCENE_SYNC e os outros

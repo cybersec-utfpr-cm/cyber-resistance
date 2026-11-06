@@ -72,7 +72,8 @@ func _on_connect_pressed() -> void:
 	connect_button.disabled = true
 	ip_line.editable = false
 	port_line.editable = false
-	network.connect_to_server(ip, int(port_text))
+	if network.connect_to_server(ip, int(port_text)) != OK:
+		_on_disconnected()
 
 func _on_refresh_pressed() -> void:
 	network.request_rooms()
@@ -85,6 +86,8 @@ func _on_connected() -> void:
 func _on_disconnected() -> void:
 	connect_button.text = "Conectar"
 	connect_button.disabled = false
+	ip_line.editable = true
+	port_line.editable = true
 	_update_grade_controls()
 
 func _on_status(text: String) -> void:

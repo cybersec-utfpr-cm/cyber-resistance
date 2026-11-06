@@ -64,7 +64,10 @@ func peer_connected(peer: ENetPacketPeer) -> void:
 
 func peer_disconnected(peer: ENetPacketPeer) -> void:
 	var peer_id: int = peer.get_meta("id")
+	if ServerPacketHandler.has_method("on_peer_disconnected"):
+		ServerPacketHandler.on_peer_disconnected(peer)
 	avaliable_peer_ids.push_back(peer_id)
+	avaliable_peer_ids.sort_custom(func(a: int, b: int) -> bool: return a > b)
 	peers_connected.erase(peer_id)
 	print("Peer: ", peer_id, " successfully disconnected")
 

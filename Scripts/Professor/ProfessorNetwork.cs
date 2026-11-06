@@ -48,14 +48,14 @@ public partial class ProfessorNetwork : Node
 
 	public void DisconnectFromServer()
 	{
-		bool wasConnected = IsConnectedToServer();
+		bool hadSession = IsConnectedToServer() || _connection != null;
 		if (_connection != null)
 		{
 			_connection.Destroy();
 		}
 		_connection = null;
 		_serverPeer = null;
-		if (wasConnected)
+		if (hadSession)
 		{
 			StatusChanged?.Invoke("Desconectado do servidor");
 			DisconnectedFromServer?.Invoke();
@@ -142,7 +142,6 @@ public partial class ProfessorNetwork : Node
 
 	private void OnDisconnected(ENetPacketPeer _peer)
 	{
-		bool wasConnected = IsConnectedToServer();
 		_serverPeer = null;
 		if (_connection != null)
 		{
@@ -150,10 +149,7 @@ public partial class ProfessorNetwork : Node
 			_connection = null;
 		}
 		StatusChanged?.Invoke("Conexao com o servidor encerrada");
-		if (wasConnected)
-		{
-			DisconnectedFromServer?.Invoke();
-		}
+		DisconnectedFromServer?.Invoke();
 	}
 
 	private void OnReceive(ENetPacketPeer peer)

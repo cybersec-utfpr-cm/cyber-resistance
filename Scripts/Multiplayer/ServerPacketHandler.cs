@@ -28,6 +28,23 @@ public partial class ServerPacketHandler : Node
 	// despachadas assim que um PROFESSOR_HELLO chegar.
 	public ENetPacketPeer ProfessorPeer = null;
 
+	// Helpers expostos ao GDScript (Tools/networkTests).
+	public ENetPacketPeer professor_peer => ProfessorPeer;
+	public bool has_room(int roomId) => Rooms.ContainsKey(roomId);
+	public int first_room_id() => CreatedRoomsId.Count > 0 ? CreatedRoomsId[0] : -1;
+	public int max_players()
+	{
+		int best = 0;
+		foreach (RoomStorage room in Rooms.Values)
+		{
+			if (room.CurrentPlayers.Count > best)
+			{
+				best = room.CurrentPlayers.Count;
+			}
+		}
+		return best;
+	}
+
 	public override void _Ready()
 	{
 		Instance = this;
@@ -245,7 +262,7 @@ public partial class ServerPacketHandler : Node
 			Rooms.Remove(roomReqId);
 			CreatedRoomsId.Remove(roomReqId);
 			NumRoom.Add(roomReqId);
-			NumRoom.Sort();
+			NumRoom.Sort((a, b) => b.CompareTo(a));
 			return;
 		}
 
@@ -257,6 +274,54 @@ public partial class ServerPacketHandler : Node
 		foreach (ENetPacketPeer currentPeer in room.CurrentPlayers)
 		{
 			HasQuittedPkt.Create(room.CurrentPlayersId).Send(currentPeer);
+		}
+	}
+
+	public void OnPeerDisconnected(ENetPacketPeer peer)
+	{
+		if (peer == ProfessorPeer)
+		{
+			ProfessorPeer = null;
+		}
+
+		foreach (int roomId in new List<int>(CreatedRoomsId))
+		{
+			if (!Rooms.TryGetValue(roomId, out RoomStorage room))
+			{
+				continue;
+			}
+
+			if (peer == room.HostPeer)
+			{
+				foreach (ENetPacketPeer currentPeer in new List<ENetPacketPeer>(room.CurrentPlayers))
+				{
+					if (currentPeer != peer && currentPeer.GetState() == ENetPacketPeer.PeerState.Connected)
+					{
+						currentPeer.SetMeta("in_room", false);
+						QuitRoomClass.Create().Send(currentPeer);
+					}
+				}
+				Rooms.Remove(roomId);
+				CreatedRoomsId.Remove(roomId);
+				NumRoom.Add(roomId);
+				NumRoom.Sort((a, b) => b.CompareTo(a));
+			}
+			else if (room.CurrentPlayers.Contains(peer))
+			{
+				room.RemovePlayer(peer);
+				if (peer.HasMeta("id"))
+				{
+					room.RemovePlayerId(peer.GetMeta("id").AsInt32());
+				}
+				room.RemovePlayerName(peer.GetMeta("name", "").AsString());
+				foreach (ENetPacketPeer currentPeer in room.CurrentPlayers)
+				{
+					if (currentPeer.GetState() == ENetPacketPeer.PeerState.Connected)
+					{
+						HasQuittedPkt.Create(room.CurrentPlayersId).Send(currentPeer);
+					}
+				}
+			}
 		}
 	}
 

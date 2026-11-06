@@ -177,7 +177,9 @@ func _check_professor_flow() -> void:
 	var start_packet: StartRoomClass = StartRoomClass.create_from_data(start_data)
 	student.send(RoomInfoClass.create(1, start_packet.room, 42100, SERVER_IP, "Dupla Alpha"))
 	_check(
-		await _wait_until(func() -> bool: return ServerPacketHandler.rooms.has(start_packet.room)),
+		await _wait_until(func() -> bool:
+			return ServerPacketHandler.has_room(start_packet.room) if ServerPacketHandler.has_method("has_room") else ServerPacketHandler.rooms.has(start_packet.room)
+		),
 		"server registrou a sala %d" % start_packet.room
 	)
 
