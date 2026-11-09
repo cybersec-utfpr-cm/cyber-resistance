@@ -2,14 +2,16 @@
 
 [ext_resource type="Script" uid="uid://cf23ohvg8ba" path="res://Scripts/Multiplayer/ServerMain.cs" id="1_main"]
 
-[node name="ServerMain" type="Control" unique_id=62437603]
+[node name="ServerMain" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_main")
 
-[node name="VBox" type="VBoxContainer" parent="." unique_id=62437604]
+[node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -20,43 +22,45 @@ offset_left = -220.0
 offset_top = -140.0
 offset_right = 220.0
 offset_bottom = 140.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Title" type="Label" parent="VBox" unique_id=62437605]
+[node name="Title" type="Label" parent="VBox"]
 layout_mode = 2
 text = "Cyber Resistance - Servidor"
 horizontal_alignment = 1
 
-[node name="IpRow" type="HBoxContainer" parent="VBox" unique_id=62437606]
+[node name="IpRow" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
 
-[node name="IpLabel" type="Label" parent="VBox/IpRow" unique_id=62437607]
+[node name="IpLabel" type="Label" parent="VBox/IpRow"]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "IP:"
 
-[node name="IpLine" type="LineEdit" parent="VBox/IpRow" unique_id=62437608]
+[node name="IpLine" type="LineEdit" parent="VBox/IpRow"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "ex.: 192.168.0.10"
 
-[node name="PortRow" type="HBoxContainer" parent="VBox" unique_id=62437609]
+[node name="PortRow" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
 
-[node name="PortLabel" type="Label" parent="VBox/PortRow" unique_id=62437610]
+[node name="PortLabel" type="Label" parent="VBox/PortRow"]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Porta:"
 
-[node name="PortLine" type="LineEdit" parent="VBox/PortRow" unique_id=62437611]
+[node name="PortLine" type="LineEdit" parent="VBox/PortRow"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "42069"
 
-[node name="StartButton" type="Button" parent="VBox" unique_id=62437612]
+[node name="StartButton" type="Button" parent="VBox"]
 layout_mode = 2
 text = "Iniciar servidor"
 
-[node name="StatusLabel" type="Label" parent="VBox" unique_id=62437613]
+[node name="StatusLabel" type="Label" parent="VBox"]
 layout_mode = 2
 text = "Status: parado"
 horizontal_alignment = 1

@@ -55,7 +55,16 @@ func send_grade(room_id: int, team_index: int, grade: float, comment: String) ->
 	if not _send_ok():
 		return false
 	MinigameGradePkt.create(room_id, team_index, grade, comment).send(_server_peer)
-	status_changed.emit("Nota %.1f enviada para a sala %d (dupla %d)" % [grade, room_id, team_index])
+	status_changed.emit("Nota %.1f enviada para a sala %d (dupla %d)" % [grade, room_id, team_index + 1])
+	return true
+
+func send_activity_select(room_id: int, activity_id: String, activity_title: String) -> bool:
+	if not _send_ok():
+		return false
+	var target_room: int = MinigameSelectPkt.ALL_ROOMS if room_id < 0 else room_id
+	MinigameSelectPkt.create(target_room, activity_id).send(_server_peer)
+	var target_label: String = "todas as salas" if room_id < 0 else ("a sala %d" % room_id)
+	status_changed.emit("Tarefa '%s' aplicada para %s" % [activity_title, target_label])
 	return true
 
 func _send_ok() -> bool:

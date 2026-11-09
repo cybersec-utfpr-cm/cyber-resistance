@@ -79,8 +79,21 @@ public partial class ProfessorNetwork : Node
 		}
 		MinigameGradePkt.Create(roomId, teamIndex, grade, comment).Send(_serverPeer);
 		StatusChanged?.Invoke(
-			$"Nota {grade:F1} enviada para a sala {roomId} (dupla {teamIndex})"
+			$"Nota {grade:F1} enviada para a sala {roomId} (dupla {teamIndex + 1})"
 		);
+		return true;
+	}
+
+	public bool SendActivitySelect(int roomId, string activityId, string activityTitle)
+	{
+		if (!SendOk())
+		{
+			return false;
+		}
+		int targetRoom = roomId < 0 ? MinigameSelectPkt.AllRooms : roomId;
+		MinigameSelectPkt.Create(targetRoom, activityId).Send(_serverPeer);
+		string targetLabel = roomId < 0 ? "todas as salas" : $"a sala {roomId}";
+		StatusChanged?.Invoke($"Tarefa '{activityTitle}' aplicada para {targetLabel}");
 		return true;
 	}
 

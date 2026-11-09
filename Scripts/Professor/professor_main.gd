@@ -13,6 +13,8 @@ const QUIZ_PATH: String = "res://professor/data/minigame_quiz.json"
 @onready var status_label: Label = $Margin/Root/ConnectionRow/StatusLabel
 @onready var room_list: ItemList = $Margin/Root/Split/RoomsBox/RoomList
 @onready var refresh_button: Button = $Margin/Root/Split/RoomsBox/RefreshButton
+@onready var activity_option: OptionButton = get_node_or_null("Margin/Root/Split/RoomsBox/ActivityOption")
+@onready var apply_activity_button: Button = get_node_or_null("Margin/Root/Split/RoomsBox/ApplyActivityButton")
 @onready var submission_list: ItemList = $Margin/Root/Split/SubmissionsBox/SubmissionList
 @onready var detail_label: Label = $Margin/Root/Split/SubmissionsBox/DetailLabel
 @onready var detail: RichTextLabel = $Margin/Root/Split/SubmissionsBox/Detail
@@ -23,16 +25,20 @@ const QUIZ_PATH: String = "res://professor/data/minigame_quiz.json"
 
 # room_id -> RoomSummary (ultima atualizacao recebida)
 var _rooms: Dictionary = {}
-# Entradas achatadas de submissao: { room_id, team_index, team }
+# Entradas achatadas de submissao: { room_id, team_index, activity_id, team }
 var _entries: Array = []
 # -1 = sem filtro de sala
 var _selected_room: int = -1
 var _questions: Array = []
+var _activities: Array = []
+var _room_activities: Dictionary = {}
+var _default_activity_id: String = "defesa_redes"
 
 func _ready() -> void:
 	ip_line.text = "127.0.0.1"
 	port_line.text = "42069"
 	_questions = _load_questions()
+	_populate_activity_option()
 
 	network.connected_to_server.connect(_on_connected)
 	network.disconnected_from_server.connect(_on_disconnected)
@@ -43,6 +49,8 @@ func _ready() -> void:
 	back_button.pressed.connect(_on_back_pressed)
 	connect_button.pressed.connect(_on_connect_pressed)
 	refresh_button.pressed.connect(_on_refresh_pressed)
+	if apply_activity_button != null:
+		apply_activity_button.pressed.connect(_on_apply_activity_pressed)
 	room_list.item_selected.connect(_on_room_selected)
 	submission_list.item_selected.connect(_on_submission_selected)
 	send_grade_button.pressed.connect(_on_send_grade_pressed)
@@ -108,10 +116,12 @@ func _on_rooms(refresh: RefreshClass) -> void:
 
 func _on_submission(submission: MinigameSubmissionPkt) -> void:
 	var count_before: int = _entries.size()
+	var act_id: String = str(_room_activities.get(submission.room_id, _default_activity_id))
 	for team_index in submission.teams.size():
 		_entries.append({
 			"room_id": submission.room_id,
 			"team_index": team_index,
+			"activity_id": act_id,
 			"team": submission.teams[team_index]
 		})
 	_rebuild_submission_list()
@@ -120,6 +130,20 @@ func _on_submission(submission: MinigameSubmissionPkt) -> void:
 		submission_list.select(0)
 		_show_entry_detail(_visible_entries()[0])
 	_set_status("Submissao recebida da sala %d" % submission.room_id)
+
+func _on_apply_activity_pressed() -> void:
+	if activity_option == null or activity_option.selected < 0 or activity_option.selected >= _activities.size():
+		return
+	var chosen: Dictionary = _activities[activity_option.selected]
+	var act_id: String = str(chosen.get("id", ""))
+	var act_title: String = str(chosen.get("title", act_id))
+	if network.send_activity_select(_selected_room, act_id, act_title):
+		if _selected_room < 0:
+			_default_activity_id = act_id
+			for r_id in _rooms.keys():
+				_room_activities[r_id] = act_id
+		else:
+			_room_activities[_selected_room] = act_id
 
 func _on_room_selected(index: int) -> void:
 	_select_room(-1 if index == 0 else int(room_list.get_item_metadata(index)))
@@ -208,7 +232,9 @@ func _rebuild_submission_list() -> void:
 func _show_entry_detail(entry: Dictionary) -> void:
 	var room_id: int = int(entry["room_id"])
 	var team_index: int = int(entry["team_index"])
+	var act_id: String = str(entry.get("activity_id", _default_activity_id))
 	var team: Dictionary = entry["team"]
+	var active_questions: Array = _get_questions_for_activity(act_id)
 	detail_label.text = "Detalhes - Sala %d, dupla %d" % [room_id, team_index + 1]
 
 	var lines: PackedStringArray = PackedStringArray()
@@ -220,8 +246,8 @@ func _show_entry_detail(entry: Dictionary) -> void:
 	var answer_msecs: Array = team["submission_msecs"]
 	for i in answers.size():
 		lines.append("[b]Questao %d[/b]" % (i + 1))
-		if i < _questions.size():
-			lines.append("[color=#8fd8e0]%s[/color]" % _escape_bbcode(str(_questions[i])))
+		if i < active_questions.size():
+			lines.append("[color=#8fd8e0]%s[/color]" % _escape_bbcode(str(active_questions[i])))
 		lines.append("[b]Resposta:[/b] %s" % _escape_bbcode(str(answers[i])))
 		lines.append("Tempo de resposta: %s" % _format_time(int(answer_msecs[i])))
 		lines.append("")
@@ -229,20 +255,56 @@ func _show_entry_detail(entry: Dictionary) -> void:
 
 func _update_grade_controls() -> void:
 	var selected: bool = not submission_list.get_selected_items().is_empty()
+	var connected: bool = network.is_connected_to_server()
 	grade_spin.editable = selected
 	comment_line.editable = selected
-	send_grade_button.disabled = not selected or not network.is_connected_to_server()
+	send_grade_button.disabled = not selected or not connected
+	if apply_activity_button != null:
+		apply_activity_button.disabled = not connected or _activities.is_empty()
+
+func _populate_activity_option() -> void:
+	if activity_option == null:
+		return
+	activity_option.clear()
+	for act in _activities:
+		activity_option.add_item(str(act.get("title", act.get("id", ""))))
+	if activity_option.item_count > 0:
+		activity_option.select(0)
+
+func _get_questions_for_activity(act_id: String) -> Array:
+	for act in _activities:
+		if str(act.get("id", "")) == act_id:
+			return act.get("questions", _questions)
+	return _questions
 
 func _load_questions() -> Array:
+	_activities.clear()
 	var file: FileAccess = FileAccess.open(QUIZ_PATH, FileAccess.READ)
 	if file == null:
 		push_warning("Professor: nao foi possivel ler " + QUIZ_PATH)
 		return []
 	var parsed: Variant = JSON.parse_string(file.get_as_text())
-	if parsed is not Dictionary or not (parsed as Dictionary).has("questions"):
+	if parsed is not Dictionary:
+		return []
+	var dict: Dictionary = parsed as Dictionary
+	if dict.has("default_activity"):
+		_default_activity_id = str(dict["default_activity"])
+	if dict.has("activities") and dict["activities"] is Array:
+		for act_item in dict["activities"]:
+			if act_item is Dictionary:
+				var q_prompts: Array = []
+				for q in act_item.get("questions", []):
+					if q is Dictionary:
+						q_prompts.append(str(q.get("prompt", "")))
+				_activities.append({
+					"id": str(act_item.get("id", "")),
+					"title": str(act_item.get("title", "")),
+					"questions": q_prompts
+				})
+	if not dict.has("questions"):
 		return []
 	var prompts: Array = []
-	for question in (parsed as Dictionary)["questions"]:
+	for question in dict["questions"]:
 		prompts.append(str(question.get("prompt", "")))
 	return prompts
 

@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://dejdvcgc78udg"]
 
-[ext_resource type="Script" path="res://Scripts/Interfaces/PauseMenu.cs" id="1_pause"]
-[ext_resource type="Theme" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
+[ext_resource type="Script" uid="uid://bjwg12hnmerqy" path="res://Scripts/Interfaces/PauseMenu.cs" id="1_pause"]
+[ext_resource type="Theme" uid="uid://do6fllrcg1xgf" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
 
 [sub_resource type="StyleBoxFlat" id="StylePausePanel"]
 bg_color = Color(0.027, 0.047, 0.075, 0.99)
@@ -52,7 +52,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 0
 color = Color(0.004, 0.009, 0.016, 0.82)
 
 [node name="Center" type="CenterContainer" parent="."]
@@ -140,7 +139,6 @@ text = "80%"
 
 [node name="Slider" type="HSlider" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Master"]
 layout_mode = 2
-step = 1.0
 value = 80.0
 
 [node name="Music" type="VBoxContainer" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings"]
@@ -162,7 +160,6 @@ text = "55%"
 
 [node name="Slider" type="HSlider" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Music"]
 layout_mode = 2
-step = 1.0
 value = 55.0
 
 [node name="Ambience" type="VBoxContainer" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings"]
@@ -184,7 +181,6 @@ text = "50%"
 
 [node name="Slider" type="HSlider" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Ambience"]
 layout_mode = 2
-step = 1.0
 value = 50.0
 
 [node name="Effects" type="VBoxContainer" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings"]
@@ -206,7 +202,6 @@ text = "75%"
 
 [node name="Slider" type="HSlider" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Effects"]
 layout_mode = 2
-step = 1.0
 value = 75.0
 
 [node name="Actions" type="VBoxContainer" parent="Center/PausePanel/PauseMargin/Content"]

@@ -17,6 +17,8 @@ public partial class ProfessorMain : Control
 	private Label _statusLabel;
 	private ItemList _roomList;
 	private Button _refreshButton;
+	private OptionButton _activityOption;
+	private Button _applyActivityButton;
 	private ItemList _submissionList;
 	private Label _detailLabel;
 	private RichTextLabel _detail;
@@ -32,12 +34,22 @@ public partial class ProfessorMain : Control
 	{
 		public int RoomId;
 		public int TeamIndex;
+		public string ActivityId;
 		public Godot.Collections.Dictionary Team;
+	}
+	private class ActivityDef
+	{
+		public string Id;
+		public string Title;
+		public List<string> Questions = new();
 	}
 	private readonly List<SubmissionEntry> _entries = new();
 	// -1 = sem filtro de sala
 	private int _selectedRoom = -1;
 	private readonly List<string> _questions = new();
+	private readonly List<ActivityDef> _activities = new();
+	private readonly Dictionary<int, string> _roomActivities = new();
+	private string _defaultActivityId = "defesa_redes";
 
 	public override void _Ready()
 	{
@@ -48,6 +60,8 @@ public partial class ProfessorMain : Control
 		_statusLabel = GetNode<Label>("Margin/Root/ConnectionRow/StatusLabel");
 		_roomList = GetNode<ItemList>("Margin/Root/Split/RoomsBox/RoomList");
 		_refreshButton = GetNode<Button>("Margin/Root/Split/RoomsBox/RefreshButton");
+		_activityOption = GetNodeOrNull<OptionButton>("Margin/Root/Split/RoomsBox/ActivityOption");
+		_applyActivityButton = GetNodeOrNull<Button>("Margin/Root/Split/RoomsBox/ApplyActivityButton");
 		_submissionList = GetNode<ItemList>("Margin/Root/Split/SubmissionsBox/SubmissionList");
 		_detailLabel = GetNode<Label>("Margin/Root/Split/SubmissionsBox/DetailLabel");
 		_detail = GetNode<RichTextLabel>("Margin/Root/Split/SubmissionsBox/Detail");
@@ -59,6 +73,7 @@ public partial class ProfessorMain : Control
 		_ipLine.Text = "127.0.0.1";
 		_portLine.Text = "42069";
 		_questions.AddRange(LoadQuestions());
+		PopulateActivityOption();
 
 		_network.ConnectedToServer += OnConnected;
 		_network.DisconnectedFromServer += OnDisconnected;
@@ -69,6 +84,10 @@ public partial class ProfessorMain : Control
 		_backButton.Pressed += OnBackPressed;
 		_connectButton.Pressed += OnConnectPressed;
 		_refreshButton.Pressed += OnRefreshPressed;
+		if (_applyActivityButton != null)
+		{
+			_applyActivityButton.Pressed += OnApplyActivityPressed;
+		}
 		_roomList.ItemSelected += OnRoomSelected;
 		_submissionList.ItemSelected += OnSubmissionSelected;
 		_sendGradeButton.Pressed += OnSendGradePressed;
@@ -169,12 +188,16 @@ public partial class ProfessorMain : Control
 	private void OnSubmission(MinigameSubmissionPkt submission)
 	{
 		int countBefore = _entries.Count;
+		string actId = _roomActivities.TryGetValue(submission.RoomId, out string savedAct)
+			? savedAct
+			: _defaultActivityId;
 		for (int teamIndex = 0; teamIndex < submission.Teams.Count; teamIndex++)
 		{
 			_entries.Add(new SubmissionEntry
 			{
 				RoomId = submission.RoomId,
 				TeamIndex = teamIndex,
+				ActivityId = actId,
 				Team = submission.Teams[teamIndex]
 			});
 		}
@@ -186,6 +209,30 @@ public partial class ProfessorMain : Control
 			ShowEntryDetail(VisibleEntries()[0]);
 		}
 		SetStatus($"Submissao recebida da sala {submission.RoomId}");
+	}
+
+	private void OnApplyActivityPressed()
+	{
+		if (_activityOption == null || _activityOption.Selected < 0 || _activityOption.Selected >= _activities.Count)
+		{
+			return;
+		}
+		ActivityDef chosen = _activities[_activityOption.Selected];
+		if (_network.SendActivitySelect(_selectedRoom, chosen.Id, chosen.Title))
+		{
+			if (_selectedRoom < 0)
+			{
+				_defaultActivityId = chosen.Id;
+				foreach (int rId in _rooms.Keys)
+				{
+					_roomActivities[rId] = chosen.Id;
+				}
+			}
+			else
+			{
+				_roomActivities[_selectedRoom] = chosen.Id;
+			}
+		}
 	}
 
 	private void OnRoomSelected(long index)
@@ -325,7 +372,10 @@ public partial class ProfessorMain : Control
 		int roomId = entry.RoomId;
 		int teamIndex = entry.TeamIndex;
 		Godot.Collections.Dictionary team = entry.Team;
-		_detailLabel.Text = $"Detalhes - Sala {roomId}, dupla {teamIndex + 1}";
+		List<string> activeQuestions = GetQuestionsForActivity(entry.ActivityId, out string activityTitle);
+		_detailLabel.Text = string.IsNullOrEmpty(activityTitle)
+			? $"Detalhes - Sala {roomId}, dupla {teamIndex + 1}"
+			: $"Detalhes - Sala {roomId}, dupla {teamIndex + 1} ({activityTitle})";
 
 		var lines = new List<string>();
 		lines.Add($"[b]Integrantes:[/b] {JoinIds(team["members"].AsGodotArray())}");
@@ -337,9 +387,9 @@ public partial class ProfessorMain : Control
 		for (int i = 0; i < answers.Count; i++)
 		{
 			lines.Add($"[b]Questao {i + 1}[/b]");
-			if (i < _questions.Count)
+			if (i < activeQuestions.Count)
 			{
-				lines.Add($"[color=#8fd8e0]{EscapeBbcode(_questions[i])}[/color]");
+				lines.Add($"[color=#8fd8e0]{EscapeBbcode(activeQuestions[i])}[/color]");
 			}
 			lines.Add($"[b]Resposta:[/b] {EscapeBbcode(VariantStr(answers[i]))}");
 			lines.Add($"Tempo de resposta: {FormatTime(answerMsecs[i].AsInt64())}");
@@ -351,15 +401,52 @@ public partial class ProfessorMain : Control
 	private void UpdateGradeControls()
 	{
 		bool selected = _submissionList.GetSelectedItems().Length > 0;
+		bool connected = _network.IsConnectedToServer();
 		_gradeSpin.Editable = selected;
 		_commentLine.Editable = selected;
 
-		_sendGradeButton.Disabled = selected == false || !_network.IsConnectedToServer();
+		_sendGradeButton.Disabled = selected == false || !connected;
+		if (_applyActivityButton != null)
+		{
+			_applyActivityButton.Disabled = !connected || _activities.Count == 0;
+		}
+	}
+
+	private void PopulateActivityOption()
+	{
+		if (_activityOption == null)
+		{
+			return;
+		}
+		_activityOption.Clear();
+		foreach (ActivityDef act in _activities)
+		{
+			_activityOption.AddItem(act.Title);
+		}
+		if (_activityOption.ItemCount > 0)
+		{
+			_activityOption.Select(0);
+		}
+	}
+
+	private List<string> GetQuestionsForActivity(string activityId, out string title)
+	{
+		foreach (ActivityDef act in _activities)
+		{
+			if (act.Id == activityId)
+			{
+				title = act.Title;
+				return act.Questions;
+			}
+		}
+		title = "";
+		return _questions;
 	}
 
 	private List<string> LoadQuestions()
 	{
 		var prompts = new List<string>();
+		_activities.Clear();
 		FileAccess file = FileAccess.Open(QuizPath, FileAccess.ModeFlags.Read);
 		if (file == null)
 		{
@@ -373,6 +460,35 @@ public partial class ProfessorMain : Control
 			return prompts;
 		}
 		Godot.Collections.Dictionary dict = parsed.AsGodotDictionary();
+		if (dict.TryGetValue("default_activity", out Variant defAct))
+		{
+			_defaultActivityId = VariantStr(defAct);
+		}
+		if (dict.TryGetValue("activities", out Variant actsVar) && actsVar.VariantType == Variant.Type.Array)
+		{
+			foreach (Variant actItem in actsVar.AsGodotArray())
+			{
+				if (actItem.VariantType != Variant.Type.Dictionary)
+				{
+					continue;
+				}
+				Godot.Collections.Dictionary actDict = actItem.AsGodotDictionary();
+				var def = new ActivityDef
+				{
+					Id = actDict.TryGetValue("id", out Variant idV) ? VariantStr(idV) : "",
+					Title = actDict.TryGetValue("title", out Variant titleV) ? VariantStr(titleV) : ""
+				};
+				if (actDict.TryGetValue("questions", out Variant qsV) && qsV.VariantType == Variant.Type.Array)
+				{
+					foreach (Variant qVar in qsV.AsGodotArray())
+					{
+						Godot.Collections.Dictionary q = qVar.AsGodotDictionary();
+						def.Questions.Add(q.TryGetValue("prompt", out Variant p) ? VariantStr(p) : "");
+					}
+				}
+				_activities.Add(def);
+			}
+		}
 		if (!dict.ContainsKey("questions"))
 		{
 			return prompts;

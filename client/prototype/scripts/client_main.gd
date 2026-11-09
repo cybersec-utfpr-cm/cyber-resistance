@@ -1,12 +1,12 @@
 extends Control
 
 # Lobby do client: conexao com o server central (autoload ProtNetworkHandler),
-# lista/criacao/entrada de sala (autoload ClientPacketHandler) e abertura do
-# jogo (world.tscn) ao entrar. E a etapa entre o mainMenu e o world:
-# mainMenu -> aqui -> world.
+# lista/criacao/entrada de sala (autoload ClientPacketHandler) e abertura
+# direta da atividade em dupla (minigame_quiz.tscn) ao entrar:
+# mainMenu -> aqui -> minigame_quiz.
 
 const MENU_SCENE: String = "res://prototype/scenes/menu/mainMenu.tscn"
-const GAME_SCENE: String = "res://prototype/scenes/scenarios/world.tscn"
+const GAME_SCENE: String = "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn"
 
 # O teste headless desliga a abertura do jogo para verificar o lobby.
 @export var auto_open_game: bool = true

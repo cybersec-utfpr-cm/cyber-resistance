@@ -12,6 +12,8 @@ signal from_host_packet(data: PackedByteArray)
 
 # Client signals
 signal from_player_packet(peer: ENetPacketPeer, data: PackedByteArray)
+signal peer_connected_to_host(peer: ENetPacketPeer)
+signal peer_disconnected_from_host(peer: ENetPacketPeer)
 
 # Client Server variables
 var host_connection: ENetConnection
@@ -91,15 +93,27 @@ func start_host(ip_address: String = "127.0.0.1", port: int = 42069) -> void:
 
 func player_connected(_peer: ENetPacketPeer) -> void:
 	print("(Game network) new player connected")
-	var current_scene_path: String = get_tree().current_scene.scene_file_path
-	if not current_scene_path.is_empty():
-		SceneSyncPacket.create(ClientPacketHandler.my_id, current_scene_path).send(_peer)
+	if get_tree().current_scene != null:
+		var current_scene_path: String = get_tree().current_scene.scene_file_path
+		if not current_scene_path.is_empty():
+			SceneSyncPacket.create(ClientPacketHandler.my_id, current_scene_path).send(_peer)
+	peer_connected_to_host.emit(_peer)
 
 func peer_disconnected(peer: ENetPacketPeer) -> void:
-	var player_id: int = peer.get_meta("id")
-	avaliable_player_ids.push_back(player_id)
-	
-	print("(Game network) Peer: ", player_id, " successfully disconnected")
+	if peer.has_meta("id"):
+		var player_id: int = peer.get_meta("id")
+		avaliable_player_ids.push_back(player_id)
+		print("(Game network) Peer: ", player_id, " successfully disconnected")
+	peer_disconnected_from_host.emit(peer)
+
+func get_connected_peer_count() -> int:
+	if host_connection == null:
+		return 0
+	var count: int = 0
+	for peer in host_connection.get_peers():
+		if peer != null and peer.get_state() == ENetPacketPeer.STATE_CONNECTED:
+			count += 1
+	return count
 
 # create_host(1): só um peer outbound (o host da sala).
 # is_host=false roteia receives via from_host_packet.

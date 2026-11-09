@@ -1,7 +1,7 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=8 format=3 uid="uid://lmgw4uf7ryx2"]
 
-[ext_resource type="Script" path="res://Scripts/Minigames/DataCenterRescue.cs" id="1_data"]
-[ext_resource type="Theme" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
+[ext_resource type="Script" uid="uid://b2tt3bargdt6q" path="res://Scripts/Minigames/DataCenterRescue.cs" id="1_data"]
+[ext_resource type="Theme" uid="uid://do6fllrcg1xgf" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
 
 [sub_resource type="StyleBoxFlat" id="StyleHud"]
 bg_color = Color(0.027, 0.047, 0.075, 0.98)
@@ -24,6 +24,18 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.38, 0.2, 0.14, 0.9)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBack"]
+bg_color = Color(0.047, 0.075, 0.11, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.16, 0.28, 0.38, 1)
 corner_radius_top_left = 7
 corner_radius_top_right = 7
 corner_radius_bottom_right = 7
@@ -56,18 +68,6 @@ corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 shadow_color = Color(0, 0, 0, 0.58)
 shadow_size = 24
-
-[sub_resource type="StyleBoxFlat" id="StyleBack"]
-bg_color = Color(0.047, 0.075, 0.11, 0.88)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.16, 0.28, 0.38, 1)
-corner_radius_top_left = 7
-corner_radius_top_right = 7
-corner_radius_bottom_right = 7
-corner_radius_bottom_left = 7
 
 [node name="DataCenterRescue" type="Control"]
 process_mode = 3
@@ -205,7 +205,18 @@ theme_override_constants/margin_bottom = 12
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.79, 0.82, 1)
 theme_override_font_sizes/font_size = 13
-text = "TECLAS DE RESPOSTA\n\n[Q]  MALWARE\n      QUARENTENA\n\n[B]  BRUTE FORCE\n      BLOQUEAR ACESSO\n\n[P]  FALHA DE ENERGIA\n      RESTAURAR ENERGIA\n\nO aviso inferior indica a tecla certa."
+text = "TECLAS DE RESPOSTA
+
+[Q]  MALWARE
+      QUARENTENA
+
+[B]  BRUTE FORCE
+      BLOQUEAR ACESSO
+
+[P]  FALHA DE ENERGIA
+      RESTAURAR ENERGIA
+
+O aviso inferior indica a tecla certa."
 autowrap_mode = 2
 
 [node name="BackButton" type="Button" parent="HudPanel/HudMargin/HudContent"]
@@ -298,7 +309,13 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.81, 0.84, 1)
 theme_override_font_sizes/font_size = 15
-text = "COMO JOGAR\n\n1. [WASD / SETAS] Vá até um servidor numerado.\n2. Ao chegar perto, leia o AVISO INFERIOR: ele mostrará o incidente e a tecla.\n3. [Q] Malware  •  [B] Brute force  •  [P] Falha de energia.\n4. Pegue o CARTÃO AMARELO para liberar os racks com cadeado.\n5. Resolva os 6 servidores e volte ao TERMINAL VERDE."
+text = "COMO JOGAR
+
+1. [WASD / SETAS] Vá até um servidor numerado.
+2. Ao chegar perto, leia o AVISO INFERIOR: ele mostrará o incidente e a tecla.
+3. [Q] Malware  •  [B] Brute force  •  [P] Falha de energia.
+4. Pegue o CARTÃO AMARELO para liberar os racks com cadeado.
+5. Resolva os 6 servidores e volte ao TERMINAL VERDE."
 autowrap_mode = 2
 
 [node name="Warning" type="Label" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent"]
@@ -383,7 +400,8 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(0.72, 0.83, 0.86, 1)
 theme_override_font_sizes/font_size = 14
-text = "Pontuação: 0\nServidores recuperados: 0/6"
+text = "Pontuação: 0
+Servidores recuperados: 0/6"
 horizontal_alignment = 1
 autowrap_mode = 2
 

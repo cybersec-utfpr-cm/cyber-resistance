@@ -10,6 +10,7 @@ signal minigame_assigned(packet: MinigameAssignPkt)
 # Emitido APENAS no host (loopback local) quando o grade chega via lobby.
 # Players nao-host recebem direto via PlayerHostPacketHandler.host_minigame_grade_signal.
 signal host_minigame_grade(team_index: int, grade: float, comment: String)
+signal activity_changed(activity_id: String)
 
 var my_ip: String
 var room_port: int
@@ -17,6 +18,7 @@ var room_port: int
 var my_id: int = -1
 var temporary_player_name: String = "player"
 var current_room_id: int
+var current_activity_id: String = "defesa_redes"
 var spawned_ids: Array[int]
 var players_scenes: Dictionary[int, String] = {}
 # MinigameAssignPkt chega no broadcast logo após o SceneForcePacket, mas
@@ -73,6 +75,10 @@ func packet_handler(data: PackedByteArray) -> void:
 			MinigameGradeResultPkt.create(grade_pkt.team_index, grade_pkt.grade, grade_pkt.comment).broadcast(GamePacketHandler.host_connection)
 			# Broadcast nao volta ao remetente; se o host pertence a dupla, aplica local.
 			host_minigame_grade.emit(grade_pkt.team_index, grade_pkt.grade, grade_pkt.comment)
+		PacketTypeClass.PACKET_TYPE.MINIGAME_SELECT:
+			var select_pkt: MinigameSelectPkt = MinigameSelectPkt.create_from_data(data)
+			current_activity_id = select_pkt.activity_id
+			activity_changed.emit(current_activity_id)
 
 func join_manager(data: PackedByteArray) -> void:
 	var join_packet: JoinRoomClass = JoinRoomClass.create_from_data(data)

@@ -20,6 +20,10 @@ region = Rect2(64, 0, 32, 32)
 atlas = ExtResource("1_0apx8")
 region = Rect2(32, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_6hunp"]
+atlas = ExtResource("1_0apx8")
+region = Rect2(32, 96, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_rxe1y"]
 atlas = ExtResource("1_0apx8")
 region = Rect2(0, 32, 32, 32)
@@ -47,10 +51,6 @@ region = Rect2(64, 64, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_rvry3"]
 atlas = ExtResource("1_0apx8")
 region = Rect2(0, 96, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6hunp"]
-atlas = ExtResource("1_0apx8")
-region = Rect2(32, 96, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_21fur"]
 atlas = ExtResource("1_0apx8")
@@ -141,7 +141,6 @@ radius = 18.0
 collision_layer = 2
 collision_mask = 29
 script = ExtResource("1_dnj73")
-NpcId = "hubner"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -11)
@@ -156,7 +155,6 @@ shape = SubResource("RectangleShape2D_vvg1s")
 
 [node name="InteractionArea" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
 shape = SubResource("CircleShape2D_interaction")

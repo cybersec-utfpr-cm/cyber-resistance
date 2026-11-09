@@ -22,6 +22,8 @@ public partial class ServerPacketHandler : Node
 	}
 
 	public Dictionary<int, MinigameSubmissionEntry> MinigameSubmissions = new();
+	public string DefaultActivityId = "defesa_redes";
+	public Dictionary<int, string> RoomActivities = new();
 
 	// Peer do professor (so um por enquanto). Se null, ninguem esta logado como
 	// professor; submissoes ficam armazenadas em MinigameSubmissions e sao
@@ -101,6 +103,9 @@ public partial class ServerPacketHandler : Node
 			case PacketTypeClass.PACKET_TYPE.PROFESSOR_HELLO:
 				RegisterProfessor(peer);
 				break;
+			case PacketTypeClass.PACKET_TYPE.MINIGAME_SELECT:
+				RouteActivitySelect(peer, data);
+				break;
 			case PacketTypeClass.PACKET_TYPE.MINIGAME_GRADE:
 				RouteGrade(peer, data);
 				break;
@@ -118,7 +123,12 @@ public partial class ServerPacketHandler : Node
 		peer.SetMeta("name", roomPacket.PlayerName);
 		CreatedRoomsId.Add(roomId);
 		Rooms[roomId] = newRoom;
+		RoomActivities[roomId] = DefaultActivityId;
 		peer.SetMeta("in_room", true);
+		if (!string.IsNullOrEmpty(DefaultActivityId))
+		{
+			MinigameSelectPkt.Create(roomId, DefaultActivityId).Send(peer);
+		}
 		GD.Print("(Server handler) info saved: ", Rooms);
 	}
 
@@ -149,6 +159,42 @@ public partial class ServerPacketHandler : Node
 			{
 				ProfessorPeer = null;
 			}
+		}
+	}
+
+	public void RouteActivitySelect(ENetPacketPeer peer, byte[] data)
+	{
+		if (peer != ProfessorPeer)
+		{
+			GD.Print("(Server handler) MINIGAME_SELECT ignorado - peer nao e o professor");
+			return;
+		}
+		MinigameSelectPkt pkt = MinigameSelectPkt.CreateFromData(data);
+		if (pkt.RoomId == MinigameSelectPkt.AllRooms)
+		{
+			DefaultActivityId = pkt.ActivityId;
+			foreach (KeyValuePair<int, RoomStorage> pair in Rooms)
+			{
+				RoomActivities[pair.Key] = pkt.ActivityId;
+				if (pair.Value.HostPeer.GetState() == ENetPacketPeer.PeerState.Connected)
+				{
+					MinigameSelectPkt.Create(pair.Key, pkt.ActivityId).Send(pair.Value.HostPeer);
+				}
+			}
+			GD.Print($"(Server handler) MINIGAME_SELECT '{pkt.ActivityId}' aplicado a todas as salas");
+			return;
+		}
+		if (!Rooms.ContainsKey(pkt.RoomId))
+		{
+			GD.Print($"(Server handler) MINIGAME_SELECT para sala inexistente {pkt.RoomId}");
+			return;
+		}
+		RoomActivities[pkt.RoomId] = pkt.ActivityId;
+		ENetPacketPeer hostPeer = Rooms[pkt.RoomId].HostPeer;
+		if (hostPeer.GetState() == ENetPacketPeer.PeerState.Connected)
+		{
+			MinigameSelectPkt.Create(pkt.RoomId, pkt.ActivityId).Send(hostPeer);
+			GD.Print($"(Server handler) MINIGAME_SELECT '{pkt.ActivityId}' encaminhado para sala {pkt.RoomId}");
 		}
 	}
 

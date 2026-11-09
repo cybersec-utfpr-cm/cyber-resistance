@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://dojb3cxqi88sn"]
 
 [ext_resource type="Script" uid="uid://deb6rwrix813y" path="res://Scripts/Professor/ProfessorMain.cs" id="1_main"]
 [ext_resource type="Script" uid="uid://414wof4pm6lo" path="res://Scripts/Professor/ProfessorNetwork.cs" id="2_net"]
@@ -82,7 +82,6 @@ text = "Conectar"
 [node name="StatusLabel" type="Label" parent="Margin/Root/ConnectionRow"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.48, 0.85, 0.88, 1)
 theme_override_font_sizes/font_size = 13
 text = "Desconectado"
@@ -97,7 +96,6 @@ theme_override_constants/separation = 16
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.0
 theme_override_constants/separation = 8
 
 [node name="RoomsTitle" type="Label" parent="Margin/Root/Split/RoomsBox"]
@@ -113,6 +111,20 @@ size_flags_vertical = 3
 [node name="RefreshButton" type="Button" parent="Margin/Root/Split/RoomsBox"]
 layout_mode = 2
 text = "Atualizar salas"
+
+[node name="ActivityTitle" type="Label" parent="Margin/Root/Split/RoomsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 15
+text = "Tarefa da sala"
+
+[node name="ActivityOption" type="OptionButton" parent="Margin/Root/Split/RoomsBox"]
+layout_mode = 2
+text_overrun_behavior = 3
+
+[node name="ApplyActivityButton" type="Button" parent="Margin/Root/Split/RoomsBox"]
+layout_mode = 2
+text = "Aplicar tarefa"
 
 [node name="SubmissionsBox" type="VBoxContainer" parent="Margin/Root/Split"]
 layout_mode = 2
@@ -142,7 +154,6 @@ layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 2
 bbcode_enabled = true
-text = ""
 scroll_following = true
 
 [node name="GradeBox" type="HBoxContainer" parent="Margin/Root/Split/SubmissionsBox"]

@@ -19,6 +19,7 @@ public class PacketTypeClass
 		ROOM_INFO = 60,
 		MINIGAME_SUBMISSION = 70,
 		PROFESSOR_HELLO = 80,
+		MINIGAME_SELECT = 85,
 		MINIGAME_GRADE = 90
 	}
 

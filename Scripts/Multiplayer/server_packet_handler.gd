@@ -10,6 +10,8 @@ var rooms: Dictionary[int, RoomStorage]
 # received_at: int (Time.get_ticks_msec) } }. Consumido pela UI do professor
 # (passo futuro).
 var minigame_submissions: Dictionary[int, Dictionary] = {}
+var default_activity_id: String = "defesa_redes"
+var room_activities: Dictionary[int, String] = {}
 # Peer do professor (so um por enquanto). Se null, ninguem esta logado como
 # professor; submissoes ficam armazenadas em minigame_submissions e sao
 # despachadas assim que um PROFESSOR_HELLO chegar.
@@ -47,6 +49,8 @@ func client_packet_handler(peer: ENetPacketPeer, data: PackedByteArray) -> void:
 			save_minigame_submission(peer, data)
 		PacketTypeClass.PACKET_TYPE.PROFESSOR_HELLO:
 			register_professor(peer)
+		PacketTypeClass.PACKET_TYPE.MINIGAME_SELECT:
+			route_activity_select(peer, data)
 		PacketTypeClass.PACKET_TYPE.MINIGAME_GRADE:
 			route_grade(peer, data)
 
@@ -60,7 +64,10 @@ func save_room_info(peer: ENetPacketPeer, data: PackedByteArray) -> void:
 	peer.set_meta("name", room_packet.player_name)
 	created_rooms_id.append(room_id)
 	rooms[room_id] = new_room
+	room_activities[room_id] = default_activity_id
 	peer.set_meta("in_room", true)
+	if not default_activity_id.is_empty():
+		MinigameSelectPkt.create(room_id, default_activity_id).send(peer)
 	print("(Server handler) info saved: ", rooms)
 
 func save_minigame_submission(peer: ENetPacketPeer, data: PackedByteArray) -> void:
@@ -81,6 +88,28 @@ func save_minigame_submission(peer: ENetPacketPeer, data: PackedByteArray) -> vo
 			MinigameSubmissionPkt.create(room_id, packet.teams).send(professor_peer)
 		else:
 			professor_peer = null
+
+func route_activity_select(peer: ENetPacketPeer, data: PackedByteArray) -> void:
+	if peer != professor_peer:
+		print("(Server handler) MINIGAME_SELECT ignorado - peer nao e o professor")
+		return
+	var pkt: MinigameSelectPkt = MinigameSelectPkt.create_from_data(data)
+	if pkt.room_id == MinigameSelectPkt.ALL_ROOMS:
+		default_activity_id = pkt.activity_id
+		for r_id in rooms.keys():
+			room_activities[r_id] = pkt.activity_id
+			var r_host: ENetPacketPeer = rooms[r_id].host_peer
+			if r_host.get_state() == ENetPacketPeer.STATE_CONNECTED:
+				MinigameSelectPkt.create(r_id, pkt.activity_id).send(r_host)
+		print("(Server handler) MINIGAME_SELECT aplicado a todas as salas: ", pkt.activity_id)
+		return
+	if not rooms.has(pkt.room_id):
+		print("(Server handler) MINIGAME_SELECT para sala inexistente ", pkt.room_id)
+		return
+	room_activities[pkt.room_id] = pkt.activity_id
+	var host_peer: ENetPacketPeer = rooms[pkt.room_id].host_peer
+	if host_peer.get_state() == ENetPacketPeer.STATE_CONNECTED:
+		MinigameSelectPkt.create(pkt.room_id, pkt.activity_id).send(host_peer)
 
 func route_grade(peer: ENetPacketPeer, data: PackedByteArray) -> void:
 	# So aceita do peer registrado como professor.

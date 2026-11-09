@@ -4,7 +4,9 @@ class_name MinigameSession
 static var is_active: bool = false
 
 const QUIZ_JSON_PATH := "res://prototype/data/minigame_quiz.json"
+const REQUIRED_PLAYERS: int = 4
 
+@onready var title_label: Label = get_node_or_null("../Title")
 @onready var waiting_label: Label = $"../WaitingLabel"
 @onready var document_panel: PanelContainer = $"../DocumentPanel"
 @onready var doc_title_label: Label = $"../DocumentPanel/VBox/DocTitleLabel"
@@ -19,6 +21,8 @@ const QUIZ_JSON_PATH := "res://prototype/data/minigame_quiz.json"
 @onready var team_info_label: Label = $"../TeamHUD/TeamInfoLabel"
 
 var quiz_data: Dictionary = {}
+var activities_catalog: Dictionary = {}
+var current_activity_id: String = "defesa_redes"
 var total_questions: int = 0
 
 var my_team: int = -1
@@ -60,18 +64,19 @@ func _ready() -> void:
 	if GamePacketHandler.is_host:
 		PlayerHostPacketHandler.player_minigame_answer_signal.connect(_on_player_answer_received)
 		ClientPacketHandler.host_minigame_grade.connect(_on_grade_loopback)
-		# Conhece os ids da partida e calcula tudo localmente; não fica esperando
-		# seu próprio pacote pelo loopback (broadcast não volta ao remetente).
-		_host_assign_and_dispatch()
+		ClientPacketHandler.spawn_player_signal.connect(_on_lobby_players_changed)
+		GamePacketHandler.peer_connected_to_host.connect(_on_host_peer_connected)
+		ClientPacketHandler.activity_changed.connect(_on_activity_changed)
+		_try_host_start()
 	else:
-		# O assign chega no broadcast quase junto com o SceneForcePacket que nos
-		# trouxe; pode ter chegado antes desta cena existir. Conferir o buffer.
+		ClientPacketHandler.minigame_assigned.connect(_on_assign_signal)
+		# O assign pode ter chegado antes desta cena existir. Conferir o buffer.
 		if ClientPacketHandler.pending_minigame_assign != null:
 			var p: MinigameAssignPkt = ClientPacketHandler.pending_minigame_assign
 			ClientPacketHandler.pending_minigame_assign = null
+			if not p.activity_id.is_empty():
+				_select_activity(p.activity_id)
 			_apply_assignment(p.team, p.role, p.partner_id, p.member_ids)
-		else:
-			ClientPacketHandler.minigame_assigned.connect(_on_assign_signal)
 
 func _exit_tree() -> void:
 	is_active = false
@@ -92,11 +97,79 @@ func _load_quiz() -> bool:
 	if typeof(parsed) != TYPE_DICTIONARY:
 		return false
 	quiz_data = parsed
-	total_questions = (quiz_data.get("questions", []) as Array).size()
+	activities_catalog.clear()
+	if parsed.has("activities") and typeof(parsed["activities"]) == TYPE_ARRAY:
+		for act in parsed["activities"]:
+			if typeof(act) == TYPE_DICTIONARY and act.has("id"):
+				activities_catalog[String(act["id"])] = act
+	var initial_id: String = ClientPacketHandler.current_activity_id
+	if initial_id.is_empty() and parsed.has("default_activity"):
+		initial_id = String(parsed["default_activity"])
+	if not _select_activity(initial_id):
+		total_questions = (quiz_data.get("questions", []) as Array).size()
 	return true
+
+func _select_activity(act_id: String) -> bool:
+	if act_id.is_empty() or not activities_catalog.has(act_id):
+		return false
+	var act: Dictionary = activities_catalog[act_id]
+	current_activity_id = act_id
+	ClientPacketHandler.current_activity_id = act_id
+	var target_scene: String = String(act.get("scene", ""))
+	if not target_scene.is_empty() and get_tree().current_scene != null:
+		var curr_path: String = get_tree().current_scene.scene_file_path
+		if not curr_path.is_empty() and curr_path != target_scene:
+			if GamePacketHandler.is_host and GamePacketHandler.host_connection != null:
+				SceneForcePacket.create(target_scene).broadcast(GamePacketHandler.host_connection)
+				GameManager.goto_scene(target_scene)
+			return true
+	quiz_data = act
+	total_questions = (quiz_data.get("questions", []) as Array).size()
+	if title_label != null:
+		title_label.text = "Desafio cooperativo — %s" % String(act.get("title", act_id))
+	return true
+
+func _on_lobby_players_changed(_player_id: int) -> void:
+	if GamePacketHandler.is_host:
+		_try_host_start()
+
+func _on_host_peer_connected(_peer: ENetPacketPeer) -> void:
+	if GamePacketHandler.is_host:
+		_try_host_start()
+
+func _on_activity_changed(act_id: String) -> void:
+	_select_activity(act_id)
+	if GamePacketHandler.is_host:
+		assigned = false
+		my_finished = false
+		my_question_idx = 0
+		my_grade = -1.0
+		my_grade_comment = ""
+		_try_host_start()
+
+func _try_host_start() -> void:
+	if assigned:
+		return
+	var lobby_count: int = ClientPacketHandler.spawned_ids.size()
+	var game_peers: int = GamePacketHandler.get_connected_peer_count()
+	if lobby_count < REQUIRED_PLAYERS or game_peers < REQUIRED_PLAYERS - 1:
+		document_panel.visible = false
+		quiz_panel.visible = false
+		team_hud.visible = false
+		waiting_label.visible = true
+		var act_title: String = String(quiz_data.get("title", quiz_data.get("document_title", current_activity_id)))
+		waiting_label.text = "Aguardando jogadores conectarem (%d/%d)...\nTarefa selecionada: %s" % [
+			lobby_count,
+			REQUIRED_PLAYERS,
+			act_title
+		]
+		return
+	_host_assign_and_dispatch()
 
 func _host_assign_and_dispatch() -> void:
 	var ids: Array[int] = ClientPacketHandler.spawned_ids.duplicate()
+	if ids.size() < REQUIRED_PLAYERS:
+		return
 	ids.sort()
 	# Dupla A: ids[0] DOC, ids[1] QUIZ — Dupla B: ids[2] DOC, ids[3] QUIZ.
 	# Determinístico via sort para que host e clientes derivem a mesma partição.
@@ -117,7 +190,7 @@ func _host_assign_and_dispatch() -> void:
 			"finished": false
 		})
 
-	for i in ids.size():
+	for i in REQUIRED_PLAYERS:
 		var player_id: int = ids[i]
 		var team: int = 0 if i < 2 else 1
 		var role: int = MinigameAssignPkt.ROLE.DOC if i % 2 == 0 else MinigameAssignPkt.ROLE.QUIZ
@@ -127,10 +200,12 @@ func _host_assign_and_dispatch() -> void:
 			# Broadcast do ENet não volta ao remetente; aplicamos localmente.
 			_apply_assignment(team, role, partner, members)
 		else:
-			MinigameAssignPkt.create(player_id, team, role, partner, members).broadcast(GamePacketHandler.host_connection)
+			MinigameAssignPkt.create(player_id, team, role, partner, members, current_activity_id).broadcast(GamePacketHandler.host_connection)
 
 func _on_assign_signal(pkt: MinigameAssignPkt) -> void:
 	ClientPacketHandler.pending_minigame_assign = null
+	if not pkt.activity_id.is_empty():
+		_select_activity(pkt.activity_id)
 	_apply_assignment(pkt.team, pkt.role, pkt.partner_id, pkt.member_ids)
 
 func _apply_assignment(team: int, role: int, partner: int, members: Array[int]) -> void:
@@ -138,6 +213,10 @@ func _apply_assignment(team: int, role: int, partner: int, members: Array[int]) 
 	my_role = role
 	my_partner_id = partner
 	my_team_members = members
+	my_question_idx = 0
+	my_finished = false
+	my_grade = -1.0
+	my_grade_comment = ""
 	assigned = true
 	start_msec = Time.get_ticks_msec()
 
