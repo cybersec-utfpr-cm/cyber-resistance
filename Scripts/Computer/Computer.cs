@@ -30,6 +30,18 @@ public partial class Computer : Control
 
 		// Inicia com o desktop visível
 		ShowScreen(_desktop);
+		CompleteTutorialComputerAccess();
+	}
+
+	private void CompleteTutorialComputerAccess()
+	{
+		if (QuestManager.Instance?.GetQuestStage("tutorial") != 3)
+			return;
+
+		QuestManager.Instance.CompleteQuest("tutorial");
+		GD.Print(
+			"Computer: tutorial concluído quando a área de trabalho carregou."
+		);
 	}
 
 	private void ShowScreen(Control screen)
