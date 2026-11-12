@@ -103,6 +103,56 @@
 		  "answer": "DNS Tunneling (exfiltração de dados encapsulados em consultas DNS)."
 		}
 	  ]
+	},
+	{
+	  "id": "cruzadinha_cyber",
+	  "title": "4. Palavras Cruzadas — Cibersegurança",
+	  "type": "crossword",
+	  "scene": "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn",
+	  "document_title": "Manual de Apoio — Palavras Cruzadas de Cibersegurança",
+	  "document_text": "Ajude seu parceiro a preencher a Cruzadinha de Cibersegurança! A cada rodada os papéis se invertem. Use as descrições abaixo e as letras que se cruzam no tabuleiro para descobrir o termo exato (sem espaços ou acentos):\n\n• Defesa de Redes e Infraestrutura:\n- Quando uma estação exibe tela preta exigindo resgate em Bitcoins pelos arquivos criptografados, estamos diante de um ataque de RANSOMWARE (10 letras). A ação imediata é isolar a máquina da rede.\n- O monitoramento de pacotes UDP gigantes na porta 53 (Amplificação de DNS) é detectado pelo FIREWALL (8 letras) de borda.\n- No cálculo de sub-redes CIDR (ex.: /28 para 12 hosts), dois endereços nunca podem ser usados por computadores: o primeiro (endereço de rede) e o último, chamado endereço de BROADCAST (9 letras).\n- Quando um invasor envia respostas ARP falsas na LAN para associar seu MAC ao IP do gateway padrão (Man-in-the-Middle), ele pratica ARP SPOOFING (8 letras na palavra-chave da técnica), mitigado com Dynamic ARP Inspection (DAI).\n\n• Engenharia Social e Identidade:\n- O envio de mensagens e páginas falsas para enganar usuários e roubar senhas chama-se PHISHING (8 letras).\n- Quando esse ataque é altamente personalizado e mira especificamente executivos de alto escalão como o CEO ou Diretor Financeiro, recebe o nome de WHALING (7 letras).\n\n• Resposta a Incidentes e Forense:\n- Na perícia forense (RFC 3227), nunca devemos puxar o cabo de força de um servidor com malware em memória RAM por causa da Ordem de VOLATILIDADE (12 letras).\n- Para roubar informações mesmo com portas HTTP/HTTPS bloqueadas, atacantes codificam dados em subdomínios dentro de consultas DNS, técnica conhecida como DNS TUNNELING (9 letras na palavra-chave da técnica).",
+	  "questions": [
+		{
+		  "word": "VOLATILIDADE",
+		  "prompt": "[Forense / RFC 3227] Ordem segundo a qual evidências mais efêmeras (como a memória RAM) devem ser coletadas primeiro antes de desligar o servidor (12 letras).",
+		  "answer": "VOLATILIDADE"
+		},
+		{
+		  "word": "RANSOMWARE",
+		  "prompt": "[Defesa de Redes] Malware que criptografa os arquivos da vítima e exige resgate em criptomoedas; exige isolamento imediato da máquina na rede (10 letras).",
+		  "answer": "RANSOMWARE"
+		},
+		{
+		  "word": "BROADCAST",
+		  "prompt": "[Sub-redes CIDR] Último endereço reservado de uma sub-rede que, junto com o endereço de rede, não pode ser atribuído a hosts úteis (9 letras).",
+		  "answer": "BROADCAST"
+		},
+		{
+		  "word": "TUNNELING",
+		  "prompt": "[Exfiltração] Técnica em que o invasor encapsula dados roubados dentro de consultas DNS para atravessar bloqueios de portas web (9 letras).",
+		  "answer": "TUNNELING"
+		},
+		{
+		  "word": "FIREWALL",
+		  "prompt": "[Infraestrutura] Barreira de segurança de rede que dispara alertas ao detectar enxurradas de pacotes UDP na porta 53 (8 letras).",
+		  "answer": "FIREWALL"
+		},
+		{
+		  "word": "SPOOFING",
+		  "prompt": "[Rede Local / MITM] Técnica de falsificação usada no protocolo ARP para fingir ser o gateway padrão da LAN, bloqueada com DAI no switch (8 letras).",
+		  "answer": "SPOOFING"
+		},
+		{
+		  "word": "PHISHING",
+		  "prompt": "[Engenharia Social] Ataque que utiliza comunicações ou páginas clonadas para induzir a vítima a entregar suas credenciais (8 letras).",
+		  "answer": "PHISHING"
+		},
+		{
+		  "word": "WHALING",
+		  "prompt": "[Engenharia Social] Modalidade de Spear Phishing altamente personalizada voltada especificamente a executivos de alto escalão como CEO e diretores (7 letras).",
+		  "answer": "WHALING"
+		}
+	  ]
 	}
   ]
 }

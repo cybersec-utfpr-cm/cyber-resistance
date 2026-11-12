@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dxb8r5pmk0cqc"]
 
-[ext_resource type="Script" uid="uid://0wxdxv3hhtxh" path="res://prototype/scripts/world_scripts/minigame_starter.gd" id="1_mgst"]
+[ext_resource type="Script" uid="uid://356g0wwt5dc1" path="res://Scripts/Minigames/MinigameStarter.cs" id="1_mgst"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mgst"]
 size = Vector2(48, 48)

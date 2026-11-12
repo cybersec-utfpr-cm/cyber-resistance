@@ -235,6 +235,7 @@ func _show_entry_detail(entry: Dictionary) -> void:
 	var act_id: String = str(entry.get("activity_id", _default_activity_id))
 	var team: Dictionary = entry["team"]
 	var active_questions: Array = _get_questions_for_activity(act_id)
+	var expected_answers: Array = _get_expected_answers_for_activity(act_id)
 	detail_label.text = "Detalhes - Sala %d, dupla %d" % [room_id, team_index + 1]
 
 	var lines: PackedStringArray = PackedStringArray()
@@ -248,7 +249,9 @@ func _show_entry_detail(entry: Dictionary) -> void:
 		lines.append("[b]Questao %d[/b]" % (i + 1))
 		if i < active_questions.size():
 			lines.append("[color=#8fd8e0]%s[/color]" % _escape_bbcode(str(active_questions[i])))
-		lines.append("[b]Resposta:[/b] %s" % _escape_bbcode(str(answers[i])))
+		if i < expected_answers.size() and not str(expected_answers[i]).is_empty():
+			lines.append("[color=#a8e6a1][b]Gabarito esperado:[/b] %s[/color]" % _escape_bbcode(str(expected_answers[i])))
+		lines.append("[b]Resposta da dupla:[/b] %s" % _escape_bbcode(str(answers[i])))
 		lines.append("Tempo de resposta: %s" % _format_time(int(answer_msecs[i])))
 		lines.append("")
 	detail.text = "\n".join(lines)
@@ -277,6 +280,12 @@ func _get_questions_for_activity(act_id: String) -> Array:
 			return act.get("questions", _questions)
 	return _questions
 
+func _get_expected_answers_for_activity(act_id: String) -> Array:
+	for act in _activities:
+		if str(act.get("id", "")) == act_id:
+			return act.get("expected_answers", [])
+	return []
+
 func _load_questions() -> Array:
 	_activities.clear()
 	var file: FileAccess = FileAccess.open(QUIZ_PATH, FileAccess.READ)
@@ -293,13 +302,16 @@ func _load_questions() -> Array:
 		for act_item in dict["activities"]:
 			if act_item is Dictionary:
 				var q_prompts: Array = []
+				var q_expected: Array = []
 				for q in act_item.get("questions", []):
 					if q is Dictionary:
 						q_prompts.append(str(q.get("prompt", "")))
+						q_expected.append(str(q.get("answer", q.get("word", ""))))
 				_activities.append({
 					"id": str(act_item.get("id", "")),
 					"title": str(act_item.get("title", "")),
-					"questions": q_prompts
+					"questions": q_prompts,
+					"expected_answers": q_expected
 				})
 	if not dict.has("questions"):
 		return []

@@ -42,6 +42,7 @@ public partial class ProfessorMain : Control
 		public string Id;
 		public string Title;
 		public List<string> Questions = new();
+		public List<string> ExpectedAnswers = new();
 	}
 	private readonly List<SubmissionEntry> _entries = new();
 	// -1 = sem filtro de sala
@@ -372,7 +373,7 @@ public partial class ProfessorMain : Control
 		int roomId = entry.RoomId;
 		int teamIndex = entry.TeamIndex;
 		Godot.Collections.Dictionary team = entry.Team;
-		List<string> activeQuestions = GetQuestionsForActivity(entry.ActivityId, out string activityTitle);
+		List<string> activeQuestions = GetQuestionsForActivity(entry.ActivityId, out string activityTitle, out List<string> expectedAnswers);
 		_detailLabel.Text = string.IsNullOrEmpty(activityTitle)
 			? $"Detalhes - Sala {roomId}, dupla {teamIndex + 1}"
 			: $"Detalhes - Sala {roomId}, dupla {teamIndex + 1} ({activityTitle})";
@@ -391,7 +392,11 @@ public partial class ProfessorMain : Control
 			{
 				lines.Add($"[color=#8fd8e0]{EscapeBbcode(activeQuestions[i])}[/color]");
 			}
-			lines.Add($"[b]Resposta:[/b] {EscapeBbcode(VariantStr(answers[i]))}");
+			if (i < expectedAnswers.Count && !string.IsNullOrEmpty(expectedAnswers[i]))
+			{
+				lines.Add($"[color=#a8e6a1][b]Gabarito esperado:[/b] {EscapeBbcode(expectedAnswers[i])}[/color]");
+			}
+			lines.Add($"[b]Resposta da dupla:[/b] {EscapeBbcode(VariantStr(answers[i]))}");
 			lines.Add($"Tempo de resposta: {FormatTime(answerMsecs[i].AsInt64())}");
 			lines.Add("");
 		}
@@ -429,17 +434,19 @@ public partial class ProfessorMain : Control
 		}
 	}
 
-	private List<string> GetQuestionsForActivity(string activityId, out string title)
+	private List<string> GetQuestionsForActivity(string activityId, out string title, out List<string> expectedAnswers)
 	{
 		foreach (ActivityDef act in _activities)
 		{
 			if (act.Id == activityId)
 			{
 				title = act.Title;
+				expectedAnswers = act.ExpectedAnswers;
 				return act.Questions;
 			}
 		}
 		title = "";
+		expectedAnswers = new List<string>();
 		return _questions;
 	}
 
@@ -484,6 +491,10 @@ public partial class ProfessorMain : Control
 					{
 						Godot.Collections.Dictionary q = qVar.AsGodotDictionary();
 						def.Questions.Add(q.TryGetValue("prompt", out Variant p) ? VariantStr(p) : "");
+						string expected = q.TryGetValue("answer", out Variant ansV)
+							? VariantStr(ansV)
+							: (q.TryGetValue("word", out Variant wordV) ? VariantStr(wordV) : "");
+						def.ExpectedAnswers.Add(expected);
 					}
 				}
 				_activities.Add(def);

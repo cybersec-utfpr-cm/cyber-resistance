@@ -7,6 +7,7 @@ signal quit_room()
 signal spawn_player_signal(player_id: int)
 signal player_scene_changed(player_id: int, scene_path: String)
 signal minigame_assigned(packet: MinigameAssignPkt)
+signal minigame_assigned_raw(data: PackedByteArray)
 # Emitido APENAS no host (loopback local) quando o grade chega via lobby.
 # Players nao-host recebem direto via PlayerHostPacketHandler.host_minigame_grade_signal.
 signal host_minigame_grade(team_index: int, grade: float, comment: String)
@@ -26,6 +27,7 @@ var players_scenes: Dictionary[int, String] = {}
 # não está montada. Bufferizamos aqui (autoload) para o MinigameSession
 # consumir no seu _ready().
 var pending_minigame_assign: MinigameAssignPkt = null
+var pending_minigame_assign_raw: PackedByteArray = PackedByteArray()
 # -1 enquanto fora do minigame. Quando setado, o chat filtra mensagens fora-do-time
 # e colore os nomes por dupla.
 var minigame_team: int = -1
@@ -55,6 +57,7 @@ func packet_handler(data: PackedByteArray) -> void:
 			spawned_ids.clear()
 			players_scenes.clear()
 			pending_minigame_assign = null
+			pending_minigame_assign_raw = PackedByteArray()
 			minigame_team = -1
 			minigame_team_members.clear()
 			quit_room.emit()
@@ -176,4 +179,6 @@ func on_minigame_assign_received(data: PackedByteArray) -> void:
 	if packet.target_id != my_id:
 		return
 	pending_minigame_assign = packet
+	pending_minigame_assign_raw = data
 	minigame_assigned.emit(packet)
+	minigame_assigned_raw.emit(data)

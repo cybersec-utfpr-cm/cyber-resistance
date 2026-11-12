@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dxaa1eoj6frw5"]
 
 [ext_resource type="PackedScene" uid="uid://dnnk20ejw87e6" path="res://prototype/scenes/in_game_reusables/pause_control.tscn" id="1_pause"]
-[ext_resource type="Script" uid="uid://bq8mb46quqygb" path="res://prototype/scripts/world_scripts/minigame_session.gd" id="2_session"]
+[ext_resource type="Script" uid="uid://dlc4u80gfc6vx" path="res://Scripts/Minigames/MinigameSession.cs" id="2_session"]
 [ext_resource type="PackedScene" uid="uid://nos1s3ei7bbe" path="res://prototype/scenes/in_game_reusables/chat.tscn" id="3_chat"]
 
 [node name="MinigameQuiz" type="Control"]

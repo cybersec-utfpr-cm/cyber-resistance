@@ -24,6 +24,13 @@ var quiz_data: Dictionary = {}
 var activities_catalog: Dictionary = {}
 var current_activity_id: String = "defesa_redes"
 var total_questions: int = 0
+var is_crossword_mode: bool = false
+var crossword_layout: Dictionary = {}
+var team_submitted_answers: Array[String] = []
+var crossword_quiz_box: VBoxContainer = null
+var crossword_quiz_grid: GridContainer = null
+var crossword_doc_box: VBoxContainer = null
+var crossword_doc_grid: GridContainer = null
 
 var my_team: int = -1
 var my_role: int = -1
@@ -55,6 +62,7 @@ func _ready() -> void:
 
 	submit_button.pressed.connect(_on_submit_pressed)
 	answer_line.text_submitted.connect(_on_answer_text_submitted)
+	answer_line.text_changed.connect(_on_answer_text_changed)
 	# Progress chega para todos via broadcast do host; filtro por time no handler.
 	PlayerHostPacketHandler.host_minigame_progress_signal.connect(_on_progress_received)
 	# Nota: chega via in-game broadcast nos players; o host receberia o lobby
@@ -125,6 +133,13 @@ func _select_activity(act_id: String) -> bool:
 			return true
 	quiz_data = act
 	total_questions = (quiz_data.get("questions", []) as Array).size()
+	is_crossword_mode = String(act.get("type", "")) == "crossword"
+	team_submitted_answers.clear()
+	if is_crossword_mode:
+		var gen := CrosswordGenerator.new()
+		crossword_layout = gen.generate_from_questions(quiz_data.get("questions", []))
+	else:
+		crossword_layout = {}
 	if title_label != null:
 		title_label.text = "Desafio cooperativo — %s" % String(act.get("title", act_id))
 	return true
@@ -217,6 +232,7 @@ func _apply_assignment(team: int, role: int, partner: int, members: Array[int]) 
 	my_finished = false
 	my_grade = -1.0
 	my_grade_comment = ""
+	team_submitted_answers.clear()
 	assigned = true
 	start_msec = Time.get_ticks_msec()
 
@@ -245,10 +261,37 @@ func _setup_document_view() -> void:
 	quiz_panel.visible = false
 	doc_title_label.text = String(quiz_data.get("document_title", "Documento"))
 	document_text.text = String(quiz_data.get("document_text", ""))
+	_ensure_crossword_ui()
+	if is_crossword_mode:
+		document_panel.offset_top = -250.0
+		document_panel.offset_bottom = 250.0
+		document_text.custom_minimum_size = Vector2(0, 170)
+		crossword_doc_box.visible = true
+		_rebuild_crossword_boards("")
+	else:
+		document_panel.offset_top = -180.0
+		document_panel.offset_bottom = 180.0
+		document_text.custom_minimum_size = Vector2(0, 300)
+		if crossword_doc_box != null:
+			crossword_doc_box.visible = false
 
 func _setup_quiz_view() -> void:
 	quiz_panel.visible = true
 	document_panel.visible = false
+	_ensure_crossword_ui()
+	if is_crossword_mode:
+		quiz_panel.offset_top = -250.0
+		quiz_panel.offset_bottom = 250.0
+		quiz_panel.offset_left = -420.0
+		quiz_panel.offset_right = 420.0
+		crossword_quiz_box.visible = true
+	else:
+		quiz_panel.offset_top = -180.0
+		quiz_panel.offset_bottom = 180.0
+		quiz_panel.offset_left = -360.0
+		quiz_panel.offset_right = 360.0
+		if crossword_quiz_box != null:
+			crossword_quiz_box.visible = false
 	_show_current_question()
 
 func _show_current_question() -> void:
@@ -260,7 +303,27 @@ func _show_current_question() -> void:
 		_show_finished_state()
 		return
 	var q: Dictionary = questions[my_question_idx]
-	question_label.text = "%d) %s" % [my_question_idx + 1, q.get("prompt", "")]
+	if is_crossword_mode:
+		var words: Array = crossword_layout.get("words", [])
+		var orient: String = "HORIZONTAL"
+		var w_len: int = String(q.get("word", q.get("answer", ""))).length()
+		if my_question_idx < words.size():
+			var w_info: Dictionary = words[my_question_idx]
+			orient = "VERTICAL" if bool(w_info.get("vertical", false)) else "HORIZONTAL"
+			w_len = String(w_info.get("word", "")).length()
+		question_label.text = "Palavra #%d (%s — %d letras): %s" % [
+			my_question_idx + 1,
+			orient,
+			w_len,
+			q.get("prompt", "")
+		]
+		answer_line.max_length = w_len
+		answer_line.placeholder_text = "Digite a palavra de %d letras..." % w_len
+		_rebuild_crossword_boards("")
+	else:
+		question_label.text = "%d) %s" % [my_question_idx + 1, q.get("prompt", "")]
+		answer_line.max_length = 0
+		answer_line.placeholder_text = "Digite sua resposta"
 	answer_line.text = ""
 	answer_line.editable = true
 	submit_button.disabled = false
@@ -298,6 +361,10 @@ func _apply_grade(team_index: int, grade: float, comment: String) -> void:
 
 func _on_answer_text_submitted(_text: String) -> void:
 	_on_submit_pressed()
+
+func _on_answer_text_changed(new_text: String) -> void:
+	if is_crossword_mode and my_role == MinigameAssignPkt.ROLE.QUIZ:
+		_rebuild_crossword_boards(new_text)
 
 func _on_submit_pressed() -> void:
 	if not assigned or my_finished:
@@ -351,10 +418,10 @@ func _host_process_answer(team: int, question_idx: int, raw_answer: String) -> v
 	var finished: bool = int(state["question_idx"]) >= questions.size()
 	state["finished"] = finished
 
-	MinigameProgressPkt.create(team, int(state["question_idx"]), next_quiz, finished).broadcast(GamePacketHandler.host_connection)
+	MinigameProgressPkt.create(team, int(state["question_idx"]), next_quiz, finished, raw_answer).broadcast(GamePacketHandler.host_connection)
 	# Broadcast não volta ao próprio host; aplica localmente se for o meu time.
 	if team == my_team:
-		_apply_progress(team, int(state["question_idx"]), next_quiz, finished)
+		_apply_progress(team, int(state["question_idx"]), next_quiz, finished, raw_answer)
 
 	# Quando as duas duplas concluíram, host envia tudo ao servidor central
 	# para o professor avaliar. Único envio por sala (acordado: batch ao final).
@@ -386,9 +453,11 @@ func _on_progress_received(data: PackedByteArray) -> void:
 	var pkt: MinigameProgressPkt = MinigameProgressPkt.create_from_data(data)
 	if pkt.team != my_team:
 		return
-	_apply_progress(pkt.team, pkt.question_idx, pkt.quiz_player_id, pkt.finished != 0)
+	_apply_progress(pkt.team, pkt.question_idx, pkt.quiz_player_id, pkt.finished != 0, pkt.last_answer)
 
-func _apply_progress(_team: int, question_idx: int, quiz_player_id: int, finished: bool) -> void:
+func _apply_progress(_team: int, question_idx: int, quiz_player_id: int, finished: bool, last_answer: String = "") -> void:
+	if not last_answer.is_empty():
+		team_submitted_answers.append(CrosswordGenerator.normalize_word(last_answer))
 	my_question_idx = question_idx
 	my_finished = finished
 	# Meu papel a partir de agora é definido pela identidade do QUIZ atual.
@@ -396,6 +465,148 @@ func _apply_progress(_team: int, question_idx: int, quiz_player_id: int, finishe
 	_update_team_info_label()
 	_refresh_hud_labels()
 	_show_view_for_current_role()
+
+func _ensure_crossword_ui() -> void:
+	if crossword_quiz_box == null:
+		var q_vbox: VBoxContainer = $"../QuizPanel/VBox"
+		crossword_quiz_box = VBoxContainer.new()
+		crossword_quiz_box.name = "CrosswordQuizBox"
+		var hint_lbl := Label.new()
+		hint_lbl.text = "Tabuleiro da Cruzadinha (células azuis = palavra da vez; verdes = já preenchidas)"
+		hint_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		hint_lbl.add_theme_font_size_override("font_size", 12)
+		crossword_quiz_box.add_child(hint_lbl)
+		var center := CenterContainer.new()
+		crossword_quiz_grid = GridContainer.new()
+		crossword_quiz_grid.add_theme_constant_override("h_separation", 2)
+		crossword_quiz_grid.add_theme_constant_override("v_separation", 2)
+		center.add_child(crossword_quiz_grid)
+		crossword_quiz_box.add_child(center)
+		q_vbox.add_child(crossword_quiz_box)
+		q_vbox.move_child(crossword_quiz_box, 0)
+
+	if crossword_doc_box == null:
+		var d_vbox: VBoxContainer = $"../DocumentPanel/VBox"
+		crossword_doc_box = VBoxContainer.new()
+		crossword_doc_box.name = "CrosswordDocBox"
+		var doc_hint := Label.new()
+		doc_hint.text = "Progresso da Dupla na Cruzadinha (acompanhe os cruzamentos do seu parceiro)"
+		doc_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		doc_hint.add_theme_font_size_override("font_size", 12)
+		crossword_doc_box.add_child(doc_hint)
+		var center_doc := CenterContainer.new()
+		crossword_doc_grid = GridContainer.new()
+		crossword_doc_grid.add_theme_constant_override("h_separation", 2)
+		crossword_doc_grid.add_theme_constant_override("v_separation", 2)
+		center_doc.add_child(crossword_doc_grid)
+		crossword_doc_box.add_child(center_doc)
+		d_vbox.add_child(crossword_doc_box)
+
+func _rebuild_crossword_boards(preview_typing: String = "") -> void:
+	if not is_crossword_mode or crossword_layout.is_empty():
+		return
+	_ensure_crossword_ui()
+	var target_grid: GridContainer = crossword_quiz_grid if my_role == MinigameAssignPkt.ROLE.QUIZ else crossword_doc_grid
+	if target_grid == null:
+		return
+
+	for child in target_grid.get_children():
+		child.queue_free()
+
+	var rows_cnt: int = int(crossword_layout.get("rows", 1))
+	var cols_cnt: int = int(crossword_layout.get("cols", 1))
+	var words: Array = crossword_layout.get("words", [])
+	target_grid.columns = cols_cnt
+
+	# Mapa de células: chave "r_c" -> { "slot": bool, "active": bool, "filled": bool, "letter": String, "num": int }
+	var cell_map: Dictionary = {}
+	for w_idx in words.size():
+		var w_info: Dictionary = words[w_idx]
+		var wr: int = int(w_info["row"])
+		var wc: int = int(w_info["col"])
+		var wvert: bool = bool(w_info["vertical"])
+		var wlen: int = String(w_info["word"]).length()
+		var wnum: int = int(w_info["number"])
+		var submitted_str: String = team_submitted_answers[w_idx] if w_idx < team_submitted_answers.size() else ""
+
+		for i in wlen:
+			var r: int = wr + (i if wvert else 0)
+			var c: int = wc + (0 if wvert else i)
+			var key: String = "%d_%d" % [r, c]
+			var entry: Dictionary = cell_map.get(key, {
+				"slot": true,
+				"active": false,
+				"filled": false,
+				"letter": "",
+				"num": 0
+			})
+			if i == 0 and int(entry["num"]) == 0:
+				entry["num"] = wnum
+			if not submitted_str.is_empty() and i < submitted_str.length():
+				entry["letter"] = submitted_str.substr(i, 1)
+				entry["filled"] = true
+			if w_idx == my_question_idx and not my_finished:
+				entry["active"] = true
+			cell_map[key] = entry
+
+	# Aplica preview em tempo real do que o jogador QUIZ está digitando
+	var clean_preview: String = CrosswordGenerator.normalize_word(preview_typing)
+	if not clean_preview.is_empty() and my_question_idx < words.size() and not my_finished:
+		var cur_w: Dictionary = words[my_question_idx]
+		var cr: int = int(cur_w["row"])
+		var cc: int = int(cur_w["col"])
+		var cvert: bool = bool(cur_w["vertical"])
+		var clen: int = String(cur_w["word"]).length()
+		for i in min(clean_preview.length(), clen):
+			var r: int = cr + (i if cvert else 0)
+			var c: int = cc + (0 if cvert else i)
+			var key: String = "%d_%d" % [r, c]
+			if cell_map.has(key):
+				cell_map[key]["letter"] = clean_preview.substr(i, 1)
+
+	var cell_px: int = clampi(int(260.0 / max(rows_cnt, 1)), 20, 28)
+	for r in rows_cnt:
+		for c in cols_cnt:
+			var key: String = "%d_%d" % [r, c]
+			var cell := Panel.new()
+			cell.custom_minimum_size = Vector2(cell_px, cell_px)
+			var style := StyleBoxFlat.new()
+			if not cell_map.has(key):
+				style.bg_color = Color(0.08, 0.09, 0.14, 0.25)
+				cell.add_theme_stylebox_override("panel", style)
+				target_grid.add_child(cell)
+				continue
+
+			var info: Dictionary = cell_map[key]
+			style.set_border_width_all(1)
+			if bool(info["active"]):
+				style.bg_color = Color(0.16, 0.38, 0.54, 1.0)
+				style.border_color = Color(0.45, 0.85, 1.0, 1.0)
+			elif bool(info["filled"]):
+				style.bg_color = Color(0.15, 0.33, 0.24, 1.0)
+				style.border_color = Color(0.35, 0.75, 0.5, 1.0)
+			else:
+				style.bg_color = Color(0.2, 0.22, 0.32, 1.0)
+				style.border_color = Color(0.4, 0.44, 0.58, 1.0)
+			cell.add_theme_stylebox_override("panel", style)
+
+			if int(info["num"]) > 0:
+				var num_lbl := Label.new()
+				num_lbl.text = str(info["num"])
+				num_lbl.position = Vector2(2, 0)
+				num_lbl.add_theme_font_size_override("font_size", 8)
+				num_lbl.add_theme_color_override("font_color", Color(0.95, 0.85, 0.4, 1.0))
+				cell.add_child(num_lbl)
+
+			var ch_lbl := Label.new()
+			ch_lbl.text = String(info["letter"])
+			ch_lbl.set_anchors_preset(Control.PRESET_FULL_RECT)
+			ch_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			ch_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			ch_lbl.add_theme_font_size_override("font_size", 12)
+			cell.add_child(ch_lbl)
+
+			target_grid.add_child(cell)
 
 func _update_team_info_label() -> void:
 	if my_team < 0:
