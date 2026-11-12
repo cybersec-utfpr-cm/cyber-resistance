@@ -2,7 +2,7 @@
 
 ## Direitos autorais e utilização
 
-Copyright © 2026 Juliano. Todos os direitos reservados.
+Copyright © 2026 UTFPR. Todos os direitos reservados.
 
 Este projeto tem seu código-fonte disponibilizado publicamente para fins de consulta, estudo e acompanhamento do desenvolvimento.
 
