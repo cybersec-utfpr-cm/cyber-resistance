@@ -1,10 +1,24 @@
+# Cyber Resistance 
+
+## Direitos autorais e utilização
+
+Copyright © 2026 Juliano. Todos os direitos reservados.
+
+Este projeto tem seu código-fonte disponibilizado publicamente para fins de consulta, estudo e acompanhamento do desenvolvimento.
+
+**Não é concedida licença para utilizar, modificar, redistribuir ou comercializar o código-fonte**, integral ou parcialmente, sem autorização prévia e expressa do titular dos direitos, ressalvadas as permissões previstas em lei e nos Termos de Serviço do GitHub.
+
+Sugestões de melhorias, relatos de problemas e discussões técnicas são bem-vindos por meio das Issues e Discussions deste repositório.
+
+Contribuições contendo código-fonte estão sujeitas à autorização prévia e a condições específicas de contribuição.
+
 [sphinx_cyber_resistance]: https://github.com/JSangaleti/Sphinx_Cyber_Resistance
 
-# Instruções para Instalação e Execução do Jogo
+## Instruções para Instalação e Execução do Jogo
 
 Este arquivo descreve as instruções para instalação e execução do jogo _Cyber Resistance_ em sistemas Linux.
 
-## 1. Instalação do ASP.NET Core Runtime 8.0
+### 1. Instalação do ASP.NET Core Runtime 8.0
 
 > Nota: Aqui é descrito como instalar o runtime em Debian 12. Para outras distribuições, consulte: [Install .NET Core on Linux](https://learn.microsoft.com/en-us/dotnet/core/install/linux). Para outros sistemas, consulte: [Install .NET on Windows, Linux, and macOS](https://learn.microsoft.com/en-us/dotnet/core/install/).
 
@@ -57,7 +71,7 @@ Nesse caso, podemos seguir as instruções apresentadas [aqui](https://stackover
 
 </details>
 
-## 2. Instalação da Engine Godot
+### 2. Instalação da Engine Godot
 
 2.1 Acesse [esta pasta do Drive](https://drive.google.com/drive/folders/1714fKAKL5njbq_gfIZOWOJOOGB9gtZho) e faça download do aquivo `Godot_v4.4.1-stable_mono_linux_x86_64.zip`;
 
@@ -67,7 +81,7 @@ Nesse caso, podemos seguir as instruções apresentadas [aqui](https://stackover
 unzip Godot_v4.4.1-stable_mono_linux_x86_64.zip
 ```
 
-## 3. Instalação da Build "Beta" do Jogo
+### 3. Instalação da Build "Beta" do Jogo
 
 3.1 Acesse a mesma [pasta do Drive](https://drive.google.com/drive/folders/1714fKAKL5njbq_gfIZOWOJOOGB9gtZho) e faça download do aquivo `Cyber_Resistance.zip`;
 
@@ -77,7 +91,7 @@ unzip Godot_v4.4.1-stable_mono_linux_x86_64.zip
 unzip Cyber_Resistance.zip
 ```
 
-## 4. Instalação das Máquinas Docker
+### 4. Instalação das Máquinas Docker
 
 Antes de executar o jogo, é necessário preparar as máquinas Docker usadas pelos terminais e cenários do _Cyber Resistance_.
 
@@ -90,8 +104,9 @@ chmod +x install-docker-machines.sh
 ./install-docker-machines.sh
 ```
 
-## 5. Execução do Jogo
+### 5. Execução do Jogo
 
+Contribuições contendo código-fonte estão sujeitas à autorização prévia e a condições específicas de contribuição.
 4.1 Execute a engine Godot:
 
 ```bash
@@ -104,7 +119,7 @@ chmod +x install-docker-machines.sh
 
 4.3 Execute o jogo: Clique no projeto para selecioná-lo e clique em "Run".
 
-## 6. Inicialização da Máquina Docker do Jogador
+### 6. Inicialização da Máquina Docker do Jogador
 
 A máquina Docker do jogador é inicializada quando a cena principal do jogo é carregada (via `GameManager`).
 
@@ -114,7 +129,7 @@ A máquina Docker do jogador é inicializada quando a cena principal do jogo é 
 
 Com isso, abrir/fechar a tela de terminal não liga/desliga a máquina; o terminal apenas se conecta ao ambiente já ativo.
 
-## 7. Áudio e menu de pausa
+### 7. Áudio e menu de pausa
 
 Durante o jogo, pressione `ESC` para pausar. O menu permite continuar, voltar ao
 menu principal e controlar separadamente:
@@ -131,7 +146,7 @@ interface; o `ESC` seguinte abre o menu de pausa.
 Os arquivos de áudio ficam em `Assets/Audio`. Consulte o README dessa pasta para
 substituir músicas ou efeitos mantendo a integração existente.
 
-## Universidade
+#### Universidade
 
 A universidade possui sala de aula, laboratório de computadores, sala dos
 professores e sala de prova. A prova é iniciada no terminal cyber da sala
@@ -148,24 +163,24 @@ a ordem: orientação de Hubner, leitura na estante, validação do computador,
 recuperação do Wi-Fi, autorização da prova e entrega do resultado ao professor.
 
 
-# Código-fonte: Projeto Cyber Resistance
+## Código-fonte: Projeto Cyber Resistance
 
-## Normas de Padronização (NPs)
+### Normas de Padronização (NPs)
 
 > Para qualquer um que desejar contribuir com o código do projeto, algumas normas de padronização deverão ser seguidas, a fim de manter uma organização do código e das pastas para que o projeto tenha melhor manutenção e legibilidade.
 
 
-### 1. Normas gerais
+#### 1. Normas gerais
 
 - **NP1.1** Nunca utilizar acentos ou 'ç' (exceto em comentários e mensagens de *commit*);
 - **NP1.2** Tudo deverá ser escrito em inglês (exceto em comentários e mensagens de *commit*).
 
-### 2. Quanto à organização de pastas e arquivos
+#### 2. Quanto à organização de pastas e arquivos
 
 - **NP2.1:** Nomes de pastas e arquivos devem iniciar com letra minúscula. Se o nome tiver mais de uma palavra, não deve haver espaçamento entre as palavras e cada palavra *após a primeira* deverá ter sua inicial maiúscula.
 > **Exemplo:** folderName || fileName.txt
 
-### 3. Quanto à organização e escrita de código
+#### 3. Quanto à organização e escrita de código
 
 - **NP3.1A (GDScript)** Nomes de variáveis e funções (inclusive sinais) devem ser escritos com letra minúscula em todas as circunstâncias, e o espaçamento entre as palavras se dá por *underline* (representado pelo caractere \'_\');
 > **Exemplo:** function_name() || _signal_name() || variable_name: int = ...
@@ -176,9 +191,9 @@ recuperação do Wi-Fi, autorização da prova e entrega do resultado ao profess
 - **NP3.2** Nomes de nós e seus respectivos atributos devem iniciar com letra maiúscula. Se o nome tiver mais de uma palavra, não deve haver espaçamento entre as palavras e cada palavra deverá ter sua inicial maiúscula.
 > **Exemplo:** SceneName || NodeName || TileMap
 
-### 4. Quanto aos git-commits
+#### 4. Quanto aos git-commits
 
 - **NP4.1** A mensagem deverá ser sempre uma frase breve; maiores detalhamentos sobre as alterações realizadas (cuja presença deve ser crucial em grandes modificações) deverão ser realizados na opção de descrição extendida. *[Maiores detalhes aqui!](https://www.freecodecamp.org/news/writing-good-commit-messages-a-practical-guide/)*
 > **Exemplo (via linha de comando de terminal):** `git commit -m "Frase breve e resumida" -m "Descrição detalhada..."`
 
-# [> Documentação do Projeto](https://jsangaleti.github.io/Sphinx_Cyber_Resistance/)
+## [> Documentação do Projeto](https://jsangaleti.github.io/Sphinx_Cyber_Resistance/)
