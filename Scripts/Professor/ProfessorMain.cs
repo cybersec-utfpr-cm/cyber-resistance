@@ -347,12 +347,15 @@ public partial class ProfessorMain : Control
 		foreach (SubmissionEntry entry in VisibleEntries())
 		{
 			Godot.Collections.Dictionary team = entry.Team;
+			Godot.Collections.Array members = team["members"].AsGodotArray();
+			string groupLabel = members.Count == 1
+				? $"Individual ({JoinIds(members)})"
+				: $"Dupla {entry.TeamIndex + 1} ({JoinIds(members)})";
 			_submissionList.AddItem(string.Format(
 				CultureInfo.InvariantCulture,
-				"Sala {0} - Dupla {1} ({2}) - {3}",
+				"Sala {0} - {1} - {2}",
 				entry.RoomId,
-				entry.TeamIndex + 1,
-				JoinIds(team["members"].AsGodotArray()),
+				groupLabel,
 				FormatTime(team["total_msec"].AsInt64())
 			));
 		}
@@ -364,7 +367,7 @@ public partial class ProfessorMain : Control
 		else
 		{
 			_detail.Text = "";
-			_detailLabel.Text = "Detalhes da dupla";
+			_detailLabel.Text = "Detalhes da submissao";
 		}
 	}
 
@@ -373,13 +376,16 @@ public partial class ProfessorMain : Control
 		int roomId = entry.RoomId;
 		int teamIndex = entry.TeamIndex;
 		Godot.Collections.Dictionary team = entry.Team;
+		Godot.Collections.Array members = team["members"].AsGodotArray();
+		bool isIndividual = members.Count == 1;
+		string groupDesc = isIndividual ? $"aluno {JoinIds(members)} (Individual)" : $"dupla {teamIndex + 1}";
 		List<string> activeQuestions = GetQuestionsForActivity(entry.ActivityId, out string activityTitle, out List<string> expectedAnswers);
 		_detailLabel.Text = string.IsNullOrEmpty(activityTitle)
-			? $"Detalhes - Sala {roomId}, dupla {teamIndex + 1}"
-			: $"Detalhes - Sala {roomId}, dupla {teamIndex + 1} ({activityTitle})";
+			? $"Detalhes - Sala {roomId}, {groupDesc}"
+			: $"Detalhes - Sala {roomId}, {groupDesc} ({activityTitle})";
 
 		var lines = new List<string>();
-		lines.Add($"[b]Integrantes:[/b] {JoinIds(team["members"].AsGodotArray())}");
+		lines.Add($"[b]{(isIndividual ? "Aluno" : "Integrantes")}:[/b] {JoinIds(members)}");
 		lines.Add($"[b]Tempo total:[/b] {FormatTime(team["total_msec"].AsInt64())}");
 		lines.Add("");
 
@@ -396,7 +402,7 @@ public partial class ProfessorMain : Control
 			{
 				lines.Add($"[color=#a8e6a1][b]Gabarito esperado:[/b] {EscapeBbcode(expectedAnswers[i])}[/color]");
 			}
-			lines.Add($"[b]Resposta da dupla:[/b] {EscapeBbcode(VariantStr(answers[i]))}");
+			lines.Add($"[b]Resposta {(isIndividual ? "do aluno" : "da dupla")}:[/b] {EscapeBbcode(VariantStr(answers[i]))}");
 			lines.Add($"Tempo de resposta: {FormatTime(answerMsecs[i].AsInt64())}");
 			lines.Add("");
 		}

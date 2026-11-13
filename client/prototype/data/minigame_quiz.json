@@ -153,6 +153,56 @@
           "answer": "WHALING"
         }
       ]
+    },
+    {
+      "id": "caca_palavras_cyber",
+      "title": "5. Caça-Palavras — Cibersegurança",
+      "type": "wordsearch",
+      "scene": "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn",
+      "document_title": "Guia de Radar — Caça-Palavras de Cibersegurança",
+      "document_text": "Ajude seu parceiro a localizar os 8 termos ocultos na grade do Caça-Palavras (Horizontal →, Vertical ↓ e Diagonal ↘/↗)! No seu painel de apoio (DOC), a célula inicial da palavra da rodada aparece destacada em dourado com o número da questão.\n\n• Referência Rápida dos Conceitos:\n1) FIREWALL (8 letras): Sistema de defesa de perímetro que monitora portas e dispara alertas em ataques volumétricos (como pacotes UDP gigantes na porta 53 / Amplificação de DNS).\n2) PHISHING (8 letras): Ataque de engenharia social que usa mensagens e páginas falsas para enganar usuários e capturar credenciais.\n3) WHALING (7 letras): Variante de Spear Phishing altamente personalizada voltada especificamente a executivos de alto escalão (CEO, CFO, Diretores).\n4) SPOOFING (8 letras): Falsificação de identidade na rede; no protocolo ARP permite interceptação Man-in-the-Middle na LAN (mitigado com Dynamic ARP Inspection — DAI).\n5) BACKUP (6 letras): Cópia de segurança essencial na Regra 3-2-1 (3 cópias, 2 mídias diferentes e 1 cópia offsite/imutável isolada da rede contra ransomware).\n6) GATEWAY (7 letras): Roteador padrão da rede local cujo endereço IP é falsamente associado ao MAC do invasor durante um ataque de ARP Spoofing.\n7) BITCOIN (7 letras): Criptomoeda frequentemente exigida pelos atacantes no cronômetro de extorsão após um ataque de Ransomware.\n8) WEBAUTHN (8 letras): Padrão de autenticação forte (junto ao FIDO2) resistente a phishing e ataques de Fadiga de MFA (MFA Prompt Bombing).",
+      "questions": [
+        {
+          "word": "FIREWALL",
+          "prompt": "[Defesa de Redes] Barreira que monitora o tráfego de rede e alerta sobre enxurradas de pacotes UDP na porta 53 (8 letras).",
+          "answer": "FIREWALL"
+        },
+        {
+          "word": "PHISHING",
+          "prompt": "[Engenharia Social] Técnica que utiliza e-mails ou sites falsos para induzir a vítima a revelar suas senhas (8 letras).",
+          "answer": "PHISHING"
+        },
+        {
+          "word": "WHALING",
+          "prompt": "[Engenharia Social] Ataque de Spear Phishing direcionado especificamente a altos executivos como CEO e diretores (7 letras).",
+          "answer": "WHALING"
+        },
+        {
+          "word": "SPOOFING",
+          "prompt": "[Rede Local / MITM] Falsificação de pacotes ARP na LAN para interceptar tráfego, combatida com DAI no switch (8 letras).",
+          "answer": "SPOOFING"
+        },
+        {
+          "word": "BACKUP",
+          "prompt": "[Resposta a Incidentes] Cópia de segurança protegida pela Regra 3-2-1 (incluindo 1 cópia offsite/imutável) para recuperação sem pagar resgate (6 letras).",
+          "answer": "BACKUP"
+        },
+        {
+          "word": "GATEWAY",
+          "prompt": "[Infraestrutura] Roteador padrão da rede local cujo IP é alvo de personificação em ataques de ARP Spoofing (7 letras).",
+          "answer": "GATEWAY"
+        },
+        {
+          "word": "BITCOIN",
+          "prompt": "[Ransomware] Criptomoeda comumente exigida pelos cibercriminosos para liberar arquivos sequestrados (7 letras).",
+          "answer": "BITCOIN"
+        },
+        {
+          "word": "WEBAUTHN",
+          "prompt": "[Autenticação] Padrão moderno de autenticação (junto ao FIDO2) que vincula o login ao domínio real e evita Fadiga de MFA (8 letras).",
+          "answer": "WEBAUTHN"
+        }
+      ]
     }
   ]
 }

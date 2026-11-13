@@ -216,10 +216,11 @@ func _rebuild_submission_list() -> void:
 	submission_list.clear()
 	for entry in _visible_entries():
 		var team: Dictionary = entry["team"]
-		submission_list.add_item("Sala %d - Dupla %d (%s) - %s" % [
+		var members: Array = team["members"]
+		var group_label: String = "Individual (%s)" % _join_ids(members) if members.size() == 1 else "Dupla %d (%s)" % [int(entry["team_index"]) + 1, _join_ids(members)]
+		submission_list.add_item("Sala %d - %s - %s" % [
 			int(entry["room_id"]),
-			int(entry["team_index"]) + 1,
-			_join_ids(team["members"]),
+			group_label,
 			_format_time(int(team["total_msec"]))
 		])
 	if submission_list.item_count > 0:
@@ -227,19 +228,24 @@ func _rebuild_submission_list() -> void:
 		_show_entry_detail(_visible_entries()[0])
 	else:
 		detail.text = ""
-		detail_label.text = "Detalhes da dupla"
+		detail_label.text = "Detalhes da submissao"
 
 func _show_entry_detail(entry: Dictionary) -> void:
 	var room_id: int = int(entry["room_id"])
 	var team_index: int = int(entry["team_index"])
 	var act_id: String = str(entry.get("activity_id", _default_activity_id))
 	var team: Dictionary = entry["team"]
+	var members: Array = team["members"]
+	var is_individual: bool = members.size() == 1
 	var active_questions: Array = _get_questions_for_activity(act_id)
 	var expected_answers: Array = _get_expected_answers_for_activity(act_id)
-	detail_label.text = "Detalhes - Sala %d, dupla %d" % [room_id, team_index + 1]
+	detail_label.text = "Detalhes - Sala %d, %s" % [
+		room_id,
+		"aluno %s (Individual)" % _join_ids(members) if is_individual else "dupla %d" % (team_index + 1)
+	]
 
 	var lines: PackedStringArray = PackedStringArray()
-	lines.append("[b]Integrantes:[/b] %s" % _join_ids(team["members"]))
+	lines.append("[b]%s:[/b] %s" % ["Aluno" if is_individual else "Integrantes", _join_ids(members)])
 	lines.append("[b]Tempo total:[/b] %s" % _format_time(int(team["total_msec"])))
 	lines.append("")
 
@@ -251,7 +257,7 @@ func _show_entry_detail(entry: Dictionary) -> void:
 			lines.append("[color=#8fd8e0]%s[/color]" % _escape_bbcode(str(active_questions[i])))
 		if i < expected_answers.size() and not str(expected_answers[i]).is_empty():
 			lines.append("[color=#a8e6a1][b]Gabarito esperado:[/b] %s[/color]" % _escape_bbcode(str(expected_answers[i])))
-		lines.append("[b]Resposta da dupla:[/b] %s" % _escape_bbcode(str(answers[i])))
+		lines.append("[b]Resposta %s:[/b] %s" % ["do aluno" if is_individual else "da dupla", _escape_bbcode(str(answers[i]))])
 		lines.append("Tempo de resposta: %s" % _format_time(int(answer_msecs[i])))
 		lines.append("")
 	detail.text = "\n".join(lines)

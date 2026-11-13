@@ -40,11 +40,22 @@ public partial class MinigameSession : Node
 	private int _totalQuestions;
 
 	private bool _isCrosswordMode;
+	private bool _isWordSearchMode;
 	private CrosswordGenerator.CrosswordLayout _crosswordLayout = new();
+	private WordSearchGenerator.WordSearchBoard _wordSearchBoard = new();
 	private readonly List<string> _teamSubmittedAnswers = new();
+	private readonly List<Vector2I> _wsClickedPath = new();
 	private VBoxContainer _crosswordQuizBox;
+	private Label _crosswordQuizHint;
 	private GridContainer _crosswordQuizGrid;
+	private HBoxContainer _wsMainSplit;
+	private GridContainer _wsGrid;
+	private HBoxContainer _wsLetterSlotsBox;
+	private Button _wsClearBtn;
+	private Button _wsConfirmBtn;
+	private RichTextLabel _wsChecklistLabel;
 	private VBoxContainer _crosswordDocBox;
+	private Label _crosswordDocHint;
 	private GridContainer _crosswordDocGrid;
 
 	private int _myTeam = -1;
@@ -272,16 +283,27 @@ public partial class MinigameSession : Node
 		_quizData = act;
 		Godot.Collections.Array questions = GetQuestionsArray(_quizData);
 		_totalQuestions = questions.Count;
-		_isCrosswordMode = act.TryGetValue("type", out Variant typeVar) && typeVar.AsString() == "crossword";
+		string actType = act.TryGetValue("type", out Variant typeVar) ? typeVar.AsString() : "quiz";
+		_isCrosswordMode = actType == "crossword";
+		_isWordSearchMode = actType == "wordsearch";
 		_teamSubmittedAnswers.Clear();
+		_wsClickedPath.Clear();
 		if (_isCrosswordMode)
 		{
 			var gen = new CrosswordGenerator();
 			_crosswordLayout = gen.GenerateFromQuestions(questions);
+			_wordSearchBoard = new WordSearchGenerator.WordSearchBoard();
+		}
+		else if (_isWordSearchMode)
+		{
+			var wsGen = new WordSearchGenerator();
+			_wordSearchBoard = wsGen.GenerateFromQuestions(questions);
+			_crosswordLayout = new CrosswordGenerator.CrosswordLayout();
 		}
 		else
 		{
 			_crosswordLayout = new CrosswordGenerator.CrosswordLayout();
+			_wordSearchBoard = new WordSearchGenerator.WordSearchBoard();
 		}
 
 		if (_titleLabel != null)
@@ -296,7 +318,14 @@ public partial class MinigameSession : Node
 	{
 		if (IsHost())
 		{
-			TryHostStart();
+			if (_isWordSearchMode && _assigned)
+			{
+				HostSyncIndividualPlayers();
+			}
+			else
+			{
+				TryHostStart();
+			}
 		}
 	}
 
@@ -304,7 +333,14 @@ public partial class MinigameSession : Node
 	{
 		if (IsHost())
 		{
-			TryHostStart();
+			if (_isWordSearchMode && _assigned)
+			{
+				HostSyncIndividualPlayers();
+			}
+			else
+			{
+				TryHostStart();
+			}
 		}
 	}
 
@@ -333,7 +369,11 @@ public partial class MinigameSession : Node
 		int gamePeers = _gamePacketHandler != null
 			? _gamePacketHandler.Call("get_connected_peer_count").AsInt32()
 			: 0;
-		if (lobbyCount < RequiredPlayers || gamePeers < RequiredPlayers - 1)
+
+		// No modo individual (Caça-Palavras), cada aluno joga no seu próprio tabuleiro;
+		// inicia assim que o host e os colegas já presentes estiverem conectados na camada 2.
+		int minRequired = _isWordSearchMode ? Math.Max(1, lobbyCount) : RequiredPlayers;
+		if (lobbyCount < minRequired || gamePeers < lobbyCount - 1)
 		{
 			_documentPanel.Visible = false;
 			_quizPanel.Visible = false;
@@ -348,10 +388,62 @@ public partial class MinigameSession : Node
 		HostAssignAndDispatch();
 	}
 
+	private void HostSyncIndividualPlayers()
+	{
+		List<int> ids = GetSpawnedIds();
+		int gamePeers = _gamePacketHandler != null
+			? _gamePacketHandler.Call("get_connected_peer_count").AsInt32()
+			: 0;
+		if (gamePeers < ids.Count - 1)
+		{
+			return;
+		}
+		ids.Sort();
+		long now = (long)Time.GetTicksMsec();
+		ENetConnection hostConn = GetHostConnection();
+		int myId = GetMyId();
+
+		for (int i = 0; i < ids.Count; i++)
+		{
+			int playerId = ids[i];
+			bool exists = false;
+			for (int t = 0; t < _hostTeamStates.Count; t++)
+			{
+				if (_hostTeamStates[t].QuizPlayerId == playerId)
+				{
+					exists = true;
+					break;
+				}
+			}
+			if (!exists)
+			{
+				int teamIdx = _hostTeamStates.Count;
+				var members = new List<int> { playerId };
+				_hostTeamStates.Add(new HostTeamState
+				{
+					Members = members,
+					QuizPlayerId = playerId,
+					QuestionIdx = 0,
+					StartMsec = now,
+					Finished = false
+				});
+				if (playerId != myId && hostConn != null)
+				{
+					MinigameAssignPkt.Create(playerId, teamIdx, (int)MinigameAssignPkt.ROLE.QUIZ, playerId, members, _currentActivityId)
+						.Broadcast(hostConn);
+				}
+			}
+		}
+	}
+
 	private void HostAssignAndDispatch()
 	{
 		List<int> ids = GetSpawnedIds();
-		if (ids.Count < RequiredPlayers)
+		if (!_isWordSearchMode && ids.Count < RequiredPlayers)
+		{
+			return;
+		}
+		if (ids.Count == 0)
 		{
 			return;
 		}
@@ -359,6 +451,37 @@ public partial class MinigameSession : Node
 
 		long now = (long)Time.GetTicksMsec();
 		_hostTeamStates.Clear();
+		int myId = GetMyId();
+		ENetConnection hostConn = GetHostConnection();
+
+		if (_isWordSearchMode)
+		{
+			// Modo Individual: cada jogador recebe seu próprio índice (team = i) e papel QUIZ.
+			for (int i = 0; i < ids.Count; i++)
+			{
+				int playerId = ids[i];
+				var members = new List<int> { playerId };
+				_hostTeamStates.Add(new HostTeamState
+				{
+					Members = members,
+					QuizPlayerId = playerId,
+					QuestionIdx = 0,
+					StartMsec = now,
+					Finished = false
+				});
+				if (playerId == myId)
+				{
+					ApplyAssignment(i, (int)MinigameAssignPkt.ROLE.QUIZ, playerId, members);
+				}
+				else if (hostConn != null)
+				{
+					MinigameAssignPkt.Create(playerId, i, (int)MinigameAssignPkt.ROLE.QUIZ, playerId, members, _currentActivityId)
+						.Broadcast(hostConn);
+				}
+			}
+			return;
+		}
+
 		for (int t = 0; t < 2; t++)
 		{
 			_hostTeamStates.Add(new HostTeamState
@@ -371,8 +494,6 @@ public partial class MinigameSession : Node
 			});
 		}
 
-		int myId = GetMyId();
-		ENetConnection hostConn = GetHostConnection();
 		for (int i = 0; i < RequiredPlayers; i++)
 		{
 			int playerId = ids[i];
@@ -476,6 +597,14 @@ public partial class MinigameSession : Node
 			_crosswordDocBox.Visible = true;
 			RebuildCrosswordBoards("");
 		}
+		else if (_isWordSearchMode)
+		{
+			_documentPanel.OffsetTop = -255.0f;
+			_documentPanel.OffsetBottom = 255.0f;
+			_documentText.CustomMinimumSize = new Vector2(0, 150);
+			_crosswordDocBox.Visible = true;
+			RebuildWordSearchBoards("");
+		}
 		else
 		{
 			_documentPanel.OffsetTop = -180.0f;
@@ -493,13 +622,37 @@ public partial class MinigameSession : Node
 		_quizPanel.Visible = true;
 		_documentPanel.Visible = false;
 		EnsureCrosswordUi();
-		if (_isCrosswordMode)
+		if (_isWordSearchMode)
 		{
-			_quizPanel.OffsetTop = -250.0f;
-			_quizPanel.OffsetBottom = 250.0f;
+			_quizPanel.OffsetTop = -270.0f;
+			_quizPanel.OffsetBottom = 270.0f;
+			_quizPanel.OffsetLeft = -520.0f;
+			_quizPanel.OffsetRight = 520.0f;
+			_crosswordQuizBox.Visible = true;
+			if (_crosswordQuizGrid != null && _crosswordQuizGrid.GetParent() is Control cwCenter)
+			{
+				cwCenter.Visible = false;
+			}
+			if (_wsMainSplit != null)
+			{
+				_wsMainSplit.Visible = true;
+			}
+		}
+		else if (_isCrosswordMode)
+		{
+			_quizPanel.OffsetTop = -255.0f;
+			_quizPanel.OffsetBottom = 255.0f;
 			_quizPanel.OffsetLeft = -420.0f;
 			_quizPanel.OffsetRight = 420.0f;
 			_crosswordQuizBox.Visible = true;
+			if (_crosswordQuizGrid != null && _crosswordQuizGrid.GetParent() is Control cwCenter)
+			{
+				cwCenter.Visible = true;
+			}
+			if (_wsMainSplit != null)
+			{
+				_wsMainSplit.Visible = false;
+			}
 		}
 		else
 		{
@@ -531,6 +684,8 @@ public partial class MinigameSession : Node
 		Godot.Collections.Dictionary q = questions[_myQuestionIdx].AsGodotDictionary();
 		string prompt = q.TryGetValue("prompt", out Variant pVar) ? pVar.AsString() : "";
 
+		_wsClickedPath.Clear();
+
 		if (_isCrosswordMode)
 		{
 			List<CrosswordGenerator.PlacedWord> words = _crosswordLayout.Words;
@@ -548,13 +703,37 @@ public partial class MinigameSession : Node
 			_questionLabel.Text = $"Palavra #{_myQuestionIdx + 1} ({orient} — {wLen} letras): {prompt}";
 			_answerLine.MaxLength = wLen;
 			_answerLine.PlaceholderText = $"Digite a palavra de {wLen} letras...";
+			_answerLine.Visible = true;
+			_submitButton.Visible = true;
 			RebuildCrosswordBoards("");
+		}
+		else if (_isWordSearchMode)
+		{
+			List<WordSearchGenerator.PlacedWord> words = _wordSearchBoard.Words;
+			string fallbackWord = q.TryGetValue("word", out Variant wVar)
+				? wVar.AsString()
+				: (q.TryGetValue("answer", out Variant aVar) ? aVar.AsString() : "");
+			int wLen = fallbackWord.Length;
+			if (_myQuestionIdx < words.Count)
+			{
+				wLen = words[_myQuestionIdx].Word.Length;
+			}
+			_questionLabel.Text = $"Missão Atual — Palavra #{_myQuestionIdx + 1} ({wLen} letras): {prompt}";
+			_answerLine.MaxLength = wLen;
+			// No Caça-Palavras Individual Especial, o aluno forma a palavra clicando nos quadrados!
+			_answerLine.Visible = false;
+			_submitButton.Visible = false;
+			_answerLine.Text = "";
+			RebuildWordSearchBoards("");
+			return;
 		}
 		else
 		{
 			_questionLabel.Text = $"{_myQuestionIdx + 1}) {prompt}";
 			_answerLine.MaxLength = 0;
 			_answerLine.PlaceholderText = "Digite sua resposta";
+			_answerLine.Visible = true;
+			_submitButton.Visible = true;
 		}
 
 		_answerLine.Text = "";
@@ -572,7 +751,8 @@ public partial class MinigameSession : Node
 		_waitingLabel.Visible = true;
 		if (_myGrade >= 0.0f)
 		{
-			string txt = $"Nota da dupla: {_myGrade:F1}/10";
+			string labelPrefix = _isWordSearchMode ? "Nota individual" : "Nota da dupla";
+			string txt = $"{labelPrefix}: {_myGrade:F1}/10";
 			if (!string.IsNullOrEmpty(_myGradeComment))
 			{
 				txt += "\n\nComentario do professor:\n" + _myGradeComment;
@@ -581,7 +761,9 @@ public partial class MinigameSession : Node
 		}
 		else
 		{
-			_waitingLabel.Text = "Respostas enviadas. Aguarde o professor dar nota.";
+			_waitingLabel.Text = _isWordSearchMode
+				? "Caça-Palavras concluído! Aguarde o professor enviar sua nota."
+				: "Respostas enviadas. Aguarde o professor dar nota.";
 		}
 	}
 
@@ -617,9 +799,17 @@ public partial class MinigameSession : Node
 
 	private void OnAnswerTextChanged(string newText)
 	{
-		if (_isCrosswordMode && _myRole == (int)MinigameAssignPkt.ROLE.QUIZ)
+		if (_myRole != (int)MinigameAssignPkt.ROLE.QUIZ)
+		{
+			return;
+		}
+		if (_isCrosswordMode)
 		{
 			RebuildCrosswordBoards(newText);
+		}
+		else if (_isWordSearchMode)
+		{
+			RebuildWordSearchBoards(newText);
 		}
 	}
 
@@ -798,6 +988,11 @@ public partial class MinigameSession : Node
 		{
 			return;
 		}
+		if (_isWordSearchMode)
+		{
+			_teamInfoLabel.Text = $"Modo Individual — Aluno: player_{GetMyId()} | Encontradas: {_myQuestionIdx}/{_totalQuestions}";
+			return;
+		}
 		string myRoleText = _myRole == (int)MinigameAssignPkt.ROLE.QUIZ ? "QUIZ" : "DOC";
 		string partnerRoleText = _myRole == (int)MinigameAssignPkt.ROLE.QUIZ ? "DOC" : "QUIZ";
 		string teamLetter = _myTeam == 0 ? "A" : "B";
@@ -809,6 +1004,10 @@ public partial class MinigameSession : Node
 		if (_myFinished)
 		{
 			_progressLabel.Text = $"Concluído ({_totalQuestions}/{_totalQuestions})";
+		}
+		else if (_isWordSearchMode)
+		{
+			_progressLabel.Text = $"Palavra {_myQuestionIdx + 1} de {_totalQuestions}";
 		}
 		else
 		{
@@ -822,20 +1021,115 @@ public partial class MinigameSession : Node
 		{
 			VBoxContainer qVBox = GetNode<VBoxContainer>("../QuizPanel/VBox");
 			_crosswordQuizBox = new VBoxContainer { Name = "CrosswordQuizBox" };
-			var hintLbl = new Label
+			_crosswordQuizBox.AddThemeConstantOverride("separation", 6);
+			_crosswordQuizHint = new Label
 			{
 				Text = "Tabuleiro da Cruzadinha (células azuis = palavra da vez; verdes = já preenchidas)",
 				HorizontalAlignment = HorizontalAlignment.Center
 			};
-			hintLbl.AddThemeFontSizeOverride("font_size", 12);
-			_crosswordQuizBox.AddChild(hintLbl);
+			_crosswordQuizHint.AddThemeFontSizeOverride("font_size", 12);
+			_crosswordQuizBox.AddChild(_crosswordQuizHint);
 
-			var center = new CenterContainer();
+			var center = new CenterContainer { Name = "CrosswordCenter" };
 			_crosswordQuizGrid = new GridContainer();
 			_crosswordQuizGrid.AddThemeConstantOverride("h_separation", 2);
 			_crosswordQuizGrid.AddThemeConstantOverride("v_separation", 2);
 			center.AddChild(_crosswordQuizGrid);
 			_crosswordQuizBox.AddChild(center);
+
+			// UI especial do Caça-Palavras Individual (Grade clicável à esquerda + Checklist à direita)
+			_wsMainSplit = new HBoxContainer
+			{
+				Name = "WordSearchMainSplit",
+				Alignment = BoxContainer.AlignmentMode.Center,
+				Visible = false
+			};
+			_wsMainSplit.AddThemeConstantOverride("separation", 18);
+
+			var leftVBox = new VBoxContainer
+			{
+				Alignment = BoxContainer.AlignmentMode.Center
+			};
+			leftVBox.AddThemeConstantOverride("separation", 8);
+
+			var wsGridCenter = new CenterContainer();
+			_wsGrid = new GridContainer();
+			_wsGrid.AddThemeConstantOverride("h_separation", 3);
+			_wsGrid.AddThemeConstantOverride("v_separation", 3);
+			wsGridCenter.AddChild(_wsGrid);
+			leftVBox.AddChild(wsGridCenter);
+
+			_wsLetterSlotsBox = new HBoxContainer
+			{
+				Alignment = BoxContainer.AlignmentMode.Center
+			};
+			_wsLetterSlotsBox.AddThemeConstantOverride("separation", 4);
+			leftVBox.AddChild(_wsLetterSlotsBox);
+
+			var btnRow = new HBoxContainer
+			{
+				Alignment = BoxContainer.AlignmentMode.Center
+			};
+			btnRow.AddThemeConstantOverride("separation", 10);
+
+			_wsClearBtn = new Button
+			{
+				Text = "⌫ Limpar Seleção",
+				CustomMinimumSize = new Vector2(145, 32)
+			};
+			_wsClearBtn.Pressed += OnWordSearchClearPressed;
+			btnRow.AddChild(_wsClearBtn);
+
+			_wsConfirmBtn = new Button
+			{
+				Text = "✔ Confirmar Palavra",
+				CustomMinimumSize = new Vector2(165, 32)
+			};
+			_wsConfirmBtn.Pressed += OnWordSearchConfirmPressed;
+			btnRow.AddChild(_wsConfirmBtn);
+
+			leftVBox.AddChild(btnRow);
+			_wsMainSplit.AddChild(leftVBox);
+
+			var rightPanel = new PanelContainer
+			{
+				CustomMinimumSize = new Vector2(360, 340)
+			};
+			var rightStyle = new StyleBoxFlat
+			{
+				BgColor = new Color(0.09f, 0.11f, 0.17f, 0.95f),
+				BorderColor = new Color(0.28f, 0.36f, 0.52f, 1.0f)
+			};
+			rightStyle.SetBorderWidthAll(1);
+			rightStyle.SetContentMarginAll(10);
+			rightPanel.AddThemeStyleboxOverride("panel", rightStyle);
+
+			var rightVBox = new VBoxContainer();
+			rightVBox.AddThemeConstantOverride("separation", 6);
+			var rightTitle = new Label
+			{
+				Text = "Painel de Missões — Termos Cyber",
+				HorizontalAlignment = HorizontalAlignment.Center
+			};
+			rightTitle.AddThemeFontSizeOverride("font_size", 13);
+			rightTitle.AddThemeColorOverride("font_color", new Color(0.55f, 0.85f, 1.0f, 1.0f));
+			rightVBox.AddChild(rightTitle);
+
+			_wsChecklistLabel = new RichTextLabel
+			{
+				BbcodeEnabled = true,
+				FitContent = false,
+				ScrollActive = true,
+				SizeFlagsVertical = Control.SizeFlags.ExpandFill,
+				CustomMinimumSize = new Vector2(335, 290)
+			};
+			_wsChecklistLabel.AddThemeFontSizeOverride("normal_font_size", 12);
+			_wsChecklistLabel.AddThemeFontSizeOverride("bold_font_size", 12);
+			rightVBox.AddChild(_wsChecklistLabel);
+			rightPanel.AddChild(rightVBox);
+
+			_wsMainSplit.AddChild(rightPanel);
+			_crosswordQuizBox.AddChild(_wsMainSplit);
 
 			qVBox.AddChild(_crosswordQuizBox);
 			qVBox.MoveChild(_crosswordQuizBox, 0);
@@ -845,13 +1139,13 @@ public partial class MinigameSession : Node
 		{
 			VBoxContainer dVBox = GetNode<VBoxContainer>("../DocumentPanel/VBox");
 			_crosswordDocBox = new VBoxContainer { Name = "CrosswordDocBox" };
-			var docHint = new Label
+			_crosswordDocHint = new Label
 			{
 				Text = "Progresso da Dupla na Cruzadinha (acompanhe os cruzamentos do seu parceiro)",
 				HorizontalAlignment = HorizontalAlignment.Center
 			};
-			docHint.AddThemeFontSizeOverride("font_size", 12);
-			_crosswordDocBox.AddChild(docHint);
+			_crosswordDocHint.AddThemeFontSizeOverride("font_size", 12);
+			_crosswordDocBox.AddChild(_crosswordDocHint);
 
 			var centerDoc = new CenterContainer();
 			_crosswordDocGrid = new GridContainer();
@@ -879,6 +1173,14 @@ public partial class MinigameSession : Node
 			return;
 		}
 		EnsureCrosswordUi();
+		if (_crosswordQuizHint != null)
+		{
+			_crosswordQuizHint.Text = "Tabuleiro da Cruzadinha (células azuis = palavra da vez; verdes = já preenchidas)";
+		}
+		if (_crosswordDocHint != null)
+		{
+			_crosswordDocHint.Text = "Progresso da Dupla na Cruzadinha (acompanhe os cruzamentos do seu parceiro)";
+		}
 		GridContainer targetGrid = (_myRole == (int)MinigameAssignPkt.ROLE.QUIZ)
 			? _crosswordQuizGrid
 			: _crosswordDocGrid;
@@ -1013,6 +1315,383 @@ public partial class MinigameSession : Node
 				targetGrid.AddChild(cell);
 			}
 		}
+	}
+
+	private string GetFormedWordSearchString()
+	{
+		if (_wordSearchBoard == null || _wsClickedPath.Count == 0)
+		{
+			return "";
+		}
+		var sb = new System.Text.StringBuilder(_wsClickedPath.Count);
+		foreach (Vector2I pos in _wsClickedPath)
+		{
+			if (pos.X >= 0 && pos.X < _wordSearchBoard.Rows && pos.Y >= 0 && pos.Y < _wordSearchBoard.Cols)
+			{
+				sb.Append(_wordSearchBoard.Grid[pos.X, pos.Y]);
+			}
+		}
+		return sb.ToString();
+	}
+
+	private void OnWordSearchClearPressed()
+	{
+		_wsClickedPath.Clear();
+		_answerLine.Text = "";
+		RebuildWordSearchBoards("");
+	}
+
+	private void OnWordSearchConfirmPressed()
+	{
+		string formed = GetFormedWordSearchString();
+		if (string.IsNullOrWhiteSpace(formed))
+		{
+			return;
+		}
+		_answerLine.Text = formed;
+		OnSubmitPressed();
+	}
+
+	private void RebuildWordSearchBoards(string _previewTyping = "")
+	{
+		if (!_isWordSearchMode || _wordSearchBoard.Words.Count == 0)
+		{
+			return;
+		}
+		EnsureCrosswordUi();
+		List<WordSearchGenerator.PlacedWord> words = _wordSearchBoard.Words;
+		Godot.Collections.Array questions = GetQuestionsArray(_quizData);
+
+		int targetLen = 0;
+		if (_myQuestionIdx < words.Count && !_myFinished)
+		{
+			targetLen = words[_myQuestionIdx].Word.Length;
+		}
+
+		string formedWord = GetFormedWordSearchString();
+		_answerLine.Text = formedWord;
+
+		if (_crosswordQuizHint != null)
+		{
+			if (_wsClickedPath.Count == 0)
+			{
+				_crosswordQuizHint.Text = $"Modo Individual: clique nos quadrados para formar a Palavra #{_myQuestionIdx + 1} ({targetLen} letras)!";
+			}
+			else if (_wsClickedPath.Count < targetLen)
+			{
+				_crosswordQuizHint.Text = $"Formando: \"{formedWord}\" ({_wsClickedPath.Count}/{targetLen} letras) — continue clicando nos quadrados em linha reta!";
+			}
+			else
+			{
+				_crosswordQuizHint.Text = $"Palavra formada: \"{formedWord}\" ({_wsClickedPath.Count} letras) — clique em [✔ Confirmar Palavra]!";
+			}
+		}
+
+		if (_wsGrid == null)
+		{
+			return;
+		}
+
+		foreach (Node child in _wsGrid.GetChildren())
+		{
+			child.QueueFree();
+		}
+
+		int rowsCnt = Math.Max(1, _wordSearchBoard.Rows);
+		int colsCnt = Math.Max(1, _wordSearchBoard.Cols);
+		_wsGrid.Columns = colsCnt;
+
+		var foundCells = new HashSet<string>();
+		var startNums = new Dictionary<string, int>();
+		for (int wIdx = 0; wIdx < Math.Min(_teamSubmittedAnswers.Count, words.Count); wIdx++)
+		{
+			WordSearchGenerator.PlacedWord wInfo = words[wIdx];
+			string startKey = $"{wInfo.StartRow}_{wInfo.StartCol}";
+			if (!startNums.ContainsKey(startKey))
+			{
+				startNums[startKey] = wInfo.Number;
+			}
+			for (int i = 0; i < wInfo.Word.Length; i++)
+			{
+				int r = wInfo.StartRow + wInfo.Dr * i;
+				int c = wInfo.StartCol + wInfo.Dc * i;
+				foundCells.Add($"{r}_{c}");
+			}
+		}
+
+		var clickedIndexMap = new Dictionary<string, int>();
+		for (int i = 0; i < _wsClickedPath.Count; i++)
+		{
+			Vector2I p = _wsClickedPath[i];
+			clickedIndexMap[$"{p.X}_{p.Y}"] = i + 1;
+		}
+
+		int cellPx = 27;
+		for (int r = 0; r < rowsCnt; r++)
+		{
+			for (int c = 0; c < colsCnt; c++)
+			{
+				string key = $"{r}_{c}";
+				var cell = new Panel
+				{
+					CustomMinimumSize = new Vector2(cellPx, cellPx),
+					MouseFilter = Control.MouseFilterEnum.Stop,
+					MouseDefaultCursorShape = Control.CursorShape.PointingHand
+				};
+
+				var style = new StyleBoxFlat();
+				style.SetBorderWidthAll(1);
+				style.SetCornerRadiusAll(3);
+
+				bool isSelected = clickedIndexMap.TryGetValue(key, out int clickOrder);
+				bool isLastClicked = isSelected && clickOrder == _wsClickedPath.Count;
+				bool isFound = foundCells.Contains(key);
+
+				if (isLastClicked)
+				{
+					style.BgColor = new Color(0.22f, 0.56f, 0.78f, 1.0f);
+					style.BorderColor = new Color(1.0f, 0.92f, 0.45f, 1.0f);
+					style.SetBorderWidthAll(2);
+				}
+				else if (isSelected)
+				{
+					style.BgColor = new Color(0.16f, 0.44f, 0.65f, 1.0f);
+					style.BorderColor = new Color(0.48f, 0.9f, 1.0f, 1.0f);
+				}
+				else if (isFound)
+				{
+					style.BgColor = new Color(0.14f, 0.36f, 0.24f, 1.0f);
+					style.BorderColor = new Color(0.35f, 0.82f, 0.52f, 1.0f);
+				}
+				else
+				{
+					style.BgColor = new Color(0.16f, 0.19f, 0.27f, 1.0f);
+					style.BorderColor = new Color(0.3f, 0.35f, 0.48f, 1.0f);
+				}
+				cell.AddThemeStyleboxOverride("panel", style);
+
+				if (isSelected)
+				{
+					var orderLbl = new Label
+					{
+						Text = clickOrder.ToString(),
+						Position = new Vector2(2, -1)
+					};
+					orderLbl.AddThemeFontSizeOverride("font_size", 8);
+					orderLbl.AddThemeColorOverride("font_color", new Color(1.0f, 0.92f, 0.4f, 1.0f));
+					cell.AddChild(orderLbl);
+				}
+				else if (startNums.TryGetValue(key, out int sn) && sn > 0)
+				{
+					var numLbl = new Label
+					{
+						Text = sn.ToString(),
+						Position = new Vector2(2, -1)
+					};
+					numLbl.AddThemeFontSizeOverride("font_size", 8);
+					numLbl.AddThemeColorOverride("font_color", new Color(0.55f, 0.95f, 0.68f, 1.0f));
+					cell.AddChild(numLbl);
+				}
+
+				var chLbl = new Label
+				{
+					Text = _wordSearchBoard.Grid[r, c],
+					HorizontalAlignment = HorizontalAlignment.Center,
+					VerticalAlignment = VerticalAlignment.Center
+				};
+				chLbl.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+				chLbl.AddThemeFontSizeOverride("font_size", 13);
+				if (isSelected)
+				{
+					chLbl.AddThemeColorOverride("font_color", new Color(1.0f, 1.0f, 1.0f, 1.0f));
+				}
+				cell.AddChild(chLbl);
+
+				if (!_myFinished)
+				{
+					int capturedR = r;
+					int capturedC = c;
+					cell.GuiInput += (@event) => OnWordSearchCellGuiInput(@event, capturedR, capturedC);
+				}
+
+				_wsGrid.AddChild(cell);
+			}
+		}
+
+		// Atualiza os slots visuais de letras formadas abaixo da grade
+		if (_wsLetterSlotsBox != null)
+		{
+			foreach (Node child in _wsLetterSlotsBox.GetChildren())
+			{
+				child.QueueFree();
+			}
+			int slotsCount = Math.Max(targetLen, _wsClickedPath.Count);
+			for (int i = 0; i < slotsCount; i++)
+			{
+				bool hasLetter = i < formedWord.Length;
+				var slotPanel = new Panel
+				{
+					CustomMinimumSize = new Vector2(28, 30)
+				};
+				var slotStyle = new StyleBoxFlat();
+				slotStyle.SetBorderWidthAll(1);
+				slotStyle.SetCornerRadiusAll(4);
+				if (hasLetter)
+				{
+					slotStyle.BgColor = new Color(0.18f, 0.45f, 0.66f, 1.0f);
+					slotStyle.BorderColor = new Color(0.55f, 0.92f, 1.0f, 1.0f);
+				}
+				else
+				{
+					slotStyle.BgColor = new Color(0.11f, 0.13f, 0.19f, 1.0f);
+					slotStyle.BorderColor = new Color(0.32f, 0.38f, 0.52f, 1.0f);
+				}
+				slotPanel.AddThemeStyleboxOverride("panel", slotStyle);
+
+				var slotLbl = new Label
+				{
+					Text = hasLetter ? formedWord.Substring(i, 1) : "_",
+					HorizontalAlignment = HorizontalAlignment.Center,
+					VerticalAlignment = VerticalAlignment.Center
+				};
+				slotLbl.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+				slotLbl.AddThemeFontSizeOverride("font_size", 14);
+				slotPanel.AddChild(slotLbl);
+
+				_wsLetterSlotsBox.AddChild(slotPanel);
+			}
+		}
+
+		if (_wsClearBtn != null)
+		{
+			_wsClearBtn.Disabled = _wsClickedPath.Count == 0 || _myFinished;
+		}
+		if (_wsConfirmBtn != null)
+		{
+			_wsConfirmBtn.Disabled = _wsClickedPath.Count == 0 || _myFinished;
+			_wsConfirmBtn.Text = targetLen > 0
+				? $"✔ Confirmar ({_wsClickedPath.Count}/{targetLen})"
+				: "✔ Confirmar Palavra";
+		}
+
+		// Atualiza o checklist lateral de missões
+		if (_wsChecklistLabel != null)
+		{
+			var sb = new System.Text.StringBuilder();
+			for (int i = 0; i < words.Count; i++)
+			{
+				WordSearchGenerator.PlacedWord wInfo = words[i];
+				string qPrompt = "";
+				if (i < questions.Count)
+				{
+					Godot.Collections.Dictionary qDict = questions[i].AsGodotDictionary();
+					qPrompt = qDict.TryGetValue("prompt", out Variant pv) ? pv.AsString() : "";
+				}
+
+				if (i < _myQuestionIdx)
+				{
+					string ans = i < _teamSubmittedAnswers.Count ? _teamSubmittedAnswers[i] : wInfo.Word;
+					sb.AppendLine($"[color=#6ee787][b]✔ #{i + 1}: {ans}[/b] ({wInfo.DirectionName})[/color]");
+				}
+				else if (i == _myQuestionIdx && !_myFinished)
+				{
+					sb.AppendLine($"[color=#58d5ff][b]▶ #{i + 1} ({wInfo.Word.Length} letras — {wInfo.DirectionName}):[/b]\n{qPrompt}[/color]");
+				}
+				else
+				{
+					sb.AppendLine($"[color=#8b95a8]• #{i + 1} ({wInfo.Word.Length} letras): {qPrompt}[/color]");
+				}
+				sb.AppendLine();
+			}
+			_wsChecklistLabel.Text = sb.ToString();
+		}
+	}
+
+	private void OnWordSearchCellGuiInput(InputEvent @event, int r, int c)
+	{
+		if (@event is not InputEventMouseButton mb || !mb.Pressed || mb.ButtonIndex != MouseButton.Left)
+		{
+			return;
+		}
+		if (!_isWordSearchMode || _myFinished)
+		{
+			return;
+		}
+
+		int targetLen = (_myQuestionIdx < _wordSearchBoard.Words.Count)
+			? _wordSearchBoard.Words[_myQuestionIdx].Word.Length
+			: 12;
+
+		var clickedPos = new Vector2I(r, c);
+
+		// 1. Se a seleção está vazia, inicia no quadrado clicado
+		if (_wsClickedPath.Count == 0)
+		{
+			_wsClickedPath.Add(clickedPos);
+			RebuildWordSearchBoards("");
+			return;
+		}
+
+		// 2. Se clicou no último quadrado selecionado, desfaz o último clique
+		if (_wsClickedPath[^1] == clickedPos)
+		{
+			_wsClickedPath.RemoveAt(_wsClickedPath.Count - 1);
+			RebuildWordSearchBoards("");
+			return;
+		}
+
+		// 3. Se clicou em um quadrado anterior do próprio caminho, volta a seleção até ele
+		int existingIdx = _wsClickedPath.IndexOf(clickedPos);
+		if (existingIdx >= 0)
+		{
+			_wsClickedPath.RemoveRange(existingIdx + 1, _wsClickedPath.Count - existingIdx - 1);
+			RebuildWordSearchBoards("");
+			return;
+		}
+
+		// 4. Verifica se o clique está alinhado em linha reta (H, V ou Diagonal 45°) a partir do 1º quadrado
+		Vector2I start = _wsClickedPath[0];
+		int drTotal = r - start.X;
+		int dcTotal = c - start.Y;
+		int absR = Math.Abs(drTotal);
+		int absC = Math.Abs(dcTotal);
+
+		bool alignedWithStart = (drTotal == 0 || dcTotal == 0 || absR == absC);
+		if (alignedWithStart)
+		{
+			int stepR = Math.Sign(drTotal);
+			int stepC = Math.Sign(dcTotal);
+
+			// Se já havia direção definida (Count >= 2), confere se mantém o mesmo sentido
+			bool sameDirection = true;
+			if (_wsClickedPath.Count >= 2)
+			{
+				int curDirR = _wsClickedPath[1].X - start.X;
+				int curDirC = _wsClickedPath[1].Y - start.Y;
+				if (stepR != curDirR || stepC != curDirC)
+				{
+					sameDirection = false;
+				}
+			}
+
+			int steps = Math.Max(absR, absC);
+			if (sameDirection && steps + 1 <= targetLen)
+			{
+				// Preenche todos os quadrados até o quadrado clicado (suporta clicar quadrado por quadrado OU direto no fim!)
+				_wsClickedPath.Clear();
+				for (int i = 0; i <= steps; i++)
+				{
+					_wsClickedPath.Add(new Vector2I(start.X + stepR * i, start.Y + stepC * i));
+				}
+				RebuildWordSearchBoards("");
+				return;
+			}
+		}
+
+		// 5. Caso contrário, inicia uma nova seleção a partir deste quadrado
+		_wsClickedPath.Clear();
+		_wsClickedPath.Add(clickedPos);
+		RebuildWordSearchBoards("");
 	}
 
 	private bool IsHost() =>
