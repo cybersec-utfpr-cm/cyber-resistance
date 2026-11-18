@@ -42,6 +42,9 @@ var crossword_quiz_grid: GridContainer = null
 var crossword_doc_box: VBoxContainer = null
 var crossword_doc_hint: Label = null
 var crossword_doc_grid: GridContainer = null
+var objective_options_box: VBoxContainer = null
+var feedback_label: Label = null
+var wrong_attempts_current_question: int = 0
 
 var my_team: int = -1
 var my_role: int = -1
@@ -378,10 +381,10 @@ func _setup_quiz_view() -> void:
 		if ws_main_split != null:
 			ws_main_split.visible = false
 	else:
-		quiz_panel.offset_top = -180.0
-		quiz_panel.offset_bottom = 180.0
-		quiz_panel.offset_left = -360.0
-		quiz_panel.offset_right = 360.0
+		quiz_panel.offset_top = -225.0
+		quiz_panel.offset_bottom = 225.0
+		quiz_panel.offset_left = -400.0
+		quiz_panel.offset_right = 400.0
 		if crossword_quiz_box != null:
 			crossword_quiz_box.visible = false
 	_show_current_question()
@@ -396,6 +399,10 @@ func _show_current_question() -> void:
 		return
 	var q: Dictionary = questions[my_question_idx]
 	ws_clicked_path.clear()
+	wrong_attempts_current_question = 0
+	_clear_feedback()
+	if objective_options_box != null:
+		objective_options_box.visible = false
 	if is_crossword_mode:
 		var words: Array = crossword_layout.get("words", [])
 		var orient: String = "HORIZONTAL"
@@ -434,7 +441,12 @@ func _show_current_question() -> void:
 	else:
 		question_label.text = "%d) %s" % [my_question_idx + 1, q.get("prompt", "")]
 		answer_line.max_length = 0
-		answer_line.placeholder_text = "Digite sua resposta"
+		var opts: Array = q.get("options", []) if q.has("options") and q["options"] is Array else []
+		if not opts.is_empty():
+			_rebuild_objective_options(opts)
+			answer_line.placeholder_text = "Clique em uma alternativa acima ou edite aqui..."
+		else:
+			answer_line.placeholder_text = "Digite sua resposta"
 		answer_line.visible = true
 		submit_button.visible = true
 	answer_line.text = ""
@@ -479,10 +491,76 @@ func _on_answer_text_submitted(_text: String) -> void:
 func _on_answer_text_changed(new_text: String) -> void:
 	if my_role != MinigameAssignPkt.ROLE.QUIZ:
 		return
+	_clear_feedback()
 	if is_crossword_mode:
 		_rebuild_crossword_boards(new_text)
 	elif is_wordsearch_mode:
 		_rebuild_wordsearch_boards(new_text)
+
+func _get_expected_word_for_question(q_idx: int) -> String:
+	if is_crossword_mode:
+		var words: Array = crossword_layout.get("words", [])
+		if q_idx >= 0 and q_idx < words.size():
+			return String(words[q_idx].get("word", ""))
+	if is_wordsearch_mode:
+		var ws_words: Array = wordsearch_board.get("words", [])
+		if q_idx >= 0 and q_idx < ws_words.size():
+			return String(ws_words[q_idx].get("word", ""))
+	var questions: Array = quiz_data.get("questions", [])
+	if q_idx >= 0 and q_idx < questions.size() and questions[q_idx] is Dictionary:
+		var q: Dictionary = questions[q_idx]
+		return CrosswordGenerator.normalize_word(String(q.get("word", q.get("answer", ""))))
+	return ""
+
+func _clear_feedback() -> void:
+	if feedback_label != null:
+		feedback_label.text = ""
+		feedback_label.visible = false
+
+func _show_error_feedback(message: String) -> void:
+	_ensure_crossword_ui()
+	if feedback_label != null:
+		feedback_label.text = message
+		feedback_label.add_theme_color_override("font_color", Color(1.0, 0.42, 0.42, 1.0))
+		feedback_label.visible = true
+	_shake_quiz_panel()
+
+func _shake_quiz_panel() -> void:
+	if quiz_panel == null:
+		return
+	var base_left: float = quiz_panel.offset_left
+	var base_right: float = quiz_panel.offset_right
+	var tween: Tween = create_tween()
+	tween.tween_property(quiz_panel, "offset_left", base_left - 12.0, 0.04)
+	tween.parallel().tween_property(quiz_panel, "offset_right", base_right - 12.0, 0.04)
+	tween.tween_property(quiz_panel, "offset_left", base_left + 12.0, 0.04)
+	tween.parallel().tween_property(quiz_panel, "offset_right", base_right + 12.0, 0.04)
+	tween.tween_property(quiz_panel, "offset_left", base_left - 8.0, 0.04)
+	tween.parallel().tween_property(quiz_panel, "offset_right", base_right - 8.0, 0.04)
+	tween.tween_property(quiz_panel, "offset_left", base_left + 8.0, 0.04)
+	tween.parallel().tween_property(quiz_panel, "offset_right", base_right + 8.0, 0.04)
+	tween.tween_property(quiz_panel, "offset_left", base_left, 0.04)
+	tween.parallel().tween_property(quiz_panel, "offset_right", base_right, 0.04)
+
+func _rebuild_objective_options(options: Array) -> void:
+	_ensure_crossword_ui()
+	if objective_options_box == null:
+		return
+	for child in objective_options_box.get_children():
+		child.queue_free()
+	objective_options_box.visible = true
+	for opt in options:
+		var opt_text: String = String(opt)
+		var btn := Button.new()
+		btn.text = opt_text
+		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		btn.custom_minimum_size = Vector2(0, 34)
+		btn.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		btn.pressed.connect(func():
+			if answer_line != null and answer_line.editable:
+				answer_line.text = opt_text
+		)
+		objective_options_box.add_child(btn)
 
 func _on_submit_pressed() -> void:
 	if not assigned or my_finished:
@@ -492,13 +570,34 @@ func _on_submit_pressed() -> void:
 	var raw: String = answer_line.text
 	if raw.strip_edges().is_empty():
 		return
+
+	if is_crossword_mode or is_wordsearch_mode:
+		var expected: String = _get_expected_word_for_question(my_question_idx)
+		var candidate: String = CrosswordGenerator.normalize_word(raw)
+		if not expected.is_empty() and candidate != expected:
+			wrong_attempts_current_question += 1
+			_show_error_feedback("✖ Palavra incorreta (\"%s\")! Verifique a dica com seu parceiro e tente novamente (%dª tentativa)." % [candidate, wrong_attempts_current_question])
+			if is_wordsearch_mode:
+				ws_clicked_path.clear()
+				answer_line.text = ""
+				_rebuild_wordsearch_boards("")
+			else:
+				answer_line.grab_focus()
+				answer_line.select_all()
+			return
+
+	_clear_feedback()
+	var submitted_answer: String = raw
+	if (is_crossword_mode or is_wordsearch_mode) and wrong_attempts_current_question > 0:
+		submitted_answer = "%s (após %d erro(s))" % [CrosswordGenerator.normalize_word(raw), wrong_attempts_current_question]
+
 	# Trava o input até a próxima atribuição de papel chegar do host.
 	submit_button.disabled = true
 	answer_line.editable = false
 	if GamePacketHandler.is_host:
-		_host_process_answer(my_team, my_question_idx, raw)
+		_host_process_answer(my_team, my_question_idx, submitted_answer)
 	else:
-		MinigameAnswerPkt.create(my_team, my_question_idx, raw).send(GamePacketHandler.host_peer)
+		MinigameAnswerPkt.create(my_team, my_question_idx, submitted_answer).send(GamePacketHandler.host_peer)
 
 func _on_player_answer_received(data: PackedByteArray) -> void:
 	# Só roda no host.
@@ -517,6 +616,16 @@ func _host_process_answer(team: int, question_idx: int, raw_answer: String) -> v
 	var questions: Array = quiz_data.get("questions", [])
 	if question_idx < 0 or question_idx >= questions.size():
 		return
+
+	if is_crossword_mode or is_wordsearch_mode:
+		var expected: String = _get_expected_word_for_question(question_idx)
+		var clean_cand: String = raw_answer
+		var p_idx: int = clean_cand.find(" (após ")
+		if p_idx > 0:
+			clean_cand = clean_cand.substr(0, p_idx)
+		clean_cand = CrosswordGenerator.normalize_word(clean_cand)
+		if not expected.is_empty() and clean_cand != expected:
+			return
 
 	# Sem auto-correção: armazena a resposta e o tempo desde o início da dupla.
 	state["answers"].append(raw_answer)
@@ -575,7 +684,11 @@ func _on_progress_received(data: PackedByteArray) -> void:
 
 func _apply_progress(_team: int, question_idx: int, quiz_player_id: int, finished: bool, last_answer: String = "") -> void:
 	if not last_answer.is_empty():
-		team_submitted_answers.append(CrosswordGenerator.normalize_word(last_answer))
+		var clean_board: String = last_answer
+		var p_idx: int = clean_board.find(" (após ")
+		if p_idx > 0:
+			clean_board = clean_board.substr(0, p_idx)
+		team_submitted_answers.append(CrosswordGenerator.normalize_word(clean_board))
 	my_question_idx = question_idx
 	my_finished = finished
 	# Meu papel a partir de agora é definido pela identidade do QUIZ atual.
@@ -678,6 +791,22 @@ func _ensure_crossword_ui() -> void:
 
 		q_vbox.add_child(crossword_quiz_box)
 		q_vbox.move_child(crossword_quiz_box, 0)
+
+		objective_options_box = VBoxContainer.new()
+		objective_options_box.name = "ObjectiveOptionsBox"
+		objective_options_box.visible = false
+		objective_options_box.add_theme_constant_override("separation", 5)
+		q_vbox.add_child(objective_options_box)
+		var q_lbl_idx: int = question_label.get_index() if question_label != null else 1
+		q_vbox.move_child(objective_options_box, q_lbl_idx + 1)
+
+		feedback_label = Label.new()
+		feedback_label.name = "FeedbackLabel"
+		feedback_label.visible = false
+		feedback_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		feedback_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		feedback_label.add_theme_font_size_override("font_size", 13)
+		q_vbox.add_child(feedback_label)
 
 	if crossword_doc_box == null:
 		var d_vbox: VBoxContainer = $"../DocumentPanel/VBox"

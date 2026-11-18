@@ -57,6 +57,9 @@ public partial class MinigameSession : Node
 	private VBoxContainer _crosswordDocBox;
 	private Label _crosswordDocHint;
 	private GridContainer _crosswordDocGrid;
+	private VBoxContainer _objectiveOptionsBox;
+	private Label _feedbackLabel;
+	private int _wrongAttemptsCurrentQuestion;
 
 	private int _myTeam = -1;
 	private int _myRole = -1;
@@ -656,10 +659,10 @@ public partial class MinigameSession : Node
 		}
 		else
 		{
-			_quizPanel.OffsetTop = -180.0f;
-			_quizPanel.OffsetBottom = 180.0f;
-			_quizPanel.OffsetLeft = -360.0f;
-			_quizPanel.OffsetRight = 360.0f;
+			_quizPanel.OffsetTop = -225.0f;
+			_quizPanel.OffsetBottom = 225.0f;
+			_quizPanel.OffsetLeft = -400.0f;
+			_quizPanel.OffsetRight = 400.0f;
 			if (_crosswordQuizBox != null)
 			{
 				_crosswordQuizBox.Visible = false;
@@ -685,6 +688,12 @@ public partial class MinigameSession : Node
 		string prompt = q.TryGetValue("prompt", out Variant pVar) ? pVar.AsString() : "";
 
 		_wsClickedPath.Clear();
+		_wrongAttemptsCurrentQuestion = 0;
+		ClearFeedback();
+		if (_objectiveOptionsBox != null)
+		{
+			_objectiveOptionsBox.Visible = false;
+		}
 
 		if (_isCrosswordMode)
 		{
@@ -731,7 +740,16 @@ public partial class MinigameSession : Node
 		{
 			_questionLabel.Text = $"{_myQuestionIdx + 1}) {prompt}";
 			_answerLine.MaxLength = 0;
-			_answerLine.PlaceholderText = "Digite sua resposta";
+			bool hasOptions = q.TryGetValue("options", out Variant optsVar) && optsVar.VariantType == Variant.Type.Array && optsVar.AsGodotArray().Count > 0;
+			if (hasOptions)
+			{
+				RebuildObjectiveOptions(optsVar.AsGodotArray());
+				_answerLine.PlaceholderText = "Clique em uma alternativa acima ou edite aqui...";
+			}
+			else
+			{
+				_answerLine.PlaceholderText = "Digite sua resposta";
+			}
 			_answerLine.Visible = true;
 			_submitButton.Visible = true;
 		}
@@ -803,6 +821,7 @@ public partial class MinigameSession : Node
 		{
 			return;
 		}
+		ClearFeedback();
 		if (_isCrosswordMode)
 		{
 			RebuildCrosswordBoards(newText);
@@ -810,6 +829,103 @@ public partial class MinigameSession : Node
 		else if (_isWordSearchMode)
 		{
 			RebuildWordSearchBoards(newText);
+		}
+	}
+
+	private string GetExpectedWordForQuestion(int qIdx)
+	{
+		if (_isCrosswordMode && qIdx >= 0 && qIdx < _crosswordLayout.Words.Count)
+		{
+			return _crosswordLayout.Words[qIdx].Word;
+		}
+		if (_isWordSearchMode && qIdx >= 0 && qIdx < _wordSearchBoard.Words.Count)
+		{
+			return _wordSearchBoard.Words[qIdx].Word;
+		}
+		Godot.Collections.Array questions = GetQuestionsArray(_quizData);
+		if (qIdx >= 0 && qIdx < questions.Count && questions[qIdx].VariantType == Variant.Type.Dictionary)
+		{
+			Godot.Collections.Dictionary q = questions[qIdx].AsGodotDictionary();
+			string rawWord = q.TryGetValue("word", out Variant wVar)
+				? wVar.AsString()
+				: (q.TryGetValue("answer", out Variant aVar) ? aVar.AsString() : "");
+			return CrosswordGenerator.NormalizeWord(rawWord);
+		}
+		return "";
+	}
+
+	private void ClearFeedback()
+	{
+		if (_feedbackLabel != null)
+		{
+			_feedbackLabel.Text = "";
+			_feedbackLabel.Visible = false;
+		}
+	}
+
+	private void ShowErrorFeedback(string message)
+	{
+		EnsureCrosswordUi();
+		if (_feedbackLabel != null)
+		{
+			_feedbackLabel.Text = message;
+			_feedbackLabel.AddThemeColorOverride("font_color", new Color(1.0f, 0.42f, 0.42f, 1.0f));
+			_feedbackLabel.Visible = true;
+		}
+		ShakeQuizPanel();
+	}
+
+	private void ShakeQuizPanel()
+	{
+		if (_quizPanel == null)
+		{
+			return;
+		}
+		float baseLeft = _quizPanel.OffsetLeft;
+		float baseRight = _quizPanel.OffsetRight;
+		Tween tween = CreateTween();
+		tween.TweenProperty(_quizPanel, "offset_left", baseLeft - 12.0f, 0.04f);
+		tween.Parallel().TweenProperty(_quizPanel, "offset_right", baseRight - 12.0f, 0.04f);
+		tween.TweenProperty(_quizPanel, "offset_left", baseLeft + 12.0f, 0.04f);
+		tween.Parallel().TweenProperty(_quizPanel, "offset_right", baseRight + 12.0f, 0.04f);
+		tween.TweenProperty(_quizPanel, "offset_left", baseLeft - 8.0f, 0.04f);
+		tween.Parallel().TweenProperty(_quizPanel, "offset_right", baseRight - 8.0f, 0.04f);
+		tween.TweenProperty(_quizPanel, "offset_left", baseLeft + 8.0f, 0.04f);
+		tween.Parallel().TweenProperty(_quizPanel, "offset_right", baseRight + 8.0f, 0.04f);
+		tween.TweenProperty(_quizPanel, "offset_left", baseLeft, 0.04f);
+		tween.Parallel().TweenProperty(_quizPanel, "offset_right", baseRight, 0.04f);
+	}
+
+	private void RebuildObjectiveOptions(Godot.Collections.Array options)
+	{
+		EnsureCrosswordUi();
+		if (_objectiveOptionsBox == null)
+		{
+			return;
+		}
+		foreach (Node child in _objectiveOptionsBox.GetChildren())
+		{
+			child.QueueFree();
+		}
+		_objectiveOptionsBox.Visible = true;
+		foreach (Variant optVar in options)
+		{
+			string optText = optVar.AsString();
+			var btn = new Button
+			{
+				Text = optText,
+				Alignment = HorizontalAlignment.Left,
+				CustomMinimumSize = new Vector2(0, 34),
+				AutowrapMode = TextServer.AutowrapMode.WordSmart
+			};
+			btn.Pressed += () =>
+			{
+				if (_answerLine != null && _answerLine.Editable)
+				{
+					_answerLine.Text = optText;
+				}
+			};
+			_objectiveOptionsBox.AddChild(btn);
 		}
 	}
 
@@ -828,18 +944,50 @@ public partial class MinigameSession : Node
 		{
 			return;
 		}
+
+		// Validação imediata para Cruzadinha e Caça-Palavras quando o aluno erra a palavra
+		if (_isCrosswordMode || _isWordSearchMode)
+		{
+			string expected = GetExpectedWordForQuestion(_myQuestionIdx);
+			string candidate = CrosswordGenerator.NormalizeWord(raw);
+			if (!string.IsNullOrEmpty(expected) && candidate != expected)
+			{
+				_wrongAttemptsCurrentQuestion += 1;
+				ShowErrorFeedback($"✖ Palavra incorreta (\"{candidate}\")! Verifique a dica com seu parceiro e tente novamente ({_wrongAttemptsCurrentQuestion}ª tentativa).");
+				if (_isWordSearchMode)
+				{
+					_wsClickedPath.Clear();
+					_answerLine.Text = "";
+					RebuildWordSearchBoards("");
+				}
+				else
+				{
+					_answerLine.GrabFocus();
+					_answerLine.SelectAll();
+				}
+				return;
+			}
+		}
+
+		ClearFeedback();
+		string submittedAnswer = raw;
+		if ((_isCrosswordMode || _isWordSearchMode) && _wrongAttemptsCurrentQuestion > 0)
+		{
+			submittedAnswer = $"{ CrosswordGenerator.NormalizeWord(raw) } (após {_wrongAttemptsCurrentQuestion} erro(s))";
+		}
+
 		_submitButton.Disabled = true;
 		_answerLine.Editable = false;
 		if (IsHost())
 		{
-			HostProcessAnswer(_myTeam, _myQuestionIdx, raw);
+			HostProcessAnswer(_myTeam, _myQuestionIdx, submittedAnswer);
 		}
 		else
 		{
 			ENetPacketPeer hostPeer = GetHostPeer();
 			if (hostPeer != null)
 			{
-				MinigameAnswerPkt.Create(_myTeam, _myQuestionIdx, raw).Send(hostPeer);
+				MinigameAnswerPkt.Create(_myTeam, _myQuestionIdx, submittedAnswer).Send(hostPeer);
 			}
 		}
 	}
@@ -865,6 +1013,22 @@ public partial class MinigameSession : Node
 		if (questionIdx < 0 || questionIdx >= questions.Count)
 		{
 			return;
+		}
+
+		if (_isCrosswordMode || _isWordSearchMode)
+		{
+			string expected = GetExpectedWordForQuestion(questionIdx);
+			string cleanCandidate = rawAnswer;
+			int parenIdx = cleanCandidate.IndexOf(" (após ", StringComparison.Ordinal);
+			if (parenIdx > 0)
+			{
+				cleanCandidate = cleanCandidate.Substring(0, parenIdx);
+			}
+			cleanCandidate = CrosswordGenerator.NormalizeWord(cleanCandidate);
+			if (!string.IsNullOrEmpty(expected) && cleanCandidate != expected)
+			{
+				return;
+			}
 		}
 
 		state.Answers.Add(rawAnswer);
@@ -970,7 +1134,13 @@ public partial class MinigameSession : Node
 	{
 		if (!string.IsNullOrEmpty(lastAnswer))
 		{
-			_teamSubmittedAnswers.Add(CrosswordGenerator.NormalizeWord(lastAnswer));
+			string cleanForBoard = lastAnswer;
+			int parenIdx = cleanForBoard.IndexOf(" (após ", StringComparison.Ordinal);
+			if (parenIdx > 0)
+			{
+				cleanForBoard = cleanForBoard.Substring(0, parenIdx);
+			}
+			_teamSubmittedAnswers.Add(CrosswordGenerator.NormalizeWord(cleanForBoard));
 		}
 		_myQuestionIdx = questionIdx;
 		_myFinished = finished;
@@ -1133,6 +1303,26 @@ public partial class MinigameSession : Node
 
 			qVBox.AddChild(_crosswordQuizBox);
 			qVBox.MoveChild(_crosswordQuizBox, 0);
+
+			_objectiveOptionsBox = new VBoxContainer
+			{
+				Name = "ObjectiveOptionsBox",
+				Visible = false
+			};
+			_objectiveOptionsBox.AddThemeConstantOverride("separation", 5);
+			qVBox.AddChild(_objectiveOptionsBox);
+			int qLabelIdx = _questionLabel != null ? _questionLabel.GetIndex() : 1;
+			qVBox.MoveChild(_objectiveOptionsBox, qLabelIdx + 1);
+
+			_feedbackLabel = new Label
+			{
+				Name = "FeedbackLabel",
+				Visible = false,
+				HorizontalAlignment = HorizontalAlignment.Center,
+				AutowrapMode = TextServer.AutowrapMode.WordSmart
+			};
+			_feedbackLabel.AddThemeFontSizeOverride("font_size", 13);
+			qVBox.AddChild(_feedbackLabel);
 		}
 
 		if (_crosswordDocBox == null)

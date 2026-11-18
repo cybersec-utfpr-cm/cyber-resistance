@@ -105,8 +105,68 @@
       ]
     },
     {
+      "id": "avaliacao_objetiva",
+      "title": "4. Avaliação Objetiva — V/F, Atribuição e Múltipla Escolha",
+      "type": "objective",
+      "scene": "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn",
+      "document_title": "Manual de Referência — Avaliação Objetiva (V/F, Atribuição e Múltipla Escolha)",
+      "document_text": "Consulte este manual para ajudar seu parceiro a marcar ou digitar a alternativa correta nas questões objetivas de Verdadeiro ou Falso (V/F), Atribuição (Associação de colunas) e Múltipla Escolha!\n\n1) Verdadeiro ou Falso — SQL Injection e Amplificação de DNS:\n• SQL Injection (' OR '1'='1): É VERDADEIRO (V) que Consultas Parametrizadas (Prepared Statements) separam o código SQL dos dados enviados pelo usuário, impedindo a execução de comandos maliciosos.\n• Amplificação de DNS: É FALSO (F) que o ataque usa TCP na porta 443; na verdade, ele ocorre sobre o protocolo UDP na porta 53 usando servidores DNS abertos.\n• Isolamento contra Ransomware: É VERDADEIRO (V) que a primeira ação imediata ao detectar ransomware é isolar a máquina da rede (cabo/Wi-Fi/VLAN) para conter a propagação lateral.\n\n2) Atribuição / Associação de Ataques e Defesas:\n• (1) ARP Spoofing (MITM na LAN) → Mitigado por (B) Dynamic ARP Inspection (DAI) no switch.\n• (2) Fadiga de MFA (Prompt Bombing) → Mitigado por (C) Chaves FIDO2 / WebAuthn ou Number Matching.\n• (3) Ransomware / Perda de Backups → Mitigado por (A) Regra de Backup 3-2-1 com 1 cópia offsite/imutável.\n(Sequência correta de associação: 1-B, 2-C, 3-A).\n\n3) Múltipla Escolha — Sub-redes CIDR e Forense (RFC 3227):\n• Sub-rede para 12 hosts: /29 possui apenas 6 hosts úteis (8 - 2); /28 possui 14 hosts úteis (16 - 2), sendo a menor sub-rede capaz de atender 12 computadores.\n• Ordem de Volatilidade (RFC 3227) e Menor Privilégio: A memória RAM é altamente volátil e se apaga ao desligar a energia; portanto, puxar o cabo de força destrói evidências de malwares fileless em memória.\n\n4) Atribuição / Associação de Técnicas de Ataque:\n• (1) Whaling → (C) Spear Phishing direcionado a executivos de alto escalão (CEO/Diretores).\n• (2) Typosquatting → (A) Registro de domínio visualmente parecido (ex.: 'rnicrosoft.com') para enganar vítimas.\n• (3) DNS Tunneling → (B) Exfiltração de dados codificados dentro de subdomínios em consultas DNS.\n(Sequência correta de associação: 1-C, 2-A, 3-B).",
+      "questions": [
+        {
+          "prompt": "[Verdadeiro ou Falso] Analise as afirmativas:\n( ) Prepared Statements separam o código SQL dos dados do usuário, mitigando SQL Injection.\n( ) O ataque de Amplificação de DNS utiliza pacotes TCP na porta 443 para saturar a banda.\n( ) Diante de um Ransomware ativo, a primeira ação imediata é isolar a máquina da rede.\nAssinale a sequência correta:",
+          "options": [
+            "A) V - F - V",
+            "B) V - V - F",
+            "C) F - F - V",
+            "D) V - F - F"
+          ],
+          "answer": "A) V - F - V"
+        },
+        {
+          "prompt": "[Atribuição / Associação] Relacione o problema/ataque à sua defesa principal:\n(1) ARP Spoofing na rede local (LAN)\n(2) Ataque de Fadiga de MFA (Prompt Bombing)\n(3) Criptografia de backups na rede por Ransomware\n[A] Regra de Backup 3-2-1 (1 cópia offsite/imutável)\n[B] Dynamic ARP Inspection (DAI) configurado no switch\n[C] Autenticação via FIDO2/WebAuthn ou Number Matching",
+          "options": [
+            "A) 1-A, 2-B, 3-C",
+            "B) 1-B, 2-C, 3-A",
+            "C) 1-C, 2-A, 3-B",
+            "D) 1-B, 2-A, 3-C"
+          ],
+          "answer": "B) 1-B, 2-C, 3-A"
+        },
+        {
+          "prompt": "[Assinale a Correta] Precisamos criar uma sub-rede CIDR para abrigar exatamente 12 computadores, desperdiçando o menor número possível de endereços IP (descontando rede e broadcast). Qual máscara devemos escolher?",
+          "options": [
+            "A) /30 (2 hosts úteis)",
+            "B) /29 (6 hosts úteis)",
+            "C) /28 (14 hosts úteis)",
+            "D) /27 (30 hosts úteis)"
+          ],
+          "answer": "C) /28 (14 hosts úteis)"
+        },
+        {
+          "prompt": "[Verdadeiro ou Falso] Sobre Resposta a Incidentes e Forense (RFC 3227), julgue:\n( ) Deve-se puxar o cabo de força do servidor imediatamente para preservar os dados da memória RAM.\n( ) Rodar serviços web com a conta 'root' viola o Princípio do Menor Privilégio.\n( ) No Credential Stuffing, atacantes testam listas de e-mails e senhas vazadas explorando a reutilização de senhas.",
+          "options": [
+            "A) V - V - V",
+            "B) F - F - V",
+            "C) V - F - V",
+            "D) F - V - V"
+          ],
+          "answer": "D) F - V - V"
+        },
+        {
+          "prompt": "[Atribuição / Associação] Associe cada técnica maliciosa à sua definição exata:\n(1) Whaling\n(2) Typosquatting\n(3) DNS Tunneling\n[A] Registro de domínio falso trocando letras parecidas (ex.: 'rnicrosoft.com').\n[B] Exfiltração de dados encapsulados em subdomínios de consultas DNS.\n[C] Spear Phishing focado em executivos de alto escalão (CEO/CFO).",
+          "options": [
+            "A) 1-C, 2-A, 3-B",
+            "B) 1-A, 2-C, 3-B",
+            "C) 1-C, 2-B, 3-A",
+            "D) 1-B, 2-A, 3-C"
+          ],
+          "answer": "A) 1-C, 2-A, 3-B"
+        }
+      ]
+    },
+    {
       "id": "cruzadinha_cyber",
-      "title": "4. Palavras Cruzadas — Cibersegurança",
+      "title": "5. Palavras Cruzadas — Cibersegurança",
       "type": "crossword",
       "scene": "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn",
       "document_title": "Manual de Apoio — Palavras Cruzadas de Cibersegurança",
@@ -156,7 +216,7 @@
     },
     {
       "id": "caca_palavras_cyber",
-      "title": "5. Caça-Palavras — Cibersegurança",
+      "title": "6. Caça-Palavras — Cibersegurança",
       "type": "wordsearch",
       "scene": "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn",
       "document_title": "Guia de Radar — Caça-Palavras de Cibersegurança",

@@ -3,206 +3,266 @@
   "document_title": "Manual de Defesa Cibernética — Apoio para a Dupla",
   "document_text": "Este documento reúne os tópicos necessários para apoiar seu parceiro na resolução das perguntas. Leia com atenção e repasse as informações relevantes conforme cada questão aparecer.\n\n1) SQL Injection (SQLi)\nÉ um ataque onde o invasor insere fragmentos de SQL em campos de entrada (login, busca, formulários) para alterar a consulta original do banco de dados. Um payload clássico é ' OR '1'='1, que transforma a cláusula WHERE em algo sempre verdadeiro e permite burlar a autenticação.\nMitigação principal: Prepared Statements (também chamados de Consultas Parametrizadas). Eles separam o código SQL dos dados enviados pelo usuário, garantindo que a entrada nunca seja interpretada como código.\n\n2) Amplificação de DNS\nÉ um ataque DDoS volumétrico realizado sobre UDP. O atacante envia consultas DNS pequenas com IP de origem forjado (o da vítima) para servidores DNS abertos; as respostas, muito maiores que a consulta, chegam na vítima e saturam sua banda. A porta envolvida é a 53/UDP. Sintomas típicos: enxurrada de pacotes UDP grandes vindos de fora, com alvo na porta 53.\n\n3) Cálculo de Sub-rede (CIDR)\nPara abrigar N hosts em uma sub-rede, precisamos de pelo menos N + 2 endereços, pois o primeiro endereço é reservado para a rede e o último para broadcast — eles não contam como hosts utilizáveis.\nTabela rápida de máscaras pequenas:\n  /30 — 4 endereços —  2 hosts úteis\n  /29 — 8 endereços —  6 hosts úteis\n  /28 — 16 endereços — 14 hosts úteis\n  /27 — 32 endereços — 30 hosts úteis\nPara 12 hosts, a menor sub-rede possível é /28, que oferece 14 hosts úteis. A /29 só cobre 6 hosts, insuficiente.\n\n4) ARP Spoofing (Man-in-the-Middle local)\nO atacante envia respostas ARP falsas associando seu próprio endereço MAC ao IP do gateway padrão (ou de outra máquina alvo). Assim, as vítimas passam a rotear o tráfego através dele, permitindo interceptação e até alteração das comunicações dentro da LAN. É uma forma clássica de Man-in-the-Middle.\nMitigação no switch: Inspeção ARP Dinâmica (Dynamic ARP Inspection — DAI). Esse recurso valida cada resposta ARP contra a tabela do DHCP Snooping e descarta as falsificadas. Deve ser habilitada nas portas de acesso.\n\n5) Ransomware — Primeira ação\nQuando uma máquina é criptografada por ransomware e exibe pedido de resgate, a prioridade absoluta é cortar a propagação lateral antes que outras máquinas e compartilhamentos de rede sejam afetados. A primeira ação imediata é isolar a máquina da rede: desconectar o cabo Ethernet, desativar o Wi-Fi e/ou segregar a VLAN.\nSomente depois desse isolamento seguem-se as etapas de análise forense, restauração via backup e notificação às autoridades competentes (ex.: CERT, polícia, jurídico).",
   "questions": [
-	{
-	  "prompt": "Identificamos que um atacante invadiu nosso sistema inserindo o texto ' OR '1'='1 no campo de login do nosso site institucional. Ele conseguiu burlar a autenticação. Qual é o nome técnico desse ataque e qual é a solução para mitigar isso?",
-	  "answer": "Ataque: SQL Injection (SQLi). Solução: implementar Prepared Statements (Consultas Parametrizadas)."
-	},
-	{
-	  "prompt": "O firewall disparou um alerta. Estamos recebendo uma enxurrada de pacotes UDP gigantes vindos de fora, e o tráfego está saturando nossa banda. O monitoramento aponta que o alvo é a porta 53. Que tipo de ataque está acontecendo agora?",
-	  "answer": "Amplificação de DNS (ataque DDoS volumétrico via DNS sobre UDP/53)."
-	},
-	{
-	  "prompt": "Precisamos isolar uma equipe de segurança que tem exatamente 12 computadores. Olhando a tabela de máscaras CIDR, qual é a menor sub-rede (a que desperdiça menos IPs) que consegue abrigar esses 12 hosts estritamente, sabendo que não podemos usar os IPs de rede e broadcast?",
-	  "answer": "/28 (14 hosts úteis). A /29 cobre só 6 hosts, insuficiente para 12."
-	},
-	{
-	  "prompt": "Um usuário da rede local reportou que suas comunicações estão sendo interceptadas. Descobrimos que um dispositivo desconhecido enviou respostas falsas associando o endereço MAC dele ao IP do nosso roteador padrão (gateway). Que técnica de ataque está acontecendo aqui e o que devemos configurar no Switch para pará-lo?",
-	  "answer": "Ataque: ARP Spoofing (Man-in-the-Middle local). Solução no switch: Inspeção ARP Dinâmica (Dynamic ARP Inspection / DAI)."
-	},
-	{
-	  "prompt": "A tela do computador do Diretor Financeiro ficou preta e agora exibe um cronômetro exigindo o pagamento de 2 Bitcoins para liberar os arquivos que foram misteriosamente criptografados. Qual é a primeira ação imediata que devemos tomar?",
-	  "answer": "Isolar a máquina da rede imediatamente (desconectar cabo, desativar Wi-Fi/VLAN) para impedir o movimento lateral do ransomware."
-	}
+    {
+      "prompt": "Identificamos que um atacante invadiu nosso sistema inserindo o texto ' OR '1'='1 no campo de login do nosso site institucional. Ele conseguiu burlar a autenticação. Qual é o nome técnico desse ataque e qual é a solução para mitigar isso?",
+      "answer": "Ataque: SQL Injection (SQLi). Solução: implementar Prepared Statements (Consultas Parametrizadas)."
+    },
+    {
+      "prompt": "O firewall disparou um alerta. Estamos recebendo uma enxurrada de pacotes UDP gigantes vindos de fora, e o tráfego está saturando nossa banda. O monitoramento aponta que o alvo é a porta 53. Que tipo de ataque está acontecendo agora?",
+      "answer": "Amplificação de DNS (ataque DDoS volumétrico via DNS sobre UDP/53)."
+    },
+    {
+      "prompt": "Precisamos isolar uma equipe de segurança que tem exatamente 12 computadores. Olhando a tabela de máscaras CIDR, qual é a menor sub-rede (a que desperdiça menos IPs) que consegue abrigar esses 12 hosts estritamente, sabendo que não podemos usar os IPs de rede e broadcast?",
+      "answer": "/28 (14 hosts úteis). A /29 cobre só 6 hosts, insuficiente para 12."
+    },
+    {
+      "prompt": "Um usuário da rede local reportou que suas comunicações estão sendo interceptadas. Descobrimos que um dispositivo desconhecido enviou respostas falsas associando o endereço MAC dele ao IP do nosso roteador padrão (gateway). Que técnica de ataque está acontecendo aqui e o que devemos configurar no Switch para pará-lo?",
+      "answer": "Ataque: ARP Spoofing (Man-in-the-Middle local). Solução no switch: Inspeção ARP Dinâmica (Dynamic ARP Inspection / DAI)."
+    },
+    {
+      "prompt": "A tela do computador do Diretor Financeiro ficou preta e agora exibe um cronômetro exigindo o pagamento de 2 Bitcoins para liberar os arquivos que foram misteriosamente criptografados. Qual é a primeira ação imediata que devemos tomar?",
+      "answer": "Isolar a máquina da rede imediatamente (desconectar cabo, desativar Wi-Fi/VLAN) para impedir o movimento lateral do ransomware."
+    }
   ],
   "activities": [
-	{
-	  "id": "defesa_redes",
-	  "title": "1. Defesa de Redes e Infraestrutura",
-	  "scene": "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn",
-	  "document_title": "Manual de Defesa Cibernética — Redes e Infraestrutura",
-	  "document_text": "Este documento reúne os tópicos necessários para apoiar seu parceiro na resolução das perguntas. Leia com atenção e repasse as informações relevantes conforme cada questão aparecer.\n\n1) SQL Injection (SQLi)\nÉ um ataque onde o invasor insere fragmentos de SQL em campos de entrada (login, busca, formulários) para alterar a consulta original do banco de dados. Um payload clássico é ' OR '1'='1, que transforma a cláusula WHERE em algo sempre verdadeiro e permite burlar a autenticação.\nMitigação principal: Prepared Statements (também chamados de Consultas Parametrizadas). Eles separam o código SQL dos dados enviados pelo usuário, garantindo que a entrada nunca seja interpretada como código.\n\n2) Amplificação de DNS\nÉ um ataque DDoS volumétrico realizado sobre UDP. O atacante envia consultas DNS pequenas com IP de origem forjado (o da vítima) para servidores DNS abertos; as respostas, muito maiores que a consulta, chegam na vítima e saturam sua banda. A porta envolvida é a 53/UDP. Sintomas típicos: enxurrada de pacotes UDP grandes vindos de fora, com alvo na porta 53.\n\n3) Cálculo de Sub-rede (CIDR)\nPara abrigar N hosts em uma sub-rede, precisamos de pelo menos N + 2 endereços, pois o primeiro endereço é reservado para a rede e o último para broadcast — eles não contam como hosts utilizáveis.\nTabela rápida de máscaras pequenas:\n  /30 — 4 endereços —  2 hosts úteis\n  /29 — 8 endereços —  6 hosts úteis\n  /28 — 16 endereços — 14 hosts úteis\n  /27 — 32 endereços — 30 hosts úteis\nPara 12 hosts, a menor sub-rede possível é /28, que oferece 14 hosts úteis. A /29 só cobre 6 hosts, insuficiente.\n\n4) ARP Spoofing (Man-in-the-Middle local)\nO atacante envia respostas ARP falsas associando seu próprio endereço MAC ao IP do gateway padrão (ou de outra máquina alvo). Assim, as vítimas passam a rotear o tráfego através dele, permitindo interceptação e até alteração das comunicações dentro da LAN. É uma forma clássica de Man-in-the-Middle.\nMitigação no switch: Inspeção ARP Dinâmica (Dynamic ARP Inspection — DAI). Esse recurso valida cada resposta ARP contra a tabela do DHCP Snooping e descarta as falsificadas. Deve ser habilitada nas portas de acesso.\n\n5) Ransomware — Primeira ação\nQuando uma máquina é criptografada por ransomware e exibe pedido de resgate, a prioridade absoluta é cortar a propagação lateral antes que outras máquinas e compartilhamentos de rede sejam afetados. A primeira ação imediata é isolar a máquina da rede: desconectar o cabo Ethernet, desativar o Wi-Fi e/ou segregar a VLAN.\nSomente depois desse isolamento seguem-se as etapas de análise forense, restauração via backup e notificação às autoridades competentes (ex.: CERT, polícia, jurídico).",
-	  "questions": [
-		{
-		  "prompt": "Identificamos que um atacante invadiu nosso sistema inserindo o texto ' OR '1'='1 no campo de login do nosso site institucional. Ele conseguiu burlar a autenticação. Qual é o nome técnico desse ataque e qual é a solução para mitigar isso?",
-		  "answer": "Ataque: SQL Injection (SQLi). Solução: implementar Prepared Statements (Consultas Parametrizadas)."
-		},
-		{
-		  "prompt": "O firewall disparou um alerta. Estamos recebendo uma enxurrada de pacotes UDP gigantes vindos de fora, e o tráfego está saturando nossa banda. O monitoramento aponta que o alvo é a porta 53. Que tipo de ataque está acontecendo agora?",
-		  "answer": "Amplificação de DNS (ataque DDoS volumétrico via DNS sobre UDP/53)."
-		},
-		{
-		  "prompt": "Precisamos isolar uma equipe de segurança que tem exatamente 12 computadores. Olhando a tabela de máscaras CIDR, qual é a menor sub-rede (a que desperdiça menos IPs) que consegue abrigar esses 12 hosts estritamente, sabendo que não podemos usar os IPs de rede e broadcast?",
-		  "answer": "/28 (14 hosts úteis). A /29 cobre só 6 hosts, insuficiente para 12."
-		},
-		{
-		  "prompt": "Um usuário da rede local reportou que suas comunicações estão sendo interceptadas. Descobrimos que um dispositivo desconhecido enviou respostas falsas associando o endereço MAC dele ao IP do nosso roteador padrão (gateway). Que técnica de ataque está acontecendo aqui e o que devemos configurar no Switch para pará-lo?",
-		  "answer": "Ataque: ARP Spoofing (Man-in-the-Middle local). Solução no switch: Inspeção ARP Dinâmica (Dynamic ARP Inspection / DAI)."
-		},
-		{
-		  "prompt": "A tela do computador do Diretor Financeiro ficou preta e agora exibe um cronômetro exigindo o pagamento de 2 Bitcoins para liberar os arquivos que foram misteriosamente criptografados. Qual é a primeira ação imediata que devemos tomar?",
-		  "answer": "Isolar a máquina da rede imediatamente (desconectar cabo, desativar Wi-Fi/VLAN) para impedir o movimento lateral do ransomware."
-		}
-	  ]
-	},
-	{
-	  "id": "engenharia_social",
-	  "title": "2. Engenharia Social e Autenticação",
-	  "scene": "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn",
-	  "document_title": "Guia de Investigação — Phishing e Identidade",
-	  "document_text": "Consulte este guia para ajudar sua dupla a identificar ataques focados no fator humano e credenciais.\n\n1) Spear Phishing vs Whaling\n- Phishing em massa: e-mails genéricos enviados a milhares de pessoas.\n- Spear Phishing: ataque direcionado a um indivíduo ou setor específico usando informações personalizadas (cargo, projetos, fornecedores).\n- Whaling: variante de Spear Phishing voltada especificamente a executivos de alto escalão (CEO, CFO, Diretores).\n\n2) Fadiga de MFA (MFA Prompt Bombing) e FIDO2/WebAuthn\nNo ataque de Fadiga de MFA, o invasor que já possui a senha da vítima dispara dezenas de notificações Push até que o usuário aprove uma por engano ou cansaço.\nMitigação: usar chaves de segurança compatíveis com FIDO2/WebAuthn ou Number Matching (digitar o número exibido na tela de login), que impedem aprovação cega e vinculam a autenticação ao domínio real.\n\n3) Typosquatting (Domínios Falsos)\nAtacantes registram domínios visualmente parecidos com o oficial trocando letras (ex.: 'micros0ft.com' ou 'rnicrosoft.com' usando 'r'+'n' para parecer 'm'). Sempre verifique o cabeçalho completo do remetente (SPF/DKIM/DMARC) e a URL real do link antes de clicar.\n\n4) Credential Stuffing\nOcorre quando invasores usam listas de e-mails e senhas vazadas em outros serviços para tentar login automatizado em diversos sistemas, explorando a reutilização de senhas pelos usuários.\nDefesa principal: senhas únicas por serviço (gerenciador de senhas), MFA ativo e bloqueio/rate-limiting contra tentativas automatizadas.",
-	  "questions": [
-		{
-		  "prompt": "O Diretor Executivo (CEO) recebeu um e-mail altamente personalizado citando uma reunião real do conselho e pedindo assinatura urgente em um contrato falso. Como é chamada essa modalidade específica de phishing voltada a altos executivos?",
-		  "answer": "Whaling (ou Spear Phishing direcionado a executivos de alto escalão)."
-		},
-		{
-		  "prompt": "Um funcionário reclamou que seu celular recebeu 30 notificações seguidas de aprovação de login às 2h da manhã, e ele acabou aprovando uma para parar o barulho. Qual o nome desse ataque e como evitá-lo no sistema de MFA?",
-		  "answer": "Ataque: Fadiga de MFA (MFA Prompt Bombing). Mitigação: Number Matching ou chaves FIDO2/WebAuthn."
-		},
-		{
-		  "prompt": "Um alerta mostrou uma página de login idêntica à nossa hospedada no domínio 'rnicrosoft-portal.com' (usando as letras 'r' e 'n' juntas para imitar 'm'). Qual é o nome dessa técnica de falsificação de domínio?",
-		  "answer": "Typosquatting (ou ataque de domínio homógrafo)."
-		},
-		{
-		  "prompt": "Nosso servidor registrou milhares de tentativas de login usando combinações de e-mail e senha que vazaram de uma rede social externa. Qual é o nome desse ataque e por que ele funciona?",
-		  "answer": "Credential Stuffing; funciona porque usuários reutilizam a mesma senha em vários serviços."
-		}
-	  ]
-	},
-	{
-	  "id": "resposta_incidentes",
-	  "title": "3. Resposta a Incidentes e Forense",
-	  "scene": "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn",
-	  "document_title": "Playbook do CSIRT — Resposta a Incidentes",
-	  "document_text": "Manual operacional de resposta a incidentes e preservação de evidências.\n\n1) Ordem de Volatilidade (RFC 3227)\nNa coleta forense, as evidências mais voláteis devem ser coletadas primeiro:\n1º Registradores e cache da CPU\n2º Memória RAM (processos em execução, conexões de rede ativas, chaves de criptografia em memória)\n3º Disco rígido / SSD (arquivos e logs persistentes)\n4º Backups e mídias externas\nPor isso, NUNCA desligue o computador puxando o cabo de força antes de avaliar a captura da memória RAM, pois tudo na RAM é perdido ao desligar.\n\n2) Persistência e Escalação de Privilégios\nApós invadir uma máquina comum, o atacante busca Escalação de Privilégios para obter acesso de Administrador/root. Aplicar o Princípio do Menor Privilégio (cada conta/serviço tem apenas as permissões estritamente necessárias) limita o impacto da invasão.\n\n3) Regra de Backup 3-2-1\nPara garantir recuperação contra ransomware e desastres:\n- 3 cópias dos dados (1 em produção + 2 backups)\n- 2 mídias/tecnologias de armazenamento diferentes\n- 1 cópia fora do local (offsite) e imutável/offline (air-gapped), impedindo que o atacante criptografe o próprio backup.\n\n4) Exfiltração via DNS Tunneling\nAtacantes podem esconder dados roubados codificando-os dentro de subdomínios em consultas DNS (ex.: 'dadosEmBase64.dominio-atacante.com') para atravessar firewalls que não inspecionam tráfego DNS.",
-	  "questions": [
-		{
-		  "prompt": "Suspeitamos de um malware que roda exclusivamente na memória (fileless) em um servidor crítico. Por que não devemos desligar o servidor da tomada imediatamente segundo a Ordem de Volatilidade?",
-		  "answer": "Porque desligar apaga a memória RAM, perdendo evidências voláteis como processos ativos, conexões de rede e chaves em memória."
-		},
-		{
-		  "prompt": "Um serviço web comprometido conseguiu alterar arquivos críticos do sistema operacional porque estava rodando com a conta 'root'. Qual princípio fundamental de segurança foi violado nessa configuração?",
-		  "answer": "Princípio do Menor Privilégio (Principle of Least Privilege)."
-		},
-		{
-		  "prompt": "Em um ataque recente, o ransomware criptografou tanto os servidores quanto o servidor de backup conectado na mesma rede. O que significa a Regra 3-2-1 de backup que teria evitado a perda total?",
-		  "answer": "3 cópias dos dados, em 2 mídias diferentes, sendo 1 cópia offsite/offline (imutável ou isolada da rede)."
-		},
-		{
-		  "prompt": "O SIEM detectou milhares de consultas DNS para subdomínios longos e aleatórios como 'aGVsbG8xMjM.malicioso.com', mesmo com portas HTTP/HTTPS bloqueadas. Que técnica o invasor está usando para roubar dados?",
-		  "answer": "DNS Tunneling (exfiltração de dados encapsulados em consultas DNS)."
-		}
-	  ]
-	},
-	{
-	  "id": "cruzadinha_cyber",
-	  "title": "4. Palavras Cruzadas — Cibersegurança",
-	  "type": "crossword",
-	  "scene": "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn",
-	  "document_title": "Manual de Apoio — Palavras Cruzadas de Cibersegurança",
-	  "document_text": "Ajude seu parceiro a preencher a Cruzadinha de Cibersegurança! A cada rodada os papéis se invertem. Use as descrições abaixo e as letras que se cruzam no tabuleiro para descobrir o termo exato (sem espaços ou acentos):\n\n• Defesa de Redes e Infraestrutura:\n- Quando uma estação exibe tela preta exigindo resgate em Bitcoins pelos arquivos criptografados, estamos diante de um ataque de RANSOMWARE (10 letras). A ação imediata é isolar a máquina da rede.\n- O monitoramento de pacotes UDP gigantes na porta 53 (Amplificação de DNS) é detectado pelo FIREWALL (8 letras) de borda.\n- No cálculo de sub-redes CIDR (ex.: /28 para 12 hosts), dois endereços nunca podem ser usados por computadores: o primeiro (endereço de rede) e o último, chamado endereço de BROADCAST (9 letras).\n- Quando um invasor envia respostas ARP falsas na LAN para associar seu MAC ao IP do gateway padrão (Man-in-the-Middle), ele pratica ARP SPOOFING (8 letras na palavra-chave da técnica), mitigado com Dynamic ARP Inspection (DAI).\n\n• Engenharia Social e Identidade:\n- O envio de mensagens e páginas falsas para enganar usuários e roubar senhas chama-se PHISHING (8 letras).\n- Quando esse ataque é altamente personalizado e mira especificamente executivos de alto escalão como o CEO ou Diretor Financeiro, recebe o nome de WHALING (7 letras).\n\n• Resposta a Incidentes e Forense:\n- Na perícia forense (RFC 3227), nunca devemos puxar o cabo de força de um servidor com malware em memória RAM por causa da Ordem de VOLATILIDADE (12 letras).\n- Para roubar informações mesmo com portas HTTP/HTTPS bloqueadas, atacantes codificam dados em subdomínios dentro de consultas DNS, técnica conhecida como DNS TUNNELING (9 letras na palavra-chave da técnica).",
-	  "questions": [
-		{
-		  "word": "VOLATILIDADE",
-		  "prompt": "[Forense / RFC 3227] Ordem segundo a qual evidências mais efêmeras (como a memória RAM) devem ser coletadas primeiro antes de desligar o servidor (12 letras).",
-		  "answer": "VOLATILIDADE"
-		},
-		{
-		  "word": "RANSOMWARE",
-		  "prompt": "[Defesa de Redes] Malware que criptografa os arquivos da vítima e exige resgate em criptomoedas; exige isolamento imediato da máquina na rede (10 letras).",
-		  "answer": "RANSOMWARE"
-		},
-		{
-		  "word": "BROADCAST",
-		  "prompt": "[Sub-redes CIDR] Último endereço reservado de uma sub-rede que, junto com o endereço de rede, não pode ser atribuído a hosts úteis (9 letras).",
-		  "answer": "BROADCAST"
-		},
-		{
-		  "word": "TUNNELING",
-		  "prompt": "[Exfiltração] Técnica em que o invasor encapsula dados roubados dentro de consultas DNS para atravessar bloqueios de portas web (9 letras).",
-		  "answer": "TUNNELING"
-		},
-		{
-		  "word": "FIREWALL",
-		  "prompt": "[Infraestrutura] Barreira de segurança de rede que dispara alertas ao detectar enxurradas de pacotes UDP na porta 53 (8 letras).",
-		  "answer": "FIREWALL"
-		},
-		{
-		  "word": "SPOOFING",
-		  "prompt": "[Rede Local / MITM] Técnica de falsificação usada no protocolo ARP para fingir ser o gateway padrão da LAN, bloqueada com DAI no switch (8 letras).",
-		  "answer": "SPOOFING"
-		},
-		{
-		  "word": "PHISHING",
-		  "prompt": "[Engenharia Social] Ataque que utiliza comunicações ou páginas clonadas para induzir a vítima a entregar suas credenciais (8 letras).",
-		  "answer": "PHISHING"
-		},
-		{
-		  "word": "WHALING",
-		  "prompt": "[Engenharia Social] Modalidade de Spear Phishing altamente personalizada voltada especificamente a executivos de alto escalão como CEO e diretores (7 letras).",
-		  "answer": "WHALING"
-		}
-	  ]
-	},
-	{
-	  "id": "caca_palavras_cyber",
-	  "title": "5. Caça-Palavras — Cibersegurança",
-	  "type": "wordsearch",
-	  "scene": "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn",
-	  "document_title": "Guia de Radar — Caça-Palavras de Cibersegurança",
-	  "document_text": "Ajude seu parceiro a localizar os 8 termos ocultos na grade do Caça-Palavras (Horizontal →, Vertical ↓ e Diagonal ↘/↗)! No seu painel de apoio (DOC), a célula inicial da palavra da rodada aparece destacada em dourado com o número da questão.\n\n• Referência Rápida dos Conceitos:\n1) FIREWALL (8 letras): Sistema de defesa de perímetro que monitora portas e dispara alertas em ataques volumétricos (como pacotes UDP gigantes na porta 53 / Amplificação de DNS).\n2) PHISHING (8 letras): Ataque de engenharia social que usa mensagens e páginas falsas para enganar usuários e capturar credenciais.\n3) WHALING (7 letras): Variante de Spear Phishing altamente personalizada voltada especificamente a executivos de alto escalão (CEO, CFO, Diretores).\n4) SPOOFING (8 letras): Falsificação de identidade na rede; no protocolo ARP permite interceptação Man-in-the-Middle na LAN (mitigado com Dynamic ARP Inspection — DAI).\n5) BACKUP (6 letras): Cópia de segurança essencial na Regra 3-2-1 (3 cópias, 2 mídias diferentes e 1 cópia offsite/imutável isolada da rede contra ransomware).\n6) GATEWAY (7 letras): Roteador padrão da rede local cujo endereço IP é falsamente associado ao MAC do invasor durante um ataque de ARP Spoofing.\n7) BITCOIN (7 letras): Criptomoeda frequentemente exigida pelos atacantes no cronômetro de extorsão após um ataque de Ransomware.\n8) WEBAUTHN (8 letras): Padrão de autenticação forte (junto ao FIDO2) resistente a phishing e ataques de Fadiga de MFA (MFA Prompt Bombing).",
-	  "questions": [
-		{
-		  "word": "FIREWALL",
-		  "prompt": "[Defesa de Redes] Barreira que monitora o tráfego de rede e alerta sobre enxurradas de pacotes UDP na porta 53 (8 letras).",
-		  "answer": "FIREWALL"
-		},
-		{
-		  "word": "PHISHING",
-		  "prompt": "[Engenharia Social] Técnica que utiliza e-mails ou sites falsos para induzir a vítima a revelar suas senhas (8 letras).",
-		  "answer": "PHISHING"
-		},
-		{
-		  "word": "WHALING",
-		  "prompt": "[Engenharia Social] Ataque de Spear Phishing direcionado especificamente a altos executivos como CEO e diretores (7 letras).",
-		  "answer": "WHALING"
-		},
-		{
-		  "word": "SPOOFING",
-		  "prompt": "[Rede Local / MITM] Falsificação de pacotes ARP na LAN para interceptar tráfego, combatida com DAI no switch (8 letras).",
-		  "answer": "SPOOFING"
-		},
-		{
-		  "word": "BACKUP",
-		  "prompt": "[Resposta a Incidentes] Cópia de segurança protegida pela Regra 3-2-1 (incluindo 1 cópia offsite/imutável) para recuperação sem pagar resgate (6 letras).",
-		  "answer": "BACKUP"
-		},
-		{
-		  "word": "GATEWAY",
-		  "prompt": "[Infraestrutura] Roteador padrão da rede local cujo IP é alvo de personificação em ataques de ARP Spoofing (7 letras).",
-		  "answer": "GATEWAY"
-		},
-		{
-		  "word": "BITCOIN",
-		  "prompt": "[Ransomware] Criptomoeda comumente exigida pelos cibercriminosos para liberar arquivos sequestrados (7 letras).",
-		  "answer": "BITCOIN"
-		},
-		{
-		  "word": "WEBAUTHN",
-		  "prompt": "[Autenticação] Padrão moderno de autenticação (junto ao FIDO2) que vincula o login ao domínio real e evita Fadiga de MFA (8 letras).",
-		  "answer": "WEBAUTHN"
-		}
-	  ]
-	}
+    {
+      "id": "defesa_redes",
+      "title": "1. Defesa de Redes e Infraestrutura",
+      "scene": "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn",
+      "document_title": "Manual de Defesa Cibernética — Redes e Infraestrutura",
+      "document_text": "Este documento reúne os tópicos necessários para apoiar seu parceiro na resolução das perguntas. Leia com atenção e repasse as informações relevantes conforme cada questão aparecer.\n\n1) SQL Injection (SQLi)\nÉ um ataque onde o invasor insere fragmentos de SQL em campos de entrada (login, busca, formulários) para alterar a consulta original do banco de dados. Um payload clássico é ' OR '1'='1, que transforma a cláusula WHERE em algo sempre verdadeiro e permite burlar a autenticação.\nMitigação principal: Prepared Statements (também chamados de Consultas Parametrizadas). Eles separam o código SQL dos dados enviados pelo usuário, garantindo que a entrada nunca seja interpretada como código.\n\n2) Amplificação de DNS\nÉ um ataque DDoS volumétrico realizado sobre UDP. O atacante envia consultas DNS pequenas com IP de origem forjado (o da vítima) para servidores DNS abertos; as respostas, muito maiores que a consulta, chegam na vítima e saturam sua banda. A porta envolvida é a 53/UDP. Sintomas típicos: enxurrada de pacotes UDP grandes vindos de fora, com alvo na porta 53.\n\n3) Cálculo de Sub-rede (CIDR)\nPara abrigar N hosts em uma sub-rede, precisamos de pelo menos N + 2 endereços, pois o primeiro endereço é reservado para a rede e o último para broadcast — eles não contam como hosts utilizáveis.\nTabela rápida de máscaras pequenas:\n  /30 — 4 endereços —  2 hosts úteis\n  /29 — 8 endereços —  6 hosts úteis\n  /28 — 16 endereços — 14 hosts úteis\n  /27 — 32 endereços — 30 hosts úteis\nPara 12 hosts, a menor sub-rede possível é /28, que oferece 14 hosts úteis. A /29 só cobre 6 hosts, insuficiente.\n\n4) ARP Spoofing (Man-in-the-Middle local)\nO atacante envia respostas ARP falsas associando seu próprio endereço MAC ao IP do gateway padrão (ou de outra máquina alvo). Assim, as vítimas passam a rotear o tráfego através dele, permitindo interceptação e até alteração das comunicações dentro da LAN. É uma forma clássica de Man-in-the-Middle.\nMitigação no switch: Inspeção ARP Dinâmica (Dynamic ARP Inspection — DAI). Esse recurso valida cada resposta ARP contra a tabela do DHCP Snooping e descarta as falsificadas. Deve ser habilitada nas portas de acesso.\n\n5) Ransomware — Primeira ação\nQuando uma máquina é criptografada por ransomware e exibe pedido de resgate, a prioridade absoluta é cortar a propagação lateral antes que outras máquinas e compartilhamentos de rede sejam afetados. A primeira ação imediata é isolar a máquina da rede: desconectar o cabo Ethernet, desativar o Wi-Fi e/ou segregar a VLAN.\nSomente depois desse isolamento seguem-se as etapas de análise forense, restauração via backup e notificação às autoridades competentes (ex.: CERT, polícia, jurídico).",
+      "questions": [
+        {
+          "prompt": "Identificamos que um atacante invadiu nosso sistema inserindo o texto ' OR '1'='1 no campo de login do nosso site institucional. Ele conseguiu burlar a autenticação. Qual é o nome técnico desse ataque e qual é a solução para mitigar isso?",
+          "answer": "Ataque: SQL Injection (SQLi). Solução: implementar Prepared Statements (Consultas Parametrizadas)."
+        },
+        {
+          "prompt": "O firewall disparou um alerta. Estamos recebendo uma enxurrada de pacotes UDP gigantes vindos de fora, e o tráfego está saturando nossa banda. O monitoramento aponta que o alvo é a porta 53. Que tipo de ataque está acontecendo agora?",
+          "answer": "Amplificação de DNS (ataque DDoS volumétrico via DNS sobre UDP/53)."
+        },
+        {
+          "prompt": "Precisamos isolar uma equipe de segurança que tem exatamente 12 computadores. Olhando a tabela de máscaras CIDR, qual é a menor sub-rede (a que desperdiça menos IPs) que consegue abrigar esses 12 hosts estritamente, sabendo que não podemos usar os IPs de rede e broadcast?",
+          "answer": "/28 (14 hosts úteis). A /29 cobre só 6 hosts, insuficiente para 12."
+        },
+        {
+          "prompt": "Um usuário da rede local reportou que suas comunicações estão sendo interceptadas. Descobrimos que um dispositivo desconhecido enviou respostas falsas associando o endereço MAC dele ao IP do nosso roteador padrão (gateway). Que técnica de ataque está acontecendo aqui e o que devemos configurar no Switch para pará-lo?",
+          "answer": "Ataque: ARP Spoofing (Man-in-the-Middle local). Solução no switch: Inspeção ARP Dinâmica (Dynamic ARP Inspection / DAI)."
+        },
+        {
+          "prompt": "A tela do computador do Diretor Financeiro ficou preta e agora exibe um cronômetro exigindo o pagamento de 2 Bitcoins para liberar os arquivos que foram misteriosamente criptografados. Qual é a primeira ação imediata que devemos tomar?",
+          "answer": "Isolar a máquina da rede imediatamente (desconectar cabo, desativar Wi-Fi/VLAN) para impedir o movimento lateral do ransomware."
+        }
+      ]
+    },
+    {
+      "id": "engenharia_social",
+      "title": "2. Engenharia Social e Autenticação",
+      "scene": "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn",
+      "document_title": "Guia de Investigação — Phishing e Identidade",
+      "document_text": "Consulte este guia para ajudar sua dupla a identificar ataques focados no fator humano e credenciais.\n\n1) Spear Phishing vs Whaling\n- Phishing em massa: e-mails genéricos enviados a milhares de pessoas.\n- Spear Phishing: ataque direcionado a um indivíduo ou setor específico usando informações personalizadas (cargo, projetos, fornecedores).\n- Whaling: variante de Spear Phishing voltada especificamente a executivos de alto escalão (CEO, CFO, Diretores).\n\n2) Fadiga de MFA (MFA Prompt Bombing) e FIDO2/WebAuthn\nNo ataque de Fadiga de MFA, o invasor que já possui a senha da vítima dispara dezenas de notificações Push até que o usuário aprove uma por engano ou cansaço.\nMitigação: usar chaves de segurança compatíveis com FIDO2/WebAuthn ou Number Matching (digitar o número exibido na tela de login), que impedem aprovação cega e vinculam a autenticação ao domínio real.\n\n3) Typosquatting (Domínios Falsos)\nAtacantes registram domínios visualmente parecidos com o oficial trocando letras (ex.: 'micros0ft.com' ou 'rnicrosoft.com' usando 'r'+'n' para parecer 'm'). Sempre verifique o cabeçalho completo do remetente (SPF/DKIM/DMARC) e a URL real do link antes de clicar.\n\n4) Credential Stuffing\nOcorre quando invasores usam listas de e-mails e senhas vazadas em outros serviços para tentar login automatizado em diversos sistemas, explorando a reutilização de senhas pelos usuários.\nDefesa principal: senhas únicas por serviço (gerenciador de senhas), MFA ativo e bloqueio/rate-limiting contra tentativas automatizadas.",
+      "questions": [
+        {
+          "prompt": "O Diretor Executivo (CEO) recebeu um e-mail altamente personalizado citando uma reunião real do conselho e pedindo assinatura urgente em um contrato falso. Como é chamada essa modalidade específica de phishing voltada a altos executivos?",
+          "answer": "Whaling (ou Spear Phishing direcionado a executivos de alto escalão)."
+        },
+        {
+          "prompt": "Um funcionário reclamou que seu celular recebeu 30 notificações seguidas de aprovação de login às 2h da manhã, e ele acabou aprovando uma para parar o barulho. Qual o nome desse ataque e como evitá-lo no sistema de MFA?",
+          "answer": "Ataque: Fadiga de MFA (MFA Prompt Bombing). Mitigação: Number Matching ou chaves FIDO2/WebAuthn."
+        },
+        {
+          "prompt": "Um alerta mostrou uma página de login idêntica à nossa hospedada no domínio 'rnicrosoft-portal.com' (usando as letras 'r' e 'n' juntas para imitar 'm'). Qual é o nome dessa técnica de falsificação de domínio?",
+          "answer": "Typosquatting (ou ataque de domínio homógrafo)."
+        },
+        {
+          "prompt": "Nosso servidor registrou milhares de tentativas de login usando combinações de e-mail e senha que vazaram de uma rede social externa. Qual é o nome desse ataque e por que ele funciona?",
+          "answer": "Credential Stuffing; funciona porque usuários reutilizam a mesma senha em vários serviços."
+        }
+      ]
+    },
+    {
+      "id": "resposta_incidentes",
+      "title": "3. Resposta a Incidentes e Forense",
+      "scene": "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn",
+      "document_title": "Playbook do CSIRT — Resposta a Incidentes",
+      "document_text": "Manual operacional de resposta a incidentes e preservação de evidências.\n\n1) Ordem de Volatilidade (RFC 3227)\nNa coleta forense, as evidências mais voláteis devem ser coletadas primeiro:\n1º Registradores e cache da CPU\n2º Memória RAM (processos em execução, conexões de rede ativas, chaves de criptografia em memória)\n3º Disco rígido / SSD (arquivos e logs persistentes)\n4º Backups e mídias externas\nPor isso, NUNCA desligue o computador puxando o cabo de força antes de avaliar a captura da memória RAM, pois tudo na RAM é perdido ao desligar.\n\n2) Persistência e Escalação de Privilégios\nApós invadir uma máquina comum, o atacante busca Escalação de Privilégios para obter acesso de Administrador/root. Aplicar o Princípio do Menor Privilégio (cada conta/serviço tem apenas as permissões estritamente necessárias) limita o impacto da invasão.\n\n3) Regra de Backup 3-2-1\nPara garantir recuperação contra ransomware e desastres:\n- 3 cópias dos dados (1 em produção + 2 backups)\n- 2 mídias/tecnologias de armazenamento diferentes\n- 1 cópia fora do local (offsite) e imutável/offline (air-gapped), impedindo que o atacante criptografe o próprio backup.\n\n4) Exfiltração via DNS Tunneling\nAtacantes podem esconder dados roubados codificando-os dentro de subdomínios em consultas DNS (ex.: 'dadosEmBase64.dominio-atacante.com') para atravessar firewalls que não inspecionam tráfego DNS.",
+      "questions": [
+        {
+          "prompt": "Suspeitamos de um malware que roda exclusivamente na memória (fileless) em um servidor crítico. Por que não devemos desligar o servidor da tomada imediatamente segundo a Ordem de Volatilidade?",
+          "answer": "Porque desligar apaga a memória RAM, perdendo evidências voláteis como processos ativos, conexões de rede e chaves em memória."
+        },
+        {
+          "prompt": "Um serviço web comprometido conseguiu alterar arquivos críticos do sistema operacional porque estava rodando com a conta 'root'. Qual princípio fundamental de segurança foi violado nessa configuração?",
+          "answer": "Princípio do Menor Privilégio (Principle of Least Privilege)."
+        },
+        {
+          "prompt": "Em um ataque recente, o ransomware criptografou tanto os servidores quanto o servidor de backup conectado na mesma rede. O que significa a Regra 3-2-1 de backup que teria evitado a perda total?",
+          "answer": "3 cópias dos dados, em 2 mídias diferentes, sendo 1 cópia offsite/offline (imutável ou isolada da rede)."
+        },
+        {
+          "prompt": "O SIEM detectou milhares de consultas DNS para subdomínios longos e aleatórios como 'aGVsbG8xMjM.malicioso.com', mesmo com portas HTTP/HTTPS bloqueadas. Que técnica o invasor está usando para roubar dados?",
+          "answer": "DNS Tunneling (exfiltração de dados encapsulados em consultas DNS)."
+        }
+      ]
+    },
+    {
+      "id": "avaliacao_objetiva",
+      "title": "4. Avaliação Objetiva — V/F, Atribuição e Múltipla Escolha",
+      "type": "objective",
+      "scene": "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn",
+      "document_title": "Manual de Referência — Avaliação Objetiva (V/F, Atribuição e Múltipla Escolha)",
+      "document_text": "Consulte este manual para ajudar seu parceiro a marcar ou digitar a alternativa correta nas questões objetivas de Verdadeiro ou Falso (V/F), Atribuição (Associação de colunas) e Múltipla Escolha!\n\n1) Verdadeiro ou Falso — SQL Injection e Amplificação de DNS:\n• SQL Injection (' OR '1'='1): É VERDADEIRO (V) que Consultas Parametrizadas (Prepared Statements) separam o código SQL dos dados enviados pelo usuário, impedindo a execução de comandos maliciosos.\n• Amplificação de DNS: É FALSO (F) que o ataque usa TCP na porta 443; na verdade, ele ocorre sobre o protocolo UDP na porta 53 usando servidores DNS abertos.\n• Isolamento contra Ransomware: É VERDADEIRO (V) que a primeira ação imediata ao detectar ransomware é isolar a máquina da rede (cabo/Wi-Fi/VLAN) para conter a propagação lateral.\n\n2) Atribuição / Associação de Ataques e Defesas:\n• (1) ARP Spoofing (MITM na LAN) → Mitigado por (B) Dynamic ARP Inspection (DAI) no switch.\n• (2) Fadiga de MFA (Prompt Bombing) → Mitigado por (C) Chaves FIDO2 / WebAuthn ou Number Matching.\n• (3) Ransomware / Perda de Backups → Mitigado por (A) Regra de Backup 3-2-1 com 1 cópia offsite/imutável.\n(Sequência correta de associação: 1-B, 2-C, 3-A).\n\n3) Múltipla Escolha — Sub-redes CIDR e Forense (RFC 3227):\n• Sub-rede para 12 hosts: /29 possui apenas 6 hosts úteis (8 - 2); /28 possui 14 hosts úteis (16 - 2), sendo a menor sub-rede capaz de atender 12 computadores.\n• Ordem de Volatilidade (RFC 3227) e Menor Privilégio: A memória RAM é altamente volátil e se apaga ao desligar a energia; portanto, puxar o cabo de força destrói evidências de malwares fileless em memória.\n\n4) Atribuição / Associação de Técnicas de Ataque:\n• (1) Whaling → (C) Spear Phishing direcionado a executivos de alto escalão (CEO/Diretores).\n• (2) Typosquatting → (A) Registro de domínio visualmente parecido (ex.: 'rnicrosoft.com') para enganar vítimas.\n• (3) DNS Tunneling → (B) Exfiltração de dados codificados dentro de subdomínios em consultas DNS.\n(Sequência correta de associação: 1-C, 2-A, 3-B).",
+      "questions": [
+        {
+          "prompt": "[Verdadeiro ou Falso] Analise as afirmativas:\n( ) Prepared Statements separam o código SQL dos dados do usuário, mitigando SQL Injection.\n( ) O ataque de Amplificação de DNS utiliza pacotes TCP na porta 443 para saturar a banda.\n( ) Diante de um Ransomware ativo, a primeira ação imediata é isolar a máquina da rede.\nAssinale a sequência correta:",
+          "options": [
+            "A) V - F - V",
+            "B) V - V - F",
+            "C) F - F - V",
+            "D) V - F - F"
+          ],
+          "answer": "A) V - F - V"
+        },
+        {
+          "prompt": "[Atribuição / Associação] Relacione o problema/ataque à sua defesa principal:\n(1) ARP Spoofing na rede local (LAN)\n(2) Ataque de Fadiga de MFA (Prompt Bombing)\n(3) Criptografia de backups na rede por Ransomware\n[A] Regra de Backup 3-2-1 (1 cópia offsite/imutável)\n[B] Dynamic ARP Inspection (DAI) configurado no switch\n[C] Autenticação via FIDO2/WebAuthn ou Number Matching",
+          "options": [
+            "A) 1-A, 2-B, 3-C",
+            "B) 1-B, 2-C, 3-A",
+            "C) 1-C, 2-A, 3-B",
+            "D) 1-B, 2-A, 3-C"
+          ],
+          "answer": "B) 1-B, 2-C, 3-A"
+        },
+        {
+          "prompt": "[Assinale a Correta] Precisamos criar uma sub-rede CIDR para abrigar exatamente 12 computadores, desperdiçando o menor número possível de endereços IP (descontando rede e broadcast). Qual máscara devemos escolher?",
+          "options": [
+            "A) /30 (2 hosts úteis)",
+            "B) /29 (6 hosts úteis)",
+            "C) /28 (14 hosts úteis)",
+            "D) /27 (30 hosts úteis)"
+          ],
+          "answer": "C) /28 (14 hosts úteis)"
+        },
+        {
+          "prompt": "[Verdadeiro ou Falso] Sobre Resposta a Incidentes e Forense (RFC 3227), julgue:\n( ) Deve-se puxar o cabo de força do servidor imediatamente para preservar os dados da memória RAM.\n( ) Rodar serviços web com a conta 'root' viola o Princípio do Menor Privilégio.\n( ) No Credential Stuffing, atacantes testam listas de e-mails e senhas vazadas explorando a reutilização de senhas.",
+          "options": [
+            "A) V - V - V",
+            "B) F - F - V",
+            "C) V - F - V",
+            "D) F - V - V"
+          ],
+          "answer": "D) F - V - V"
+        },
+        {
+          "prompt": "[Atribuição / Associação] Associe cada técnica maliciosa à sua definição exata:\n(1) Whaling\n(2) Typosquatting\n(3) DNS Tunneling\n[A] Registro de domínio falso trocando letras parecidas (ex.: 'rnicrosoft.com').\n[B] Exfiltração de dados encapsulados em subdomínios de consultas DNS.\n[C] Spear Phishing focado em executivos de alto escalão (CEO/CFO).",
+          "options": [
+            "A) 1-C, 2-A, 3-B",
+            "B) 1-A, 2-C, 3-B",
+            "C) 1-C, 2-B, 3-A",
+            "D) 1-B, 2-A, 3-C"
+          ],
+          "answer": "A) 1-C, 2-A, 3-B"
+        }
+      ]
+    },
+    {
+      "id": "cruzadinha_cyber",
+      "title": "5. Palavras Cruzadas — Cibersegurança",
+      "type": "crossword",
+      "scene": "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn",
+      "document_title": "Manual de Apoio — Palavras Cruzadas de Cibersegurança",
+      "document_text": "Ajude seu parceiro a preencher a Cruzadinha de Cibersegurança! A cada rodada os papéis se invertem. Use as descrições abaixo e as letras que se cruzam no tabuleiro para descobrir o termo exato (sem espaços ou acentos):\n\n• Defesa de Redes e Infraestrutura:\n- Quando uma estação exibe tela preta exigindo resgate em Bitcoins pelos arquivos criptografados, estamos diante de um ataque de RANSOMWARE (10 letras). A ação imediata é isolar a máquina da rede.\n- O monitoramento de pacotes UDP gigantes na porta 53 (Amplificação de DNS) é detectado pelo FIREWALL (8 letras) de borda.\n- No cálculo de sub-redes CIDR (ex.: /28 para 12 hosts), dois endereços nunca podem ser usados por computadores: o primeiro (endereço de rede) e o último, chamado endereço de BROADCAST (9 letras).\n- Quando um invasor envia respostas ARP falsas na LAN para associar seu MAC ao IP do gateway padrão (Man-in-the-Middle), ele pratica ARP SPOOFING (8 letras na palavra-chave da técnica), mitigado com Dynamic ARP Inspection (DAI).\n\n• Engenharia Social e Identidade:\n- O envio de mensagens e páginas falsas para enganar usuários e roubar senhas chama-se PHISHING (8 letras).\n- Quando esse ataque é altamente personalizado e mira especificamente executivos de alto escalão como o CEO ou Diretor Financeiro, recebe o nome de WHALING (7 letras).\n\n• Resposta a Incidentes e Forense:\n- Na perícia forense (RFC 3227), nunca devemos puxar o cabo de força de um servidor com malware em memória RAM por causa da Ordem de VOLATILIDADE (12 letras).\n- Para roubar informações mesmo com portas HTTP/HTTPS bloqueadas, atacantes codificam dados em subdomínios dentro de consultas DNS, técnica conhecida como DNS TUNNELING (9 letras na palavra-chave da técnica).",
+      "questions": [
+        {
+          "word": "VOLATILIDADE",
+          "prompt": "[Forense / RFC 3227] Ordem segundo a qual evidências mais efêmeras (como a memória RAM) devem ser coletadas primeiro antes de desligar o servidor (12 letras).",
+          "answer": "VOLATILIDADE"
+        },
+        {
+          "word": "RANSOMWARE",
+          "prompt": "[Defesa de Redes] Malware que criptografa os arquivos da vítima e exige resgate em criptomoedas; exige isolamento imediato da máquina na rede (10 letras).",
+          "answer": "RANSOMWARE"
+        },
+        {
+          "word": "BROADCAST",
+          "prompt": "[Sub-redes CIDR] Último endereço reservado de uma sub-rede que, junto com o endereço de rede, não pode ser atribuído a hosts úteis (9 letras).",
+          "answer": "BROADCAST"
+        },
+        {
+          "word": "TUNNELING",
+          "prompt": "[Exfiltração] Técnica em que o invasor encapsula dados roubados dentro de consultas DNS para atravessar bloqueios de portas web (9 letras).",
+          "answer": "TUNNELING"
+        },
+        {
+          "word": "FIREWALL",
+          "prompt": "[Infraestrutura] Barreira de segurança de rede que dispara alertas ao detectar enxurradas de pacotes UDP na porta 53 (8 letras).",
+          "answer": "FIREWALL"
+        },
+        {
+          "word": "SPOOFING",
+          "prompt": "[Rede Local / MITM] Técnica de falsificação usada no protocolo ARP para fingir ser o gateway padrão da LAN, bloqueada com DAI no switch (8 letras).",
+          "answer": "SPOOFING"
+        },
+        {
+          "word": "PHISHING",
+          "prompt": "[Engenharia Social] Ataque que utiliza comunicações ou páginas clonadas para induzir a vítima a entregar suas credenciais (8 letras).",
+          "answer": "PHISHING"
+        },
+        {
+          "word": "WHALING",
+          "prompt": "[Engenharia Social] Modalidade de Spear Phishing altamente personalizada voltada especificamente a executivos de alto escalão como CEO e diretores (7 letras).",
+          "answer": "WHALING"
+        }
+      ]
+    },
+    {
+      "id": "caca_palavras_cyber",
+      "title": "6. Caça-Palavras — Cibersegurança",
+      "type": "wordsearch",
+      "scene": "res://prototype/scenes/in_game_reusables/minigame_quiz.tscn",
+      "document_title": "Guia de Radar — Caça-Palavras de Cibersegurança",
+      "document_text": "Ajude seu parceiro a localizar os 8 termos ocultos na grade do Caça-Palavras (Horizontal →, Vertical ↓ e Diagonal ↘/↗)! No seu painel de apoio (DOC), a célula inicial da palavra da rodada aparece destacada em dourado com o número da questão.\n\n• Referência Rápida dos Conceitos:\n1) FIREWALL (8 letras): Sistema de defesa de perímetro que monitora portas e dispara alertas em ataques volumétricos (como pacotes UDP gigantes na porta 53 / Amplificação de DNS).\n2) PHISHING (8 letras): Ataque de engenharia social que usa mensagens e páginas falsas para enganar usuários e capturar credenciais.\n3) WHALING (7 letras): Variante de Spear Phishing altamente personalizada voltada especificamente a executivos de alto escalão (CEO, CFO, Diretores).\n4) SPOOFING (8 letras): Falsificação de identidade na rede; no protocolo ARP permite interceptação Man-in-the-Middle na LAN (mitigado com Dynamic ARP Inspection — DAI).\n5) BACKUP (6 letras): Cópia de segurança essencial na Regra 3-2-1 (3 cópias, 2 mídias diferentes e 1 cópia offsite/imutável isolada da rede contra ransomware).\n6) GATEWAY (7 letras): Roteador padrão da rede local cujo endereço IP é falsamente associado ao MAC do invasor durante um ataque de ARP Spoofing.\n7) BITCOIN (7 letras): Criptomoeda frequentemente exigida pelos atacantes no cronômetro de extorsão após um ataque de Ransomware.\n8) WEBAUTHN (8 letras): Padrão de autenticação forte (junto ao FIDO2) resistente a phishing e ataques de Fadiga de MFA (MFA Prompt Bombing).",
+      "questions": [
+        {
+          "word": "FIREWALL",
+          "prompt": "[Defesa de Redes] Barreira que monitora o tráfego de rede e alerta sobre enxurradas de pacotes UDP na porta 53 (8 letras).",
+          "answer": "FIREWALL"
+        },
+        {
+          "word": "PHISHING",
+          "prompt": "[Engenharia Social] Técnica que utiliza e-mails ou sites falsos para induzir a vítima a revelar suas senhas (8 letras).",
+          "answer": "PHISHING"
+        },
+        {
+          "word": "WHALING",
+          "prompt": "[Engenharia Social] Ataque de Spear Phishing direcionado especificamente a altos executivos como CEO e diretores (7 letras).",
+          "answer": "WHALING"
+        },
+        {
+          "word": "SPOOFING",
+          "prompt": "[Rede Local / MITM] Falsificação de pacotes ARP na LAN para interceptar tráfego, combatida com DAI no switch (8 letras).",
+          "answer": "SPOOFING"
+        },
+        {
+          "word": "BACKUP",
+          "prompt": "[Resposta a Incidentes] Cópia de segurança protegida pela Regra 3-2-1 (incluindo 1 cópia offsite/imutável) para recuperação sem pagar resgate (6 letras).",
+          "answer": "BACKUP"
+        },
+        {
+          "word": "GATEWAY",
+          "prompt": "[Infraestrutura] Roteador padrão da rede local cujo IP é alvo de personificação em ataques de ARP Spoofing (7 letras).",
+          "answer": "GATEWAY"
+        },
+        {
+          "word": "BITCOIN",
+          "prompt": "[Ransomware] Criptomoeda comumente exigida pelos cibercriminosos para liberar arquivos sequestrados (7 letras).",
+          "answer": "BITCOIN"
+        },
+        {
+          "word": "WEBAUTHN",
+          "prompt": "[Autenticação] Padrão moderno de autenticação (junto ao FIDO2) que vincula o login ao domínio real e evita Fadiga de MFA (8 letras).",
+          "answer": "WEBAUTHN"
+        }
+      ]
+    }
   ]
 }
