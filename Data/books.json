@@ -83,6 +83,11 @@
 		  "on_read": ""
 		}
 	  ]
+	},
+	{
+	  "id": "sudo_with_less_material",
+	  "markdown_path": "res://Materials/Scenario1/material-didatico.md",
+	  "unlock_quest_id": "sudo_with_less"
 	}
   ]
 }

@@ -1,329 +1,387 @@
 using Godot;
 using System;
-using System.Collections.Concurrent;
+using System.IO;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
-using MinimalisticTelnet;
+using TelnetInterface;
 
 public partial class TerminalController : Node
 {
-        [Signal]
-        public delegate void OutputReceivedWithArgumentEventHandler(
-                string output
-        );
+	[Signal]
+	public delegate void OutputReceivedWithArgumentEventHandler(string output);
 
-        [Signal]
-        public delegate void ConnectionStartedEventHandler();
+	[Signal]
+	public delegate void ConnectionStartedEventHandler();
 
-        [Signal]
-        public delegate void ConnectionDelayedEventHandler();
+	[Signal]
+	public delegate void ConnectionDelayedEventHandler();
 
-        [Signal]
-        public delegate void ConnectionSucceededEventHandler();
+	[Signal]
+	public delegate void ConnectionSucceededEventHandler();
 
-        [Signal]
-        public delegate void ConnectionFailedEventHandler(string message);
+	[Signal]
+	public delegate void ConnectionFailedEventHandler(string message);
 
-        public string host { get; set; } = "127.0.0.1";
-        public int port { get; set; } = 5000;
-        public string username { get; set; } = "player";
-        public string password { get; set; } = "player";
-        public int loginTimeoutMs { get; set; } = 1000;
-        public int maxAttempts { get; set; } = 10;
-        public int retryDelayMs { get; set; } = 750;
-        public int slowWarningAttempt { get; set; } = 4;
-        public int totalTimeoutMs { get; set; } = 15000;
+	public string host { get; set; } = "127.0.0.1";
+	public int port { get; set; } = 5000;
+	public string username { get; set; } = "player";
+	public string password { get; set; } = "player";
+	public int loginTimeoutMs { get; set; } = 1000;
+	public int maxAttempts { get; set; } = 10;
+	public int retryDelayMs { get; set; } = 750;
+	public int slowWarningAttempt { get; set; } = 4;
+	public int totalTimeoutMs { get; set; } = 15000;
 
-        private TelnetConnection telnet;
-        private CancellationTokenSource readCts;
-        private readonly CancellationTokenSource lifetimeCts = new();
+	private TelnetConnection telnet;
+	private CancellationTokenSource sessionCts;
+	private readonly CancellationTokenSource lifetimeCts = new();
 
-        private Task connectionTask;
-        private Task telnetTask;
+	private Task connectionTask;
+	private Task telnetTask;
 
-        private readonly ConcurrentQueue<string> commandQueue = new();
+	private readonly Channel<string> commandChannel =
+		Channel.CreateUnbounded<string>(
+			new UnboundedChannelOptions
+			{
+				SingleReader = true,
+				SingleWriter = false
+			}
+		);
 
-        private volatile bool isConnected;
-        private volatile bool isConnecting;
+	private volatile bool isConnected;
+	private volatile bool isConnecting;
 
-        public void StartConnection()
-        {
-                if (isConnected || isConnecting)
-                {
-                        Log.Info(
-                                "TerminalController: tentativa duplicada ignorada."
-                        );
-                        return;
-                }
+	public void StartConnection()
+	{
+		if (isConnected || isConnecting)
+		{
+			Log.Info(
+				"TerminalController: tentativa duplicada ignorada."
+			);
+			return;
+		}
 
-                isConnecting = true;
-                connectionTask = ConnectWithRetry();
-        }
+		isConnecting = true;
+		connectionTask = ConnectWithRetry();
+	}
 
-        private async Task ConnectWithRetry()
-        {
-                CallDeferred(
-                        MethodName.EmitSignal,
-                        SignalName.ConnectionStarted
-                );
+	private async Task ConnectWithRetry()
+	{
+		CallDeferred(MethodName.EmitSignal, SignalName.ConnectionStarted);
 
-                Log.Info(
-                        $"TerminalController: conectando em {host}:{port}."
-                );
+		Log.Info($"TerminalController: conectando em {host}:{port}.");
 
-                int attemptsLimit = Math.Max(1, maxAttempts);
-                int retryDelay = Math.Max(0, retryDelayMs);
-                int warningAttempt = Math.Clamp(
-                        slowWarningAttempt,
-                        1,
-                        attemptsLimit
-                );
+		int attemptsLimit = Math.Max(1, maxAttempts);
+		int retryDelay = Math.Max(0, retryDelayMs);
+		int warningAttempt = Math.Clamp(
+			slowWarningAttempt,
+			1,
+			attemptsLimit
+		);
 
-                using var timeoutCts =
-                        CancellationTokenSource.CreateLinkedTokenSource(
-                                lifetimeCts.Token
-                        );
+		using var timeoutCts =
+			CancellationTokenSource.CreateLinkedTokenSource(
+				lifetimeCts.Token
+			);
 
-                timeoutCts.CancelAfter(
-                        Math.Max(loginTimeoutMs, totalTimeoutMs)
-                );
+		timeoutCts.CancelAfter(Math.Max(loginTimeoutMs, totalTimeoutMs));
+		CancellationToken token = timeoutCts.Token;
 
-                CancellationToken token = timeoutCts.Token;
+		try
+		{
+			for (int attempt = 1; attempt <= attemptsLimit; attempt++)
+			{
+				TelnetConnection candidate = null;
 
-                try
-                {
-                        for (
-                                int attempt = 1;
-                                attempt <= attemptsLimit;
-                                attempt++
-                        )
-                        {
-                                try
-                                {
-                                        Log.Info(
-                                                $"TerminalController: tentativa " +
-                                                $"{attempt}/{attemptsLimit}."
-                                        );
+				try
+				{
+					Log.Info(
+						$"TerminalController: tentativa " +
+						$"{attempt}/{attemptsLimit}."
+					);
 
-                                        TelnetConnection connectedTelnet =
-                                                await Task.Run(
-                                                        () =>
-                                                        {
-                                                                var candidate =
-                                                                        new TelnetConnection(
-                                                                                host,
-                                                                                port
-                                                                        );
+					candidate = await TelnetConnection.ConnectAsync(
+						host,
+						port,
+						token
+					);
 
-                                                                candidate.Login(
-                                                                        username,
-                                                                        password,
-                                                                        loginTimeoutMs
-                                                                );
+					string loginOutput = await candidate.LoginAsync(
+						username,
+						password,
+						loginTimeoutMs,
+						token
+					);
 
-                                                                return candidate;
-                                                        },
-                                                        token
-                                                );
+					token.ThrowIfCancellationRequested();
 
-                                        token.ThrowIfCancellationRequested();
+					sessionCts?.Cancel();
+					sessionCts?.Dispose();
+					sessionCts =
+						CancellationTokenSource.CreateLinkedTokenSource(
+							lifetimeCts.Token
+						);
 
-                                        telnet = connectedTelnet;
-                                        isConnected = true;
+					telnet = candidate;
+					candidate = null;
+					isConnected = true;
 
-                                        readCts?.Cancel();
-                                        readCts?.Dispose();
+					EmitOutput(loginOutput);
 
-                                        readCts =
-                                                CancellationTokenSource
-                                                        .CreateLinkedTokenSource(
-                                                                lifetimeCts.Token
-                                                        );
+					telnetTask = RunTelnetAsync(
+						telnet,
+						sessionCts.Token
+					);
 
-                                        telnetTask = Task.Run(
-                                                () => RunTelnetAsync(
-                                                        readCts.Token
-                                                )
-                                        );
+					Log.Info(
+						"TerminalController: conexão estabelecida."
+					);
 
-                                        Log.Info(
-                                                "TerminalController: conexão estabelecida."
-                                        );
+					CallDeferred(
+						MethodName.EmitSignal,
+						SignalName.ConnectionSucceeded
+					);
 
-                                        CallDeferred(
-                                                MethodName.EmitSignal,
-                                                SignalName.ConnectionSucceeded
-                                        );
+					return;
+				}
+				catch (OperationCanceledException)
+				{
+					if (lifetimeCts.IsCancellationRequested)
+						return;
 
-                                        return;
-                                }
-                                catch (OperationCanceledException)
-                                {
-                                        if (lifetimeCts.IsCancellationRequested)
-                                                return;
+					break;
+				}
+				catch (Exception exception)
+				{
+					Log.Error(
+						$"TerminalController: tentativa " +
+						$"{attempt} falhou: " +
+						exception.Message
+					);
+				}
+				finally
+				{
+					candidate?.Dispose();
+				}
 
-                                        break;
-                                }
-                                catch (Exception exception)
-                                {
-                                        Log.Error(
-                                                $"TerminalController: tentativa " +
-                                                $"{attempt} falhou: " +
-                                                exception.Message
-                                        );
-                                }
+				if (attempt == warningAttempt)
+				{
+					CallDeferred(
+						MethodName.EmitSignal,
+						SignalName.ConnectionDelayed
+					);
+				}
 
-                                if (attempt == warningAttempt)
-                                {
-                                        CallDeferred(
-                                                MethodName.EmitSignal,
-                                                SignalName.ConnectionDelayed
-                                        );
-                                }
+				if (attempt < attemptsLimit)
+					await Task.Delay(retryDelay, token);
+			}
 
-                                if (attempt < attemptsLimit)
-                                {
-                                        await Task.Delay(
-                                                retryDelay,
-                                                token
-                                        );
-                                }
-                        }
+			if (!lifetimeCts.IsCancellationRequested)
+			{
+				EmitConnectionFailure(
+					"Não foi possível iniciar o terminal. " +
+					"Verifique o Docker e tente novamente."
+				);
+			}
+		}
+		catch (OperationCanceledException)
+		{
+			if (!lifetimeCts.IsCancellationRequested)
+			{
+				EmitConnectionFailure(
+					"O terminal não respondeu dentro do " +
+					"tempo esperado. Tente novamente."
+				);
+			}
+		}
+		finally
+		{
+			isConnecting = false;
+			connectionTask = null;
+		}
+	}
 
-                        if (!lifetimeCts.IsCancellationRequested)
-                        {
-                                EmitConnectionFailure(
-                                        "Não foi possível iniciar o terminal. " +
-                                        "Verifique o Docker e tente novamente."
-                                );
-                        }
-                }
-                catch (OperationCanceledException)
-                {
-                        if (!lifetimeCts.IsCancellationRequested)
-                        {
-                                EmitConnectionFailure(
-                                        "O terminal não respondeu dentro do " +
-                                        "tempo esperado. Tente novamente."
-                                );
-                        }
-                }
-                finally
-                {
-                        isConnecting = false;
-                        connectionTask = null;
-                }
-        }
+	private async Task RunTelnetAsync(
+		TelnetConnection connection,
+		CancellationToken token
+	)
+	{
+		using var stopCts =
+			CancellationTokenSource.CreateLinkedTokenSource(token);
 
-        private async Task RunTelnetAsync(CancellationToken token)
-        {
-                try
-                {
-                        while (!token.IsCancellationRequested)
-                        {
-                                while (
-                                        commandQueue.TryDequeue(
-                                                out string command
-                                        )
-                                )
-                                {
-                                        Log.Info(
-                                                "TerminalController: comando enviado."
-                                        );
-                                        telnet.WriteLine(command);
-                                }
+		Task readTask = ReadTelnetAsync(connection, stopCts.Token);
+		Task writeTask = WriteTelnetAsync(connection, stopCts.Token);
+		Exception disconnectException = null;
 
-                                string output = telnet.Read();
+		try
+		{
+			Task completedTask = await Task.WhenAny(readTask, writeTask);
+			await completedTask;
+		}
+		catch (OperationCanceledException)
+			when (token.IsCancellationRequested)
+		{
+		}
+		catch (Exception)
+			when (token.IsCancellationRequested || lifetimeCts.IsCancellationRequested)
+		{
+		}
+		catch (Exception exception)
+		{
+			isConnected = false;
+			disconnectException = exception;
 
-                                if (!string.IsNullOrEmpty(output))
-                                {
-                                        CallDeferred(
-                                                MethodName.EmitSignal,
-                                                SignalName
-                                                        .OutputReceivedWithArgument,
-                                                output
-                                        );
-                                }
+			Log.Error(
+				$"TerminalController: conexão encerrada: " +
+				exception.Message
+			);
+		}
+		finally
+		{
+			isConnected = false;
+			stopCts.Cancel();
+			connection.Close();
 
-                                await Task.Delay(10, token);
-                        }
-                }
-                catch (OperationCanceledException)
-                {
-                }
-                catch (Exception exception)
-                {
-                        Log.Error(
-                                $"TerminalController: conexão encerrada: " +
-                                exception.Message
-                        );
+			await IgnoreSessionEndAsync(readTask);
+			await IgnoreSessionEndAsync(writeTask);
 
-                        CallDeferred(
-                                MethodName.EmitSignal,
-                                SignalName.OutputReceivedWithArgument,
-                                "\nConexão encerrada.\n"
-                        );
+			connection.Dispose();
 
-                        if (!lifetimeCts.IsCancellationRequested)
-                        {
-                                EmitConnectionFailure(
-                                        "A conexão com o terminal foi encerrada. " +
-                                        "Tente novamente."
-                                );
-                        }
-                }
-                finally
-                {
-                        isConnected = false;
-                }
-        }
+			if (ReferenceEquals(telnet, connection))
+				telnet = null;
+		}
 
-        private void EmitConnectionFailure(string message)
-        {
-                Log.Error(
-                        $"TerminalController: falha definitiva. {message}"
-                );
+		if (
+			disconnectException != null &&
+			!token.IsCancellationRequested &&
+			!lifetimeCts.IsCancellationRequested
+		)
+		{
+			EmitOutput("\nConexão encerrada.\n");
 
-                CallDeferred(
-                        MethodName.EmitSignal,
-                        SignalName.ConnectionFailed,
-                        message
-                );
-        }
+			EmitConnectionFailure(
+				"A conexão com o terminal foi encerrada. " +
+				"Tente novamente."
+			);
+		}
+	}
 
-        public void SendCommand(string command)
-        {
-                if (!isConnected)
-                {
-                        Log.Error(
-                                "TerminalController: comando ignorado sem conexão."
-                        );
-                        return;
-                }
+	private async Task ReadTelnetAsync(
+		TelnetConnection connection,
+		CancellationToken token
+	)
+	{
+		while (true)
+		{
+			string output = await connection.ReadAsync(token);
 
-                commandQueue.Enqueue(command);
-        }
+			if (output == null)
+			{
+				throw new IOException(
+					"O servidor fechou a conexão Telnet."
+				);
+			}
 
-        public override async void _ExitTree()
-        {
-                lifetimeCts.Cancel();
-                readCts?.Cancel();
+			EmitOutput(output);
+		}
+	}
 
-                try
-                {
-                        if (connectionTask != null)
-                                await connectionTask;
+	private async Task WriteTelnetAsync(
+		TelnetConnection connection,
+		CancellationToken token
+	)
+	{
+		while (await commandChannel.Reader.WaitToReadAsync(token))
+		{
+			while (commandChannel.Reader.TryRead(out string command))
+			{
+				Log.Info("TerminalController: comando enviado.");
+				await connection.WriteLineAsync(command, token);
+			}
+		}
+	}
 
-                        if (telnetTask != null)
-                                await telnetTask;
-                }
-                catch
-                {
-                }
-                finally
-                {
-                        readCts?.Dispose();
-                        lifetimeCts.Dispose();
-                }
-        }
+	private static async Task IgnoreSessionEndAsync(Task task)
+	{
+		try
+		{
+			await task;
+		}
+		catch
+		{
+		}
+	}
+
+	private void EmitOutput(string output)
+	{
+		if (string.IsNullOrEmpty(output))
+			return;
+
+		CallDeferred(
+			MethodName.EmitSignal,
+			SignalName.OutputReceivedWithArgument,
+			output
+		);
+	}
+
+	private void EmitConnectionFailure(string message)
+	{
+		Log.Error($"TerminalController: falha definitiva. {message}");
+
+		CallDeferred(
+			MethodName.EmitSignal,
+			SignalName.ConnectionFailed,
+			message
+		);
+	}
+
+	public void SendCommand(string command)
+	{
+		if (!isConnected)
+		{
+			Log.Error(
+				"TerminalController: comando ignorado sem conexão."
+			);
+			return;
+		}
+
+		if (!commandChannel.Writer.TryWrite(command))
+		{
+			Log.Error(
+				"TerminalController: não foi possível enfileirar o comando."
+			);
+		}
+	}
+
+	public override async void _ExitTree()
+	{
+		lifetimeCts.Cancel();
+		sessionCts?.Cancel();
+		commandChannel.Writer.TryComplete();
+		telnet?.Close();
+
+		Task activeConnectionTask = connectionTask;
+
+		try
+		{
+			if (activeConnectionTask != null)
+				await activeConnectionTask;
+
+			Task activeTelnetTask = telnetTask;
+
+			if (activeTelnetTask != null)
+				await activeTelnetTask;
+		}
+		catch
+		{
+		}
+		finally
+		{
+			telnet?.Dispose();
+			telnet = null;
+			sessionCts?.Dispose();
+			lifetimeCts.Dispose();
+		}
+	}
 }
