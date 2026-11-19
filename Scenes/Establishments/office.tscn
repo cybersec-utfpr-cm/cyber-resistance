@@ -1,163 +1,535 @@
-[gd_scene load_steps=20 format=4 uid="uid://tcn4xs2fpie5"]
+[gd_scene load_steps=57 format=3 uid="uid://tcn4xs2fpie5"]
 
-[ext_resource type="Texture2D" uid="uid://cfv1t74j1624r" path="res://Assets/Environment/Office/groundAndWallOffice-sheet.png" id="1_qnl8s"]
-[ext_resource type="Texture2D" uid="uid://ds71ywuxfcrqh" path="res://Assets/Environment/Office/office-sheet-sheet.png" id="2_5m485"]
-[ext_resource type="Texture2D" uid="uid://desd0oqdik14g" path="res://Assets/Environment/Office/tables_office.png" id="2_ho43g"]
-[ext_resource type="Script" uid="uid://bkyo7yavgygym" path="res://Scripts/Interactions/SpawnPoints.cs" id="4_bjrkt"]
-[ext_resource type="PackedScene" uid="uid://dqmfqfpm7pqfi" path="res://Scenes/Interactions/door_area.tscn" id="6_a343a"]
-[ext_resource type="Script" uid="uid://bojc33ctc6wyh" path="res://Scripts/Establishments/LocationManager.cs" id="7_jmtfx"]
-[ext_resource type="PackedScene" uid="uid://5oovyyubq63e" path="res://Scenes/Interactions/computer_access.tscn" id="7_knrkr"]
-[ext_resource type="PackedScene" uid="uid://db7i2erx5fix" path="res://Scenes/Interactions/bookshelf.tscn" id="8_jmtfx"]
+[ext_resource type="Texture2D" uid="uid://cuhkvnj8aik3o" path="res://Assets/Environment/Office/office_interior_v5.png" id="1_background"]
+[ext_resource type="Texture2D" uid="uid://dqmkp3i54m3h1" path="res://Assets/Environment/Office/office_occluders_v5.png" id="2_occluders"]
+[ext_resource type="Script" uid="uid://iucpse70wa6v" path="res://Scripts/Establishments/OfficeYSortOccluders.cs" id="3_ysort"]
+[ext_resource type="Script" uid="uid://bkyo7yavgygym" path="res://Scripts/Interactions/SpawnPoints.cs" id="4_spawn"]
+[ext_resource type="PackedScene" uid="uid://dqmfqfpm7pqfi" path="res://Scenes/Interactions/door_area.tscn" id="5_door"]
+[ext_resource type="Script" uid="uid://bojc33ctc6wyh" path="res://Scripts/Establishments/LocationManager.cs" id="6_locations"]
+[ext_resource type="PackedScene" uid="uid://5oovyyubq63e" path="res://Scenes/Interactions/computer_access.tscn" id="7_computer"]
+[ext_resource type="Script" uid="uid://do314hoaq5nr0" path="res://Scripts/Interactions/Bookshelf.cs" id="8_bookshelf"]
+[ext_resource type="PackedScene" uid="uid://bn524u4afttki" path="res://Scenes/Interfaces/bookshelf_ui.tscn" id="9_bookshelf_ui"]
+[ext_resource type="Script" uid="uid://d1emm60b4tj8m" path="res://Scripts/Interactions/RestrictedDoor.cs" id="10_restricted"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ho43g"]
-texture = ExtResource("1_qnl8s")
-5:0/0 = 0
-6:0/0 = 0
-4:0/0 = 0
-5:2/0 = 0
+[sub_resource type="RectangleShape2D" id="BookshelfArea"]
+size = Vector2(48, 24)
 
-[sub_resource type="TileSet" id="TileSet_bjrkt"]
-sources/1 = SubResource("TileSetAtlasSource_ho43g")
+[sub_resource type="RectangleShape2D" id="RestrictedArea"]
+size = Vector2(42, 42)
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_a343a"]
-texture = ExtResource("1_qnl8s")
-0:0/0 = 0
-0:1/0 = 0
-0:2/0 = 0
-1:3/0 = 0
-2:3/0 = 0
-3:3/0 = 0
-3:2/0 = 0
-3:1/0 = 0
-3:0/0 = 0
-2:0/0 = 0
-1:0/0 = 0
-1:1/0 = 0
-1:2/0 = 0
-2:1/0 = 0
-2:2/0 = 0
-0:3/0 = 0
-5:1/0 = 0
-6:1/0 = 0
-5:2/0 = 0
+[sub_resource type="RectangleShape2D" id="ServerTop"]
+size = Vector2(400, 14)
 
-[sub_resource type="TileSet" id="TileSet_knrkr"]
-sources/0 = SubResource("TileSetAtlasSource_a343a")
+[sub_resource type="RectangleShape2D" id="ServerSide"]
+size = Vector2(14, 130)
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bjrkt"]
-texture = ExtResource("2_ho43g")
-0:0/size_in_atlas = Vector2i(1, 3)
-0:0/0 = 0
-1:0/size_in_atlas = Vector2i(1, 3)
-1:0/0 = 0
-2:0/size_in_atlas = Vector2i(1, 3)
-2:0/0 = 0
-3:0/size_in_atlas = Vector2i(1, 3)
-3:0/0 = 0
-4:0/size_in_atlas = Vector2i(1, 3)
-4:0/0 = 0
-5:0/size_in_atlas = Vector2i(1, 3)
-5:0/0 = 0
+[sub_resource type="RectangleShape2D" id="ServerFrontLong"]
+size = Vector2(350, 16)
 
-[sub_resource type="TileSet" id="TileSet_hv4b6"]
-sources/2 = SubResource("TileSetAtlasSource_bjrkt")
+[sub_resource type="RectangleShape2D" id="ServerFrontShort"]
+size = Vector2(20, 16)
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_knrkr"]
-texture = ExtResource("2_5m485")
-0:2/0 = 0
-2:2/0 = 0
-2:3/0 = 0
-1:2/size_in_atlas = Vector2i(1, 2)
-1:2/0 = 0
-6:1/0 = 0
-0:3/0 = 0
+[sub_resource type="RectangleShape2D" id="MeetingHorizontal"]
+size = Vector2(200, 14)
 
-[sub_resource type="TileSet" id="TileSet_jmtfx"]
-sources/0 = SubResource("TileSetAtlasSource_knrkr")
+[sub_resource type="RectangleShape2D" id="MeetingRight"]
+size = Vector2(14, 170)
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hv4b6"]
-texture = ExtResource("2_5m485")
-3:0/0 = 0
-3:1/0 = 0
-4:0/0 = 0
-5:0/0 = 0
-5:1/0 = 0
-4:1/0 = 0
-6:0/0 = 0
-0:1/0 = 0
-2:0/0 = 0
-0:0/0 = 0
-1:0/0 = 0
-1:1/0 = 0
-2:1/0 = 0
-3:2/0 = 0
-3:3/0 = 0
-4:2/0 = 0
-4:3/0 = 0
-5:3/0 = 0
-6:3/0 = 0
-6:2/0 = 0
-5:2/0 = 0
+[sub_resource type="RectangleShape2D" id="MeetingLeftTop"]
+size = Vector2(14, 70)
 
-[sub_resource type="TileSet" id="TileSet_sphxl"]
-sources/0 = SubResource("TileSetAtlasSource_hv4b6")
+[sub_resource type="RectangleShape2D" id="MeetingLeftBottom"]
+size = Vector2(14, 71)
 
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_knrkr"]
-vertices = PackedVector2Array(502, 306, 502, 566, 470, 566, 42, 306, 470, 618, 502, 618, 502, 630, 362, 630, 362, 598, 278, 598, 278, 662, 266, 662, 266, 598, 182, 598, 74, 374, 182, 630, 74, 630, 74, 598, 42, 598, 42, 426, 74, 426, 42, 374)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 5, 6, 7), PackedInt32Array(4, 7, 8, 2), PackedInt32Array(3, 2, 8, 9), PackedInt32Array(9, 10, 11, 12), PackedInt32Array(3, 9, 12), PackedInt32Array(3, 12, 13, 14), PackedInt32Array(13, 15, 16, 17), PackedInt32Array(17, 18, 19, 20), PackedInt32Array(13, 17, 20), PackedInt32Array(14, 21, 3), PackedInt32Array(14, 13, 20)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(32, 296, 512, 296, 512, 576, 480, 576, 480, 608, 512, 608, 512, 640, 352, 640, 352, 608, 288, 608, 288, 672, 256, 672, 256, 608, 192, 608, 192, 640, 64, 640, 64, 608, 32, 608, 32, 416, 64, 416, 64, 384, 32, 384)])
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sphxl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dnxl7"]
+size = Vector2(66, 20)
+
+[sub_resource type="RectangleShape2D" id="ShortHorizontal"]
+size = Vector2(80, 21)
+
+[sub_resource type="RectangleShape2D" id="OuterLeft"]
+size = Vector2(14, 306)
+
+[sub_resource type="RectangleShape2D" id="OuterRight"]
+size = Vector2(14, 185)
+
+[sub_resource type="RectangleShape2D" id="DiagonalWall"]
+size = Vector2(14, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3awjd"]
+size = Vector2(48, 40)
+
+[sub_resource type="RectangleShape2D" id="BottomWallB"]
+size = Vector2(220, 14)
+
+[sub_resource type="RectangleShape2D" id="BottomWallC"]
+size = Vector2(132, 14)
+
+[sub_resource type="RectangleShape2D" id="BottomWallD"]
+size = Vector2(92, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_urmvg"]
+size = Vector2(48, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x1137"]
+size = Vector2(208, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hbp3v"]
+size = Vector2(88, 20)
+
+[sub_resource type="RectangleShape2D" id="EntranceVertical"]
+size = Vector2(14, 68)
+
+[sub_resource type="RectangleShape2D" id="EntranceBottom"]
+size = Vector2(34, 14)
+
+[sub_resource type="RectangleShape2D" id="WorkClusterLarge"]
+size = Vector2(91, 69)
+
+[sub_resource type="RectangleShape2D" id="WorkClusterSmall"]
+size = Vector2(72, 69)
+
+[sub_resource type="RectangleShape2D" id="OperationsStation"]
+size = Vector2(100, 32)
+
+[sub_resource type="RectangleShape2D" id="Plant"]
+size = Vector2(21, 20)
+
+[sub_resource type="RectangleShape2D" id="AnalystDesk"]
+size = Vector2(150, 35)
+
+[sub_resource type="RectangleShape2D" id="Shelf"]
+size = Vector2(58, 39)
+
+[sub_resource type="RectangleShape2D" id="Cabinet"]
+size = Vector2(60, 38)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6kn1t"]
+size = Vector2(24, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q82ym"]
+size = Vector2(20, 26)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o4pvv"]
+size = Vector2(26, 26)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_35buj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xp4xx"]
+size = Vector2(152, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fjon7"]
+size = Vector2(25, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i0wcc"]
+size = Vector2(26, 34)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0t7iu"]
+size = Vector2(176, 24)
+
+[sub_resource type="RectangleShape2D" id="ServerRack"]
+size = Vector2(27, 65)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ch4yb"]
+size = Vector2(104, 42)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x7cdi"]
+size = Vector2(96, 26)
+
+[sub_resource type="RectangleShape2D" id="ReceptionCounter"]
+size = Vector2(144.5, 56)
+
+[sub_resource type="RectangleShape2D" id="VisitorChairs"]
+size = Vector2(110, 25)
+
+[sub_resource type="NavigationPolygon" id="OfficeNavigation"]
+vertices = PackedVector2Array(30, 174, 515, 174, 515, 438, 30, 438, 75, 420, 294, 420, 294, 466, 75, 466, 290, 420, 426, 420, 426, 480, 290, 480, 500, 210, 740, 210, 740, 410, 500, 410, 548, 390, 678, 390, 678, 492, 548, 492, 55, 52, 427, 52, 427, 133, 55, 133, 390, 120, 430, 120, 430, 188, 390, 188, 530, 48, 700, 48, 700, 186, 530, 186, 454, 96, 535, 96, 535, 220, 454, 220)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 5, 6, 7), PackedInt32Array(8, 9, 10, 11), PackedInt32Array(12, 13, 14, 15), PackedInt32Array(16, 17, 18, 19), PackedInt32Array(20, 21, 22, 23), PackedInt32Array(24, 25, 26, 27), PackedInt32Array(28, 29, 30, 31), PackedInt32Array(32, 33, 34, 35)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(30, 174, 515, 174, 515, 438, 30, 438), PackedVector2Array(75, 420, 294, 420, 294, 466, 75, 466), PackedVector2Array(290, 420, 426, 420, 426, 480, 290, 480), PackedVector2Array(500, 210, 740, 210, 740, 410, 500, 410), PackedVector2Array(548, 390, 678, 390, 678, 492, 548, 492), PackedVector2Array(55, 52, 427, 52, 427, 133, 55, 133), PackedVector2Array(390, 120, 430, 120, 430, 188, 390, 188), PackedVector2Array(530, 48, 700, 48, 700, 186, 530, 186), PackedVector2Array(454, 96, 535, 96, 535, 220, 454, 220)])
 
 [node name="Office" type="Node2D"]
-
-[node name="TileMaps" type="Node2D" parent="."]
 y_sort_enabled = true
-scale = Vector2(2, 2)
 
-[node name="Ground" type="TileMapLayer" parent="TileMaps"]
-tile_map_data = PackedByteArray("AAAJAAkAAQAFAAAAAAAAAAkAAQAFAAAAAAAAAAoAAQAFAAAAAAAAAAsAAQAFAAAAAAAAAAwAAQAFAAAAAAAAAA0AAQAFAAAAAAAAAA4AAQAFAAAAAAAAAA8AAQAFAAAAAAAAABAAAQAFAAAAAAAAABEAAQAFAAAAAAAAABIAAQAFAAAAAAAAABMAAQAFAAAAAAAAABQAAQAFAAAAAAABAAkAAQAFAAAAAAABAAoAAQAFAAAAAAABAAsAAQAFAAAAAAABAAwAAQAFAAAAAAABAA0AAQAFAAAAAAABAA4AAQAFAAAAAAABAA8AAQAFAAAAAAABABAAAQAFAAAAAAABABEAAQAFAAAAAAABABIAAQAFAAAAAAABABMAAQAFAAAAAAABABQAAQAFAAAAAAACAAkAAQAFAAAAAAACAAoAAQAFAAAAAAACAAsAAQAFAAAAAAACAAwAAQAFAAAAAAACAA0AAQAFAAAAAAACAA4AAQAFAAAAAAACAA8AAQAFAAAAAAACABAAAQAFAAAAAAACABEAAQAFAAAAAAACABIAAQAFAAAAAAACABMAAQAFAAAAAAACABQAAQAFAAAAAAADAAkAAQAFAAAAAAADAAoAAQAFAAAAAAADAAsAAQAFAAAAAAADAAwAAQAFAAAAAAADAA0AAQAFAAAAAAADAA4AAQAFAAAAAAADAA8AAQAFAAAAAAADABAAAQAFAAAAAAADABEAAQAFAAAAAAADABIAAQAFAAAAAAADABMAAQAFAAAAAAADABQAAQAFAAAAAAAEAAkAAQAFAAAAAAAEAA0AAQAFAAAAAAAEAA4AAQAFAAAAAAAEAA8AAQAFAAAAAAAEABAAAQAFAAAAAAAEABEAAQAFAAAAAAAEABIAAQAFAAAAAAAEABMAAQAFAAAAAAAEABQAAQAFAAAAAAAFAAkAAQAFAAAAAAAFAA0AAQAFAAAAAAAFAA4AAQAFAAAAAAAFAA8AAQAFAAAAAAAFABAAAQAFAAAAAAAFABEAAQAFAAAAAAAFABIAAQAFAAAAAAAFABMAAQAFAAAAAAAFABQAAQAFAAAAAAAGAAkAAQAFAAAAAAAGAA0AAQAFAAAAAAAGAA4AAQAFAAAAAAAGAA8AAQAFAAAAAAAGABAAAQAFAAAAAAAGABEAAQAFAAAAAAAGABIAAQAFAAAAAAAGABMAAQAFAAAAAAAGABQAAQAFAAAAAAAHAAkAAQAFAAAAAAAHAA0AAQAFAAAAAAAHAA4AAQAFAAAAAAAHAA8AAQAFAAAAAAAHABAAAQAFAAAAAAAHABEAAQAFAAAAAAAHABIAAQAFAAAAAAAHABMAAQAFAAAAAAAHABQAAQAFAAAAAAAIAAkAAQAFAAAAAAAIAAoAAQAFAAAAAAAIAAsAAQAFAAAAAAAIAAwAAQAFAAAAAAAIAA0AAQAFAAAAAAAIAA4AAQAFAAAAAAAIAA8AAQAFAAAAAAAIABAAAQAFAAAAAAAIABEAAQAFAAAAAAAIABIAAQAFAAAAAAAIABMAAQAFAAAAAAAIABQAAQAFAAAAAAAJAAoAAQAFAAAAAAAJAAsAAQAFAAAAAAAJAAwAAQAFAAAAAAAJAA0AAQAFAAAAAAAJAA4AAQAFAAAAAAAJAA8AAQAFAAAAAAAJABAAAQAFAAAAAAAJABEAAQAFAAAAAAAJABIAAQAFAAAAAAAJABMAAQAFAAAAAAAJABQAAQAFAAAAAAAKAAkAAQAFAAAAAAAKAAoAAQAFAAAAAAAKAAsAAQAFAAAAAAAKAAwAAQAFAAAAAAAKAA0AAQAFAAAAAAAKAA4AAQAFAAAAAAAKAA8AAQAFAAAAAAAKABAAAQAFAAAAAAAKABEAAQAFAAAAAAAKABIAAQAFAAAAAAAKABMAAQAFAAAAAAAKABQAAQAFAAAAAAALAAkAAQAFAAAAAAALAAoAAQAFAAAAAAALAAsAAQAFAAAAAAALAAwAAQAFAAAAAAALAA0AAQAFAAAAAAALAA4AAQAFAAAAAAALAA8AAQAFAAAAAAALABAAAQAFAAAAAAALABEAAQAFAAAAAAALABIAAQAFAAAAAAALABMAAQAFAAAAAAALABQAAQAFAAAAAAAMAAkAAQAFAAAAAAAMAAoAAQAFAAAAAAAMAAsAAQAFAAAAAAAMAAwAAQAFAAAAAAAMAA0AAQAFAAAAAAAMAA4AAQAFAAAAAAAMAA8AAQAFAAAAAAAMABAAAQAFAAAAAAAMABEAAQAFAAAAAAAMABIAAQAFAAAAAAAMABMAAQAFAAAAAAAMABQAAQAFAAAAAAANAAkAAQAFAAAAAAANAAoAAQAFAAAAAAANAAsAAQAFAAAAAAANAAwAAQAFAAAAAAANAA0AAQAFAAAAAAANAA4AAQAFAAAAAAANAA8AAQAFAAAAAAANABAAAQAFAAAAAAANABEAAQAFAAAAAAANABIAAQAFAAAAAAANABMAAQAFAAAAAAANABQAAQAFAAAAAAAOAAkAAQAFAAAAAAAOAAoAAQAFAAAAAAAOAAsAAQAFAAAAAAAOAAwAAQAFAAAAAAAOAA0AAQAFAAAAAAAOAA4AAQAFAAAAAAAOAA8AAQAFAAAAAAAOABAAAQAFAAAAAAAOABEAAQAFAAAAAAAOABIAAQAFAAAAAAAOABMAAQAFAAAAAAAOABQAAQAFAAAAAAAPAAkAAQAFAAAAAAAPAAoAAQAFAAAAAAAPAAsAAQAFAAAAAAAPAAwAAQAFAAAAAAAPAA0AAQAFAAAAAAAPAA4AAQAFAAAAAAAPAA8AAQAFAAAAAAAPABAAAQAFAAAAAAAPABEAAQAFAAAAAAAPABIAAQAFAAAAAAAPABMAAQAFAAAAAAAPABQAAQAFAAAAAAAQAAkAAQAFAAAAAAAQAAoAAQAFAAAAAAAQAAsAAQAFAAAAAAAQAAwAAQAFAAAAAAAQAA0AAQAFAAAAAAAQAA4AAQAFAAAAAAAQAA8AAQAFAAAAAAAQABAAAQAFAAAAAAAQABEAAQAFAAAAAAAQABIAAQAFAAAAAAAQABMAAQAFAAAAAAAQABQAAQAFAAAAAAAEAAoAAQAFAAAAAAAEAAsAAQAFAAAAAAAEAAwAAQAFAAAAAAAFAAoAAQAFAAAAAAAFAAsAAQAFAAAAAAAFAAwAAQAFAAAAAAAGAAoAAQAFAAAAAAAGAAsAAQAFAAAAAAAGAAwAAQAFAAAAAAAHAAoAAQAFAAAAAAAHAAsAAQAFAAAAAAAHAAwAAQAFAAAAAAA=")
-tile_set = SubResource("TileSet_bjrkt")
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -10
+texture_filter = 1
+position = Vector2(384, 256)
+texture = ExtResource("1_background")
 
-[node name="Wall" type="TileMapLayer" parent="TileMaps"]
-tile_map_data = PackedByteArray("AAAAAAQAAAAAAAEAAAAAAAUAAAAAAAEAAAAAAAYAAAAAAAEAAAAAAAcAAAAAAAEAAAAAAAgAAAAAAAEAAAABAAQAAAAFAAEAAAABAAUAAAAFAAEAAAABAAYAAAAFAAEAAAABAAcAAAAFAAEAAAABAAgAAAAFAAEAAAACAAQAAAAFAAEAAAACAAUAAAAFAAEAAAACAAYAAAAFAAEAAAACAAcAAAAFAAEAAAACAAgAAAAFAAEAAAADAAQAAAAFAAEAAAADAAUAAAAFAAEAAAADAAYAAAAFAAEAAAADAAcAAAAFAAEAAAADAAgAAAAFAAEAAAAEAAQAAAAFAAEAAAAEAAUAAAAFAAEAAAAEAAYAAAAFAAEAAAAEAAcAAAAFAAEAAAAEAAgAAAAFAAEAAAAFAAQAAAAFAAEAAAAFAAUAAAAFAAEAAAAFAAYAAAAFAAEAAAAFAAcAAAAFAAEAAAAFAAgAAAAFAAEAAAAGAAQAAAAFAAEAAAAGAAUAAAAFAAEAAAAGAAYAAAAFAAEAAAAGAAcAAAAFAAEAAAAGAAgAAAAFAAEAAAAHAAQAAAAFAAEAAAAHAAUAAAAFAAEAAAAHAAYAAAAFAAEAAAAHAAcAAAAFAAEAAAAHAAgAAAAFAAEAAAAIAAQAAAAFAAEAAAAIAAUAAAAFAAEAAAAIAAYAAAAFAAEAAAAIAAcAAAAFAAEAAAAIAAgAAAAFAAEAAAAJAAQAAAAFAAEAAAAJAAUAAAAFAAEAAAAJAAYAAAAFAAEAAAAJAAcAAAAFAAEAAAAJAAgAAAAFAAEAAAAKAAQAAAAFAAEAAAAKAAUAAAAFAAEAAAAKAAYAAAAFAAEAAAAKAAcAAAAFAAEAAAAKAAgAAAAFAAEAAAALAAQAAAAFAAEAAAALAAUAAAAFAAEAAAALAAYAAAAFAAEAAAALAAcAAAAFAAEAAAALAAgAAAAFAAEAAAAMAAQAAAAFAAEAAAAMAAUAAAAFAAEAAAAMAAYAAAAFAAEAAAAMAAcAAAAFAAEAAAAMAAgAAAAFAAEAAAANAAQAAAAFAAEAAAANAAUAAAAFAAEAAAANAAYAAAAFAAEAAAANAAcAAAAFAAEAAAANAAgAAAAFAAEAAAAOAAQAAAAFAAEAAAAOAAUAAAAFAAEAAAAOAAYAAAAFAAEAAAAOAAcAAAAFAAEAAAAOAAgAAAAFAAEAAAAPAAQAAAAFAAEAAAAPAAUAAAAFAAEAAAAPAAYAAAAFAAEAAAAPAAcAAAAFAAEAAAAPAAgAAAAFAAEAAAAQAAQAAAAAAAEAAAAQAAUAAAAAAAEAAAAQAAYAAAAAAAEAAAAQAAcAAAAAAAEAAAAQAAgAAAAAAAEAAAAAAAkAAAAAAAEAAAAAAAoAAAAAAAEAAAAAAAsAAAAAAAEAAAAAAAwAAAAAAAEAAAAAAA0AAAAAAAEAAAAAAA4AAAAAAAEAAAAAAA8AAAAAAAEAAAAAABAAAAAAAAEAAAAAABEAAAAAAAEAAAAAABIAAAAAAAEAAAAAABMAAAAAAAEAAAAAABQAAAABAAIAAAABABQAAAACAAMAAAACABQAAAACAAMAAAADABQAAAACAAMAAAAEABQAAAACAAMAAAAFABQAAAACAAMAAAALABQAAAACAAMAAAAMABQAAAACAAMAAAANABQAAAACAAMAAAAOABQAAAACAAMAAAAPABQAAAACAAMAAAAQABQAAAADAAIAAAAQAAwAAAAAAAEAAAAQAA0AAAAAAAEAAAAQAA4AAAAAAAEAAAAQAA8AAAAAAAEAAAAQABAAAAAAAAEAAAAQABEAAAAAAAEAAAAQABIAAAAAAAEAAAAQABMAAAAAAAEAAAAQAAkAAAAAAAEAAAAQAAoAAAAAAAEAAAAQAAsAAAAAAAEAAAAQAAMAAAADAAAAAAABAAMAAAACAAMAAAACAAMAAAACAAMAAAADAAMAAAACAAMAAAAEAAMAAAACAAMAAAAFAAMAAAACAAMAAAAGAAMAAAACAAMAAAAHAAMAAAACAAMAAAAIAAMAAAACAAMAAAAJAAMAAAACAAMAAAAKAAMAAAACAAMAAAALAAMAAAACAAMAAAAMAAMAAAACAAMAAAANAAMAAAACAAMAAAAOAAMAAAACAAMAAAAPAAMAAAACAAMAAAAAAAMAAAABAAAAAAABAAkAAAAFAAIAAAACAAkAAAAFAAIAAAADAAkAAAAFAAIAAAAEAAkAAAAFAAIAAAAFAAkAAAAFAAIAAAAGAAkAAAAFAAIAAAAHAAkAAAAFAAIAAAAIAAkAAAAFAAIAAAAJAAkAAAAFAAIAAAAKAAkAAAAFAAIAAAALAAkAAAAFAAIAAAAMAAkAAAAFAAIAAAAPAAkAAAAFAAIAAAAOAAkAAAAFAAIAAAANAAkAAAAFAAIAAAAHABUAAAAFAAIAAAAIABUAAAAFAAIAAAAAABUAAAAFAAIAAAABABUAAAAFAAIAAAACABUAAAAFAAIAAAADABUAAAAFAAIAAAAEABUAAAAFAAIAAAAFABUAAAAFAAIAAAAGABUAAAAFAAIAAAAJABUAAAAFAAIAAAAKABUAAAAFAAIAAAALABUAAAAFAAIAAAAMABUAAAAFAAIAAAANABUAAAAFAAIAAAAOABUAAAAFAAIAAAAPABUAAAAFAAIAAAAQABUAAAAFAAIAAAAHABQAAAADAAIAAAAHABMAAAAAAAAAAAAJABMAAAAAAAAAAAAJABQAAAABAAIAAAAGABQAAAACAAMAAAAKABQAAAACAAMAAAA=")
-tile_set = SubResource("TileSet_knrkr")
+[node name="YSortOccluders" type="Node2D" parent="."]
+y_sort_enabled = true
+texture_filter = 1
+script = ExtResource("3_ysort")
+SourceTexture = ExtResource("2_occluders")
 
-[node name="Objects01" type="TileMapLayer" parent="TileMaps"]
-tile_map_data = PackedByteArray("AAABABAAAgAAAAAAAAACABAAAgABAAAAAAADABAAAgABAAAAAAAEABAAAgABAAAAAAAFABAAAgACAAAAAAAKABAAAgAAAAAAAAALABAAAgABAAAAAAAMABAAAgABAAAAAAANABAAAgABAAAAAAAOABAAAgABAAAAAAAPABAAAgACAAAAAAABAAoAAgADAAAAAAACAAoAAgAEAAAAAAAEAAoAAgAEAAAAAAAFAAoAAgAFAAAAAAAGAAoAAgADAAAAAAAHAAoAAgAEAAAAAAAIAAoAAgAEAAAAAAAJAAoAAgAEAAAAAAAKAAoAAgAFAAAAAAALAAoAAgADAAAAAAAMAAoAAgAEAAAAAAANAAoAAgAEAAAAAAAOAAoAAgAEAAAAAAAPAAoAAgAFAAAAAAAOAA0AAgAFAAAAAAANAA0AAgAEAAAAAAAMAA0AAgAEAAAAAAALAA0AAgAEAAAAAAAKAA0AAgAEAAAAAAAJAA0AAgADAAAAAAADAAoAAgAEAAAAAAA=")
-tile_set = SubResource("TileSet_hv4b6")
+[node name="CameraBounds" type="Node2D" parent="."]
 
-[node name="Objects02" type="TileMapLayer" parent="TileMaps"]
-tile_map_data = PackedByteArray("AAADAA8AAAAGAAEAAAACABEAAAABAAIAAAADABEAAAABAAIAAAAGABMAAAAAAAIAAAAKABMAAAAAAAIAAAABABMAAAAAAAMAAAAMABEAAAABAAIAAAALABEAAAABAAIAAAAMAA8AAAAGAAEAAAAOABEAAAABAAIAAAAOAA8AAAAGAAEAAAACAAkAAAAGAAEAAAAEAAkAAAAGAAEAAAAHAAkAAAAGAAEAAAAJAAkAAAAGAAEAAAALAAwAAAAGAAEAAAALAA4AAAABAAIAAAAKAA4AAAABAAIAAAAPAAwAAAAAAAMAAAAPABIAAAAAAAMAAAABAAwAAAAAAAMAAAA=")
-tile_set = SubResource("TileSet_jmtfx")
+[node name="TopLeft" type="Marker2D" parent="CameraBounds"]
+position = Vector2(15, 22)
 
-[node name="Objects03" type="TileMapLayer" parent="TileMaps"]
-scale = Vector2(0.5, 0.5)
-tile_map_data = PackedByteArray("AAAEABAAAAACAAEAAAAFABEAAAACAAEAAAAEABEAAAADAAIAAAAFAA8AAAADAAIAAAAFABAAAAADAAMAAAAGABEAAAADAAMAAAAGABAAAAACAAEAAAAJAA8AAAAEAAIAAAAJABAAAAAEAAMAAAAKAA8AAAAFAAIAAAAKABAAAAAFAAMAAAALAA8AAAAGAAIAAAALABAAAAAGAAMAAAAIAA8AAAADAAIAAAAIABAAAAADAAMAAAAdAA8AAAADAAIAAAAeABAAAAACAAEAAAAaAA8AAAAEAAIAAAAaABAAAAAEAAMAAAAbAA8AAAAFAAIAAAAbABAAAAAFAAMAAAAcAA8AAAAGAAIAAAAcABAAAAAGAAMAAAAHACAAAAAFAAAAAAAGACAAAAAFAAEAAAAIACEAAAAGAAAAAAAEACAAAAAAAAAAAAAJACEAAAABAAAAAAAFACAAAAABAAEAAAAIACAAAAAAAAEAAAAZACAAAAAFAAAAAAAYACAAAAAFAAEAAAAaACEAAAAGAAAAAAAaACAAAAAAAAAAAAAbACAAAAABAAEAAAAXACEAAAACAAAAAAAWACEAAAABAAAAAAAcACAAAAAFAAEAAAAdACAAAAAFAAAAAAAdACEAAAAGAAAAAAASABQAAAAFAAEAAAAPABQAAAAFAAAAAAAOABQAAAAFAAEAAAATABQAAAAFAAAAAAAFABQAAAAFAAAAAAAJABQAAAAFAAAAAAAIABQAAAAFAAEAAAAEABQAAAAFAAEAAAAXABoAAAAFAAAAAAAWABoAAAAFAAEAAAAXABsAAAAGAAAAAAAVABoAAAACAAEAAAAZABoAAAAAAAAAAAAdABQAAAAEAAAAAAAdABUAAAAEAAEAAAAYABQAAAAEAAAAAAAcABQAAAADAAAAAAAaABQAAAADAAAAAAAaABUAAAADAAEAAAAcABUAAAADAAEAAAALAA4AAAACAAEAAAAZAA8AAAACAAEAAAAbAA4AAAADAAIAAAA=")
-tile_set = SubResource("TileSet_sphxl")
+[node name="BottomRight" type="Marker2D" parent="CameraBounds"]
+position = Vector2(756, 510)
 
 [node name="SpawnPoints" type="Node2D" parent="."]
-script = ExtResource("4_bjrkt")
+script = ExtResource("4_spawn")
 
 [node name="FrontDoorSpawn" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(272, 656)
+position = Vector2(614, 462)
 
 [node name="FrontComputer" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(424, 368)
+position = Vector2(280, 360)
 
-[node name="DoorArea" parent="." instance=ExtResource("6_a343a")]
-position = Vector2(272, 672)
+[node name="WorkstationSpot" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(478, 365)
+
+[node name="ReceptionDesk" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(538, 303)
+
+[node name="ServerRoomEntrance" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(410, 181)
+
+[node name="ServerInspectionSpot" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(417, 112)
+
+[node name="MeetingRoomSpot" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(617, 177)
+
+[node name="RestrictedDoorPoint" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(407, 151)
+
+[node name="DoorArea" parent="." instance=ExtResource("5_door")]
+position = Vector2(614, 505)
 DestinationScenePath = "res://Scenes/Establishments/world.tscn"
 DestinationSpawnName = "FrontDoorOffice"
 
-[node name="ComputerAccess" parent="." instance=ExtResource("7_knrkr")]
-position = Vector2(424, 367)
+[node name="ComputerAccess" parent="." instance=ExtResource("7_computer")]
+position = Vector2(280, 368)
 collision_layer = 16
 collision_mask = 15
 ReturnSpawnName = "FrontComputer"
 
+[node name="Bookshelf" type="Area2D" parent="."]
+position = Vector2(70, 359)
+collision_layer = 16
+collision_mask = 15
+script = ExtResource("8_bookshelf")
+BookshelfUIScene = ExtResource("9_bookshelf_ui")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bookshelf"]
+shape = SubResource("BookshelfArea")
+
+[node name="InteractHint" type="Label" parent="Bookshelf"]
+visible = false
+z_index = 20
+offset_left = -30.0
+offset_top = -38.0
+offset_right = 30.0
+offset_bottom = -26.0
+theme_override_colors/font_color = Color(0.65, 0.94, 0.9, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.03, 0.05, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 6
+text = "E  CONSULTAR"
+horizontal_alignment = 1
+
+[node name="RestrictedDoor" type="Area2D" parent="."]
+z_index = 2
+position = Vector2(407, 151)
+collision_layer = 16
+collision_mask = 15
+script = ExtResource("10_restricted")
+LockedMessage = "SALA DE SERVIDORES — acesso autorizado apenas à equipe técnica."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RestrictedDoor"]
+shape = SubResource("RestrictedArea")
+
+[node name="InteractHint" type="Label" parent="RestrictedDoor"]
+visible = false
+z_index = 20
+offset_left = -58.0
+offset_top = -48.0
+offset_right = 58.0
+offset_bottom = -36.0
+theme_override_colors/font_color = Color(0.96, 0.65, 0.45, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.03, 0.05, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 6
+text = "E  ACESSO RESTRITO"
+horizontal_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="RestrictedDoor"]
+visible = false
+z_index = 20
+offset_left = -110.0
+offset_top = 30.0
+offset_right = 110.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(1, 0.78, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.03, 0.05, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 6
+text = "SALA DE SERVIDORES — acesso autorizado apenas à equipe técnica."
+horizontal_alignment = 1
+
+[node name="OfficeCollisions" type="StaticBody2D" parent="."]
+position = Vector2(0, 2)
+collision_layer = 4
+collision_mask = 11
+
+[node name="ServerTopWall" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(242, 42)
+shape = SubResource("ServerTop")
+
+[node name="ServerLeftWall" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(43, 102)
+shape = SubResource("ServerSide")
+
+[node name="ServerRightWall" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(440, 86)
+shape = SubResource("ServerSide")
+
+[node name="ServerFrontWallLong" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(215, 155)
+shape = SubResource("ServerFrontLong")
+
+[node name="ServerFrontWallShort" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(434, 155)
+shape = SubResource("ServerFrontShort")
+
+[node name="MeetingTopWall" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(614, 31)
+shape = SubResource("MeetingHorizontal")
+
+[node name="MeetingRightWall" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(708, 110)
+shape = SubResource("MeetingRight")
+
+[node name="MeetingBottomWall" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(614, 197)
+shape = SubResource("MeetingHorizontal")
+
+[node name="MeetingLeftWallTop" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(521, 60)
+shape = SubResource("MeetingLeftTop")
+
+[node name="MeetingLeftWallBottom" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(521, 155.5)
+shape = SubResource("MeetingLeftBottom")
+
+[node name="MeetingLeftWallBottom2" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(32, 152)
+shape = SubResource("RectangleShape2D_sphxl")
+
+[node name="MeetingLeftWallBottom3" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(408, 152)
+shape = SubResource("RectangleShape2D_dnxl7")
+
+[node name="MeetingCorridorTopWall" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(480, 43.5)
+shape = SubResource("ShortHorizontal")
+
+[node name="OpenOfficeLeftWall" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(19, 297)
+shape = SubResource("OuterLeft")
+
+[node name="OpenOfficeRightWall" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(750, 327)
+shape = SubResource("OuterRight")
+
+[node name="OpenOfficeDiagonalWall" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(730, 216)
+rotation = -0.785398
+shape = SubResource("DiagonalWall")
+
+[node name="BottomWallLeft" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(48, 450)
+shape = SubResource("RectangleShape2D_3awjd")
+
+[node name="BottomWallLowerLeft" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(184, 471)
+shape = SubResource("BottomWallB")
+
+[node name="BottomWallCenter" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(360, 487)
+shape = SubResource("BottomWallC")
+
+[node name="BottomWallLowerRight" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(472, 471)
+shape = SubResource("BottomWallD")
+
+[node name="EntranceTopLeftWall" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(536, 420)
+shape = SubResource("RectangleShape2D_urmvg")
+
+[node name="EntranceTopLeftWall5" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(672, 478)
+shape = SubResource("RectangleShape2D_urmvg")
+
+[node name="EntranceTopLeftWall6" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(560, 478)
+shape = SubResource("RectangleShape2D_urmvg")
+
+[node name="EntranceTopLeftWall2" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(616, 510)
+shape = SubResource("RectangleShape2D_x1137")
+
+[node name="EntranceTopLeftWall3" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(744, 494)
+shape = SubResource("RectangleShape2D_x1137")
+
+[node name="EntranceTopLeftWall4" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(480, 494)
+shape = SubResource("RectangleShape2D_x1137")
+
+[node name="EntranceRightTopWall" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(716, 420)
+shape = SubResource("RectangleShape2D_hbp3v")
+
+[node name="EntranceLeftWall" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(552, 454)
+shape = SubResource("EntranceVertical")
+
+[node name="EntranceLeftWall2" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(520, 456)
+shape = SubResource("EntranceVertical")
+
+[node name="EntranceRightWall" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(678, 454)
+shape = SubResource("EntranceVertical")
+
+[node name="EntranceBottomLeft" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(568, 500)
+shape = SubResource("EntranceBottom")
+
+[node name="EntranceBottomRight" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(662, 500)
+shape = SubResource("EntranceBottom")
+
+[node name="WorkClusterLeft" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(116, 246)
+shape = SubResource("WorkClusterLarge")
+
+[node name="WorkClusterUpper" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(251, 246)
+shape = SubResource("WorkClusterSmall")
+
+[node name="WorkClusterLower" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(411, 354)
+shape = SubResource("WorkClusterLarge")
+
+[node name="OperationsStation" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(387, 240)
+shape = SubResource("OperationsStation")
+
+[node name="CentralPlant" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(343, 333)
+shape = SubResource("Plant")
+
+[node name="AnalystDesk" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(231, 393)
+shape = SubResource("AnalystDesk")
+
+[node name="KnowledgeShelf" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(70, 336)
+shape = SubResource("Shelf")
+
+[node name="EquipmentCabinet" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(106, 417)
+shape = SubResource("Cabinet")
+
+[node name="EquipmentCabinet2" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(44, 408)
+shape = SubResource("RectangleShape2D_6kn1t")
+
+[node name="EquipmentCabinet11" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(40, 270)
+shape = SubResource("RectangleShape2D_q82ym")
+
+[node name="EquipmentCabinet3" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(736, 392)
+shape = SubResource("RectangleShape2D_6kn1t")
+
+[node name="EquipmentCabinet4" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(493, 411)
+shape = SubResource("RectangleShape2D_o4pvv")
+
+[node name="EquipmentCabinet5" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(424, 248)
+shape = SubResource("RectangleShape2D_o4pvv")
+
+[node name="EquipmentCabinet6" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(424, 216)
+shape = SubResource("RectangleShape2D_35buj")
+
+[node name="EquipmentCabinet7" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(636, 241)
+shape = SubResource("RectangleShape2D_xp4xx")
+
+[node name="EquipmentCabinet8" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(696, 288)
+shape = SubResource("RectangleShape2D_fjon7")
+
+[node name="EquipmentCabinet12" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(572.5, 270)
+shape = SubResource("RectangleShape2D_fjon7")
+
+[node name="EquipmentCabinet9" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(696, 78)
+shape = SubResource("RectangleShape2D_i0wcc")
+
+[node name="EquipmentCabinet10" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(616, 58)
+shape = SubResource("RectangleShape2D_0t7iu")
+
+[node name="ServerRack01" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(153, 102)
+shape = SubResource("ServerRack")
+
+[node name="ServerRack02" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(187, 102)
+shape = SubResource("ServerRack")
+
+[node name="ServerRack03" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(221, 102)
+shape = SubResource("ServerRack")
+
+[node name="ServerRack04" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(266, 102)
+shape = SubResource("ServerRack")
+
+[node name="ServerRack05" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(316, 102)
+shape = SubResource("ServerRack")
+
+[node name="ServerRack06" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(350, 102)
+shape = SubResource("ServerRack")
+
+[node name="ServerRack07" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(384, 102)
+shape = SubResource("ServerRack")
+
+[node name="MeetingTable" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(620, 137)
+shape = SubResource("RectangleShape2D_ch4yb")
+
+[node name="MeetingTable2" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(616, 107)
+shape = SubResource("RectangleShape2D_x7cdi")
+
+[node name="ReceptionCounter" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(631.75, 322)
+shape = SubResource("ReceptionCounter")
+
+[node name="VisitorChairs" type="CollisionShape2D" parent="OfficeCollisions"]
+position = Vector2(633, 362)
+shape = SubResource("VisitorChairs")
+
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
-navigation_polygon = SubResource("NavigationPolygon_knrkr")
+visible = false
+navigation_polygon = SubResource("OfficeNavigation")
 
 [node name="LocationManager" type="Node" parent="."]
-script = ExtResource("7_jmtfx")
-
-[node name="Bookshelf" parent="." instance=ExtResource("8_jmtfx")]
+script = ExtResource("6_locations")

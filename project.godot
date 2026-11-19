@@ -25,6 +25,8 @@ InventoryManager="*res://Scripts/Core/InventoryManager.cs"
 RewardManager="*res://Scripts/Core/RewardManager.cs"
 SaveManager="*res://Scripts/Core/SaveManager.cs"
 MissionInfrastructureManager="*res://Scripts/Core/MissionInfrastructureManager.cs"
+AudioManager="*res://Scripts/Core/AudioManager.cs"
+PauseManager="*res://Scripts/Core/PauseManager.cs"
 
 [display]
 

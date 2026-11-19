@@ -1,0 +1,400 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Minigames/RansomwareEscape.cs" id="1_ransom"]
+[ext_resource type="Theme" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StyleHud"]
+bg_color = Color(0.027, 0.047, 0.075, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.15, 0.52, 0.65, 0.8)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.42)
+shadow_size = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleInfo"]
+bg_color = Color(0.02, 0.075, 0.1, 0.82)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.1, 0.3, 0.36, 0.9)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleTutorial"]
+bg_color = Color(0.035, 0.065, 0.09, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.96, 0.25, 0.3, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.58)
+shadow_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleResult"]
+bg_color = Color(0.035, 0.065, 0.09, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.28, 0.82, 0.58, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.58)
+shadow_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBack"]
+bg_color = Color(0.047, 0.075, 0.11, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.16, 0.28, 0.38, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[node name="RansomwareEscape" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_ransom")
+TimeLabelPath = NodePath("HudPanel/HudMargin/HudContent/TimeLabel")
+FilesLabelPath = NodePath("HudPanel/HudMargin/HudContent/FilesLabel")
+BackupLabelPath = NodePath("HudPanel/HudMargin/HudContent/BackupLabel")
+ScoreLabelPath = NodePath("HudPanel/HudMargin/HudContent/ScoreLabel")
+SpreadLabelPath = NodePath("HudPanel/HudMargin/HudContent/SpreadLabel")
+StatusLabelPath = NodePath("StatusPanel/StatusMargin/StatusLabel")
+TutorialOverlayPath = NodePath("TutorialOverlay")
+StartButtonPath = NodePath("TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent/StartButton")
+ResultOverlayPath = NodePath("ResultOverlay")
+ResultTitlePath = NodePath("ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent/ResultTitle")
+ResultSummaryPath = NodePath("ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent/ResultSummary")
+RetryButtonPath = NodePath("ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent/Actions/RetryButton")
+ResultBackButtonPath = NodePath("ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent/Actions/ResultBackButton")
+BackButtonPath = NodePath("HudPanel/HudMargin/HudContent/BackButton")
+
+[node name="Header" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 22.0
+offset_right = 1244.0
+offset_bottom = 92.0
+theme_override_constants/separation = 14
+
+[node name="TitleBlock" type="VBoxContainer" parent="Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="Eyebrow" type="Label" parent="Header/TitleBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.38, 0.42, 1)
+theme_override_font_sizes/font_size = 12
+text = "MODO FEIRA • DESAFIO 04"
+
+[node name="Title" type="Label" parent="Header/TitleBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.92, 0.97, 0.99, 1)
+theme_override_font_sizes/font_size = 30
+text = "FUGA DO RANSOMWARE"
+
+[node name="Objective" type="Label" parent="Header"]
+custom_minimum_size = Vector2(430, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "Recupere os arquivos, faça uma cópia segura e restaure o sistema antes que a onda vermelha avance."
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="HudPanel" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 884.0
+offset_top = 112.0
+offset_right = 1244.0
+offset_bottom = 640.0
+theme_override_styles/panel = SubResource("StyleHud")
+
+[node name="HudMargin" type="MarginContainer" parent="HudPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="HudContent" type="VBoxContainer" parent="HudPanel/HudMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HudTitle" type="Label" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.38, 0.42, 1)
+theme_override_font_sizes/font_size = 13
+text = "OPERAÇÃO DE RESGATE"
+
+[node name="TimeLabel" type="Label" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Tempo  01:15"
+
+[node name="FilesLabel" type="Label" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.78, 0.26, 1)
+theme_override_font_sizes/font_size = 17
+text = "Arquivos  0/3"
+
+[node name="BackupLabel" type="Label" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.78, 0.26, 1)
+theme_override_font_sizes/font_size = 17
+text = "Backup  PENDENTE"
+
+[node name="ScoreLabel" type="Label" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Pontos  0"
+
+[node name="Separator" type="HSeparator" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+
+[node name="SpreadLabel" type="Label" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.28, 0.32, 1)
+theme_override_font_sizes/font_size = 13
+text = "RANSOMWARE  SETOR 0/15"
+autowrap_mode = 2
+
+[node name="InfoPanel" type="PanelContainer" parent="HudPanel/HudMargin/HudContent"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleInfo")
+
+[node name="InfoMargin" type="MarginContainer" parent="HudPanel/HudMargin/HudContent/InfoPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 12
+
+[node name="InfoText" type="Label" parent="HudPanel/HudMargin/HudContent/InfoPanel/InfoMargin"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.62, 0.75, 0.79, 1)
+theme_override_font_sizes/font_size = 12
+text = "LEGENDA\n\nAmarelo: arquivos\nVerde com +: antivírus\nRoxo com X: desconectar rede\nAzul: dispositivo de backup\nVerde: terminal de restauração\nVermelho: área criptografada\n\nWASD ou setas para mover."
+autowrap_mode = 2
+
+[node name="BackButton" type="Button" parent="HudPanel/HudMargin/HudContent"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBack")
+text = "Voltar ao Modo Feira"
+
+[node name="StatusPanel" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 654.0
+offset_right = 852.0
+offset_bottom = 702.0
+theme_override_styles/panel = SubResource("StyleInfo")
+
+[node name="StatusMargin" type="MarginContainer" parent="StatusPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 8
+
+[node name="StatusLabel" type="Label" parent="StatusPanel/StatusMargin"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.78, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 13
+text = "Recupere os três arquivos antes que a onda vermelha chegue."
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TutorialOverlay" type="Control" parent="."]
+z_index = 100
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="TutorialOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.003, 0.008, 0.015, 0.9)
+
+[node name="TutorialCenter" type="CenterContainer" parent="TutorialOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TutorialPanel" type="PanelContainer" parent="TutorialOverlay/TutorialCenter"]
+custom_minimum_size = Vector2(690, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleTutorial")
+
+[node name="TutorialMargin" type="MarginContainer" parent="TutorialOverlay/TutorialCenter/TutorialPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 30
+
+[node name="TutorialContent" type="VBoxContainer" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Eyebrow" type="Label" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.38, 0.42, 1)
+theme_override_font_sizes/font_size = 13
+text = "ALERTA DE RANSOMWARE"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "Salve os arquivos antes da criptografia"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.81, 0.84, 1)
+theme_override_font_sizes/font_size = 15
+text = "1. Corra pelo sistema usando WASD ou as setas.\n2. Recupere os 3 ARQUIVOS amarelos antes da onda vermelha.\n3. ANTIVÍRUS e DESCONECTAR REDE atrasam a propagação.\n4. Grave os arquivos no BACKUP azul.\n5. Alcance o TERMINAL verde para restaurar o sistema."
+autowrap_mode = 2
+
+[node name="Warning" type="Label" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.55, 0.56, 1)
+theme_override_font_sizes/font_size = 13
+text = "Se a onda alcançar você ou um arquivo ainda não salvo, a missão termina."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Concept" type="Label" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.88, 0.67, 1)
+theme_override_font_sizes/font_size = 13
+text = "Na prática: isolar rapidamente o equipamento e manter backups seguros reduz o impacto do ransomware."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="StartButton" type="Button" parent="TutorialOverlay/TutorialCenter/TutorialPanel/TutorialMargin/TutorialContent"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "INICIAR RESGATE"
+
+[node name="ResultOverlay" type="Control" parent="."]
+visible = false
+z_index = 110
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="ResultOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.003, 0.008, 0.015, 0.92)
+
+[node name="ResultCenter" type="CenterContainer" parent="ResultOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResultPanel" type="PanelContainer" parent="ResultOverlay/ResultCenter"]
+custom_minimum_size = Vector2(650, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleResult")
+
+[node name="ResultMargin" type="MarginContainer" parent="ResultOverlay/ResultCenter/ResultPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 30
+
+[node name="ResultContent" type="VBoxContainer" parent="ResultOverlay/ResultCenter/ResultPanel/ResultMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Eyebrow" type="Label" parent="ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 13
+text = "RESULTADO DO DESAFIO"
+horizontal_alignment = 1
+
+[node name="ResultTitle" type="Label" parent="ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
+theme_override_font_sizes/font_size = 28
+text = "ARQUIVOS PROTEGIDOS"
+horizontal_alignment = 1
+
+[node name="ResultSummary" type="Label" parent="ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.83, 0.86, 1)
+theme_override_font_sizes/font_size = 14
+text = "Pontuação: 0\nArquivos recuperados: 0/3"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Actions" type="HBoxContainer" parent="ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="RetryButton" type="Button" parent="ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent/Actions"]
+custom_minimum_size = Vector2(220, 46)
+layout_mode = 2
+text = "JOGAR NOVAMENTE"
+
+[node name="ResultBackButton" type="Button" parent="ResultOverlay/ResultCenter/ResultPanel/ResultMargin/ResultContent/Actions"]
+custom_minimum_size = Vector2(220, 46)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBack")
+text = "OUTRO DESAFIO"

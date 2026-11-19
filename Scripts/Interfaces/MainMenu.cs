@@ -6,14 +6,18 @@ public partial class MainMenu : Control
 		"res://Scenes/Core/game.tscn";
 	[Export] public NodePath NewGameButtonPath { get; set; }
 	[Export] public NodePath ContinueButtonPath { get; set; }
+	[Export] public NodePath FairModeButtonPath { get; set; }
 	[Export] public NodePath ExitButtonPath { get; set; }
 	[Export] public NodePath ConfirmationOverlayPath { get; set; }
 	[Export] public NodePath CancelButtonPath { get; set; }
 	[Export] public NodePath ConfirmButtonPath { get; set; }
 	[Export] public NodePath StatusLabelPath { get; set; }
+	[Export] public string FairModeScenePath { get; set; } =
+		"res://Scenes/Interfaces/fair_mode_menu.tscn";
 
 	private Button _newGameButton;
 	private Button _continueButton;
+	private Button _fairModeButton;
 	private Button _exitButton;
 	private Control _confirmationOverlay;
 	private Button _cancelButton;
@@ -24,8 +28,10 @@ public partial class MainMenu : Control
 
 	public override void _Ready()
 	{
+		AudioManager.Instance?.SetMenuContext();
 		_newGameButton = GetNodeOrNull<Button>(NewGameButtonPath);
 		_continueButton = GetNodeOrNull<Button>(ContinueButtonPath);
+		_fairModeButton = GetNodeOrNull<Button>(FairModeButtonPath);
 		_exitButton = GetNodeOrNull<Button>(ExitButtonPath);
 		_confirmationOverlay =
 			GetNodeOrNull<Control>(ConfirmationOverlayPath);
@@ -36,6 +42,7 @@ public partial class MainMenu : Control
 		if (
 			_newGameButton == null ||
 			_continueButton == null ||
+			_fairModeButton == null ||
 			_exitButton == null ||
 			_confirmationOverlay == null ||
 			_cancelButton == null ||
@@ -50,6 +57,7 @@ public partial class MainMenu : Control
 
 		_newGameButton.Pressed += OnNewGamePressed;
 		_continueButton.Pressed += OnContinuePressed;
+		_fairModeButton.Pressed += OnFairModePressed;
 		_exitButton.Pressed += OnExitPressed;
 		_cancelButton.Pressed += CloseConfirmation;
 		_confirmButton.Pressed += ConfirmNewGame;
@@ -74,6 +82,9 @@ public partial class MainMenu : Control
 
 		if (_continueButton != null)
 			_continueButton.Pressed -= OnContinuePressed;
+
+		if (_fairModeButton != null)
+			_fairModeButton.Pressed -= OnFairModePressed;
 
 		if (_exitButton != null)
 			_exitButton.Pressed -= OnExitPressed;
@@ -128,7 +139,12 @@ public partial class MainMenu : Control
 		OpenGameScene();
 	}
 
-	private async void OnExitPressed()
+	private void OnFairModePressed()
+	{
+		OpenFairMode();
+	}
+
+	private void OnExitPressed()
 	{
 		if (_isBusy)
 			return;
@@ -213,24 +229,42 @@ public partial class MainMenu : Control
 
 	private void OpenGameScene()
 	{
-		SetMenuBusy(true);
+		_newGameButton.Disabled = true;
+		_continueButton.Disabled = true;
+		_fairModeButton.Disabled = true;
+		_exitButton.Disabled = true;
 
 		Error error = GetTree().ChangeSceneToFile(GameScenePath);
 
 		if (error == Error.Ok)
 			return;
 
-		SetMenuBusy(false);
+		_newGameButton.Disabled = false;
+		_continueButton.Disabled =
+			!(SaveManager.Instance?.HasSaveGame() ?? false);
+		_fairModeButton.Disabled = false;
+		_exitButton.Disabled = false;
 		ShowStatus($"Não foi possível abrir o jogo: {error}.");
 	}
 
-	private void SetMenuBusy(bool isBusy)
+	private void OpenFairMode()
 	{
-		_isBusy = isBusy;
-		_newGameButton.Disabled = isBusy;
+		_newGameButton.Disabled = true;
+		_continueButton.Disabled = true;
+		_fairModeButton.Disabled = true;
+		_exitButton.Disabled = true;
+
+		Error error = GetTree().ChangeSceneToFile(FairModeScenePath);
+
+		if (error == Error.Ok)
+			return;
+
+		_newGameButton.Disabled = false;
 		_continueButton.Disabled =
-			isBusy || !(SaveManager.Instance?.HasSaveGame() ?? false);
-		_exitButton.Disabled = isBusy;
+			!(SaveManager.Instance?.HasSaveGame() ?? false);
+		_fairModeButton.Disabled = false;
+		_exitButton.Disabled = false;
+		ShowStatus($"Não foi possível abrir o Modo Feira: {error}.");
 	}
 
 	private void ShowStatus(string message)

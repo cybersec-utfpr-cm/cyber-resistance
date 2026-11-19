@@ -403,6 +403,12 @@ public static class ActionProcessor
 						QuestManager.Instance.StartQuest(action["quest"]);
 					}
 					break;
+				case "complete_quest":
+					if (action.ContainsKey("quest"))
+					{
+						QuestManager.Instance.CompleteQuest(action["quest"]);
+					}
+					break;
 				case "give_item":
 					// Implementar depois
 					break;

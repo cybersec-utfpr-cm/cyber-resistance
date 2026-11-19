@@ -1,198 +1,238 @@
-[gd_scene load_steps=17 format=4 uid="uid://inns1h3e2atx"]
+[gd_scene load_steps=7 format=3 uid="uid://inns1h3e2atx"]
 
-[ext_resource type="PackedScene" uid="uid://dqmfqfpm7pqfi" path="res://Scenes/Interactions/door_area.tscn" id="1_q7rsp"]
-[ext_resource type="Texture2D" uid="uid://c541ubyddy536" path="res://Assets/Environment/Cafeteria/tableCafeteria.png" id="3_73dkv"]
-[ext_resource type="Script" uid="uid://bkyo7yavgygym" path="res://Scripts/Interactions/SpawnPoints.cs" id="3_fnfx1"]
-[ext_resource type="Texture2D" uid="uid://72rsjfgy6rk2" path="res://Assets/Environment/Cafeteria/doorCafeteria-sheet.png" id="3_qoqe6"]
-[ext_resource type="Texture2D" uid="uid://drqvcmewjyn8i" path="res://Assets/Environment/Cafeteria/interiorCafeteria.png" id="3_vop24"]
-[ext_resource type="Script" uid="uid://bojc33ctc6wyh" path="res://Scripts/Establishments/LocationManager.cs" id="7_qoqe6"]
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vop24"]
-texture = ExtResource("3_vop24")
-0:0/0 = 0
-0:0/0/z_index = 1
-0:0/0/y_sort_origin = 8
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, 6, 8, 6, -6, -6, -6, -6, 8, -8, 8)
-1:0/0 = 0
-1:0/0/z_index = 1
-1:0/0/y_sort_origin = -8
-2:0/0 = 0
-2:0/0/z_index = 1
-2:0/0/y_sort_origin = -8
-3:0/0 = 0
-3:0/0/z_index = 1
-3:0/0/y_sort_origin = -8
-4:0/0 = 0
-4:0/0/z_index = 1
-4:0/0/y_sort_origin = -8
-5:0/0 = 0
-5:0/0/z_index = -1
-5:0/0/y_sort_origin = -10
-6:0/0 = 0
-6:0/0/z_index = -1
-6:0/0/y_sort_origin = -10
-0:1/0 = 0
-0:1/0/z_index = 1
-0:1/0/y_sort_origin = 8
-0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -8, 8, -6, 8, -6, -8)
-0:1/0/physics_layer_0/polygon_1/points = PackedVector2Array(6, -8, 6, 8, 8, 8, 8, -8)
-1:1/0 = 0
-1:1/0/z_index = 1
-1:1/0/y_sort_origin = -8
-2:1/0 = 0
-2:1/0/z_index = 1
-2:1/0/y_sort_origin = -8
-3:1/0 = 0
-3:1/0/z_index = 1
-3:1/0/y_sort_origin = -8
-5:1/0 = 0
-5:1/0/z_index = -1
-5:1/0/y_sort_origin = -10
-6:1/0 = 0
-6:1/0/z_index = -1
-6:1/0/y_sort_origin = -10
-0:2/0 = 0
-0:2/0/z_index = 1
-0:2/0/y_sort_origin = 8
-0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -8, 8, 8, 8, 8, -8, 6, -8, 6, 6, -6, 6, -6, -8)
-1:2/0 = 0
-1:2/0/z_index = 1
-1:2/0/y_sort_origin = -8
-2:2/0 = 0
-2:2/0/z_index = 1
-2:2/0/y_sort_origin = -8
-3:2/0 = 0
-3:2/0/z_index = 1
-3:2/0/y_sort_origin = -8
-0:3/0 = 0
-0:3/0/y_sort_origin = -3
-0:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -7, -8, 8, 8, 8, 8, -7)
-1:3/0 = 0
-1:3/0/z_index = 1
-1:3/0/y_sort_origin = -8
-1:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, -8, -8, -8, 8, 8, 8, 8, 6, -6, 6, -6, -6, 8, -6)
-2:3/0 = 0
-2:3/0/z_index = 1
-2:3/0/y_sort_origin = -8
-2:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, -6, -8, -6)
-2:3/0/physics_layer_0/polygon_1/points = PackedVector2Array(-8, 8, 8, 8, 8, 6, -8, 6)
-3:3/0 = 0
-3:3/0/z_index = 1
-3:3/0/y_sort_origin = -8
-3:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 8, 8, 8, 8, -8, -8, -8, -8, -6, 6, -6, 6, 6, -8, 6)
-
-[sub_resource type="TileSet" id="TileSet_fnfx1"]
-physics_layer_0/collision_layer = 4
-physics_layer_0/collision_mask = 11
-terrain_set_0/mode = 0
-terrain_set_0/terrain_0/name = "Caminho"
-terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
-sources/1 = SubResource("TileSetAtlasSource_vop24")
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nj4yp"]
-texture = ExtResource("3_vop24")
-6:1/0 = 0
-5:1/0 = 0
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_52rat"]
-texture = ExtResource("3_qoqe6")
-0:0/0 = 0
-0:1/0 = 0
-1:0/0 = 0
-1:1/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_qoqe6"]
-sources/0 = SubResource("TileSetAtlasSource_nj4yp")
-sources/2 = SubResource("TileSetAtlasSource_52rat")
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xcoo4"]
-texture = ExtResource("3_vop24")
-4:2/0 = 0
-5:2/0 = 0
-5:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, -6, -8, -6)
-6:2/0 = 0
-4:1/0 = 0
-6:3/0 = 0
-5:3/0 = 0
-4:3/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_73dkv"]
-physics_layer_0/collision_layer = 4
-physics_layer_0/collision_mask = 11
-sources/1 = SubResource("TileSetAtlasSource_xcoo4")
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_73dkv"]
-texture = ExtResource("3_73dkv")
-0:1/0 = 0
-0:0/0 = 0
-1:0/0 = 0
-1:1/0 = 0
-2:0/0 = 0
-2:1/0 = 0
-3:0/size_in_atlas = Vector2i(2, 2)
-3:0/0 = 0
-0:2/size_in_atlas = Vector2i(2, 2)
-0:2/0 = 0
-2:2/size_in_atlas = Vector2i(2, 2)
-2:2/0 = 0
-5:0/size_in_atlas = Vector2i(2, 2)
-5:0/0 = 0
-5:2/size_in_atlas = Vector2i(2, 2)
-5:2/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_xcoo4"]
-sources/1 = SubResource("TileSetAtlasSource_73dkv")
-
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_xcoo4"]
-vertices = PackedVector2Array(438, 74, 438, 86, 182, 86, 10, 74, 10, 278, 182, 162, 150, 246, 438, 162, 438, 278, 266, 246, 266, 278, 214, 246, 214, 310, 202, 310, 202, 246, 150, 278)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 3, 2, 5, 6), PackedInt32Array(5, 7, 8, 9), PackedInt32Array(8, 10, 9), PackedInt32Array(5, 9, 11), PackedInt32Array(11, 12, 13, 14), PackedInt32Array(5, 11, 14), PackedInt32Array(5, 14, 6), PackedInt32Array(4, 6, 15)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(0, 64, 0, 288, 160, 288, 160, 256, 192, 256, 192, 320, 224, 320, 224, 256, 256, 256, 256, 288, 448, 288, 448, 152, 192, 152, 192, 96, 448, 96, 448, 64)])
+[ext_resource type="Texture2D" uid="uid://7fr6cjrbyqc8" path="res://Assets/Environment/Cafeteria/cafeteria_interior_v3.png" id="1_background"]
+[ext_resource type="Script" uid="uid://bkyo7yavgygym" path="res://Scripts/Interactions/SpawnPoints.cs" id="2_spawn"]
+[ext_resource type="PackedScene" uid="uid://dqmfqfpm7pqfi" path="res://Scenes/Interactions/door_area.tscn" id="3_door"]
+[ext_resource type="Script" uid="uid://bojc33ctc6wyh" path="res://Scripts/Establishments/LocationManager.cs" id="4_locations"]
+[ext_resource type="Script" uid="uid://cfh6w0fe62ueq" path="res://Scripts/Establishments/CafeteriaYSortOccluders.cs" id="5_ysort"]
+[ext_resource type="Texture2D" uid="uid://t4xb73xjem32" path="res://Assets/Environment/Cafeteria/cafeteria_occluders_v3.png" id="6_occluders"]
 
 [node name="Cafeteria" type="Node2D"]
-light_mask = 4
-visibility_layer = 11
 y_sort_enabled = true
 
-[node name="TileMaps" type="Node2D" parent="."]
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -10
+texture_filter = 1
+position = Vector2(384, 256)
+texture = ExtResource("1_background")
+
+[node name="YSortOccluders" type="Node2D" parent="."]
 y_sort_enabled = true
-scale = Vector2(2, 2)
+texture_filter = 1
+script = ExtResource("5_ysort")
+SourceTexture = ExtResource("6_occluders")
 
-[node name="Ground" type="TileMapLayer" parent="TileMaps"]
-y_sort_enabled = true
-tile_map_data = PackedByteArray("AAAAAAIAAQAGAAAAAAAAAAMAAQAGAAAAAAAAAAQAAQAGAAAAAAAAAAUAAQAGAAAAAAAAAAYAAQAGAAAAAAAAAAcAAQAGAAAAAAAAAAgAAQAGAAAAAAABAAIAAQAGAAAAAAABAAMAAQAGAAAAAAABAAQAAQAGAAAAAAABAAUAAQAGAAAAAAABAAYAAQAGAAAAAAABAAcAAQAGAAAAAAABAAgAAQAGAAAAAAACAAIAAQAGAAAAAAACAAMAAQAGAAAAAAACAAQAAQAGAAAAAAACAAUAAQAGAAAAAAACAAYAAQAGAAAAAAACAAcAAQAGAAAAAAACAAgAAQAGAAAAAAADAAIAAQAGAAAAAAADAAMAAQAGAAAAAAADAAQAAQAGAAAAAAADAAUAAQAGAAAAAAADAAYAAQAGAAAAAAADAAcAAQAGAAAAAAADAAgAAQAGAAAAAAAEAAIAAQAGAAAAAAAEAAMAAQAGAAAAAAAEAAQAAQAGAAAAAAAEAAUAAQAGAAAAAAAEAAYAAQAGAAAAAAAEAAcAAQAGAAAAAAAEAAgAAQAGAAAAAAAFAAIAAQAGAAAAAAAFAAMAAQAGAAAAAAAFAAQAAQAGAAAAAAAFAAUAAQAGAAAAAAAFAAYAAQAGAAAAAAAFAAcAAQAGAAAAAAAFAAgAAQAAAAMAAAAGAAIAAQAGAAAAAAAGAAMAAQAGAAAAAAAGAAQAAQAGAAAAAAAGAAUAAQAGAAAAAAAGAAYAAQAGAAAAAAAGAAcAAQAGAAAAAAAGAAgAAQAGAAAAAAAHAAIAAQAGAAAAAAAHAAMAAQAGAAAAAAAHAAQAAQAGAAAAAAAHAAUAAQAGAAAAAAAHAAYAAQAGAAAAAAAHAAcAAQAGAAAAAAAHAAgAAQAAAAMAAAAIAAIAAQAGAAAAAAAIAAMAAQAGAAAAAAAIAAQAAQAGAAAAAAAIAAUAAQAGAAAAAAAIAAYAAQAGAAAAAAAIAAcAAQAGAAAAAAAIAAgAAQAGAAAAAAAJAAIAAQAGAAAAAAAJAAMAAQAGAAAAAAAJAAQAAQAGAAAAAAAJAAUAAQAGAAAAAAAJAAYAAQAGAAAAAAAJAAcAAQAGAAAAAAAJAAgAAQAGAAAAAAAKAAIAAQAGAAAAAAAKAAMAAQAGAAAAAAAKAAQAAQAGAAAAAAAKAAUAAQAGAAAAAAAKAAYAAQAGAAAAAAAKAAcAAQAGAAAAAAAKAAgAAQAGAAAAAAALAAIAAQAGAAAAAAALAAMAAQAGAAAAAAALAAQAAQAGAAAAAAALAAUAAQAGAAAAAAALAAYAAQAGAAAAAAALAAcAAQAGAAAAAAALAAgAAQAGAAAAAAAMAAIAAQAGAAAAAAAMAAMAAQAGAAAAAAAMAAQAAQAGAAAAAAAMAAUAAQAGAAAAAAAMAAYAAQAGAAAAAAAMAAcAAQAGAAAAAAAMAAgAAQAGAAAAAAANAAIAAQAGAAAAAAANAAMAAQAGAAAAAAANAAQAAQAGAAAAAAANAAUAAQAGAAAAAAANAAYAAQAGAAAAAAANAAcAAQAGAAAAAAANAAgAAQAGAAAAAAD///7/AQAAAAEAAAD/////AQAAAAEAAAD//wAAAQAAAAEAAAD//wEAAQAAAAEAAAD//wIAAQAAAAEAAAD//wMAAQAAAAEAAAD//wQAAQAAAAEAAAD//wUAAQAAAAEAAAD//wYAAQAAAAEAAAD//wcAAQAAAAEAAAD//wgAAQAAAAEAAAD//wkAAQABAAIAAAAAAAkAAQACAAMAAAABAAkAAQACAAMAAAACAAkAAQACAAMAAAADAAkAAQACAAMAAAAEAAkAAQACAAMAAAAFAAkAAQADAAMAAAAHAAkAAQABAAMAAAAIAAkAAQACAAMAAAAJAAkAAQACAAMAAAAKAAkAAQACAAMAAAALAAkAAQACAAMAAAAMAAkAAQACAAMAAAANAAkAAQACAAMAAAAOAAkAAQADAAIAAAAOAAUAAQAAAAEAAAAOAAYAAQAAAAEAAAAOAAcAAQAAAAEAAAAOAAgAAQAAAAEAAAAOAAIAAQAAAAEAAAAOAAMAAQAAAAEAAAAOAAQAAQAAAAEAAAAOAP7/AQAAAAEAAAAOAP//AQAAAAEAAAAOAAAAAQAAAAEAAAAOAAEAAQAAAAEAAAAOAP3/AQADAAAAAAD///3/AQABAAAAAAAAAP3/AQACAAMAAAABAP3/AQACAAMAAAACAP3/AQACAAMAAAADAP3/AQACAAMAAAAEAP3/AQACAAMAAAAFAP3/AQACAAMAAAAGAP3/AQACAAMAAAAHAP3/AQACAAMAAAAIAP3/AQACAAMAAAAJAP3/AQACAAMAAAAKAP3/AQACAAMAAAALAP3/AQACAAMAAAAMAP3/AQACAAMAAAANAP3/AQACAAMAAAAGAAkAAQAGAAAAAAAAAAAAAQAFAAAAAAABAAAAAQAFAAAAAAACAAAAAQAFAAAAAAA=")
-tile_set = SubResource("TileSet_fnfx1")
+[node name="ArchitectureCollisions" type="StaticBody2D" parent="."]
+collision_layer = 4
+collision_mask = 11
 
-[node name="Wall" type="TileMapLayer" parent="TileMaps"]
-tile_map_data = PackedByteArray("AAAAAP7/AAAFAAEAAAAAAP//AAAFAAEAAAABAP7/AAAFAAEAAAABAP//AAAFAAEAAAABAAAAAgABAAAAAAABAAEAAgABAAEAAAACAP7/AAAFAAEAAAACAP//AAAFAAEAAAACAAAAAAAFAAEAAAACAAEAAAAFAAEAAAADAP7/AAAFAAEAAAADAP//AAAFAAEAAAADAAAAAAAFAAEAAAADAAEAAAAFAAEAAAAEAP7/AAAFAAEAAAAEAP//AAAFAAEAAAAEAAAAAAAFAAEAAAAEAAEAAAAFAAEAAAAFAP7/AAAFAAEAAAAFAP//AAAFAAEAAAAFAAAAAAAFAAEAAAAFAAEAAAAFAAEAAAAGAP7/AAAFAAEAAAAGAP//AAAFAAEAAAAGAAAAAAAFAAEAAAAGAAEAAAAFAAEAAAAHAP7/AAAFAAEAAAAHAP//AAAFAAEAAAAHAAAAAAAFAAEAAAAHAAEAAAAFAAEAAAAIAP7/AAAFAAEAAAAIAP//AAAFAAEAAAAIAAAAAAAFAAEAAAAIAAEAAAAFAAEAAAAJAP7/AAAFAAEAAAAJAP//AAAFAAEAAAAJAAAAAAAFAAEAAAAJAAEAAAAFAAEAAAAKAP7/AAAFAAEAAAAKAP//AAAFAAEAAAAKAAAAAAAFAAEAAAAKAAEAAAAFAAEAAAALAP7/AAAFAAEAAAALAP//AAAFAAEAAAALAAAAAAAFAAEAAAALAAEAAAAFAAEAAAAMAP7/AAAFAAEAAAAMAP//AAAFAAEAAAAMAAAAAAAFAAEAAAAMAAEAAAAFAAEAAAANAP7/AAAFAAEAAAANAP//AAAFAAEAAAANAAAAAAAFAAEAAAANAAEAAAAFAAEAAAAAAAAAAgAAAAAAAAAAAAEAAgAAAAEAAAA=")
-tile_set = SubResource("TileSet_qoqe6")
+[node name="TopWall" type="CollisionPolygon2D" parent="ArchitectureCollisions"]
+polygon = PackedVector2Array(47, 42, 721, 42, 721, 55, 47, 55)
 
-[node name="Noises" type="TileMapLayer" parent="TileMaps"]
-tile_map_data = PackedByteArray("AAAAAAIAAQAFAAIAAAABAAIAAQAFAAIAAAACAAIAAQAFAAIAAAADAAIAAQAFAAIAAAAEAAIAAQAFAAIAAAAFAAIAAQAFAAIAAAAGAAIAAQAFAAIAAAAHAAIAAQAFAAIAAAAIAAIAAQAFAAIAAAAJAAIAAQAFAAIAAAAKAAIAAQAFAAIAAAALAAIAAQAFAAIAAAAMAAIAAQAFAAIAAAANAAIAAQAFAAIAAAAHAAMAAQAEAAEAAAAIAAYAAQAEAAMAAAAGAAoAAQAFAAIAAAAFAAoAAQAFAAIAAAAHAAoAAQAFAAIAAAD//woAAQAFAAIAAAAAAAoAAQAFAAIAAAABAAoAAQAFAAIAAAACAAoAAQAFAAIAAAADAAoAAQAFAAIAAAAEAAoAAQAFAAIAAAAIAAoAAQAFAAIAAAAJAAoAAQAFAAIAAAAKAAoAAQAFAAIAAAALAAoAAQAFAAIAAAAMAAoAAQAFAAIAAAANAAoAAQAFAAIAAAAOAAoAAQAFAAIAAAA=")
-tile_set = SubResource("TileSet_73dkv")
+[node name="TopWall2" type="CollisionPolygon2D" parent="ArchitectureCollisions"]
+polygon = PackedVector2Array(47, 42, 721, 42, 721, 55, 47, 55)
 
-[node name="Objects" type="TileMapLayer" parent="TileMaps"]
-tile_map_data = PackedByteArray("AAAIAAMAAQABAAAAAAAIAAQAAQABAAEAAAAJAAMAAQABAAAAAAAKAAMAAQABAAAAAAAGAAMAAQAAAAAAAAAGAAQAAQAAAAEAAAAHAAMAAQABAAAAAAALAAMAAQABAAAAAAALAAQAAQABAAEAAAAMAAMAAQABAAAAAAAMAAQAAQABAAEAAAANAAMAAQACAAAAAAANAAQAAQACAAEAAAABAAQAAQADAAAAAAAAAAQAAQACAAIAAAACAAQAAQAAAAIAAAADAAYAAQAFAAAAAAAEAAYAAQAAAAIAAAACAAYAAQACAAIAAAABAAgAAQAFAAIAAAACAAgAAQAAAAIAAAAAAAgAAQACAAIAAAAKAAYAAQACAAIAAAAMAAYAAQAAAAIAAAALAAYAAQAFAAIAAAALAAgAAQAFAAAAAAAKAAgAAQACAAIAAAAMAAgAAQAAAAIAAAAJAAQAAQABAAEAAAAKAAQAAQABAAEAAAAHAAQAAQABAAEAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAEAAAA=")
-tile_set = SubResource("TileSet_xcoo4")
+[node name="LeftWall" type="CollisionPolygon2D" parent="ArchitectureCollisions"]
+polygon = PackedVector2Array(42, 43, 56, 43, 56, 419, 42, 419)
+
+[node name="RightWall" type="CollisionPolygon2D" parent="ArchitectureCollisions"]
+position = Vector2(12, 1)
+polygon = PackedVector2Array(711, 43, 725, 43, 725, 347, 711, 347, 710, 265, 698, 263, 698, 256, 712, 257)
+
+[node name="MainBottomLeftWall" type="CollisionPolygon2D" parent="ArchitectureCollisions"]
+polygon = PackedVector2Array(44, 409, 300, 409, 300, 423, 44, 423)
+
+[node name="MainBottomRightWall" type="CollisionPolygon2D" parent="ArchitectureCollisions"]
+polygon = PackedVector2Array(474, 409, 586, 409, 586, 423, 474, 423)
+
+[node name="EntranceLeftWall" type="CollisionPolygon2D" parent="ArchitectureCollisions"]
+polygon = PackedVector2Array(286, 373, 306, 373, 306, 479, 286, 479)
+
+[node name="EntranceRightWall" type="CollisionPolygon2D" parent="ArchitectureCollisions"]
+polygon = PackedVector2Array(464, 373, 484, 373, 484, 479, 464, 479)
+
+[node name="EntranceBottomLeftWall" type="CollisionPolygon2D" parent="ArchitectureCollisions"]
+position = Vector2(-3, -15)
+polygon = PackedVector2Array(300, 468, 353, 468, 353, 483, 300, 483)
+
+[node name="EntranceBottomRightWall" type="CollisionPolygon2D" parent="ArchitectureCollisions"]
+position = Vector2(4, -16)
+polygon = PackedVector2Array(416, 468, 475, 468, 475, 483, 416, 483)
+
+[node name="ServicePartitionWall" type="CollisionPolygon2D" parent="ArchitectureCollisions"]
+polygon = PackedVector2Array(279, 42, 295, 42, 295, 123, 279, 123)
+
+[node name="KitchenDividerWall" type="CollisionPolygon2D" parent="ArchitectureCollisions"]
+polygon = PackedVector2Array(480, 42, 493, 42, 493, 121, 478, 121)
+
+[node name="KitchenOfficeWall" type="CollisionPolygon2D" parent="ArchitectureCollisions"]
+polygon = PackedVector2Array(576, 204, 724, 204, 724, 219, 576, 219)
+
+[node name="OfficeLeftBottomWall" type="CollisionPolygon2D" parent="ArchitectureCollisions"]
+position = Vector2(8, 2)
+polygon = PackedVector2Array(567, 291, 577, 291, 577, 347, 568, 347)
+
+[node name="OfficeBottomWall" type="CollisionPolygon2D" parent="ArchitectureCollisions"]
+polygon = PackedVector2Array(576, 337, 724, 337, 724, 351, 576, 351)
+
+[node name="MainRightLowerWall" type="CollisionPolygon2D" parent="ArchitectureCollisions"]
+polygon = PackedVector2Array(573, 339, 586, 339, 586, 422, 573, 422)
+
+[node name="FurnitureCollisions" type="StaticBody2D" parent="."]
+collision_layer = 4
+collision_mask = 11
+
+[node name="Booth" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+polygon = PackedVector2Array(81, 86, 258, 86, 258, 132, 81, 133)
+
+[node name="BoothTableLeft" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+polygon = PackedVector2Array(98, 111, 149, 111, 149, 143, 143, 145, 141, 157, 104, 158, 105, 144, 98, 143)
+
+[node name="BoothTableLeft2" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(87, 0)
+polygon = PackedVector2Array(98, 111, 149, 111, 149, 143, 143, 145, 141, 157, 104, 158, 105, 144, 98, 143)
+
+[node name="DiningTableRight" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(-1, -3)
+scale = Vector2(1.0012, 1.01355)
+polygon = PackedVector2Array(475.43, 286.123, 525.37, 286.123, 525.37, 304.869, 535.358, 304.869, 533.361, 318.682, 525.37, 318.682, 522.374, 327.562, 521.375, 330.522, 520.376, 345.321, 502.398, 345.321, 502.398, 331.509, 497.404, 331.509, 497.404, 345.321, 479.425, 345.321, 479.425, 331.509, 475.43, 327.562, 475.43, 318.682, 467.44, 318.682, 465.442, 303.883, 475.43, 303.883)
+
+[node name="DiningTableRight2" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(-129, -16)
+scale = Vector2(1.0012, 1.01355)
+polygon = PackedVector2Array(475.43, 286.123, 525.37, 286.123, 525.37, 304.869, 535.358, 304.869, 533.361, 318.682, 525.37, 318.682, 522.374, 327.562, 521.375, 330.522, 520.376, 345.321, 502.398, 345.321, 502.398, 331.509, 497.404, 331.509, 497.404, 345.321, 479.425, 345.321, 479.425, 331.509, 475.43, 327.562, 475.43, 318.682, 467.44, 318.682, 465.442, 303.883, 475.43, 303.883)
+
+[node name="DiningTableRight3" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(-235, 14)
+scale = Vector2(1.0012, 1.01355)
+polygon = PackedVector2Array(475.43, 286.123, 525.37, 286.123, 525.37, 304.869, 535.358, 304.869, 533.361, 318.682, 525.37, 318.682, 522.374, 327.562, 521.375, 330.522, 520.376, 345.321, 502.398, 345.321, 502.398, 331.509, 497.404, 331.509, 497.404, 345.321, 479.425, 345.321, 479.425, 331.509, 475.43, 327.562, 475.43, 318.682, 467.44, 318.682, 465.442, 303.883, 475.43, 303.883)
+
+[node name="DiningTableRight4" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(-346, 12)
+scale = Vector2(1.0012, 1.01355)
+polygon = PackedVector2Array(475.43, 286.123, 525.37, 286.123, 525.37, 304.869, 535.358, 304.869, 533.361, 318.682, 525.37, 318.682, 522.374, 327.562, 521.375, 330.522, 520.376, 345.321, 502.398, 345.321, 502.398, 331.509, 497.404, 331.509, 497.404, 345.321, 479.425, 345.321, 479.425, 331.509, 475.43, 327.562, 475.43, 318.682, 467.44, 318.682, 465.442, 303.883, 475.43, 303.883)
+
+[node name="DiningTableRight5" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(-348, -87)
+scale = Vector2(1.0012, 1.01355)
+polygon = PackedVector2Array(475.43, 286.123, 525.37, 286.123, 525.37, 304.869, 535.358, 304.869, 533.361, 318.682, 525.37, 318.682, 522.374, 327.562, 521.375, 330.522, 520.376, 345.321, 502.398, 345.321, 502.398, 331.509, 497.404, 331.509, 497.404, 345.321, 479.425, 345.321, 479.425, 331.509, 475.43, 327.562, 475.43, 318.682, 467.44, 318.682, 465.442, 303.883, 475.43, 303.883)
+
+[node name="DiningTableRight6" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(-257, -97)
+scale = Vector2(1.0012, 1.01355)
+polygon = PackedVector2Array(481.423, 294.016, 519.378, 294.016, 519.378, 304.869, 525.37, 304.869, 525.37, 318.682, 525.37, 330.522, 521.375, 330.522, 520.376, 345.321, 502.398, 345.321, 502.398, 331.509, 497.404, 331.509, 497.404, 345.321, 479.425, 345.321, 479.425, 330.522, 475.43, 328.549, 475.43, 318.682, 475.43, 303.883, 481.423, 304.869)
+
+[node name="LeftWallPlant" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+polygon = PackedVector2Array(65, 198, 78, 198, 79, 216, 64, 215)
+
+[node name="LeftWallPlant2" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(-1, -96)
+polygon = PackedVector2Array(65, 198, 78, 198, 91, 216, 56, 217)
+
+[node name="LeftWallPlant3" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(198, -95)
+polygon = PackedVector2Array(65, 198, 78, 198, 86, 216, 59, 224)
+
+[node name="LeftBookshelf" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+polygon = PackedVector2Array(55, 258, 89, 258, 88, 308, 55, 308)
+
+[node name="LowerLeftPlanter" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+polygon = PackedVector2Array(51, 382, 98, 381, 98, 405, 50, 404)
+
+[node name="LowerLeftPlanter2" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(242, -278)
+polygon = PackedVector2Array(51, 382, 240, 384, 245, 399, 52, 399)
+
+[node name="EspressoStation" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+polygon = PackedVector2Array(335, 125, 420, 125, 419, 157, 335, 157)
+
+[node name="ServiceCounterBody" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+polygon = PackedVector2Array(282, 208, 283, 154, 294, 154, 294, 173, 576, 177, 575, 229, 308, 229)
+
+[node name="KitchenBackCounter" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(-3, 0)
+polygon = PackedVector2Array(487, 73, 722, 73, 716, 137, 493, 134)
+
+[node name="KitchenIsland" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+polygon = PackedVector2Array(603, 154, 682, 155, 680, 195, 604, 194)
+
+[node name="OfficePlant" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(1, -12)
+polygon = PackedVector2Array(575, 230, 586, 231, 586, 278, 575, 278)
+
+[node name="OfficeDesk" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+polygon = PackedVector2Array(585, 257, 666, 257, 665, 293, 598, 292, 596, 265, 588.447, 264.69)
+
+[node name="OfficeBookshelf" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+polygon = PackedVector2Array(667, 229, 711, 230, 711, 288, 682, 288, 682, 277, 666, 277)
+
+[node name="OfficeChair" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(-3, 0)
+polygon = PackedVector2Array(629, 290, 647, 290, 646, 306, 629, 306)
+
+[node name="EntrancePlantLeft" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(0, -21)
+polygon = PackedVector2Array(303, 426, 331, 426, 331, 464, 303, 464)
+
+[node name="EntrancePlantLeft2" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(1, -52)
+polygon = PackedVector2Array(303, 426, 338, 425, 339, 447, 331, 464, 303, 464)
+
+[node name="EntrancePlantLeft3" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(27, -32)
+polygon = PackedVector2Array(303, 426, 331, 426, 331, 464, 303, 464)
+
+[node name="EntrancePlantLeft4" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(109, -33)
+polygon = PackedVector2Array(303, 426, 331, 426, 331, 464, 303, 464)
+
+[node name="EntrancePlantLeft5" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(124, -53)
+polygon = PackedVector2Array(303, 426, 331, 426, 331, 464, 303, 464)
+
+[node name="EntrancePlantLeft6" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(135, -53)
+polygon = PackedVector2Array(303, 426, 331, 426, 331, 464, 303, 464)
+
+[node name="EntrancePlantInnerRight" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+polygon = PackedVector2Array(412, 427, 436, 427, 435, 436, 413, 436)
+
+[node name="EntrancePlantRight" type="CollisionPolygon2D" parent="FurnitureCollisions"]
+position = Vector2(-6, -12)
+polygon = PackedVector2Array(442, 426, 472, 426, 472, 465, 442, 465)
+
+[node name="CameraBounds" type="Node2D" parent="."]
+
+[node name="TopLeft" type="Marker2D" parent="CameraBounds"]
+position = Vector2(36, 32)
+
+[node name="BottomRight" type="Marker2D" parent="CameraBounds"]
+position = Vector2(732, 492)
 
 [node name="SpawnPoints" type="Node2D" parent="."]
-script = ExtResource("3_fnfx1")
+script = ExtResource("2_spawn")
 
 [node name="FrontDoorSpawn" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(208, 288)
+position = Vector2(384, 380)
 
 [node name="FrontServiceDesk" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(232, 160)
+position = Vector2(500, 252)
 
-[node name="DoorArea" parent="." instance=ExtResource("1_q7rsp")]
-position = Vector2(208, 328)
+[node name="DiningRoomSpot" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(371, 384)
+
+[node name="KitchenPrepSpot" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(535, 160)
+
+[node name="ManagerOfficeSpot" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(610, 325)
+
+[node name="DoorArea" parent="." instance=ExtResource("3_door")]
+position = Vector2(384, 436)
 DestinationScenePath = "res://Scenes/Establishments/world.tscn"
 DestinationSpawnName = "FrontDoorCafeteria"
 
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
-visible = false
-navigation_polygon = SubResource("NavigationPolygon_xcoo4")
-
 [node name="LocationManager" type="Node" parent="."]
-script = ExtResource("7_qoqe6")
+script = ExtResource("4_locations")
 
 [node name="NPCContainer" type="Node" parent="."]

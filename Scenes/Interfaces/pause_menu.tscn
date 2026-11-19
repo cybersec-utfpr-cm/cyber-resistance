@@ -1,0 +1,233 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Interfaces/PauseMenu.cs" id="1_pause"]
+[ext_resource type="Theme" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StylePausePanel"]
+bg_color = Color(0.027, 0.047, 0.075, 0.99)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.15, 0.62, 0.7, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.65)
+shadow_size = 26
+
+[sub_resource type="StyleBoxFlat" id="StyleSection"]
+bg_color = Color(0.04, 0.075, 0.105, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12, 0.28, 0.34, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleSecondaryButton"]
+bg_color = Color(0.047, 0.075, 0.11, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.16, 0.28, 0.38, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[node name="PauseMenu" type="CanvasLayer"]
+process_mode = 3
+layer = 100
+script = ExtResource("1_pause")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0.004, 0.009, 0.016, 0.82)
+
+[node name="Center" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+
+[node name="PausePanel" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StylePausePanel")
+
+[node name="PauseMargin" type="MarginContainer" parent="Center/PausePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 42
+theme_override_constants/margin_top = 34
+theme_override_constants/margin_right = 42
+theme_override_constants/margin_bottom = 34
+
+[node name="Content" type="VBoxContainer" parent="Center/PausePanel/PauseMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Eyebrow" type="Label" parent="Center/PausePanel/PauseMargin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 12
+text = "SISTEMA EM ESPERA"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="Center/PausePanel/PauseMargin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.92, 0.97, 0.99, 1)
+theme_override_font_sizes/font_size = 30
+text = "JOGO PAUSADO"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="Center/PausePanel/PauseMargin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.59, 0.64, 1)
+theme_override_font_sizes/font_size = 12
+text = "Ajuste cada camada de áudio separadamente."
+horizontal_alignment = 1
+
+[node name="AudioPanel" type="PanelContainer" parent="Center/PausePanel/PauseMargin/Content"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleSection")
+
+[node name="AudioMargin" type="MarginContainer" parent="Center/PausePanel/PauseMargin/Content/AudioPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 18
+
+[node name="AudioSettings" type="VBoxContainer" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="AudioTitle" type="Label" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.88, 0.91, 1)
+theme_override_font_sizes/font_size = 15
+text = "ÁUDIO"
+
+[node name="Master" type="VBoxContainer" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Header" type="HBoxContainer" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Master"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Master/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Volume geral"
+
+[node name="Value" type="Label" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Master/Header"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+text = "80%"
+
+[node name="Slider" type="HSlider" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Master"]
+layout_mode = 2
+step = 1.0
+value = 80.0
+
+[node name="Music" type="VBoxContainer" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Header" type="HBoxContainer" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Music"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Music/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Música"
+
+[node name="Value" type="Label" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Music/Header"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+text = "55%"
+
+[node name="Slider" type="HSlider" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Music"]
+layout_mode = 2
+step = 1.0
+value = 55.0
+
+[node name="Ambience" type="VBoxContainer" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Header" type="HBoxContainer" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Ambience"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Ambience/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Ambientação"
+
+[node name="Value" type="Label" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Ambience/Header"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+text = "50%"
+
+[node name="Slider" type="HSlider" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Ambience"]
+layout_mode = 2
+step = 1.0
+value = 50.0
+
+[node name="Effects" type="VBoxContainer" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Header" type="HBoxContainer" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Effects"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Effects/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Efeitos sonoros"
+
+[node name="Value" type="Label" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Effects/Header"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+text = "75%"
+
+[node name="Slider" type="HSlider" parent="Center/PausePanel/PauseMargin/Content/AudioPanel/AudioMargin/AudioSettings/Effects"]
+layout_mode = 2
+step = 1.0
+value = 75.0
+
+[node name="Actions" type="VBoxContainer" parent="Center/PausePanel/PauseMargin/Content"]
+layout_mode = 2
+theme_override_constants/separation = 9
+
+[node name="ResumeButton" type="Button" parent="Center/PausePanel/PauseMargin/Content/Actions"]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Continuar jogo"
+
+[node name="MainMenuButton" type="Button" parent="Center/PausePanel/PauseMargin/Content/Actions"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleSecondaryButton")
+text = "Voltar ao menu principal"
+
+[node name="Hint" type="Label" parent="Center/PausePanel/PauseMargin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.46, 0.5, 1)
+theme_override_font_sizes/font_size = 11
+text = "Pressione ESC novamente para continuar"
+horizontal_alignment = 1

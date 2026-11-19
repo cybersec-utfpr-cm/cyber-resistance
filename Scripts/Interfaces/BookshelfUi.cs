@@ -36,6 +36,7 @@ public partial class BookshelfUi : Control
 	public override void _Ready()
 	{
 		ProcessMode = ProcessModeEnum.Always;
+		AddToGroup("escape_closes_overlay");
 		_libraryPanel = GetNodeOrNull<PanelContainer>(LibraryPanelPath);
 		_libraryToggleButton = GetNodeOrNull<Button>(LibraryToggleButtonPath);
 		_bookList = GetNodeOrNull<VBoxContainer>(BookListPath);

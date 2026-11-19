@@ -12,5 +12,16 @@ script = ExtResource("1_lyrgk")
 position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_4so6h")
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[node name="InteractHint" type="Label" parent="."]
+visible = false
+z_index = 10
+offset_left = -34.0
+offset_top = -30.0
+offset_right = 34.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(0.65, 0.94, 0.9, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.03, 0.05, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 6
+text = "E  USAR PC"
+horizontal_alignment = 1

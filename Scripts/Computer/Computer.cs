@@ -12,6 +12,7 @@ public partial class Computer : Control
 
 	public override void _Ready()
 	{
+		AddToGroup("escape_closes_overlay");
 		_desktop = GetNode<Control>("Screens/Desktop");
 		_terminal = GetNode<Control>("Screens/Terminal");
 		_settings = GetNode<Control>("Screens/Settings");
@@ -29,6 +30,18 @@ public partial class Computer : Control
 
 		// Inicia com o desktop visível
 		ShowScreen(_desktop);
+		CompleteTutorialComputerAccess();
+	}
+
+	private void CompleteTutorialComputerAccess()
+	{
+		if (QuestManager.Instance?.GetQuestStage("tutorial") != 3)
+			return;
+
+		QuestManager.Instance.CompleteQuest("tutorial");
+		GD.Print(
+			"Computer: tutorial concluído quando a área de trabalho carregou."
+		);
 	}
 
 	private void ShowScreen(Control screen)
@@ -41,9 +54,13 @@ public partial class Computer : Control
 
 	public override void _Input(InputEvent @event)
 	{
-		if (@event.IsActionPressed("ui_cancel")) // ESC
+		if (
+			@event.IsActionPressed("ui_cancel") &&
+			!@event.IsEcho()
+		) // ESC
 		{
 			ExitComputer();
+			GetViewport().SetInputAsHandled();
 		}
 	}
 

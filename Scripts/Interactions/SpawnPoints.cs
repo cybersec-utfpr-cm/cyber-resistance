@@ -12,7 +12,7 @@ public partial class SpawnPoints : Node2D
 		string spawnName = GetTree().GetMeta("spawn_name").AsString();
 		GetTree().RemoveMeta("spawn_name");
 
-		// Busca recursiva em todos os descendentessd
+		// Busca recursiva em todos os descendentes.
 		var spawn = FindChild(spawnName, true, false) as Marker2D;
 		if (spawn == null)
 		{
@@ -20,7 +20,7 @@ public partial class SpawnPoints : Node2D
 			return;
 		}
 
-		var player = GetParent().GetNodeOrNull<Node2D>("Player");
+		var player = GetTree().GetFirstNodeInGroup("Player") as Node2D;
 		if (player == null)
 		{
 			GD.PrintErr("Player não encontrado na cena");

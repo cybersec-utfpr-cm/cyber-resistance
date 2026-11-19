@@ -34,26 +34,26 @@ Nesse caso, podemos seguir as instruções apresentadas [aqui](https://stackover
 
 1. Remova outras instalações do dotnet-sdk, dotnet-runtime e dotnet-host:
 
-    ```bash
-    sudo apt-get remove dotnet-sdk-<version>
-    sudo apt-get remove dotnet-runtime-<version>
-    sudo apt-get remove dotnet-host-<version>
-    ```
+	```bash
+	sudo apt-get remove dotnet-sdk-<version>
+	sudo apt-get remove dotnet-runtime-<version>
+	sudo apt-get remove dotnet-host-<version>
+	```
 
 2. Execute os comandos a seguir para adicionar o repositório de origem do pacote:
 
-    ```bash
-    wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-    sudo dpkg -i packages-microsoft-prod.deb
-    rm packages-microsoft-prod.deb
-    ```
+	```bash
+	wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+	sudo dpkg -i packages-microsoft-prod.deb
+	rm packages-microsoft-prod.deb
+	```
 
 3. Execute os comandos a seguir para instalar o dotnet-host e o dotnet-sdk:
 
-    ```bash
-    sudo apt-get update
-    sudo apt-get install -y dotnet-host aspnetcore-runtime-8.0
-    ```
+	```bash
+	sudo apt-get update
+	sudo apt-get install -y dotnet-host aspnetcore-runtime-8.0
+	```
 
 </details>
 
@@ -113,6 +113,39 @@ A máquina Docker do jogador é inicializada quando a cena principal do jogo é 
 - O nome pode ser alterado no Inspector do nó `GameManager` pelo campo `PlayerMachineContainerName`.
 
 Com isso, abrir/fechar a tela de terminal não liga/desliga a máquina; o terminal apenas se conecta ao ambiente já ativo.
+
+## 7. Áudio e menu de pausa
+
+Durante o jogo, pressione `ESC` para pausar. O menu permite continuar, voltar ao
+menu principal e controlar separadamente:
+
+- volume geral;
+- música;
+- ambientação;
+- efeitos sonoros.
+
+Os volumes são preservados entre execuções. Se uma interface modal estiver
+aberta, como computador, estante, quiz ou prova, o primeiro `ESC` fecha essa
+interface; o `ESC` seguinte abre o menu de pausa.
+
+Os arquivos de áudio ficam em `Assets/Audio`. Consulte o README dessa pasta para
+substituir músicas ou efeitos mantendo a integração existente.
+
+## Universidade
+
+A universidade possui sala de aula, laboratório de computadores, sala dos
+professores e sala de prova. A prova é iniciada no terminal cyber da sala
+inferior direita, a estante tutora fica no corredor central e um computador
+funcional está disponível no laboratório superior direito. O mapa externo não
+mantém mais os pontos de interação usados durante os testes; computadores ficam
+no escritório e na universidade, enquanto a prova permanece exclusiva da
+universidade. O professor
+Hubner inclui a universidade em sua rotina e permanece nela para orientar os
+alunos antes de seguir para os outros ambientes.
+
+O painel de missões exibe etapa, objetivo, local e dica. O roteiro atual segue
+a ordem: orientação de Hubner, leitura na estante, validação do computador,
+recuperação do Wi-Fi, autorização da prova e entrega do resultado ao professor.
 
 
 # Código-fonte: Projeto Cyber Resistance

@@ -42,6 +42,7 @@ public partial class ExamUi : CanvasLayer
 	public override void _Ready()
 	{
 		ProcessMode = ProcessModeEnum.Always;
+		AddToGroup("escape_closes_overlay");
 
 		_titleLabel = GetNode<Label>(
 			"Root/ExamPanel/PanelMargin/Content/Header/TitleBlock/TitleLabel"
@@ -235,6 +236,7 @@ public partial class ExamUi : CanvasLayer
 
 		if (isCorrect)
 		{
+			AudioManager.Instance?.PlaySuccess();
 			SetOptionColor(
 				_optionButtons[_selectedIndex],
 				SuccessColor
@@ -246,6 +248,7 @@ public partial class ExamUi : CanvasLayer
 		}
 		else
 		{
+			AudioManager.Instance?.PlayError();
 			SetOptionColor(
 				_optionButtons[_selectedIndex],
 				ErrorColor
@@ -299,9 +302,10 @@ public partial class ExamUi : CanvasLayer
 			$"Você acertou {_correctCount} de {_quiz.Questions.Count} " +
 			$"questões ({percentageValue}%).\n\n" +
 			(approved
-				? "Parabéns! A missão foi concluída."
-				: "Volte à estante, revise os capítulos indicados " +
-					"nas respostas e tente novamente.");
+				? "Parabéns! Feche a avaliação e entregue o resultado " +
+					"ao professor Hubner para concluir a missão."
+				: "Volte à estante da universidade, revise os capítulos " +
+					"indicados nas respostas e tente novamente.");
 
 		EmitSignal(SignalName.ExamFinished, approved);
 	}

@@ -1,0 +1,917 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Interfaces/FairModeMenu.cs" id="1_fair"]
+[ext_resource type="Theme" path="res://Resources/Themes/computer_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StyleMainPanel"]
+bg_color = Color(0.027, 0.047, 0.075, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.15, 0.52, 0.65, 0.8)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleAvailable"]
+bg_color = Color(0.055, 0.16, 0.2, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.78, 0.84, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleAvailableHover"]
+bg_color = Color(0.07, 0.205, 0.25, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.39, 0.9, 0.94, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0.08, 0.72, 0.78, 0.18)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleUnavailable"]
+bg_color = Color(0.035, 0.06, 0.082, 0.84)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12, 0.2, 0.25, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBack"]
+bg_color = Color(0.047, 0.075, 0.11, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.16, 0.28, 0.38, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[node name="FairModeMenu" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_fair")
+NetworkMazeButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton")
+PhishingButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/PhishingButton")
+ServerDefenseButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton")
+RansomwareEscapeButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton")
+WifiGhostButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton")
+DataCenterButtonPath = NodePath("Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton")
+BackButtonPath = NodePath("Center/MainPanel/MainMargin/Content/BottomRow/BackButton")
+StatusLabelPath = NodePath("Center/MainPanel/MainMargin/Content/StatusLabel")
+CurrentPlayerLabelPath = NodePath("Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow/PlayerBlock/CurrentPlayerLabel")
+CurrentStatsLabelPath = NodePath("Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow/PlayerBlock/CurrentStatsLabel")
+NewParticipantButtonPath = NodePath("Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow/NewParticipantButton")
+RankingButtonPath = NodePath("Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow/RankingButton")
+ResetDataButtonPath = NodePath("Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow/ResetDataButton")
+RegistrationOverlayPath = NodePath("RegistrationOverlay")
+NameInputPath = NodePath("RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent/NameInput")
+StartParticipantButtonPath = NodePath("RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent/Actions/StartParticipantButton")
+RegistrationCancelButtonPath = NodePath("RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent/Actions/RegistrationCancelButton")
+RegistrationErrorLabelPath = NodePath("RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent/ErrorLabel")
+RankingOverlayPath = NodePath("RankingOverlay")
+RankingTextPath = NodePath("RankingOverlay/RankingCenter/RankingPanel/RankingMargin/RankingContent/RankingScroll/RankingText")
+CloseRankingButtonPath = NodePath("RankingOverlay/RankingCenter/RankingPanel/RankingMargin/RankingContent/CloseRankingButton")
+ResetOverlayPath = NodePath("ResetOverlay")
+ConfirmResetButtonPath = NodePath("ResetOverlay/ResetCenter/ResetPanel/ResetMargin/ResetContent/Actions/ConfirmResetButton")
+CancelResetButtonPath = NodePath("ResetOverlay/ResetCenter/ResetPanel/ResetMargin/ResetContent/Actions/CancelResetButton")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.008, 0.018, 0.03, 1)
+
+[node name="Glow" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.02, 0.16, 0.18, 0.16)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainPanel" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(1190, 684)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleMainPanel")
+
+[node name="MainMargin" type="MarginContainer" parent="Center/MainPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 14
+
+[node name="Content" type="VBoxContainer" parent="Center/MainPanel/MainMargin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Eyebrow" type="Label" parent="Center/MainPanel/MainMargin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 11
+text = "EXPERIÊNCIA RÁPIDA • FEIRA DE PROFISSÕES"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.92, 0.97, 0.99, 1)
+theme_override_font_sizes/font_size = 28
+text = "MODO FEIRA"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Center/MainPanel/MainMargin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "Escolha uma missão de cibersegurança. Os desafios disponíveis podem ser jogados em poucos minutos."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ParticipantPanel" type="PanelContainer" parent="Center/MainPanel/MainMargin/Content"]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBack")
+
+[node name="ParticipantMargin" type="MarginContainer" parent="Center/MainPanel/MainMargin/Content/ParticipantPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+
+[node name="ParticipantRow" type="HBoxContainer" parent="Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PlayerBlock" type="VBoxContainer" parent="Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="CurrentPlayerLabel" type="Label" parent="Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow/PlayerBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
+theme_override_font_sizes/font_size = 14
+text = "NENHUM PARTICIPANTE ATIVO"
+
+[node name="CurrentStatsLabel" type="Label" parent="Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow/PlayerBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.82, 0.86, 1)
+theme_override_font_sizes/font_size = 12
+text = "Cadastre um nome para liberar os desafios."
+autowrap_mode = 2
+
+[node name="NewParticipantButton" type="Button" parent="Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow"]
+custom_minimum_size = Vector2(142, 38)
+layout_mode = 2
+text = "NOVO PARTICIPANTE"
+
+[node name="RankingButton" type="Button" parent="Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow"]
+custom_minimum_size = Vector2(104, 38)
+layout_mode = 2
+text = "RANKING"
+
+[node name="ResetDataButton" type="Button" parent="Center/MainPanel/MainMargin/Content/ParticipantPanel/ParticipantMargin/ParticipantRow"]
+custom_minimum_size = Vector2(116, 38)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBack")
+text = "RESETAR DADOS"
+
+[node name="Challenges" type="GridContainer" parent="Center/MainPanel/MainMargin/Content"]
+custom_minimum_size = Vector2(0, 392)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 12
+columns = 3
+
+[node name="NetworkMazeButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
+custom_minimum_size = Vector2(350, 190)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleAvailable")
+theme_override_styles/hover = SubResource("StyleAvailableHover")
+theme_override_styles/focus = SubResource("StyleAvailableHover")
+theme_override_styles/pressed = SubResource("StyleAvailableHover")
+text = ""
+
+[node name="CardMargin" type="MarginContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 15.0
+offset_right = -18.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Card" type="VBoxContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+mouse_filter = 2
+
+[node name="Tag" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.9, 0.94, 1)
+theme_override_font_sizes/font_size = 10
+text = "DESAFIO 01  •  MOVIMENTO"
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
+theme_override_font_sizes/font_size = 19
+text = "LABIRINTO DA REDE"
+mouse_filter = 2
+
+[node name="Hook" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.82, 0.86, 1)
+theme_override_font_sizes/font_size = 12
+text = "Leve o pacote ao servidor antes que a rede seja comprometida."
+autowrap_mode = 2
+mouse_filter = 2
+
+[node name="Step1" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.8, 0.32, 1)
+theme_override_font_sizes/font_size = 11
+text = "◆ Chave  ◆ Firewall  ◆ Malwares"
+mouse_filter = 2
+
+[node name="Fill" type="Control" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin/Card"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Action" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/NetworkMazeButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
+theme_override_font_sizes/font_size = 12
+text = "JOGAR AGORA  →"
+mouse_filter = 2
+
+[node name="PhishingButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
+custom_minimum_size = Vector2(350, 190)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleAvailable")
+theme_override_styles/hover = SubResource("StyleAvailableHover")
+theme_override_styles/focus = SubResource("StyleAvailableHover")
+theme_override_styles/pressed = SubResource("StyleAvailableHover")
+text = ""
+
+[node name="CardMargin" type="MarginContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 15.0
+offset_right = -18.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Card" type="VBoxContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+mouse_filter = 2
+
+[node name="Tag" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.9, 0.94, 1)
+theme_override_font_sizes/font_size = 10
+text = "DESAFIO 02  •  INVESTIGAÇÃO"
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
+theme_override_font_sizes/font_size = 19
+text = "CAÇA AO PHISHING"
+mouse_filter = 2
+
+[node name="Hook" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.82, 0.86, 1)
+theme_override_font_sizes/font_size = 12
+text = "Golpe ou mensagem legítima? Encontre as pistas antes de decidir."
+autowrap_mode = 2
+mouse_filter = 2
+
+[node name="Step1" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.8, 0.32, 1)
+theme_override_font_sizes/font_size = 11
+text = "◆ Remetente  ◆ Link  ◆ Decisão"
+mouse_filter = 2
+
+[node name="Fill" type="Control" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin/Card"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Action" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/PhishingButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
+theme_override_font_sizes/font_size = 12
+text = "JOGAR AGORA  →"
+mouse_filter = 2
+
+[node name="ServerDefenseButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
+custom_minimum_size = Vector2(350, 190)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleAvailable")
+theme_override_styles/hover = SubResource("StyleAvailableHover")
+theme_override_styles/focus = SubResource("StyleAvailableHover")
+theme_override_styles/pressed = SubResource("StyleAvailableHover")
+text = ""
+
+[node name="CardMargin" type="MarginContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 15.0
+offset_right = -18.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Card" type="VBoxContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+mouse_filter = 2
+
+[node name="Tag" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.9, 0.94, 1)
+theme_override_font_sizes/font_size = 10
+text = "DESAFIO 03  •  DEFESA"
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
+theme_override_font_sizes/font_size = 19
+text = "DEFENDA O SERVIDOR"
+mouse_filter = 2
+
+[node name="Hook" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.82, 0.86, 1)
+theme_override_font_sizes/font_size = 12
+text = "Bloqueie ameaças sem impedir o tráfego legítimo."
+autowrap_mode = 2
+mouse_filter = 2
+
+[node name="Step1" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.48, 0.5, 1)
+theme_override_font_sizes/font_size = 11
+text = "◆ Firewall  ◆ Antivírus  ◆ DDoS"
+mouse_filter = 2
+
+[node name="Fill" type="Control" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Action" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/ServerDefenseButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
+theme_override_font_sizes/font_size = 12
+text = "JOGAR AGORA  →"
+mouse_filter = 2
+
+[node name="RansomwareEscapeButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
+custom_minimum_size = Vector2(350, 190)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleAvailable")
+theme_override_styles/hover = SubResource("StyleAvailableHover")
+theme_override_styles/focus = SubResource("StyleAvailableHover")
+theme_override_styles/pressed = SubResource("StyleAvailableHover")
+text = ""
+
+[node name="CardMargin" type="MarginContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 15.0
+offset_right = -18.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Card" type="VBoxContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton/CardMargin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+mouse_filter = 2
+
+[node name="Tag" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.48, 0.5, 1)
+theme_override_font_sizes/font_size = 10
+text = "NOVO • DESAFIO 04  •  CORRIDA"
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
+theme_override_font_sizes/font_size = 19
+text = "FUGA DO RANSOMWARE"
+mouse_filter = 2
+
+[node name="Hook" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.82, 0.86, 1)
+theme_override_font_sizes/font_size = 12
+text = "Salve seus arquivos e faça backup antes que tudo seja criptografado."
+autowrap_mode = 2
+mouse_filter = 2
+
+[node name="Step1" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.8, 0.32, 1)
+theme_override_font_sizes/font_size = 11
+text = "◆ Arquivos  ◆ Backup  ◆ Recuperação"
+mouse_filter = 2
+
+[node name="Fill" type="Control" parent="Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton/CardMargin/Card"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Action" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/RansomwareEscapeButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
+theme_override_font_sizes/font_size = 12
+text = "JOGAR AGORA  →"
+mouse_filter = 2
+
+[node name="WifiGhostButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
+custom_minimum_size = Vector2(350, 190)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleAvailable")
+theme_override_styles/hover = SubResource("StyleAvailableHover")
+theme_override_styles/focus = SubResource("StyleAvailableHover")
+theme_override_styles/pressed = SubResource("StyleAvailableHover")
+text = ""
+
+[node name="CardMargin" type="MarginContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 15.0
+offset_right = -18.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Card" type="VBoxContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+mouse_filter = 2
+
+[node name="Tag" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.9, 0.94, 1)
+theme_override_font_sizes/font_size = 10
+text = "DESAFIO 05  •  EXPLORAÇÃO"
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "OPERAÇÃO WI-FI FANTASMA"
+mouse_filter = 2
+
+[node name="Hook" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.82, 0.86, 1)
+theme_override_font_sizes/font_size = 12
+text = "Investigue redes falsas e proteja seus dados em uma área pública."
+autowrap_mode = 2
+mouse_filter = 2
+
+[node name="Step1" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.5, 0.96, 1)
+theme_override_font_sizes/font_size = 11
+text = "◆ Scanner  ◆ Evil Twin  ◆ VPN"
+mouse_filter = 2
+
+[node name="Fill" type="Control" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Action" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/WifiGhostButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
+theme_override_font_sizes/font_size = 12
+text = "JOGAR AGORA  →"
+mouse_filter = 2
+
+[node name="DataCenterButton" type="Button" parent="Center/MainPanel/MainMargin/Content/Challenges"]
+custom_minimum_size = Vector2(350, 190)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleAvailable")
+theme_override_styles/hover = SubResource("StyleAvailableHover")
+theme_override_styles/focus = SubResource("StyleAvailableHover")
+theme_override_styles/pressed = SubResource("StyleAvailableHover")
+text = ""
+
+[node name="CardMargin" type="MarginContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 15.0
+offset_right = -18.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Card" type="VBoxContainer" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+mouse_filter = 2
+
+[node name="Tag" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.9, 0.94, 1)
+theme_override_font_sizes/font_size = 10
+text = "DESAFIO 06  •  RESPOSTA"
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.99, 1, 1)
+theme_override_font_sizes/font_size = 19
+text = "RESGATE NO DATA CENTER"
+mouse_filter = 2
+
+[node name="Hook" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.82, 0.86, 1)
+theme_override_font_sizes/font_size = 12
+text = "Corra pelos corredores e contenha os incidentes nos servidores."
+autowrap_mode = 2
+mouse_filter = 2
+
+[node name="Step1" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.48, 0.5, 1)
+theme_override_font_sizes/font_size = 11
+text = "◆ Quarentena  ◆ Acesso  ◆ Energia"
+mouse_filter = 2
+
+[node name="Fill" type="Control" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Action" type="Label" parent="Center/MainPanel/MainMargin/Content/Challenges/DataCenterButton/CardMargin/Card"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.94, 0.72, 1)
+theme_override_font_sizes/font_size = 12
+text = "JOGAR AGORA  →"
+mouse_filter = 2
+
+[node name="StatusLabel" type="Label" parent="Center/MainPanel/MainMargin/Content"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.42, 0.46, 1)
+theme_override_font_sizes/font_size = 11
+text = "Não foi possível abrir o desafio."
+horizontal_alignment = 1
+
+[node name="BottomRow" type="HBoxContainer" parent="Center/MainPanel/MainMargin/Content"]
+layout_mode = 2
+alignment = 1
+
+[node name="BackButton" type="Button" parent="Center/MainPanel/MainMargin/Content/BottomRow"]
+custom_minimum_size = Vector2(210, 34)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBack")
+text = "Voltar ao menu principal"
+
+[node name="Footer" type="Label" parent="Center/MainPanel/MainMargin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.32, 0.43, 0.48, 1)
+theme_override_font_sizes/font_size = 10
+text = "ESC volta ao menu principal"
+horizontal_alignment = 1
+
+[node name="RegistrationOverlay" type="Control" parent="."]
+visible = false
+z_index = 100
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="RegistrationOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.003, 0.008, 0.015, 0.92)
+
+[node name="RegistrationCenter" type="CenterContainer" parent="RegistrationOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RegistrationPanel" type="PanelContainer" parent="RegistrationOverlay/RegistrationCenter"]
+custom_minimum_size = Vector2(610, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleMainPanel")
+
+[node name="RegistrationMargin" type="MarginContainer" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 42
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 42
+theme_override_constants/margin_bottom = 30
+
+[node name="RegistrationContent" type="VBoxContainer" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Eyebrow" type="Label" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.34, 0.83, 0.88, 1)
+theme_override_font_sizes/font_size = 12
+text = "MODO FEIRA • NOVA SESSÃO"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "Quem vai jogar agora?"
+horizontal_alignment = 1
+
+[node name="Explanation" type="Label" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.68, 0.79, 0.83, 1)
+theme_override_font_sizes/font_size = 14
+text = "Digite um nome para criar uma sessão nova. Pontos, partidas e vitórias ficarão registrados somente neste computador. Sessões anteriores aparecem apenas no ranking e não podem ser retomadas."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="NameInput" type="LineEdit" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+placeholder_text = "Digite seu nome"
+max_length = 18
+select_all_on_focus = true
+
+[node name="ErrorLabel" type="Label" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.45, 0.48, 1)
+theme_override_font_sizes/font_size = 13
+text = "Digite um nome com pelo menos 2 caracteres."
+horizontal_alignment = 1
+
+[node name="Actions" type="HBoxContainer" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="RegistrationCancelButton" type="Button" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent/Actions"]
+custom_minimum_size = Vector2(180, 44)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBack")
+text = "VOLTAR AO MENU"
+
+[node name="StartParticipantButton" type="Button" parent="RegistrationOverlay/RegistrationCenter/RegistrationPanel/RegistrationMargin/RegistrationContent/Actions"]
+custom_minimum_size = Vector2(210, 44)
+layout_mode = 2
+text = "CRIAR E COMEÇAR"
+
+[node name="RankingOverlay" type="Control" parent="."]
+visible = false
+z_index = 110
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="RankingOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.003, 0.008, 0.015, 0.92)
+
+[node name="RankingCenter" type="CenterContainer" parent="RankingOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RankingPanel" type="PanelContainer" parent="RankingOverlay/RankingCenter"]
+custom_minimum_size = Vector2(840, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleMainPanel")
+
+[node name="RankingMargin" type="MarginContainer" parent="RankingOverlay/RankingCenter/RankingPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 26
+
+[node name="RankingContent" type="VBoxContainer" parent="RankingOverlay/RankingCenter/RankingPanel/RankingMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="RankingOverlay/RankingCenter/RankingPanel/RankingMargin/RankingContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "RANKING LOCAL"
+horizontal_alignment = 1
+
+[node name="Explanation" type="Label" parent="RankingOverlay/RankingCenter/RankingPanel/RankingMargin/RankingContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "Participantes anteriores são somente leitura. Para jogar, use sempre o jogador atual."
+horizontal_alignment = 1
+
+[node name="RankingScroll" type="ScrollContainer" parent="RankingOverlay/RankingCenter/RankingPanel/RankingMargin/RankingContent"]
+custom_minimum_size = Vector2(0, 280)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RankingText" type="Label" parent="RankingOverlay/RankingCenter/RankingPanel/RankingMargin/RankingContent/RankingScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.76, 0.87, 0.9, 1)
+theme_override_font_sizes/font_size = 15
+text = "Nenhum participante concluiu uma partida ainda."
+autowrap_mode = 2
+
+[node name="CloseRankingButton" type="Button" parent="RankingOverlay/RankingCenter/RankingPanel/RankingMargin/RankingContent"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "VOLTAR AOS DESAFIOS"
+
+[node name="ResetOverlay" type="Control" parent="."]
+visible = false
+z_index = 120
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="ResetOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.003, 0.008, 0.015, 0.94)
+
+[node name="ResetCenter" type="CenterContainer" parent="ResetOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResetPanel" type="PanelContainer" parent="ResetOverlay/ResetCenter"]
+custom_minimum_size = Vector2(590, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleMainPanel")
+
+[node name="ResetMargin" type="MarginContainer" parent="ResetOverlay/ResetCenter/ResetPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 28
+
+[node name="ResetContent" type="VBoxContainer" parent="ResetOverlay/ResetCenter/ResetPanel/ResetMargin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="ResetOverlay/ResetCenter/ResetPanel/ResetMargin/ResetContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.45, 0.48, 1)
+theme_override_font_sizes/font_size = 25
+text = "APAGAR TODO O RANKING?"
+horizontal_alignment = 1
+
+[node name="Warning" type="Label" parent="ResetOverlay/ResetCenter/ResetPanel/ResetMargin/ResetContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.82, 0.84, 1)
+theme_override_font_sizes/font_size = 14
+text = "Essa ação remove todos os participantes, partidas, vitórias e pontos gravados neste computador. Não será possível recuperar os dados."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Actions" type="HBoxContainer" parent="ResetOverlay/ResetCenter/ResetPanel/ResetMargin/ResetContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="CancelResetButton" type="Button" parent="ResetOverlay/ResetCenter/ResetPanel/ResetMargin/ResetContent/Actions"]
+custom_minimum_size = Vector2(180, 44)
+layout_mode = 2
+text = "CANCELAR"
+
+[node name="ConfirmResetButton" type="Button" parent="ResetOverlay/ResetCenter/ResetPanel/ResetMargin/ResetContent/Actions"]
+custom_minimum_size = Vector2(210, 44)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBack")
+text = "SIM, APAGAR TUDO"

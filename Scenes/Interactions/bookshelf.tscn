@@ -8,12 +8,10 @@
 size = Vector2(76, 54)
 
 [node name="Bookshelf" type="Area2D"]
-z_index = 6
 script = ExtResource("1_dnqco")
 BookshelfUIScene = ExtResource("2_f3bu2")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = -1
 texture_filter = 1
 texture = ExtResource("3_shelf")
 
