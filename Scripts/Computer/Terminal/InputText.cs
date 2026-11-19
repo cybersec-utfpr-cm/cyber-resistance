@@ -46,15 +46,16 @@ public partial class InputText : TextEdit
 
         private int exitLevels;
         private bool isPreparingEnvironment;
+        private bool hasRequestedInitialization;
 
-        public override async void _Ready()
+        public override void _Ready()
         {
                 outputText = GetNode<RichTextLabel>("../OutputText");
 
-                Computer computer = FindComputer();
+                Terminal terminal = FindTerminal();
 
                 connectionOverlay =
-                        computer?.GetNodeOrNull<Control>("ConnectionOverlay");
+                        terminal?.GetNodeOrNull<Control>("ConnectionOverlay");
 
                 statusLabel = connectionOverlay?.GetNodeOrNull<Label>(
                         "Center/Panel/Content/StatusLabel"
@@ -76,7 +77,7 @@ public partial class InputText : TextEdit
                         retryButton.Pressed += OnRetryPressed;
 
                 if (exitButton != null)
-                        exitButton.Pressed += ExitComputer;
+                        exitButton.Pressed += ReturnToDesktop;
 
                 terminalController = new TerminalController
                 {
@@ -121,8 +122,15 @@ public partial class InputText : TextEdit
 
                 Reset();
                 Editable = false;
+        }
 
-                await PrepareEnvironmentAsync();
+        public void EnsureStarted()
+        {
+                if (hasRequestedInitialization)
+                        return;
+
+                hasRequestedInitialization = true;
+                _ = PrepareEnvironmentAsync();
         }
 
         private async Task PrepareEnvironmentAsync()
@@ -133,7 +141,7 @@ public partial class InputText : TextEdit
                 isPreparingEnvironment = true;
 
                 ShowConnectingState(
-                        "Iniciando o computador...",
+                        "Iniciando o terminal...",
                         "Preparando o ambiente Docker e o terminal."
                 );
 
@@ -179,7 +187,7 @@ public partial class InputText : TextEdit
                         );
 
                         ShowFailureState(
-                                "Ocorreu um erro ao preparar o computador."
+                                "Ocorreu um erro ao preparar o terminal."
                         );
                 }
                 finally
@@ -191,7 +199,7 @@ public partial class InputText : TextEdit
         private void OnConnectionStarted()
         {
                 ShowConnectingState(
-                        "Iniciando o computador...",
+                        "Iniciando o terminal...",
                         "Conectando ao serviço do terminal."
                 );
         }
@@ -199,7 +207,7 @@ public partial class InputText : TextEdit
         private void OnConnectionDelayed()
         {
                 ShowConnectingState(
-                        "Ainda estamos preparando o computador...",
+                        "Ainda estamos preparando o terminal...",
                         "A inicialização está demorando mais que o esperado."
                 );
         }
@@ -213,18 +221,6 @@ public partial class InputText : TextEdit
 
                 GrabFocus();
 
-                int tutorialStage =
-                        QuestManager.Instance?.GetQuestStage("tutorial") ?? 0;
-
-                if (tutorialStage == 3)
-                {
-                        QuestManager.Instance.SetQuestStage("tutorial", 4);
-
-                        GD.Print(
-                                "InputText: tutorial avançado após conexão " +
-                                "bem-sucedida com o computador."
-                        );
-                }
         }
 
         private void OnConnectionFailed(string message)
@@ -268,7 +264,7 @@ public partial class InputText : TextEdit
                         connectionOverlay.Visible = true;
 
                 if (statusLabel != null)
-                        statusLabel.Text = "Não foi possível acessar o computador";
+                        statusLabel.Text = "Terminal indisponível";
 
                 if (detailLabel != null)
                         detailLabel.Text = message;
@@ -293,6 +289,21 @@ public partial class InputText : TextEdit
                 GD.PrintErr(
                         "InputText: não foi possível localizar a interface " +
                         "do computador."
+                );
+        }
+
+        private void ReturnToDesktop()
+        {
+                Terminal terminal = FindTerminal();
+
+                if (terminal != null)
+                {
+                        terminal.ReturnToDesktop();
+                        return;
+                }
+
+                GD.PrintErr(
+                        "InputText: não foi possível voltar à área de trabalho."
                 );
         }
 
@@ -334,6 +345,21 @@ public partial class InputText : TextEdit
                 {
                         if (current is Computer computer)
                                 return computer;
+
+                        current = current.GetParent();
+                }
+
+                return null;
+        }
+
+        private Terminal FindTerminal()
+        {
+                Node current = this;
+
+                while (current != null)
+                {
+                        if (current is Terminal terminal)
+                                return terminal;
 
                         current = current.GetParent();
                 }
