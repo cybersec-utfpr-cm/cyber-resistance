@@ -144,7 +144,7 @@ public partial class MainMenu : Control
 		OpenFairMode();
 	}
 
-	private void OnExitPressed()
+	private async void OnExitPressed()
 	{
 		if (_isBusy)
 			return;
@@ -229,42 +229,38 @@ public partial class MainMenu : Control
 
 	private void OpenGameScene()
 	{
-		_newGameButton.Disabled = true;
-		_continueButton.Disabled = true;
-		_fairModeButton.Disabled = true;
-		_exitButton.Disabled = true;
+		SetMenuBusy(true);
 
 		Error error = GetTree().ChangeSceneToFile(GameScenePath);
 
 		if (error == Error.Ok)
 			return;
 
-		_newGameButton.Disabled = false;
-		_continueButton.Disabled =
-			!(SaveManager.Instance?.HasSaveGame() ?? false);
-		_fairModeButton.Disabled = false;
-		_exitButton.Disabled = false;
+		SetMenuBusy(false);
 		ShowStatus($"Não foi possível abrir o jogo: {error}.");
 	}
 
 	private void OpenFairMode()
 	{
-		_newGameButton.Disabled = true;
-		_continueButton.Disabled = true;
-		_fairModeButton.Disabled = true;
-		_exitButton.Disabled = true;
+		SetMenuBusy(true);
 
 		Error error = GetTree().ChangeSceneToFile(FairModeScenePath);
 
 		if (error == Error.Ok)
 			return;
 
-		_newGameButton.Disabled = false;
-		_continueButton.Disabled =
-			!(SaveManager.Instance?.HasSaveGame() ?? false);
-		_fairModeButton.Disabled = false;
-		_exitButton.Disabled = false;
+		SetMenuBusy(false);
 		ShowStatus($"Não foi possível abrir o Modo Feira: {error}.");
+	}
+
+	private void SetMenuBusy(bool isBusy)
+	{
+		_isBusy = isBusy;
+		_newGameButton.Disabled = isBusy;
+		_continueButton.Disabled =
+			isBusy || !(SaveManager.Instance?.HasSaveGame() ?? false);
+		_fairModeButton.Disabled = isBusy;
+		_exitButton.Disabled = isBusy;
 	}
 
 	private void ShowStatus(string message)
