@@ -21,9 +21,9 @@ jobs:
           echo "Target branch: ${{ github.base_ref }}"
           echo "Source branch: ${{ github.head_ref }}"
 
-          if [ "${{ github.base_ref }}" = "main" ] && [ "${{ github.head_ref }}" != "project-restart" ]; then
-            echo "Erro: pull requests para main devem vir somente da branch project-restart."
-            echo "Abra a PR apontando para project-restart, ou faca merge de project-restart para main."
+          if [ "${{ github.base_ref }}" = "main" ] && [ "${{ github.head_ref }}" != "dev*" ]; then
+            echo "Erro: pull requests para main devem vir somente da branch de desenvolvimento."
+            echo "Abra a PR apontando para a branch de desenvolvimento, ou faca merge da branch de desenvolvimento para main."
             exit 1
           fi
 
