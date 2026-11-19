@@ -1,8 +1,16 @@
 FROM kalilinux/kali-last-release
 
 RUN apt update && \
-    apt install -y inetutils-inetd inetutils-telnetd telnetd login sudo && \
-    apt clean
+    apt install -y --no-install-recommends \
+        inetutils-inetd \
+        inetutils-telnetd \
+        telnetd \
+        login \
+        sudo \
+        openssh-client \
+        netcat-openbsd && \
+    apt clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Adiciona um usuário para login via telnet (senha: player)
 RUN useradd -m -s /bin/bash player && \
