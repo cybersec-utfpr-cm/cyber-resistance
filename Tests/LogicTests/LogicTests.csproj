@@ -12,5 +12,7 @@
 	<Compile Include="../../Scripts/Core/SaveGameData.cs" Link="SaveGameData.cs" />
 	<Compile Include="../../Scripts/Computer/Terminal/TelnetInterface.cs" Link="TelnetInterface.cs" />
 	<Compile Include="../../Scripts/Computer/Terminal/TerminalOutputSanitizer.cs" Link="TerminalOutputSanitizer.cs" />
+	<Compile Include="../../Scripts/Computer/Terminal/TerminalBuffer.cs" Link="TerminalBuffer.cs" />
+	<Compile Include="../../Scripts/Computer/Terminal/TerminalKeyboard.cs" Link="TerminalKeyboard.cs" />
   </ItemGroup>
 </Project>

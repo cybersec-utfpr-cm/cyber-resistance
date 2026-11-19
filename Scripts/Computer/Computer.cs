@@ -54,6 +54,9 @@ public partial class Computer : Control
 
 	public override void _Input(InputEvent @event)
 	{
+		if (_terminal is Terminal terminal && terminal.HasTerminalFocus)
+			return;
+
 		if (
 			@event.IsActionPressed("ui_cancel") &&
 			!@event.IsEcho()

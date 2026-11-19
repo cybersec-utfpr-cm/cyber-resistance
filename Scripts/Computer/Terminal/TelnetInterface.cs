@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,8 +22,11 @@ namespace TelnetInterface
 
 	enum Options
 	{
+		BINARY = 0,
 		ECHO = 1,
-		SGA = 3
+		SGA = 3,
+		TERMINAL_TYPE = 24,
+		NAWS = 31
 	}
 
 	enum TelnetParseState
@@ -37,12 +41,21 @@ namespace TelnetInterface
 	public sealed class TelnetConnection : IDisposable
 	{
 		private const int ReadBufferSize = 4096;
+		private static readonly Regex _loginControlSequences = new(
+			@"\x1B(?:\[[0-?]*[ -/]*[@-~]|\][^\x07\x1B]*(?:\x07|\x1B\\))",
+			RegexOptions.CultureInvariant
+		);
 
 		private readonly TcpClient _tcpSocket;
 		private readonly NetworkStream _networkStream;
 		private readonly Decoder _utf8Decoder = Encoding.UTF8.GetDecoder();
 		private readonly SemaphoreSlim _writeLock = new(1, 1);
 		private readonly byte[] _readBuffer = new byte[ReadBufferSize];
+		private readonly HashSet<byte> _localOptions = new();
+		private readonly HashSet<byte> _remoteOptions = new();
+		private readonly List<byte> _subnegotiation = new();
+		private int _columns = 80;
+		private int _rows = 24;
 
 		private TelnetParseState _parseState = TelnetParseState.Data;
 		private Verbs _negotiationVerb;
@@ -149,13 +162,67 @@ namespace TelnetInterface
 		)
 		{
 			ArgumentNullException.ThrowIfNull(value);
+			await WriteAsync(Encoding.UTF8.GetBytes(value), cancellationToken);
+		}
+
+		public async Task WriteAsync(
+			byte[] bytes,
+			CancellationToken cancellationToken
+		)
+		{
+			ArgumentNullException.ThrowIfNull(bytes);
 			ThrowIfClosed();
 
-			byte[] bytes = Encoding.UTF8.GetBytes(value);
 			await WriteRawAsync(EscapeTelnetData(bytes), cancellationToken);
 		}
 
+		public async Task SetWindowSizeAsync(
+			int columns,
+			int rows,
+			CancellationToken cancellationToken
+		)
+		{
+			await _writeLock.WaitAsync(cancellationToken);
+
+			try
+			{
+				ThrowIfClosed();
+				columns = Math.Clamp(columns, 1, ushort.MaxValue);
+				rows = Math.Clamp(rows, 1, ushort.MaxValue);
+
+				if (_columns == columns && _rows == rows)
+					return;
+
+				_columns = columns;
+				_rows = rows;
+
+				if (_localOptions.Contains((byte)Options.NAWS))
+				{
+					var response = new List<byte>();
+					AppendWindowSize(response);
+					await _networkStream.WriteAsync(response.ToArray(), cancellationToken);
+				}
+			}
+			finally
+			{
+				_writeLock.Release();
+			}
+		}
+
 		public async Task<string> ReadAsync(
+			CancellationToken cancellationToken
+		)
+		{
+			byte[] data = await ReadDataAsync(cancellationToken);
+
+			if (data != null)
+				return DecodeUtf8(data, false);
+
+			string remainingText = DecodeUtf8(ReadOnlySpan<byte>.Empty, true);
+			return remainingText.Length == 0 ? null : remainingText;
+		}
+
+		public async Task<byte[]> ReadDataAsync(
 			CancellationToken cancellationToken
 		)
 		{
@@ -172,40 +239,41 @@ namespace TelnetInterface
 			if (bytesRead == 0)
 			{
 				_remoteClosed = true;
-				string remainingText = DecodeUtf8(
-					ReadOnlySpan<byte>.Empty,
-					true
-				);
-
-				return remainingText.Length == 0 ? null : remainingText;
+				return null;
 			}
 
 			byte[] applicationData = new byte[bytesRead];
 			int applicationDataLength = 0;
 			var negotiationResponse = new List<byte>();
 
-			for (int index = 0; index < bytesRead; index++)
+			await _writeLock.WaitAsync(cancellationToken);
+			try
 			{
-				ParseTelnetByte(
-					_readBuffer[index],
-					applicationData,
-					ref applicationDataLength,
-					negotiationResponse
-				);
+				for (int index = 0; index < bytesRead; index++)
+				{
+					ParseTelnetByte(
+						_readBuffer[index],
+						applicationData,
+						ref applicationDataLength,
+						negotiationResponse
+					);
+				}
+
+				if (negotiationResponse.Count > 0)
+				{
+					await _networkStream.WriteAsync(
+						negotiationResponse.ToArray(),
+						cancellationToken
+					);
+				}
+			}
+			finally
+			{
+				_writeLock.Release();
 			}
 
-			if (negotiationResponse.Count > 0)
-			{
-				await WriteRawAsync(
-					negotiationResponse.ToArray(),
-					cancellationToken
-				);
-			}
-
-			return DecodeUtf8(
-				applicationData.AsSpan(0, applicationDataLength),
-				false
-			);
+			Array.Resize(ref applicationData, applicationDataLength);
+			return applicationData;
 		}
 
 		public bool IsConnected
@@ -245,7 +313,10 @@ namespace TelnetInterface
 			CancellationToken cancellationToken
 		)
 		{
-			while (!isComplete(output))
+			// Inspect the prompt without changing the bytes displayed by the emulator.
+			while (!isComplete(new StringBuilder(
+				_loginControlSequences.Replace(output.ToString(), string.Empty)
+			)))
 			{
 				string fragment = await ReadAsync(cancellationToken);
 
@@ -316,9 +387,18 @@ namespace TelnetInterface
 					{
 						_parseState = TelnetParseState.SubnegotiationIac;
 					}
+					else if (_subnegotiation.Count < 128)
+					{
+						_subnegotiation.Add(input);
+					}
 					break;
 
 				case TelnetParseState.SubnegotiationIac:
+					if (input == (byte)Verbs.SE)
+						AppendSubnegotiationResponse(negotiationResponse);
+					else if (input == (byte)Verbs.IAC && _subnegotiation.Count < 128)
+						_subnegotiation.Add(input);
+
 					_parseState = input == (byte)Verbs.SE
 						? TelnetParseState.Data
 						: TelnetParseState.Subnegotiation;
@@ -341,6 +421,7 @@ namespace TelnetInterface
 
 			if (input == (byte)Verbs.SB)
 			{
+				_subnegotiation.Clear();
 				_parseState = TelnetParseState.Subnegotiation;
 				return;
 			}
@@ -360,32 +441,109 @@ namespace TelnetInterface
 			_parseState = TelnetParseState.Data;
 		}
 
-		private static void AppendNegotiationResponse(
+		private void AppendNegotiationResponse(
 			Verbs verb,
 			byte option,
 			List<byte> response
 		)
 		{
-			Verbs responseVerb = verb switch
+			switch (verb)
 			{
-				Verbs.DO => option == (byte)Options.SGA
-					? Verbs.WILL
-					: Verbs.WONT,
-				Verbs.WILL => IsAcceptedServerOption(option)
-					? Verbs.DO
-					: Verbs.DONT,
-				Verbs.DONT => Verbs.WONT,
-				_ => Verbs.DONT
-			};
+				case Verbs.DO:
+					if (!IsAcceptedClientOption(option))
+					{
+						AppendOption(response, Verbs.WONT, option);
+					}
+					else if (_localOptions.Add(option))
+					{
+						AppendOption(response, Verbs.WILL, option);
 
+						if (option == (byte)Options.NAWS)
+							AppendWindowSize(response);
+					}
+					break;
+
+				case Verbs.WILL:
+					if (!IsAcceptedServerOption(option))
+						AppendOption(response, Verbs.DONT, option);
+					else if (_remoteOptions.Add(option))
+						AppendOption(response, Verbs.DO, option);
+					break;
+
+				case Verbs.DONT:
+					if (_localOptions.Remove(option))
+						AppendOption(response, Verbs.WONT, option);
+					break;
+
+				case Verbs.WONT:
+					if (_remoteOptions.Remove(option))
+						AppendOption(response, Verbs.DONT, option);
+					break;
+			}
+		}
+
+		private static void AppendOption(List<byte> response, Verbs verb, byte option)
+		{
 			response.Add((byte)Verbs.IAC);
-			response.Add((byte)responseVerb);
+			response.Add((byte)verb);
 			response.Add(option);
+		}
+
+		private void AppendSubnegotiationResponse(List<byte> response)
+		{
+			if (
+				_subnegotiation.Count == 2 &&
+				_subnegotiation[0] == (byte)Options.TERMINAL_TYPE &&
+				_subnegotiation[1] == 1 &&
+				_localOptions.Contains((byte)Options.TERMINAL_TYPE)
+			)
+			{
+				AppendSubnegotiation(
+					response,
+					Options.TERMINAL_TYPE,
+					Encoding.ASCII.GetBytes("\0xterm-256color")
+				);
+			}
+		}
+
+		private void AppendWindowSize(List<byte> response)
+		{
+			AppendSubnegotiation(
+				response,
+				Options.NAWS,
+				new byte[]
+				{
+					(byte)(_columns >> 8), (byte)_columns,
+					(byte)(_rows >> 8), (byte)_rows
+				}
+			);
+		}
+
+		private static void AppendSubnegotiation(
+			List<byte> response,
+			Options option,
+			byte[] payload
+		)
+		{
+			AppendOption(response, Verbs.SB, (byte)option);
+			response.AddRange(EscapeTelnetData(payload));
+			response.Add((byte)Verbs.IAC);
+			response.Add((byte)Verbs.SE);
+		}
+
+		private static bool IsAcceptedClientOption(byte option)
+		{
+			return option is
+				(byte)Options.BINARY or
+				(byte)Options.SGA or
+				(byte)Options.TERMINAL_TYPE or
+				(byte)Options.NAWS;
 		}
 
 		private static bool IsAcceptedServerOption(byte option)
 		{
 			return
+				option == (byte)Options.BINARY ||
 				option == (byte)Options.ECHO ||
 				option == (byte)Options.SGA;
 		}

@@ -22,6 +22,15 @@ public static class Program
 		Run("mantém a flag fora do comando Docker", KeepsFlagOutOfDockerCommand);
 		Run("compara flag sem alterar persistência", ComparesFlagInput);
 		Run("preserva flag ao serializar o save", PersistsFlagAcrossSerialization);
+		Run("interpreta UTF-8 e controles de tela fragmentados", TerminalBufferTests.PreservesFragmentedScreenState);
+		Run("sobrescreve e edita linhas do terminal", TerminalBufferTests.OverwritesAndEditsExistingLines);
+		Run("aplica quebra automática e histórico limitado", TerminalBufferTests.WrapsAndKeepsBoundedHistory);
+		Run("restaura shell depois da tela alternativa", TerminalBufferTests.RestoresShellAfterAlternateScreen);
+		Run("limita rolagem à região do programa", TerminalBufferTests.LimitsScrollingToTheProgramRegion);
+		Run("preserva cores e atributos do terminal", TerminalBufferTests.KeepsColorsAndCharacterAttributes);
+		Run("posiciona caracteres largos e acentos combinados", TerminalBufferTests.KeepsWideAndCombiningCharactersInCells);
+		Run("redimensiona preservando a linha do cursor", TerminalBufferTests.ResizesWithoutLosingTheCursorLine);
+		Run("codifica teclas e colagem do terminal", TerminalBufferTests.EncodesInteractiveKeysAndPaste);
 		await RunAsync(
 			"entrega o prompt inicial do login Telnet",
 			TerminalStreamingTests.DeliversInitialPromptAsync
@@ -58,6 +67,13 @@ public static class Program
 			"delega eco e ocultação de senha ao servidor",
 			TerminalStreamingTests.UsesServerControlledEchoAsync
 		);
+
+		await RunAsync("envia teclas sem acrescentar Enter", TerminalStreamingTests.WritesInteractiveBytesAsync);
+		await RunAsync("reconhece login com prompt colorido", TerminalStreamingTests.RecognizesStyledLoginPromptAsync);
+		await RunAsync("preserva controles de cursor e tela", TerminalStreamingTests.PreservesScreenControlBytesAsync);
+		await RunAsync("negocia tipo de terminal fragmentado", TerminalStreamingTests.NegotiatesTerminalTypeAsync);
+		await RunAsync("negocia tamanho e redimensionamento", TerminalStreamingTests.NegotiatesWindowSizeAsync);
+		await RunAsync("negocia BINARY e eco sem ciclos", TerminalStreamingTests.NegotiatesBinaryWithoutEchoLoopAsync);
 
 		Console.WriteLine($"\nResultado: {_passed} passou; {_failed} falhou.");
 		return _failed == 0 ? 0 : 1;

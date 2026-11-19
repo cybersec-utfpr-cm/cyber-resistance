@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://5pp3p77prsf6"]
+[gd_scene load_steps=5 format=3 uid="uid://5pp3p77prsf6"]
 
 [ext_resource type="Script" uid="uid://wwrcmdmm8vo5" path="res://Scripts/Computer/Terminal/Terminal.cs" id="1_3q2kj"]
 [ext_resource type="Script" uid="uid://csgpoymc47tv6" path="res://Scripts/Computer/Terminal/InputText.cs" id="2_lrjhj"]
 [ext_resource type="Theme" uid="uid://do6fllrcg1xgf" path="res://Resources/Themes/computer_theme.tres" id="3_theme"]
+[ext_resource type="Script" path="res://Scripts/Computer/Terminal/TerminalSurface.cs" id="4_surface"]
 
 [node name="Terminal" type="Control"]
 layout_mode = 3
@@ -59,7 +60,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 theme_override_colors/font_color = Color(0.36, 0.84, 0.55, 1)
 theme_override_font_sizes/font_size = 15
-text = "● SESSÃO SEGURA"
+text = "● DESCONECTADO"
 vertical_alignment = 1
 
 [node name="ContentMargin" type="MarginContainer" parent="."]
@@ -74,28 +75,20 @@ offset_bottom = -22.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TerminalContent" type="VBoxContainer" parent="ContentMargin"]
+[node name="TerminalScreen" type="Control" parent="ContentMargin"]
 layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="OutputText" type="RichTextLabel" parent="ContentMargin/TerminalContent"]
-layout_mode = 2
-size_flags_vertical = 3
-focus_mode = 2
-scroll_following = true
-selection_enabled = true
-
-[node name="InputHint" type="Label" parent="ContentMargin/TerminalContent"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.38, 0.58, 0.62, 1)
-theme_override_font_sizes/font_size = 13
-text = "COMANDO"
-
-[node name="InputText" type="TextEdit" parent="ContentMargin/TerminalContent"]
-custom_minimum_size = Vector2(0, 54)
-layout_mode = 2
-placeholder_text = "Digite um comando e pressione Enter"
 script = ExtResource("2_lrjhj")
+
+[node name="Emulator" type="Control" parent="ContentMargin/TerminalScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 2
+tooltip_text = "Ctrl+Shift+C: copiar seleção | Ctrl+Shift+V: colar"
+script = ExtResource("4_surface")
 
 [node name="ConnectionOverlay" type="ColorRect" parent="."]
 z_index = 100

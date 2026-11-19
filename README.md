@@ -129,6 +129,21 @@ A máquina Docker do jogador é inicializada quando a cena principal do jogo é 
 
 Com isso, abrir/fechar a tela de terminal não liga/desliga a máquina; o terminal apenas se conecta ao ambiente já ativo.
 
+O terminal tem uma única área de entrada e saída, usando o tema da interface
+do computador e controles do próprio projeto. Clique nessa área para recuperar
+o foco. Enquanto ela estiver em foco, as teclas são tratadas pelo terminal,
+sem acionar a navegação dos botões da interface.
+
+As teclas são enviadas diretamente à sessão Telnet, incluindo `Tab`, setas,
+`Ctrl+C`, `Ctrl+D` e `Esc`. Use `Ctrl+Shift+C` para copiar a seleção e
+`Ctrl+Shift+V` ou `Shift+Insert` para colar. Comandos como `clear`, `ssh`, `su`
+e `exit` são executados pelo container. Ao encerrar a sessão principal,
+a interface oferece uma nova conexão. O botão de voltar mantém a sessão
+aberta enquanto retorna à área de trabalho.
+
+O cliente informa o tipo `xterm-256color` e negocia o tamanho da tela por NAWS,
+atualizando linhas e colunas ao redimensionar a área do emulador.
+
 ### 7. Áudio e menu de pausa
 
 Durante o jogo, pressione `ESC` para pausar. O menu permite continuar, voltar ao
@@ -142,6 +157,8 @@ menu principal e controlar separadamente:
 Os volumes são preservados entre execuções. Se uma interface modal estiver
 aberta, como computador, estante, quiz ou prova, o primeiro `ESC` fecha essa
 interface; o `ESC` seguinte abre o menu de pausa.
+Quando o terminal estiver com foco, `ESC` é enviado ao programa no container;
+use o botão de voltar para sair da tela do terminal.
 
 Os arquivos de áudio ficam em `Assets/Audio`. Consulte o README dessa pasta para
 substituir músicas ou efeitos mantendo a integração existente.

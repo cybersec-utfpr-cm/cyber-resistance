@@ -3,11 +3,12 @@ using Godot;
 public partial class Terminal : Control
 {
 	private InputText _inputText;
+	public bool HasTerminalFocus => _inputText?.HasTerminalFocus ?? false;
 
 	public override void _Ready()
 	{
 		_inputText = GetNodeOrNull<InputText>(
-			"ContentMargin/TerminalContent/InputText"
+			"ContentMargin/TerminalScreen"
 		);
 		VisibilityChanged += OnVisibilityChanged;
 

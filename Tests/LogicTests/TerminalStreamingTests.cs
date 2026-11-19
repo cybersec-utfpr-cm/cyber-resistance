@@ -478,6 +478,265 @@ public static class TerminalStreamingTests
 		await server.Completion.WaitAsync(testCts.Token);
 	}
 
+	public static async Task RecognizesStyledLoginPromptAsync()
+	{
+		const string shell = "\u001b]0;player@machine\u0007\u001b[32mplayer@machine:~$ \u001b[0m\u001b[?2004h";
+		await using var server = new LoopbackServer(
+			async (stream, token) =>
+			{
+				await WriteTextAsync(stream, "\u001b[32mlogin:\u001b[0m ", token);
+				Equal("player", await ReadLineAsync(stream, token));
+				await WriteTextAsync(stream, "\u001b[32mPassword:\u001b[0m ", token);
+				Equal("player", await ReadLineAsync(stream, token));
+				await WriteTextAsync(stream, shell, token);
+			}
+		);
+		using var cts = new CancellationTokenSource(TestTimeout);
+		using var connection = await TelnetConnection.ConnectAsync(
+			"127.0.0.1", server.Port, cts.Token
+		);
+
+		string output = await connection.LoginAsync("player", "player", 2000, cts.Token);
+		Contains(shell, output);
+		await server.Completion.WaitAsync(cts.Token);
+	}
+
+	public static async Task WritesInteractiveBytesAsync()
+	{
+		byte[] expected = Combine(
+			Encoding.UTF8.GetBytes("ação"),
+			new byte[] { 27, 91, 65, 3, 4, 9, 127, 13, 255, 255, 26 }
+		);
+		await using var server = new LoopbackServer(
+			async (stream, token) =>
+			{
+				SequenceEqual(
+					expected,
+					await ReadExactlyAsync(stream, expected.Length, token),
+					"A entrada ganhou uma quebra de linha ou perdeu bytes de controle."
+				);
+			}
+		);
+		using var cts = new CancellationTokenSource(TestTimeout);
+		using var connection = await TelnetConnection.ConnectAsync(
+			"127.0.0.1", server.Port, cts.Token
+		);
+
+		await connection.WriteAsync("ação", cts.Token);
+		await connection.WriteAsync(
+			new byte[] { 27, 91, 65, 3, 4, 9, 127, 13, 255 }, cts.Token
+		);
+		await connection.WriteAsync(new byte[] { 26 }, cts.Token);
+		await server.Completion.WaitAsync(cts.Token);
+	}
+
+	public static async Task PreservesScreenControlBytesAsync()
+	{
+		byte[] controls = Encoding.UTF8.GetBytes(
+			"\u001b[?1049h\u001b[2J\u001b[3;8HAção\r\b\u001b[6n\u001b[?1049l"
+		);
+		byte[] expected = Combine(controls, new byte[] { 255 });
+		await using var server = new LoopbackServer(
+			async (stream, token) =>
+			{
+				await WriteAsync(stream, Combine(controls, new byte[] { 255, 255 }), token);
+			}
+		);
+		using var cts = new CancellationTokenSource(TestTimeout);
+		using var connection = await TelnetConnection.ConnectAsync(
+			"127.0.0.1", server.Port, cts.Token
+		);
+		var received = new List<byte>();
+
+		while (true)
+		{
+			byte[] data = await connection.ReadDataAsync(cts.Token);
+			if (data == null)
+				break;
+			received.AddRange(data);
+		}
+
+		SequenceEqual(expected, received.ToArray(), "Os controles de tela foram alterados.");
+		await server.Completion.WaitAsync(cts.Token);
+	}
+
+	public static async Task NegotiatesTerminalTypeAsync()
+	{
+		byte[][] fragments =
+		{
+			new byte[] { 255, 250, 24 },
+			new byte[] { 1, 255 },
+			new byte[] { 240 }
+		};
+		var sent = fragments.Select(_ => NewSignal()).ToArray();
+		var consumed = fragments.Select(_ => NewSignal()).ToArray();
+		byte[] terminalType = Combine(
+			new byte[] { 255, 250, 24, 0 },
+			Combine(Encoding.ASCII.GetBytes("xterm-256color"), new byte[] { 255, 240 })
+		);
+
+		await using var server = new LoopbackServer(
+			async (stream, token) =>
+			{
+				await WriteAsync(stream, new byte[] { 255, 253, 24, (byte)'a' }, token);
+				SequenceEqual(
+					new byte[] { 255, 251, 24 },
+					await ReadExactlyAsync(stream, 3, token),
+					"O cliente não aceitou TERMINAL-TYPE."
+				);
+				for (int index = 0; index < fragments.Length; index++)
+				{
+					await WriteAsync(stream, fragments[index], token);
+					sent[index].TrySetResult(true);
+					await consumed[index].Task.WaitAsync(token);
+				}
+				SequenceEqual(
+					terminalType,
+					await ReadExactlyAsync(stream, terminalType.Length, token),
+					"O tipo de terminal não foi informado após o SEND fragmentado."
+				);
+				await WriteAsync(
+					stream,
+					new byte[] { 255, 253, 24, 255, 250, 24, 1, 255, 240, (byte)'b' },
+					token
+				);
+				SequenceEqual(
+					terminalType,
+					await ReadExactlyAsync(stream, terminalType.Length, token),
+					"A negociação repetida gerou um ciclo ou mudou o tipo de terminal."
+				);
+			}
+		);
+		using var cts = new CancellationTokenSource(TestTimeout);
+		using var connection = await TelnetConnection.ConnectAsync(
+			"127.0.0.1", server.Port, cts.Token
+		);
+
+		await ReadMarkerAsync(connection, "a", cts.Token);
+		for (int index = 0; index < fragments.Length; index++)
+		{
+			await sent[index].Task.WaitAsync(cts.Token);
+			Equal(string.Empty, await connection.ReadAsync(cts.Token));
+			consumed[index].TrySetResult(true);
+		}
+		await ReadMarkerAsync(connection, "b", cts.Token);
+		await server.Completion.WaitAsync(cts.Token);
+	}
+
+	public static async Task NegotiatesWindowSizeAsync()
+	{
+		await using var server = new LoopbackServer(
+			async (stream, token) =>
+			{
+				await WriteAsync(stream, new byte[] { 255, 253, 31, (byte)'a' }, token);
+				SequenceEqual(
+					new byte[] { 255, 251, 31, 255, 250, 31, 0, 120, 0, 40, 255, 240 },
+					await ReadExactlyAsync(stream, 12, token),
+					"O tamanho inicial da tela não chegou na negociação NAWS."
+				);
+				SequenceEqual(
+					new byte[] { 255, 250, 31, 0, 255, 255, 1, 255, 255, 255, 240 },
+					await ReadExactlyAsync(stream, 11, token),
+					"O redimensionamento não escapou os bytes IAC."
+				);
+				await WriteAsync(stream, new byte[] { 255, 254, 31, (byte)'b' }, token);
+				SequenceEqual(
+					new byte[] { 255, 252, 31, (byte)'z' },
+					await ReadExactlyAsync(stream, 4, token),
+					"O cliente continuou enviando NAWS após DONT."
+				);
+				await WriteAsync(stream, new byte[] { 255, 253, 31, (byte)'c' }, token);
+				SequenceEqual(
+					new byte[] { 255, 251, 31, 255, 250, 31, 0, 80, 0, 24, 255, 240 },
+					await ReadExactlyAsync(stream, 12, token),
+					"O cliente não retomou NAWS com o tamanho mais recente."
+				);
+				await WriteAsync(stream, new byte[] { 255, 253, 31, (byte)'d' }, token);
+				Equal((byte)'q', (await ReadExactlyAsync(stream, 1, token))[0]);
+			}
+		);
+		using var cts = new CancellationTokenSource(TestTimeout);
+		using var connection = await TelnetConnection.ConnectAsync(
+			"127.0.0.1", server.Port, cts.Token
+		);
+
+		await connection.SetWindowSizeAsync(120, 40, cts.Token);
+		await ReadMarkerAsync(connection, "a", cts.Token);
+		await connection.SetWindowSizeAsync(255, 511, cts.Token);
+		await ReadMarkerAsync(connection, "b", cts.Token);
+		await connection.SetWindowSizeAsync(80, 24, cts.Token);
+		await connection.WriteAsync("z", cts.Token);
+		await ReadMarkerAsync(connection, "c", cts.Token);
+		await ReadMarkerAsync(connection, "d", cts.Token);
+		await connection.WriteAsync("q", cts.Token);
+		await server.Completion.WaitAsync(cts.Token);
+	}
+
+	public static async Task NegotiatesBinaryWithoutEchoLoopAsync()
+	{
+		byte[] negotiation =
+		{
+			255, 253, 0, 255, 251, 0,
+			255, 253, 99, 255, 251, 99,
+			255, 251, 1, 255, 253, 1, (byte)'a'
+		};
+		byte[] expected =
+		{
+			255, 251, 0, 255, 253, 0,
+			255, 252, 99, 255, 254, 99,
+			255, 253, 1, 255, 252, 1
+		};
+		await using var server = new LoopbackServer(
+			async (stream, token) =>
+			{
+				await WriteAsync(stream, negotiation, token);
+				SequenceEqual(
+					expected,
+					await ReadExactlyAsync(stream, expected.Length, token),
+					"BINARY, ECHO ou opções não suportadas foram negociados incorretamente."
+				);
+				await WriteAsync(
+					stream, new byte[] { 255, 253, 0, 255, 251, 0, (byte)'b' }, token
+				);
+				Equal((byte)'x', (await ReadExactlyAsync(stream, 1, token))[0]);
+				await WriteAsync(
+					stream, new byte[] { 255, 254, 0, 255, 252, 0, 255, 252, 1, (byte)'c' }, token
+				);
+				SequenceEqual(
+					new byte[] { 255, 252, 0, 255, 254, 0, 255, 254, 1 },
+					await ReadExactlyAsync(stream, 9, token),
+					"O encerramento das opções não foi reconhecido."
+				);
+			}
+		);
+		using var cts = new CancellationTokenSource(TestTimeout);
+		using var connection = await TelnetConnection.ConnectAsync(
+			"127.0.0.1", server.Port, cts.Token
+		);
+
+		await ReadMarkerAsync(connection, "a", cts.Token);
+		await ReadMarkerAsync(connection, "b", cts.Token);
+		await connection.WriteAsync("x", cts.Token);
+		await ReadMarkerAsync(connection, "c", cts.Token);
+		await server.Completion.WaitAsync(cts.Token);
+	}
+
+	private static async Task ReadMarkerAsync(
+		TelnetConnection connection,
+		string marker,
+		CancellationToken token
+	)
+	{
+		var output = new StringBuilder();
+		while (!output.ToString().Contains(marker, StringComparison.Ordinal))
+		{
+			string fragment = await connection.ReadAsync(token);
+			if (fragment == null)
+				throw new IOException("A conexão terminou antes do marcador.");
+			output.Append(fragment);
+		}
+	}
+
 	private static async Task<T> CompleteWithinAsync<T>(
 		Task<T> task,
 		TimeSpan timeout,

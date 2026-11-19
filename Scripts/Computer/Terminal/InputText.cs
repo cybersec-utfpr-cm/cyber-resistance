@@ -1,415 +1,263 @@
 using Godot;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
-public partial class InputText : TextEdit
+public partial class InputText : Control
 {
-        [Export] public string terminalHost = "127.0.0.1";
-        [Export] public int terminalPort = 5000;
-        [Export] public string terminalUsername = "player";
-        [Export] public string terminalPassword = "player";
-        [Export] public int terminalLoginTimeoutMs = 1000;
-        [Export] public int terminalMaxAttempts = 10;
-        [Export] public int terminalRetryDelayMs = 750;
-        [Export] public int terminalSlowWarningAttempt = 4;
-        [Export] public int terminalTotalTimeoutMs = 15000;
+	[Export] public string terminalHost = "127.0.0.1";
+	[Export] public int terminalPort = 5000;
+	[Export] public string terminalUsername = "player";
+	[Export] public string terminalPassword = "player";
+	[Export] public int terminalLoginTimeoutMs = 1000;
+	[Export] public int terminalMaxAttempts = 10;
+	[Export] public int terminalRetryDelayMs = 750;
+	[Export] public int terminalSlowWarningAttempt = 4;
+	[Export] public int terminalTotalTimeoutMs = 15000;
 
-        private RichTextLabel outputText;
-        private TerminalController terminalController;
-        private readonly TerminalOutputSanitizer terminalOutputSanitizer = new();
+	private TerminalSurface _emulator;
+	private TerminalController _terminalController;
+	private Terminal _terminal;
+	private Control _connectionOverlay;
+	private Label _statusLabel;
+	private Label _detailLabel;
+	private Label _sessionStatus;
+	private Button _retryButton;
+	private Button _exitButton;
+	private readonly CancellationTokenSource _lifetimeCts = new();
+	private bool _isPreparingEnvironment;
+	private bool _hasRequestedInitialization;
+	private bool _inputEnabled;
 
-        private Control connectionOverlay;
-        private Label statusLabel;
-        private Label detailLabel;
-        private Button retryButton;
-        private Button exitButton;
+	public bool HasTerminalFocus =>
+		_emulator != null && _emulator.IsVisibleInTree() && _emulator.HasFocus();
 
-        private int exitLevels;
-        private bool isPreparingEnvironment;
-        private bool hasRequestedInitialization;
+	public override void _Ready()
+	{
+		_emulator = GetNode<TerminalSurface>("Emulator");
+		_terminal = FindTerminal();
+		_connectionOverlay = _terminal.GetNode<Control>("ConnectionOverlay");
+		_statusLabel = _connectionOverlay.GetNode<Label>("Center/Panel/Content/StatusLabel");
+		_detailLabel = _connectionOverlay.GetNode<Label>("Center/Panel/Content/DetailLabel");
+		_retryButton = _connectionOverlay.GetNode<Button>("Center/Panel/Content/Buttons/RetryButton");
+		_exitButton = _connectionOverlay.GetNode<Button>("Center/Panel/Content/Buttons/ExitButton");
+		_sessionStatus = _terminal.GetNode<Label>("Header/HeaderMargin/HeaderRow/SessionStatus");
 
-        public override void _Ready()
-        {
-                outputText = GetNode<RichTextLabel>("../OutputText");
+		_retryButton.Pressed += OnRetryPressed;
+		_exitButton.Pressed += _terminal.ReturnToDesktop;
+		_emulator.DataSent += OnTerminalDataSent;
+		_emulator.TerminalSizeChanged += OnTerminalSizeChanged;
 
-                Terminal terminal = FindTerminal();
+		_terminalController = new TerminalController
+		{
+			host = terminalHost,
+			port = terminalPort,
+			username = terminalUsername,
+			password = terminalPassword,
+			loginTimeoutMs = terminalLoginTimeoutMs,
+			maxAttempts = terminalMaxAttempts,
+			retryDelayMs = terminalRetryDelayMs,
+			slowWarningAttempt = terminalSlowWarningAttempt,
+			totalTimeoutMs = terminalTotalTimeoutMs
+		};
+		AddChild(_terminalController);
+		_terminalController.OutputReceived += AppendOutput;
+		_terminalController.ConnectionStarted += OnConnectionStarted;
+		_terminalController.ConnectionDelayed += OnConnectionDelayed;
+		_terminalController.ConnectionSucceeded += OnConnectionSucceeded;
+		_terminalController.ConnectionFailed += ShowFailureState;
+		_terminalController.ConnectionClosed += OnConnectionClosed;
 
-                connectionOverlay =
-                        terminal?.GetNodeOrNull<Control>("ConnectionOverlay");
+		UpdateTerminalSize();
+		SetInputEnabled(false);
+	}
 
-                statusLabel = connectionOverlay?.GetNodeOrNull<Label>(
-                        "Center/Panel/Content/StatusLabel"
-                );
+	public override void _ExitTree()
+	{
+		_lifetimeCts.Cancel();
+		_retryButton.Pressed -= OnRetryPressed;
+		_exitButton.Pressed -= _terminal.ReturnToDesktop;
+		_lifetimeCts.Dispose();
+	}
 
-                detailLabel = connectionOverlay?.GetNodeOrNull<Label>(
-                        "Center/Panel/Content/DetailLabel"
-                );
+	public void EnsureStarted()
+	{
+		if (_terminalController.HasActiveSession)
+		{
+			_emulator.GrabFocus();
+			return;
+		}
 
-                retryButton = connectionOverlay?.GetNodeOrNull<Button>(
-                        "Center/Panel/Content/Buttons/RetryButton"
-                );
+		if (_hasRequestedInitialization)
+			return;
 
-                exitButton = connectionOverlay?.GetNodeOrNull<Button>(
-                        "Center/Panel/Content/Buttons/ExitButton"
-                );
+		_hasRequestedInitialization = true;
+		_ = PrepareEnvironmentAsync();
+	}
 
-                if (retryButton != null)
-                        retryButton.Pressed += OnRetryPressed;
+	private async Task PrepareEnvironmentAsync()
+	{
+		if (_isPreparingEnvironment)
+			return;
 
-                if (exitButton != null)
-                        exitButton.Pressed += ReturnToDesktop;
+		_isPreparingEnvironment = true;
+		ShowConnectingState(
+			"Iniciando o terminal...",
+			"Preparando o ambiente Docker e o terminal."
+		);
 
-                terminalController = new TerminalController
-                {
-                        host = terminalHost,
-                        port = terminalPort,
-                        username = terminalUsername,
-                        password = terminalPassword,
-                        loginTimeoutMs = terminalLoginTimeoutMs,
-                        maxAttempts = terminalMaxAttempts,
-                        retryDelayMs = terminalRetryDelayMs,
-                        slowWarningAttempt = terminalSlowWarningAttempt,
-                        totalTimeoutMs = terminalTotalTimeoutMs
-                };
-
-                AddChild(terminalController);
-
-                terminalController.Connect(
-                        TerminalController.SignalName
-                                .OutputReceivedWithArgument,
-                        new Callable(this, nameof(AppendOutput))
-                );
-
-                terminalController.Connect(
-                        TerminalController.SignalName.ConnectionStarted,
-                        new Callable(this, nameof(OnConnectionStarted))
-                );
-
-                terminalController.Connect(
-                        TerminalController.SignalName.ConnectionDelayed,
-                        new Callable(this, nameof(OnConnectionDelayed))
-                );
-
-                terminalController.Connect(
-                        TerminalController.SignalName.ConnectionSucceeded,
-                        new Callable(this, nameof(OnConnectionSucceeded))
-                );
-
-                terminalController.Connect(
-                        TerminalController.SignalName.ConnectionFailed,
-                        new Callable(this, nameof(OnConnectionFailed))
-                );
-
-                Reset();
-                Editable = false;
-        }
-
-        public void EnsureStarted()
-        {
-                if (hasRequestedInitialization)
-                        return;
-
-                hasRequestedInitialization = true;
-                _ = PrepareEnvironmentAsync();
-        }
-
-        private async Task PrepareEnvironmentAsync()
-        {
-                if (isPreparingEnvironment)
-                        return;
-
-                isPreparingEnvironment = true;
-
-                ShowConnectingState(
-                        "Iniciando o terminal...",
-                        "Preparando o ambiente Docker e o terminal."
-                );
-
-                try
-                {
+		try
+		{
 			if (MissionInfrastructureManager.Instance == null)
 			{
+				ShowFailureState("O gerenciador de infraestrutura não está disponível.");
+				return;
+			}
+
+			bool containerReady = await MissionInfrastructureManager.Instance
+				.EnsurePlayerMachineReadyAsync(_lifetimeCts.Token);
+
+			if (!GodotObject.IsInstanceValid(this) || !IsInsideTree())
+				return;
+
+			if (!containerReady)
+			{
 				ShowFailureState(
-					"O gerenciador de infraestrutura não está disponível."
+					"Não foi possível iniciar o ambiente Docker. " +
+					"Verifique se o Docker está funcionando e tente novamente."
 				);
 				return;
 			}
 
-			bool containerReady =
-				await MissionInfrastructureManager.Instance
-					.EnsurePlayerMachineReadyAsync();
+			UpdateTerminalSize();
+			_terminalController.StartConnection();
+		}
+		catch (OperationCanceledException)
+		{
+		}
+		catch (Exception exception)
+		{
+			Log.Error($"InputText: erro ao preparar ambiente: {exception.Message}");
 
-                        if (
-                                !GodotObject.IsInstanceValid(this) ||
-                                !IsInsideTree()
-                        )
-                        {
-                                return;
-                        }
+			if (GodotObject.IsInstanceValid(this) && IsInsideTree())
+				ShowFailureState("Ocorreu um erro ao preparar o terminal.");
+		}
+		finally
+		{
+			_isPreparingEnvironment = false;
+		}
+	}
 
-                        if (!containerReady)
-                        {
-                                ShowFailureState(
-                                        "Não foi possível iniciar o ambiente " +
-                                        "Docker. Verifique se o Docker está " +
-                                        "funcionando e tente novamente."
-                                );
-                                return;
-                        }
+	private void OnConnectionStarted()
+	{
+		ShowConnectingState(
+			"Iniciando o terminal...",
+			"Conectando ao serviço do terminal."
+		);
+		_emulator.ResetTerminal();
+	}
 
-                        terminalController.StartConnection();
-                }
-                catch (Exception exception)
-                {
-                        Log.Error(
-                                $"InputText: erro ao preparar ambiente: " +
-                                exception.Message
-                        );
+	private void OnConnectionDelayed()
+	{
+		ShowConnectingState(
+			"Ainda estamos preparando o terminal...",
+			"A inicialização está demorando mais que o esperado."
+		);
+	}
 
-                        ShowFailureState(
-                                "Ocorreu um erro ao preparar o terminal."
-                        );
-                }
-                finally
-                {
-                        isPreparingEnvironment = false;
-                }
-        }
+	private void OnConnectionSucceeded()
+	{
+		_connectionOverlay.Visible = false;
+		_sessionStatus.Text = "● CONECTADO";
+		SetInputEnabled(true);
 
-        private void OnConnectionStarted()
-        {
-                terminalOutputSanitizer.Reset();
+		if (IsVisibleInTree())
+			_emulator.GrabFocus();
+	}
 
-                ShowConnectingState(
-                        "Iniciando o terminal...",
-                        "Conectando ao serviço do terminal."
-                );
-        }
+	private void OnConnectionClosed()
+	{
+		ShowFailureState(
+			"A sessão no container foi encerrada. Você pode conectar novamente.",
+			"Sessão encerrada"
+		);
+		_retryButton.Text = "Conectar novamente";
+	}
 
-        private void OnConnectionDelayed()
-        {
-                ShowConnectingState(
-                        "Ainda estamos preparando o terminal...",
-                        "A inicialização está demorando mais que o esperado."
-                );
-        }
+	private async void OnRetryPressed()
+	{
+		await PrepareEnvironmentAsync();
+	}
 
-        private void OnConnectionSucceeded()
-        {
-                Editable = true;
+	private void ShowConnectingState(string title, string detail)
+	{
+		SetInputEnabled(false);
+		_connectionOverlay.Visible = true;
+		_statusLabel.Text = title;
+		_detailLabel.Text = detail;
+		_sessionStatus.Text = "● CONECTANDO";
+		_retryButton.Visible = false;
+		_exitButton.Visible = true;
+	}
 
-                if (connectionOverlay != null)
-                        connectionOverlay.Visible = false;
+	private void ShowFailureState(string message)
+	{
+		ShowFailureState(message, "Terminal indisponível");
+	}
 
-                GrabFocus();
+	private void ShowFailureState(string message, string title)
+	{
+		SetInputEnabled(false);
+		_connectionOverlay.Visible = true;
+		_statusLabel.Text = title;
+		_detailLabel.Text = message;
+		_sessionStatus.Text = "● DESCONECTADO";
+		_retryButton.Text = "Tentar novamente";
+		_retryButton.Visible = true;
+		_exitButton.Visible = true;
 
-        }
+		if (IsVisibleInTree())
+			_retryButton.GrabFocus();
+	}
 
-        private void OnConnectionFailed(string message)
-        {
-                ShowFailureState(message);
-        }
+	private void SetInputEnabled(bool enabled)
+	{
+		_inputEnabled = enabled;
+		_emulator.SetInputEnabled(enabled);
+	}
 
-        private async void OnRetryPressed()
-        {
-                await PrepareEnvironmentAsync();
-        }
+	private void AppendOutput(byte[] output)
+	{
+		_emulator.WriteData(output);
+	}
 
-        private void ShowConnectingState(
-                string title,
-                string detail
-        )
-        {
-                Editable = false;
+	private void OnTerminalDataSent(byte[] data)
+	{
+		if (_inputEnabled)
+			_terminalController.SendInput(data);
+	}
 
-                if (connectionOverlay != null)
-                        connectionOverlay.Visible = true;
+	private void OnTerminalSizeChanged(Vector2I size)
+	{
+		_terminalController?.ResizeTerminal(size.X, size.Y);
+	}
 
-                if (statusLabel != null)
-                        statusLabel.Text = title;
+	private void UpdateTerminalSize()
+	{
+		_terminalController.ResizeTerminal(
+			_emulator.Columns,
+			_emulator.Rows
+		);
+	}
 
-                if (detailLabel != null)
-                        detailLabel.Text = detail;
+	private Terminal FindTerminal()
+	{
+		for (Node current = GetParent(); current != null; current = current.GetParent())
+		{
+			if (current is Terminal terminal)
+				return terminal;
+		}
 
-                if (retryButton != null)
-                        retryButton.Visible = false;
-
-                if (exitButton != null)
-                        exitButton.Visible = true;
-        }
-
-        private void ShowFailureState(string message)
-        {
-                Editable = false;
-
-                if (connectionOverlay != null)
-                        connectionOverlay.Visible = true;
-
-                if (statusLabel != null)
-                        statusLabel.Text = "Terminal indisponível";
-
-                if (detailLabel != null)
-                        detailLabel.Text = message;
-
-                if (retryButton != null)
-                        retryButton.Visible = true;
-
-                if (exitButton != null)
-                        exitButton.Visible = true;
-        }
-
-        private void ExitComputer()
-        {
-                Computer computer = FindComputer();
-
-                if (computer != null)
-                {
-                        computer.ExitComputer();
-                        return;
-                }
-
-                GD.PrintErr(
-                        "InputText: não foi possível localizar a interface " +
-                        "do computador."
-                );
-        }
-
-        private void ReturnToDesktop()
-        {
-                Terminal terminal = FindTerminal();
-
-                if (terminal != null)
-                {
-                        terminal.ReturnToDesktop();
-                        return;
-                }
-
-                GD.PrintErr(
-                        "InputText: não foi possível voltar à área de trabalho."
-                );
-        }
-
-        private void Reset()
-        {
-                Text = string.Empty;
-        }
-
-        private void AppendOutput(string output)
-        {
-                string sanitized = terminalOutputSanitizer.Process(output);
-
-                if (!string.IsNullOrEmpty(sanitized))
-                        outputText.AppendText(sanitized);
-        }
-
-        private Computer FindComputer()
-        {
-                Node current = this;
-
-                while (current != null)
-                {
-                        if (current is Computer computer)
-                                return computer;
-
-                        current = current.GetParent();
-                }
-
-                return null;
-        }
-
-        private Terminal FindTerminal()
-        {
-                Node current = this;
-
-                while (current != null)
-                {
-                        if (current is Terminal terminal)
-                                return terminal;
-
-                        current = current.GetParent();
-                }
-
-                return null;
-        }
-
-        private void ProcessCommand(string command)
-        {
-                terminalController.SendCommand(command);
-        }
-
-        public override void _GuiInput(InputEvent @event)
-        {
-                if (@event is not InputEventKey eventKey)
-                        return;
-
-                if (
-                        !eventKey.Pressed ||
-                        eventKey.Keycode != Key.Enter
-                )
-                {
-                        return;
-                }
-
-                AcceptEvent();
-
-                string command = GetLine(GetCaretLine()).Trim();
-
-                string[] commandParts = command.Split(
-                        ' ',
-                        StringSplitOptions.RemoveEmptyEntries
-                );
-
-                if (commandParts.Length == 0)
-                {
-                        Reset();
-                        return;
-                }
-
-                switch (commandParts[0])
-                {
-                        case "su" or "telnet" or "ssh":
-                                exitLevels++;
-                                ProcessCommand(command);
-                                break;
-
-                        case "sudo":
-                                if (
-                                        commandParts.Length > 1 &&
-                                        (
-                                                commandParts[1] == "su" ||
-                                                commandParts[1] == "telnet" ||
-                                                commandParts[1] == "ssh"
-                                        )
-                                )
-                                {
-                                        exitLevels++;
-                                }
-
-                                ProcessCommand(command);
-                                break;
-
-                        case "exit":
-                                if (exitLevels == 0)
-                                {
-                                        ExitComputer();
-                                }
-                                else
-                                {
-                                        exitLevels--;
-                                        ProcessCommand(command);
-                                }
-                                break;
-
-                        case "clear":
-                                outputText.Text = string.Empty;
-                                terminalOutputSanitizer.Reset();
-                                break;
-
-                        default:
-                                ProcessCommand(command);
-                                break;
-                }
-
-                Reset();
-        }
+		throw new InvalidOperationException("InputText: interface do terminal não encontrada.");
+	}
 }

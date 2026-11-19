@@ -1,6 +1,6 @@
 using Godot;
 using System;
-using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -9,7 +9,7 @@ using TelnetInterface;
 public partial class TerminalController : Node
 {
 	[Signal]
-	public delegate void OutputReceivedWithArgumentEventHandler(string output);
+	public delegate void OutputReceivedEventHandler(byte[] output);
 
 	[Signal]
 	public delegate void ConnectionStartedEventHandler();
@@ -22,6 +22,9 @@ public partial class TerminalController : Node
 
 	[Signal]
 	public delegate void ConnectionFailedEventHandler(string message);
+
+	[Signal]
+	public delegate void ConnectionClosedEventHandler();
 
 	public string host { get; set; } = "127.0.0.1";
 	public int port { get; set; } = 5000;
@@ -40,17 +43,15 @@ public partial class TerminalController : Node
 	private Task connectionTask;
 	private Task telnetTask;
 
-	private readonly Channel<string> commandChannel =
-		Channel.CreateUnbounded<string>(
-			new UnboundedChannelOptions
-			{
-				SingleReader = true,
-				SingleWriter = false
-			}
-		);
+	private readonly record struct TerminalInput(byte[] Data, int Columns, int Rows);
+
+	private Channel<TerminalInput> _inputChannel;
+	private int _terminalColumns = 80;
+	private int _terminalRows = 24;
 
 	private volatile bool isConnected;
 	private volatile bool isConnecting;
+	public bool HasActiveSession => isConnected;
 
 	public void StartConnection()
 	{
@@ -63,6 +64,9 @@ public partial class TerminalController : Node
 		}
 
 		isConnecting = true;
+		_inputChannel = Channel.CreateUnbounded<TerminalInput>(
+			new UnboundedChannelOptions { SingleReader = true }
+		);
 		connectionTask = ConnectWithRetry();
 	}
 
@@ -106,11 +110,21 @@ public partial class TerminalController : Node
 						port,
 						token
 					);
+					await candidate.SetWindowSizeAsync(
+						_terminalColumns,
+						_terminalRows,
+						token
+					);
 
 					string loginOutput = await candidate.LoginAsync(
 						username,
 						password,
 						loginTimeoutMs,
+						token
+					);
+					await candidate.SetWindowSizeAsync(
+						_terminalColumns,
+						_terminalRows,
 						token
 					);
 
@@ -127,20 +141,20 @@ public partial class TerminalController : Node
 					candidate = null;
 					isConnected = true;
 
-					EmitOutput(loginOutput);
+					CallDeferred(
+						MethodName.EmitSignal,
+						SignalName.ConnectionSucceeded
+					);
+					EmitOutput(Encoding.UTF8.GetBytes(loginOutput));
 
 					telnetTask = RunTelnetAsync(
 						telnet,
+						_inputChannel,
 						sessionCts.Token
 					);
 
 					Log.Info(
 						"TerminalController: conexão estabelecida."
-					);
-
-					CallDeferred(
-						MethodName.EmitSignal,
-						SignalName.ConnectionSucceeded
 					);
 
 					return;
@@ -204,6 +218,7 @@ public partial class TerminalController : Node
 
 	private async Task RunTelnetAsync(
 		TelnetConnection connection,
+		Channel<TerminalInput> inputChannel,
 		CancellationToken token
 	)
 	{
@@ -211,7 +226,7 @@ public partial class TerminalController : Node
 			CancellationTokenSource.CreateLinkedTokenSource(token);
 
 		Task readTask = ReadTelnetAsync(connection, stopCts.Token);
-		Task writeTask = WriteTelnetAsync(connection, stopCts.Token);
+		Task writeTask = WriteTelnetAsync(connection, inputChannel, stopCts.Token);
 		Exception disconnectException = null;
 
 		try
@@ -240,6 +255,7 @@ public partial class TerminalController : Node
 		finally
 		{
 			isConnected = false;
+			inputChannel.Writer.TryComplete();
 			stopCts.Cancel();
 			connection.Close();
 
@@ -252,18 +268,19 @@ public partial class TerminalController : Node
 				telnet = null;
 		}
 
-		if (
-			disconnectException != null &&
-			!token.IsCancellationRequested &&
-			!lifetimeCts.IsCancellationRequested
-		)
-		{
-			EmitOutput("\nConexão encerrada.\n");
+		if (token.IsCancellationRequested || lifetimeCts.IsCancellationRequested)
+			return;
 
+		if (disconnectException != null)
+		{
 			EmitConnectionFailure(
 				"A conexão com o terminal foi encerrada. " +
 				"Tente novamente."
 			);
+		}
+		else
+		{
+			CallDeferred(MethodName.EmitSignal, SignalName.ConnectionClosed);
 		}
 	}
 
@@ -274,14 +291,10 @@ public partial class TerminalController : Node
 	{
 		while (true)
 		{
-			string output = await connection.ReadAsync(token);
+			byte[] output = await connection.ReadDataAsync(token);
 
 			if (output == null)
-			{
-				throw new IOException(
-					"O servidor fechou a conexão Telnet."
-				);
-			}
+				return;
 
 			EmitOutput(output);
 		}
@@ -289,15 +302,18 @@ public partial class TerminalController : Node
 
 	private async Task WriteTelnetAsync(
 		TelnetConnection connection,
+		Channel<TerminalInput> inputChannel,
 		CancellationToken token
 	)
 	{
-		while (await commandChannel.Reader.WaitToReadAsync(token))
+		while (await inputChannel.Reader.WaitToReadAsync(token))
 		{
-			while (commandChannel.Reader.TryRead(out string command))
+			while (inputChannel.Reader.TryRead(out TerminalInput input))
 			{
-				Log.Info("TerminalController: comando enviado.");
-				await connection.WriteLineAsync(command, token);
+				if (input.Data != null)
+					await connection.WriteAsync(input.Data, token);
+				else
+					await connection.SetWindowSizeAsync(input.Columns, input.Rows, token);
 			}
 		}
 	}
@@ -313,14 +329,14 @@ public partial class TerminalController : Node
 		}
 	}
 
-	private void EmitOutput(string output)
+	private void EmitOutput(byte[] output)
 	{
-		if (string.IsNullOrEmpty(output))
+		if (output.Length == 0)
 			return;
 
 		CallDeferred(
 			MethodName.EmitSignal,
-			SignalName.OutputReceivedWithArgument,
+			SignalName.OutputReceived,
 			output
 		);
 	}
@@ -336,20 +352,31 @@ public partial class TerminalController : Node
 		);
 	}
 
-	public void SendCommand(string command)
+	public void SendInput(byte[] data)
 	{
-		if (!isConnected)
-		{
-			Log.Error(
-				"TerminalController: comando ignorado sem conexão."
-			);
+		if (!isConnected || data.Length == 0)
 			return;
-		}
 
-		if (!commandChannel.Writer.TryWrite(command))
+		if (!_inputChannel.Writer.TryWrite(new TerminalInput(data, 0, 0)))
 		{
 			Log.Error(
-				"TerminalController: não foi possível enfileirar o comando."
+				"TerminalController: não foi possível enfileirar a entrada."
+			);
+		}
+	}
+
+	public void ResizeTerminal(int columns, int rows)
+	{
+		if (columns < 1 || rows < 1)
+			return;
+
+		_terminalColumns = Math.Clamp(columns, 1, ushort.MaxValue);
+		_terminalRows = Math.Clamp(rows, 1, ushort.MaxValue);
+
+		if (isConnected)
+		{
+			_inputChannel.Writer.TryWrite(
+				new TerminalInput(null, _terminalColumns, _terminalRows)
 			);
 		}
 	}
@@ -358,7 +385,7 @@ public partial class TerminalController : Node
 	{
 		lifetimeCts.Cancel();
 		sessionCts?.Cancel();
-		commandChannel.Writer.TryComplete();
+		_inputChannel?.Writer.TryComplete();
 		telnet?.Close();
 
 		Task activeConnectionTask = connectionTask;
